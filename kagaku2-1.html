@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>化学基礎② 演習問題</title>
+    <style>
+        :root { --primary: #1a3a6b; --accent: #F5A623; --bg: #f4f6fb; --correct: #d4edda; --wrong: #f8d7da; --drop-bg: #fff9c4; }
+        body { font-family: 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif; background: var(--bg); margin: 0; padding: 0; overflow-x: hidden; }
+        .page-nav { background: #fff; padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .nav-btn { text-decoration: none; padding: 8px 15px; background: #eee; color: #333; border-radius: 4px; font-size: 0.85em; font-weight: bold; border: 1px solid #ccc; transition: 0.2s; }
+        .nav-btn:hover { background: #ddd; }
+        .nav-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .sticky-header { position: sticky; top: 0; background: var(--bg); padding: 10px 0; z-index: 1000; border-bottom: 2px solid #ddd; }
+        .challenge-panel { background: var(--primary); color: #fff; padding: 10px; border-radius: 8px; display: flex; justify-content: space-around; align-items: center; max-width: 1050px; margin: 0 auto 8px; }
+        .timer { font-size: 1.5em; color: var(--accent); font-family: monospace; }
+        .word-bank-container { background: #eee; padding: 12px; border-radius: 8px; border: 1px solid #ccc; max-width: 1050px; margin: 0 auto; }
+        .word-bank { display: flex; flex-wrap: wrap; gap: 8px; min-height: 36px; }
+        .drag-item { background: #fff; color: #cc0000; border: 1px solid #333; padding: 4px 12px; cursor: pointer; font-weight: bold; font-size: 0.9em; border-radius: 3px; }
+        .drag-item.selected { background: var(--accent); color: #333; }
+        .container { max-width: 1050px; margin: 20px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .section-box { margin-bottom: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        .section-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; border-left: 6px solid var(--primary); padding-left: 10px; color: var(--primary); }
+        .drop-zone { display: inline-block; min-width: 80px; height: 1.5em; background: var(--drop-bg); border: 1px solid #999; vertical-align: middle; cursor: pointer; text-align: center; font-weight: bold; color: #cc0000; padding: 2px 6px; white-space: nowrap; border-radius: 3px; }
+        .drop-zone.correct { background: var(--correct) !important; color: #155724 !important; }
+        .drop-zone.wrong { background: var(--wrong) !important; color: #721c24 !important; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #999; padding: 10px 12px; vertical-align: middle; line-height: 2.0; text-align: center; }
+        th { background: #e8edf5; font-weight: bold; }
+        td.left { text-align: left; }
+        .q-box { background: #f0f4ff; border: 1px solid #b0c0e8; border-radius: 6px; padding: 14px 18px; margin-bottom: 16px; line-height: 2.4; }
+        .q-num { font-weight: bold; color: var(--primary); margin-bottom: 6px; }
+        .hint { font-size: 0.85em; color: #666; margin-top: 6px; }
+        .controls { text-align: center; margin-top: 30px; padding-bottom: 80px; }
+        .main-btn { padding: 14px 28px; font-size: 1.05rem; cursor: pointer; border: none; border-radius: 8px; font-weight: bold; color: white; margin: 6px 8px; }
+        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+    </style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<nav class="page-nav">
+    <a href="kagaku1.html" class="nav-btn">① 純物質・混合物</a>
+    <a href="kagaku1-1.html" class="nav-btn">② 演習</a>
+    <a href="kagaku2.html" class="nav-btn">③ 元素と単体</a>
+    <a href="kagaku2-1.html" class="nav-btn active">④ 演習</a>
+    <a href="kagaku3.html" class="nav-btn">⑤ 同素体・炎色反応</a>
+    <a href="kagaku3-1.html" class="nav-btn">⑥ 演習</a>
+</nav>
+<div class="sticky-header">
+    <div class="challenge-panel">
+        <div>⏱ TIME: <span id="timerDisplay" class="timer">00.0s</span></div>
+        <div id="recordDisplay" style="font-size:0.85em;">記録なし</div>
+        <div style="font-size:0.85em;">化学基礎② 演習問題</div>
+    </div>
+    <div class="word-bank-container">
+        <div id="wordBank" class="word-bank">「チャレンジ開始」をクリックしてください。</div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- 問題1：元素と単体（別問題） -->
+    <div class="section-box">
+        <div class="section-title">問題1．元素と単体の区別</div>
+
+        <div class="q-box">
+            <div class="q-num">（1）次の下線部は「元素」か「単体」か答えよ。</div>
+            <table>
+                <tr><th class="left">文章</th><th style="width:120px;">元素・単体</th></tr>
+                <tr>
+                    <td class="left">① アンモニアは<u>窒素</u>と<u>水素</u>からできている。</td>
+                    <td><span class="drop-zone" data-ans="元素" onclick="zCl(this)"></span></td>
+                </tr>
+                <tr>
+                    <td class="left">② 負傷者が<u>酸素</u>吸入を受けながら救急車で運ばれた。</td>
+                    <td><span class="drop-zone" data-ans="単体" onclick="zCl(this)"></span></td>
+                </tr>
+                <tr>
+                    <td class="left">③ 地殻中に最も多く存在する金属は<u>アルミニウム</u>である。</td>
+                    <td><span class="drop-zone" data-ans="元素" onclick="zCl(this)"></span></td>
+                </tr>
+                <tr>
+                    <td class="left">④ <u>ヨウ素</u>はヨウ化カリウム水溶液に溶解する。</td>
+                    <td><span class="drop-zone" data-ans="単体" onclick="zCl(this)"></span></td>
+                </tr>
+                <tr>
+                    <td class="left">⑤ カルシウムは歯や骨に多く含まれている。</td>
+                    <td><span class="drop-zone" data-ans="元素" onclick="zCl(this)"></span></td>
+                </tr>
+                <tr>
+                    <td class="left">⑥ 競技の優勝者に<u>金</u>のメダルが与えられた。</td>
+                    <td><span class="drop-zone" data-ans="単体" onclick="zCl(this)"></span></td>
+                </tr>
+            </table>
+            <div class="hint">💡 コツ：「〜からできている」「〜が含まれる」→元素（成分）／「実際の物質」→単体</div>
+        </div>
+
+        <div class="q-box">
+            <div class="q-num">（2）次の①〜⑤のうち、単体でなく元素の意味で用いられているものを選べ。</div>
+            ① アルミニウムはボーキサイトを原料としてつくられる。<br>
+            ② アンモニアは窒素と水素から合成される。<br>
+            ③ 競技の優勝者に金のメダルが与えられた。<br>
+            ④ 負傷者が酸素吸入を受けながら救急車で運ばれていった。<br>
+            ⑤ カルシウムは歯や骨に多く含まれている。<br><br>
+            答え：<span class="drop-zone" data-ans="②⑤" onclick="zCl(this)" style="min-width:60px;"></span>
+            <div class="hint">💡 「合成される」「含まれる」は成分（元素）の意味</div>
+        </div>
+    </div>
+
+    <!-- 問題2：元素記号→元素名 -->
+    <div class="section-box">
+        <div class="section-title">問題2．元素記号から元素名を答えよ</div>
+
+        <div class="q-box">
+            <div class="q-num">（1）元素記号に対応する元素名を答えよ。</div>
+            <table>
+                <tr>
+                    <th>元素記号</th>
+                    <th>H</th><th>He</th><th>C</th><th>N</th><th>O</th>
+                    <th>Na</th><th>Mg</th><th>Al</th><th>Cl</th><th>Ca</th>
+                </tr>
+                <tr>
+                    <th>元素名</th>
+                    <td><span class="drop-zone" data-ans="水素" onclick="zCl(this)" style="min-width:70px;"></span></td>
+                    <td><span class="drop-zone" data-ans="ヘリウム" onclick="zCl(this)" style="min-width:70px;"></span></td>
+                    <td><span class="drop-zone" data-ans="炭素" onclick="zCl(this)" style="min-width:70px;"></span></td>
+                    <td><span class="drop-zone" data-ans="窒素" onclick="zCl(this)" style="min-width:70px;"></span></td>
+                    <td><span class="drop-zone" data-ans="酸素" onclick="zCl(this)" style="min-width:70px;"></span></td>
+                    <td><span class="drop-zone" data-ans="ナトリウム" onclick="zCl(this)" style="min-width:90px;"></span></td>
+                    <td><span class="drop-zone" data-ans="マグネシウム" onclick="zCl(this)" style="min-width:100px;"></span></td>
+                    <td><span class="drop-zone" data-ans="アルミニウム" onclick="zCl(this)" style="min-width:100px;"></span></td>
+                    <td><span class="drop-zone" data-ans="塩素" onclick="zCl(this)" style="min-width:70px;"></span></td>
+                    <td><span class="drop-zone" data-ans="カルシウム" onclick="zCl(this)" style="min-width:90px;"></span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- 問題3：元素名→元素記号 -->
+    <div class="section-box">
+        <div class="section-title">問題3．元素名から元素記号を答えよ</div>
+
+        <div class="q-box">
+            <div class="q-num">（1）次の元素の元素記号を答えよ。</div>
+            <table>
+                <tr>
+                    <th>元素名</th>
+                    <th>リチウム</th><th>ホウ素</th><th>フッ素</th><th>ネオン</th><th>ケイ素</th>
+                    <th>リン</th><th>硫黄</th><th>アルゴン</th><th>カリウム</th><th>鉄</th>
+                </tr>
+                <tr>
+                    <th>元素記号</th>
+                    <td><span class="drop-zone" data-ans="Li" onclick="zCl(this)" style="min-width:45px;"></span></td>
+                    <td><span class="drop-zone" data-ans="B" onclick="zCl(this)" style="min-width:45px;"></span></td>
+                    <td><span class="drop-zone" data-ans="F" onclick="zCl(this)" style="min-width:45px;"></span></td>
+                    <td><span class="drop-zone" data-ans="Ne" onclick="zCl(this)" style="min-width:45px;"></span></td>
+                    <td><span class="drop-zone" data-ans="Si" onclick="zCl(this)" style="min-width:45px;"></span></td>
+                    <td><span class="drop-zone" data-ans="P" onclick="zCl(this)" style="min-width:45px;"></span></td>
+                    <td><span class="drop-zone" data-ans="S" onclick="zCl(this)" style="min-width:45px;"></span></td>
+                    <td><span class="drop-zone" data-ans="Ar" onclick="zCl(this)" style="min-width:45px;"></span></td>
+                    <td><span class="drop-zone" data-ans="K" onclick="zCl(this)" style="min-width:45px;"></span></td>
+                    <td><span class="drop-zone" data-ans="Fe" onclick="zCl(this)" style="min-width:45px;"></span></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="q-box">
+            <div class="q-num">（2）原子番号を答えよ。</div>
+            ① 炭素（C）の原子番号は<span class="drop-zone" data-ans="6" onclick="zCl(this)" style="min-width:40px;"></span>である。<br>
+            ② ナトリウム（Na）の原子番号は<span class="drop-zone" data-ans="11" onclick="zCl(this)" style="min-width:40px;"></span>である。<br>
+            ③ カルシウム（Ca）の原子番号は<span class="drop-zone" data-ans="20" onclick="zCl(this)" style="min-width:40px;"></span>である。<br>
+            ④ 原子番号17の元素記号は<span class="drop-zone" data-ans="Cl" onclick="zCl(this)" style="min-width:45px;"></span>、元素名は<span class="drop-zone" data-ans="塩素" onclick="zCl(this)"></span>である。
+        </div>
+    </div>
+
+    <!-- 問題4：入試問題形式 -->
+    <div class="section-box">
+        <div class="section-title">問題4．入試問題チャレンジ</div>
+
+        <div class="q-box">
+            <div class="q-num">（1）次の文中の空欄に適切な語句を入れよ。（北大より）</div>
+            空気や土といった2種類以上の物質からなるものは<span class="drop-zone" data-ans="混合物" onclick="zCl(this)"></span>とよばれる。分離によって得られた単一な物質を<span class="drop-zone" data-ans="純物質" onclick="zCl(this)"></span>という。水はこれであるが、電気分解すれば水素と酸素が生じる。ここで生じた水素と酸素のような1種類の成分だけからできている物質を<span class="drop-zone" data-ans="単体" onclick="zCl(this)"></span>という。一方、水のように2種類以上の成分が一定の割合で結びついてできた純物質を<span class="drop-zone" data-ans="化合物" onclick="zCl(this)"></span>という。単体や化合物を構成する基本的な成分を<span class="drop-zone" data-ans="元素" onclick="zCl(this)"></span>といい、現在100種余りが知られている。
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="main-btn" onclick="stCh()" style="background:#e67e22;">▶ チャレンジ開始！</button>
+        <button class="main-btn" onclick="chAn()" style="background:#27ae60;">✔ 答え合わせ</button>
+        <button class="main-btn" onclick="shMo()" style="background:#7f8c8d;">📖 お手本に戻す</button>
+    </div>
+</div>
+
+<script>
+    const words = [
+        // 正解
+        "元素","単体","②⑤",
+        "水素","ヘリウム","炭素","窒素","酸素","ナトリウム","マグネシウム","アルミニウム","塩素","カルシウム",
+        "Li","B","F","Ne","Si","P","S","Ar","K","Fe",
+        "6","11","20","Cl",
+        "混合物","純物質","単体","化合物","元素",
+        // ダミー
+        "化合物","混合物",
+        "①③","③④","①⑤","②④",
+        "水素","酸素","炭素","窒素","鉄","銅","銀","金",
+        "Li","Na","Ca","Mg","Al","H","He","Be","C","N","O","F","Ne",
+        "Si","P","S","Ar","K","Cl","Fe","Cu","Ag","Au",
+        "5","7","8","10","12","17","19","23","28",
+        "フッ素","塩素","硫黄","ケイ素","リン","アルゴン","カリウム"
+    ];
+    let sT, tI, isR = false, sW = null, bestTime = null;
+    function zCl(z) { if (isR && sW) { z.innerText = sW.innerText; sW.classList.remove('selected'); sW = null; } }
+    function stCh() {
+        isR = true; sT = Date.now();
+        tI = setInterval(() => { document.getElementById('timerDisplay').innerText = ((Date.now()-sT)/1000).toFixed(1)+"s"; }, 100);
+        document.querySelectorAll('.drop-zone').forEach(z => { z.innerText=""; z.className="drop-zone"; });
+        const b = document.getElementById('wordBank'); b.innerHTML="";
+        [...new Set(words)].sort(()=>Math.random()-0.5).forEach(w => {
+            const d = document.createElement('div'); d.className='drag-item'; d.innerText=w;
+            d.onclick = function(){ if(sW) sW.classList.remove('selected'); sW=this; this.classList.add('selected'); };
+            b.appendChild(d);
+        });
+    }
+    function chAn() {
+        let ok=true;
+        document.querySelectorAll('.drop-zone').forEach(z => {
+            if(z.innerText.trim()===z.getAttribute('data-ans')) z.classList.add('correct');
+            else { z.classList.add('wrong'); ok=false; }
+        });
+        if(ok && isR){ clearInterval(tI); isR=false; const t=((Date.now()-sT)/1000).toFixed(1); if(bestTime===null||parseFloat(t)<parseFloat(bestTime)){ bestTime=t; document.getElementById('recordDisplay').innerText="🏆 ベスト: "+bestTime+"s"; } startCnf(); }
+    }
+    function shMo() {
+        clearInterval(tI); isR=false;
+        document.querySelectorAll('.drop-zone').forEach(z => { z.innerText=z.getAttribute('data-ans'); z.className="drop-zone"; });
+        document.getElementById('wordBank').innerHTML="お手本表示中。";
+    }
+    const cvs=document.getElementById("confetti-canvas"); const ctx=cvs.getContext("2d"); let pts=[];
+    function startCnf(){ cvs.width=window.innerWidth; cvs.height=window.innerHeight; pts=[]; for(let i=0;i<150;i++) pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height-cvs.height,s:Math.random()*8+4,c:`hsl(${Math.random()*360},70%,70%)`,sp:Math.random()*3+2}); updateCnf(); }
+    function updateCnf(){ if(pts.length===0) return; ctx.clearRect(0,0,cvs.width,cvs.height); pts.forEach(p=>{ p.y+=p.sp; ctx.fillStyle=p.c; ctx.fillRect(p.x,p.y,p.s,p.s); if(p.y>cvs.height) p.y=-20; }); requestAnimationFrame(updateCnf); }
+    shMo();
+</script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>化学基礎① 演習：純物質・混合物・分離方法</title>
+    <style>
+        :root { --primary: #1a3a6b; --accent: #F5A623; --bg: #f4f6fb; --correct: #d4edda; --wrong: #f8d7da; --drop-bg: #fff9c4; --ex: #c0392b; }
+        body { font-family: 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif; background: var(--bg); margin: 0; padding: 0; overflow-x: hidden; }
+        .page-nav { background: #fff; padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .nav-btn { text-decoration: none; padding: 8px 15px; background: #eee; color: #333; border-radius: 4px; font-size: 0.85em; font-weight: bold; border: 1px solid #ccc; transition: 0.2s; }
+        .nav-btn:hover { background: #ddd; }
+        .nav-btn.active { background: var(--ex); color: white; border-color: var(--ex); }
+        .sticky-header { position: sticky; top: 0; background: var(--bg); padding: 10px 0; z-index: 1000; border-bottom: 2px solid #ddd; }
+        .challenge-panel { background: var(--ex); color: #fff; padding: 10px; border-radius: 8px; display: flex; justify-content: space-around; align-items: center; max-width: 1050px; margin: 0 auto 8px; }
+        .timer { font-size: 1.5em; color: #ffd700; font-family: monospace; }
+        .word-bank-container { background: #eee; padding: 12px; border-radius: 8px; border: 1px solid #ccc; max-width: 1050px; margin: 0 auto; }
+        .word-bank { display: flex; flex-wrap: wrap; gap: 8px; min-height: 36px; }
+        .drag-item { background: #fff; color: #cc0000; border: 1px solid #333; padding: 4px 12px; cursor: pointer; font-weight: bold; font-size: 0.9em; border-radius: 3px; }
+        .drag-item.selected { background: var(--accent); color: #333; }
+        .container { max-width: 1050px; margin: 20px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .section-box { margin-bottom: 28px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        .section-title { font-size: 1.05rem; font-weight: bold; margin-bottom: 14px; border-left: 6px solid var(--ex); padding-left: 10px; color: var(--ex); }
+        .drop-zone { display: inline-block; min-width: 90px; height: 1.5em; background: var(--drop-bg); border: 1px solid #999; vertical-align: middle; cursor: pointer; text-align: center; font-weight: bold; color: #cc0000; padding: 2px 6px; white-space: nowrap; border-radius: 3px; }
+        .drop-zone.correct { background: var(--correct) !important; color: #155724 !important; }
+        .drop-zone.wrong { background: var(--wrong) !important; color: #721c24 !important; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #999; padding: 10px 12px; vertical-align: middle; line-height: 1.9; }
+        th { background: #fdecea; font-weight: bold; }
+        .hint { font-size: 0.82em; color: #888; margin-left: 6px; }
+        ol { padding-left: 22px; line-height: 2.6; }
+        li { margin-bottom: 2px; }
+        .controls { text-align: center; margin-top: 30px; padding-bottom: 80px; }
+        .main-btn { padding: 14px 28px; font-size: 1.05rem; cursor: pointer; border: none; border-radius: 8px; font-weight: bold; color: white; margin: 6px 8px; }
+        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+    </style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<nav class="page-nav">
+    <a href="kagaku1.html" class="nav-btn">① 純物質・混合物</a>
+    <a href="kagaku1-1.html" class="nav-btn active">② 演習</a>
+    <a href="kagaku2.html" class="nav-btn">③ 元素と単体</a>
+    <a href="kagaku2-1.html" class="nav-btn">④ 演習</a>
+    <a href="kagaku3.html" class="nav-btn">⑤ 同素体・炎色反応</a>
+    <a href="kagaku3-1.html" class="nav-btn">⑥ 演習</a>
+</nav>
+<div class="sticky-header">
+    <div class="challenge-panel">
+        <div>⏱ TIME: <span id="timerDisplay" class="timer">00.0s</span></div>
+        <div id="recordDisplay" style="font-size:0.85em;">記録なし</div>
+        <div style="font-size:0.85em;">化学基礎① 演習</div>
+    </div>
+    <div class="word-bank-container">
+        <div id="wordBank" class="word-bank">「チャレンジ開始」をクリックしてください。</div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="section-box">
+        <div class="section-title">問題1　純物質・混合物・単体・化合物に分類せよ</div>
+        <p style="background:#f9f9f9; padding:10px; border-radius:6px;">
+            塩化ナトリウム　　塩酸　　アルゴン　　プロパン　　臭素　　ガラス
+        </p>
+        <table>
+            <tr><th style="width:130px;">分類</th><th>物質名</th></tr>
+            <tr>
+                <td style="text-align:center;"><b>純物質</b></td>
+                <td>
+                    <span class="drop-zone" data-ans="塩化ナトリウム" onclick="zCl(this)" style="min-width:110px;"></span>　
+                    <span class="drop-zone" data-ans="アルゴン" onclick="zCl(this)"></span>　
+                    <span class="drop-zone" data-ans="プロパン" onclick="zCl(this)"></span>　
+                    <span class="drop-zone" data-ans="臭素" onclick="zCl(this)"></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:center;"><b>混合物</b></td>
+                <td>
+                    <span class="drop-zone" data-ans="塩酸" onclick="zCl(this)"></span>　
+                    <span class="drop-zone" data-ans="ガラス" onclick="zCl(this)"></span>
+                    <span class="hint">※塩酸は水に塩化水素が溶けたもの</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section-box">
+        <div class="section-title">問題2　単体・化合物に分類せよ</div>
+        <p style="background:#f9f9f9; padding:10px; border-radius:6px;">
+            オゾン　　アンモニア　　水　　ドライアイス　　水酸化ナトリウム　　黒鉛
+        </p>
+        <table>
+            <tr><th style="width:130px;">分類</th><th>物質名</th></tr>
+            <tr>
+                <td style="text-align:center;"><b>単体</b></td>
+                <td>
+                    <span class="drop-zone" data-ans="オゾン" onclick="zCl(this)"></span>　
+                    <span class="drop-zone" data-ans="黒鉛" onclick="zCl(this)"></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:center;"><b>化合物</b></td>
+                <td>
+                    <span class="drop-zone" data-ans="アンモニア" onclick="zCl(this)"></span>　
+                    <span class="drop-zone" data-ans="水" onclick="zCl(this)"></span>　
+                    <span class="drop-zone" data-ans="ドライアイス" onclick="zCl(this)"></span>　
+                    <span class="drop-zone" data-ans="水酸化ナトリウム" onclick="zCl(this)" style="min-width:120px;"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section-box">
+        <div class="section-title">問題3　分離方法を答えよ</div>
+        <ol>
+            <li>液体を加熱し蒸気を液化させて分離する方法　→　<span class="drop-zone" data-ans="蒸留" onclick="zCl(this)"></span></li>
+            <li>液体中の固体をろ紙で取り出す方法　→　<span class="drop-zone" data-ans="ろ過" onclick="zCl(this)"></span></li>
+            <li>原油から沸点の差を利用してガソリン・灯油・重油を分ける方法　→　<span class="drop-zone" data-ans="分留" onclick="zCl(this)"></span></li>
+            <li>温度による溶解度の違いを利用して純粋な固体を取り出す方法　→　<span class="drop-zone" data-ans="再結晶" onclick="zCl(this)"></span></li>
+            <li>ヨウ素やナフタレンを固体から直接気体にして分離する方法　→　<span class="drop-zone" data-ans="昇華" onclick="zCl(this)"></span></li>
+            <li>溶媒に対する溶解度の違いを利用して分離する方法（分液漏斗を使用）　→　<span class="drop-zone" data-ans="抽出" onclick="zCl(this)"></span></li>
+            <li>ろ紙などへの吸着の強さの違いを利用して色素などを分離する方法　→　<span class="drop-zone" data-ans="クロマトグラフィー" onclick="zCl(this)" style="min-width:150px;"></span></li>
+        </ol>
+    </div>
+
+    <div class="section-box">
+        <div class="section-title">問題4　空欄を埋めよ（総合）</div>
+        <p style="line-height:2.6;">
+            空気や海水のように、いくつかの物質が混ざったものを<span class="drop-zone" data-ans="混合物" onclick="zCl(this)"></span>という。<br>
+            分離によって得られた単一な物質を<span class="drop-zone" data-ans="純物質" onclick="zCl(this)"></span>という。<br>
+            2種類以上の成分が結びついてできた純物質を<span class="drop-zone" data-ans="化合物" onclick="zCl(this)"></span>という。<br>
+            1種類の成分だけからできている物質を<span class="drop-zone" data-ans="単体" onclick="zCl(this)"></span>という。<br>
+            単体や化合物を構成する基本的な成分を<span class="drop-zone" data-ans="元素" onclick="zCl(this)"></span>という。<br>
+            混合物を物理的な方法で純物質を取り出す操作を<span class="drop-zone" data-ans="分離" onclick="zCl(this)"></span>という。<br>
+            分離した物質の純度を上げる操作を<span class="drop-zone" data-ans="精製" onclick="zCl(this)"></span>という。
+        </p>
+    </div>
+
+    <div class="controls">
+        <button class="main-btn" onclick="stCh()" style="background:#e67e22;">▶ チャレンジ開始！</button>
+        <button class="main-btn" onclick="chAn()" style="background:#27ae60;">✔ 答え合わせ</button>
+        <button class="main-btn" onclick="shMo()" style="background:#7f8c8d;">📖 お手本に戻す</button>
+    </div>
+</div>
+
+<script>
+    const words = [
+        "塩化ナトリウム","アルゴン","プロパン","臭素","塩酸","ガラス",
+        "オゾン","黒鉛","アンモニア","水","ドライアイス","水酸化ナトリウム",
+        "蒸留","ろ過","分留","再結晶","昇華","抽出","クロマトグラフィー",
+        "混合物","純物質","化合物","単体","元素","分離","精製",
+        // ダミー
+        "溶解","凝固","昇温","イオン","酸化物","金属","気体","固体","液体","溶媒","溶質"
+    ];
+    let sT, tI, isR = false, sW = null, bestTime = null;
+    function zCl(z) { if (isR && sW) { z.innerText = sW.innerText; sW.classList.remove('selected'); sW = null; } }
+    function stCh() {
+        isR = true; sT = Date.now();
+        tI = setInterval(() => { document.getElementById('timerDisplay').innerText = ((Date.now()-sT)/1000).toFixed(1)+"s"; }, 100);
+        document.querySelectorAll('.drop-zone').forEach(z => { z.innerText=""; z.className="drop-zone"; });
+        const b = document.getElementById('wordBank'); b.innerHTML="";
+        [...new Set(words)].sort(()=>Math.random()-0.5).forEach(w => {
+            const d = document.createElement('div'); d.className='drag-item'; d.innerText=w;
+            d.onclick = function(){ if(sW) sW.classList.remove('selected'); sW=this; this.classList.add('selected'); };
+            b.appendChild(d);
+        });
+    }
+    function chAn() {
+        let ok=true;
+        document.querySelectorAll('.drop-zone').forEach(z => {
+            if(z.innerText.trim()===z.getAttribute('data-ans')) z.classList.add('correct');
+            else { z.classList.add('wrong'); ok=false; }
+        });
+        if(ok && isR){ clearInterval(tI); isR=false; const t=((Date.now()-sT)/1000).toFixed(1); if(bestTime===null||parseFloat(t)<parseFloat(bestTime)){ bestTime=t; document.getElementById('recordDisplay').innerText="🏆 ベスト: "+bestTime+"s"; } startCnf(); }
+    }
+    function shMo() {
+        clearInterval(tI); isR=false;
+        document.querySelectorAll('.drop-zone').forEach(z => { z.innerText=z.getAttribute('data-ans'); z.className="drop-zone"; });
+        document.getElementById('wordBank').innerHTML="お手本表示中。";
+    }
+    const cvs=document.getElementById("confetti-canvas"); const ctx=cvs.getContext("2d"); let pts=[];
+    function startCnf(){ cvs.width=window.innerWidth; cvs.height=window.innerHeight; pts=[]; for(let i=0;i<150;i++) pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height-cvs.height,s:Math.random()*8+4,c:`hsl(${Math.random()*360},70%,70%)`,sp:Math.random()*3+2}); updateCnf(); }
+    function updateCnf(){ if(pts.length===0) return; ctx.clearRect(0,0,cvs.width,cvs.height); pts.forEach(p=>{ p.y+=p.sp; ctx.fillStyle=p.c; ctx.fillRect(p.x,p.y,p.s,p.s); if(p.y>cvs.height) p.y=-20; }); requestAnimationFrame(updateCnf); }
+    shMo();
+</script>
+</body>
+</html>

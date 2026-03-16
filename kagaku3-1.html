@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>化学基礎③ 演習問題</title>
+    <style>
+        :root { --primary: #1a3a6b; --accent: #F5A623; --bg: #f4f6fb; --correct: #d4edda; --wrong: #f8d7da; --drop-bg: #fff9c4; }
+        body { font-family: 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif; background: var(--bg); margin: 0; padding: 0; overflow-x: hidden; }
+        .page-nav { background: #fff; padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .nav-btn { text-decoration: none; padding: 8px 15px; background: #eee; color: #333; border-radius: 4px; font-size: 0.85em; font-weight: bold; border: 1px solid #ccc; transition: 0.2s; }
+        .nav-btn:hover { background: #ddd; }
+        .nav-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .sticky-header { position: sticky; top: 0; background: var(--bg); padding: 10px 0; z-index: 1000; border-bottom: 2px solid #ddd; }
+        .challenge-panel { background: var(--primary); color: #fff; padding: 10px; border-radius: 8px; display: flex; justify-content: space-around; align-items: center; max-width: 1050px; margin: 0 auto 8px; }
+        .timer { font-size: 1.5em; color: var(--accent); font-family: monospace; }
+        .word-bank-container { background: #eee; padding: 12px; border-radius: 8px; border: 1px solid #ccc; max-width: 1050px; margin: 0 auto; }
+        .word-bank { display: flex; flex-wrap: wrap; gap: 8px; min-height: 36px; }
+        .drag-item { background: #fff; color: #cc0000; border: 1px solid #333; padding: 4px 12px; cursor: pointer; font-weight: bold; font-size: 0.9em; border-radius: 3px; }
+        .drag-item.selected { background: var(--accent); color: #333; }
+        .container { max-width: 1050px; margin: 20px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .section-box { margin-bottom: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        .section-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; border-left: 6px solid var(--primary); padding-left: 10px; color: var(--primary); }
+        .drop-zone { display: inline-block; min-width: 90px; height: 1.5em; background: var(--drop-bg); border: 1px solid #999; vertical-align: middle; cursor: pointer; text-align: center; font-weight: bold; color: #cc0000; padding: 2px 6px; white-space: nowrap; border-radius: 3px; }
+        .drop-zone.correct { background: var(--correct) !important; color: #155724 !important; }
+        .drop-zone.wrong { background: var(--wrong) !important; color: #721c24 !important; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #999; padding: 10px 12px; vertical-align: middle; line-height: 2.0; text-align: center; }
+        th { background: #e8edf5; font-weight: bold; }
+        td.left { text-align: left; }
+        .q-box { background: #f0f4ff; border: 1px solid #b0c0e8; border-radius: 6px; padding: 14px 18px; margin-bottom: 16px; line-height: 2.4; }
+        .q-num { font-weight: bold; color: var(--primary); margin-bottom: 6px; }
+        .hint { font-size: 0.85em; color: #666; margin-top: 4px; }
+        .controls { text-align: center; margin-top: 30px; padding-bottom: 80px; }
+        .main-btn { padding: 14px 28px; font-size: 1.05rem; cursor: pointer; border: none; border-radius: 8px; font-weight: bold; color: white; margin: 6px 8px; }
+        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+    </style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<nav class="page-nav">
+    <a href="kagaku1.html" class="nav-btn">① 純物質・混合物</a>
+    <a href="kagaku1-1.html" class="nav-btn">② 演習</a>
+    <a href="kagaku2.html" class="nav-btn">③ 元素と単体</a>
+    <a href="kagaku2-1.html" class="nav-btn">④ 演習</a>
+    <a href="kagaku3.html" class="nav-btn">⑤ 同素体・炎色反応</a>
+    <a href="kagaku3-1.html" class="nav-btn active">⑥ 演習</a>
+</nav>
+<div class="sticky-header">
+    <div class="challenge-panel">
+        <div>⏱ TIME: <span id="timerDisplay" class="timer">00.0s</span></div>
+        <div id="recordDisplay" style="font-size:0.85em;">記録なし</div>
+        <div style="font-size:0.85em;">化学基礎③ 演習問題</div>
+    </div>
+    <div class="word-bank-container">
+        <div id="wordBank" class="word-bank">「チャレンジ開始」をクリックしてください。</div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="section-box">
+        <div class="section-title">問題1．同素体</div>
+
+        <div class="q-box">
+            <div class="q-num">（1）同一の元素からなる物質で、互いに性質の異なる物質を何というか。</div>
+            → <span class="drop-zone" data-ans="同素体" onclick="zCl(this)"></span>
+        </div>
+
+        <div class="q-box">
+            <div class="q-num">（2）同素体をもつ元素を4つ、元素記号で答えよ。</div>
+            <span class="drop-zone" data-ans="S" onclick="zCl(this)" style="min-width:40px;"></span>、
+            <span class="drop-zone" data-ans="C" onclick="zCl(this)" style="min-width:40px;"></span>、
+            <span class="drop-zone" data-ans="O" onclick="zCl(this)" style="min-width:40px;"></span>、
+            <span class="drop-zone" data-ans="P" onclick="zCl(this)" style="min-width:40px;"></span>
+            <div class="hint">※ヒント：「スコップ」で覚えよう</div>
+        </div>
+
+        <div class="q-box">
+            <div class="q-num">（3）ダイヤモンドと黒鉛について答えよ。</div>
+            ① 2つは同じ元素<span class="drop-zone" data-ans="炭素" onclick="zCl(this)"></span>の同素体である。<br>
+            ② ダイヤモンドは非常に硬く、電気を<span class="drop-zone" data-ans="通さない" onclick="zCl(this)"></span>。<br>
+            ③ 黒鉛はやわらかく層状にはがれやすく、電気を<span class="drop-zone" data-ans="通す" onclick="zCl(this)"></span>。
+        </div>
+
+        <div class="q-box">
+            <div class="q-num">（4）イオウの同素体について答えよ。</div>
+            ① 室温で最も安定しているのは<span class="drop-zone" data-ans="斜方イオウ" onclick="zCl(this)"></span>である。<br>
+            ② 単斜イオウ・ゴム状イオウを放置するとどちらも<span class="drop-zone" data-ans="斜方イオウ" onclick="zCl(this)"></span>になる。
+        </div>
+
+        <div class="q-box">
+            <div class="q-num">（5）リンの同素体について答えよ。</div>
+            ① 自然発火しやすく水中で保存するのは<span class="drop-zone" data-ans="黄リン" onclick="zCl(this)"></span>である。<br>
+            ② マッチの側板に使われるのは<span class="drop-zone" data-ans="赤リン" onclick="zCl(this)"></span>である。
+        </div>
+
+        <div class="q-box">
+            <div class="q-num">（6）酸素の同素体について答えよ。</div>
+            ① 酸素O₂は無色<span class="drop-zone" data-ans="無臭" onclick="zCl(this)"></span>で空気の約<span class="drop-zone" data-ans="21" onclick="zCl(this)" style="min-width:40px;"></span>%を占める。<br>
+            ② オゾンO₃は<span class="drop-zone" data-ans="淡青" onclick="zCl(this)"></span>色で特異臭をもち、強い<span class="drop-zone" data-ans="酸化" onclick="zCl(this)"></span>力をもつ。
+        </div>
+    </div>
+
+    <div class="section-box">
+        <div class="section-title">問題2．炎色反応</div>
+
+        <div class="q-box">
+            <div class="q-num">（1）炎色反応の表を完成せよ。</div>
+            <table>
+                <tr>
+                    <th>元素</th>
+                    <th>Li</th><th>Na</th><th>K</th><th>Ca</th><th>Sr</th><th>Ba</th><th>Cu</th>
+                </tr>
+                <tr>
+                    <th>炎色</th>
+                    <td><span class="drop-zone" data-ans="赤" onclick="zCl(this)" style="min-width:50px;"></span></td>
+                    <td><span class="drop-zone" data-ans="黄" onclick="zCl(this)" style="min-width:50px;"></span></td>
+                    <td><span class="drop-zone" data-ans="紫" onclick="zCl(this)" style="min-width:50px;"></span></td>
+                    <td><span class="drop-zone" data-ans="橙" onclick="zCl(this)" style="min-width:50px;"></span></td>
+                    <td><span class="drop-zone" data-ans="紅" onclick="zCl(this)" style="min-width:50px;"></span></td>
+                    <td><span class="drop-zone" data-ans="黄緑" onclick="zCl(this)" style="min-width:50px;"></span></td>
+                    <td><span class="drop-zone" data-ans="緑" onclick="zCl(this)" style="min-width:50px;"></span></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="q-box">
+            <div class="q-num">（2）次の炎色反応の結果から元素を答えよ。</div>
+            ① 炎が<span style="color:orange; font-weight:bold;">黄色</span>を示した。→ 元素：<span class="drop-zone" data-ans="Na" onclick="zCl(this)" style="min-width:50px;"></span><br>
+            ② 炎が<span style="color:purple; font-weight:bold;">紫色</span>を示した。→ 元素：<span class="drop-zone" data-ans="K" onclick="zCl(this)" style="min-width:50px;"></span><br>
+            ③ 炎が<span style="color:red; font-weight:bold;">赤色</span>を示した。→ 元素：<span class="drop-zone" data-ans="Li" onclick="zCl(this)" style="min-width:50px;"></span>
+        </div>
+
+        <div class="q-box">
+            <div class="q-num">（3）入試問題チャレンジ</div>
+            ある化合物の水溶液を白金線につけて炎色反応を調べると<span style="color:purple; font-weight:bold;">紫色</span>を示した。また硝酸銀水溶液を加えると白色沈殿が生じた。<br><br>
+            （ア）マグネシウムと銀　（イ）塩素と銀　（ウ）カリウムと銀<br>
+            （エ）塩素とナトリウム　（オ）カリウムと塩素<br><br>
+            答え：<span class="drop-zone" data-ans="オ" onclick="zCl(this)" style="min-width:40px;"></span>
+            <div class="hint">※ヒント：紫色→K、白色沈殿→Clを検出</div>
+        </div>
+    </div>
+
+    <div class="section-box">
+        <div class="section-title">問題3．沈殿反応による元素の識別</div>
+
+        <div class="q-box">
+            <div class="q-num">（1）塩素の検出について答えよ。</div>
+            食塩水に<span class="drop-zone" data-ans="硝酸銀" onclick="zCl(this)"></span>水溶液を加えると、<span class="drop-zone" data-ans="塩化銀" onclick="zCl(this)"></span>（AgCl）の<span class="drop-zone" data-ans="白" onclick="zCl(this)" style="min-width:40px;"></span>色沈殿が生じる。
+        </div>
+
+        <div class="q-box">
+            <div class="q-num">（2）二酸化炭素の検出について答えよ。</div>
+            <span class="drop-zone" data-ans="石灰水" onclick="zCl(this)"></span>に二酸化炭素を通じると、<span class="drop-zone" data-ans="炭酸カルシウム" onclick="zCl(this)" style="min-width:120px;"></span>（CaCO₃）の白色沈殿が生じる。
+        </div>
+
+        <div class="q-box">
+            <div class="q-num">（3）まとめ問題</div>
+            ある水溶液の炎色反応が<span style="color:orange; font-weight:bold;">黄色</span>を示し、硝酸銀水溶液で白色沈殿が生じた。<br><br>
+            ① 含まれる元素は<span class="drop-zone" data-ans="Na" onclick="zCl(this)" style="min-width:50px;"></span>と<span class="drop-zone" data-ans="Cl" onclick="zCl(this)" style="min-width:50px;"></span>である。<br>
+            ② この物質は<span class="drop-zone" data-ans="塩化ナトリウム" onclick="zCl(this)" style="min-width:120px;"></span>と考えられる。
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="main-btn" onclick="stCh()" style="background:#e67e22;">▶ チャレンジ開始！</button>
+        <button class="main-btn" onclick="chAn()" style="background:#27ae60;">✔ 答え合わせ</button>
+        <button class="main-btn" onclick="shMo()" style="background:#7f8c8d;">📖 お手本に戻す</button>
+    </div>
+</div>
+
+<script>
+    const words = [
+        "同素体","S","C","O","P",
+        "炭素","通さない","通す",
+        "斜方イオウ","黄リン","赤リン",
+        "無臭","21","淡青","酸化",
+        "赤","黄","紫","橙","紅","黄緑","緑",
+        "Na","K","Li","オ",
+        "硝酸銀","塩化銀","白","石灰水","炭酸カルシウム","Cl","塩化ナトリウム",
+        // ダミー
+        "同位体","化合物","単体",
+        "N","Fe","Cu","H",
+        "単斜イオウ","ゴム状イオウ","青リン","白リン",
+        "有臭","78","青","還元",
+        "青","橙赤","青緑","黒",
+        "Ca","Ba","Sr","ア","イ","ウ","エ",
+        "塩酸","硫酸銀","硫酸カルシウム","酸化カルシウム",
+        "Fe","塩化カリウム","塩化カルシウム"
+    ];
+    let sT, tI, isR = false, sW = null, bestTime = null;
+    function zCl(z) { if (isR && sW) { z.innerText = sW.innerText; sW.classList.remove('selected'); sW = null; } }
+    function stCh() {
+        isR = true; sT = Date.now();
+        tI = setInterval(() => { document.getElementById('timerDisplay').innerText = ((Date.now()-sT)/1000).toFixed(1)+"s"; }, 100);
+        document.querySelectorAll('.drop-zone').forEach(z => { z.innerText=""; z.className="drop-zone"; });
+        const b = document.getElementById('wordBank'); b.innerHTML="";
+        [...new Set(words)].sort(()=>Math.random()-0.5).forEach(w => {
+            const d = document.createElement('div'); d.className='drag-item'; d.innerText=w;
+            d.onclick = function(){ if(sW) sW.classList.remove('selected'); sW=this; this.classList.add('selected'); };
+            b.appendChild(d);
+        });
+    }
+    function chAn() {
+        let ok=true;
+        document.querySelectorAll('.drop-zone').forEach(z => {
+            if(z.innerText.trim()===z.getAttribute('data-ans')) z.classList.add('correct');
+            else { z.classList.add('wrong'); ok=false; }
+        });
+        if(ok && isR){ clearInterval(tI); isR=false; const t=((Date.now()-sT)/1000).toFixed(1); if(bestTime===null||parseFloat(t)<parseFloat(bestTime)){ bestTime=t; document.getElementById('recordDisplay').innerText="🏆 ベスト: "+bestTime+"s"; } startCnf(); }
+    }
+    function shMo() {
+        clearInterval(tI); isR=false;
+        document.querySelectorAll('.drop-zone').forEach(z => { z.innerText=z.getAttribute('data-ans'); z.className="drop-zone"; });
+        document.getElementById('wordBank').innerHTML="お手本表示中。";
+    }
+    const cvs=document.getElementById("confetti-canvas"); const ctx=cvs.getContext("2d"); let pts=[];
+    function startCnf(){ cvs.width=window.innerWidth; cvs.height=window.innerHeight; pts=[]; for(let i=0;i<150;i++) pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height-cvs.height,s:Math.random()*8+4,c:`hsl(${Math.random()*360},70%,70%)`,sp:Math.random()*3+2}); updateCnf(); }
+    function updateCnf(){ if(pts.length===0) return; ctx.clearRect(0,0,cvs.width,cvs.height); pts.forEach(p=>{ p.y+=p.sp; ctx.fillStyle=p.c; ctx.fillRect(p.x,p.y,p.s,p.s); if(p.y>cvs.height) p.y=-20; }); requestAnimationFrame(updateCnf); }
+    shMo();
+</script>
+</body>
+</html>

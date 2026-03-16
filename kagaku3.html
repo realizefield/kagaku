@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>化学基礎③：同素体・炎色反応・沈殿反応</title>
+    <style>
+        :root {
+            --primary: #1a3a6b;
+            --accent: #F5A623;
+            --bg: #f4f6fb;
+            --correct: #d4edda;
+            --wrong: #f8d7da;
+            --drop-bg: #fff9c4;
+        }
+        body { font-family: 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif; background: var(--bg); margin: 0; padding: 0; overflow-x: hidden; }
+        .page-nav { background: #fff; padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .nav-btn { text-decoration: none; padding: 8px 15px; background: #eee; color: #333; border-radius: 4px; font-size: 0.85em; font-weight: bold; border: 1px solid #ccc; transition: 0.2s; }
+        .nav-btn:hover { background: #ddd; }
+        .nav-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .sticky-header { position: sticky; top: 0; background: var(--bg); padding: 10px 0; z-index: 1000; border-bottom: 2px solid #ddd; }
+        .challenge-panel { background: var(--primary); color: #fff; padding: 10px; border-radius: 8px; display: flex; justify-content: space-around; align-items: center; max-width: 1050px; margin: 0 auto 8px; }
+        .timer { font-size: 1.5em; color: var(--accent); font-family: monospace; }
+        .word-bank-container { background: #eee; padding: 12px; border-radius: 8px; border: 1px solid #ccc; max-width: 1050px; margin: 0 auto; }
+        .word-bank { display: flex; flex-wrap: wrap; gap: 8px; min-height: 36px; }
+        .drag-item { background: #fff; color: #cc0000; border: 1px solid #333; padding: 4px 12px; cursor: pointer; font-weight: bold; font-size: 0.9em; border-radius: 3px; }
+        .drag-item.selected { background: var(--accent); color: #333; }
+        .container { max-width: 1050px; margin: 20px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .section-box { margin-bottom: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        .section-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; border-left: 6px solid var(--primary); padding-left: 10px; color: var(--primary); }
+        .drop-zone { display: inline-block; min-width: 80px; height: 1.5em; background: var(--drop-bg); border: 1px solid #999; vertical-align: middle; cursor: pointer; text-align: center; font-weight: bold; color: #cc0000; padding: 2px 6px; white-space: nowrap; border-radius: 3px; }
+        .drop-zone.correct { background: var(--correct) !important; color: #155724 !important; }
+        .drop-zone.wrong { background: var(--wrong) !important; color: #721c24 !important; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #999; padding: 10px 12px; vertical-align: middle; line-height: 1.8; }
+        th { background: #e8edf5; font-weight: bold; text-align: center; }
+        td { text-align: center; }
+        td.left { text-align: left; }
+        .point-box { background: #fff3cd; border: 1px solid #ffc107; border-radius: 6px; padding: 10px 15px; margin: 10px 0; }
+        .sub-title { font-weight: bold; margin-top: 15px; margin-bottom: 5px; color: #333; }
+        .controls { text-align: center; margin-top: 30px; padding-bottom: 80px; }
+        .main-btn { padding: 14px 28px; font-size: 1.05rem; cursor: pointer; border: none; border-radius: 8px; font-weight: bold; color: white; margin: 6px 8px; }
+        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+    </style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<nav class="page-nav">
+    <a href="kagaku1.html" class="nav-btn">① 純物質・混合物</a>
+    <a href="kagaku1-1.html" class="nav-btn">② 演習</a>
+    <a href="kagaku2.html" class="nav-btn">③ 元素と単体</a>
+    <a href="kagaku2-1.html" class="nav-btn">④ 演習</a>
+    <a href="kagaku3.html" class="nav-btn active">⑤ 同素体・炎色反応</a>
+    <a href="kagaku3-1.html" class="nav-btn">⑥ 演習</a>
+</nav>
+<div class="sticky-header">
+    <div class="challenge-panel">
+        <div>⏱ TIME: <span id="timerDisplay" class="timer">00.0s</span></div>
+        <div id="recordDisplay" style="font-size:0.85em;">記録なし</div>
+        <div style="font-size:0.85em;">化学基礎③ 同素体・炎色反応・沈殿反応</div>
+    </div>
+    <div class="word-bank-container">
+        <div id="wordBank" class="word-bank">「チャレンジ開始」をクリックしてください。</div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- セクション1：同素体 -->
+    <div class="section-box">
+        <div class="section-title">1. 同素体</div>
+        <p>
+            <span class="drop-zone" data-ans="同素体" onclick="zCl(this)"></span>……同じ<span class="drop-zone" data-ans="元素" onclick="zCl(this)"></span>からできている単体であるが、原子の結合の仕方が異なるため性質の異なる物質どうしをいう。
+        </p>
+        <div class="point-box">
+            【暗記】同素体は
+            <span class="drop-zone" data-ans="S" onclick="zCl(this)" style="min-width:30px;"></span>
+            <span class="drop-zone" data-ans="C" onclick="zCl(this)" style="min-width:30px;"></span>
+            <span class="drop-zone" data-ans="O" onclick="zCl(this)" style="min-width:30px;"></span>
+            <span class="drop-zone" data-ans="P" onclick="zCl(this)" style="min-width:30px;"></span>
+            ＝「<span class="drop-zone" data-ans="スコップ" onclick="zCl(this)"></span>」
+        </div>
+
+        <div class="sub-title">① イオウの同素体</div>
+        <table>
+            <tr><th>斜方イオウ</th><th>単斜イオウ</th><th>ゴム状イオウ</th></tr>
+            <tr>
+                <td><span class="drop-zone" data-ans="王冠" onclick="zCl(this)"></span>型の分子。室温で<span class="drop-zone" data-ans="黄" onclick="zCl(this)" style="min-width:30px;"></span>色の固体。安定している。化学式 S₈</td>
+                <td>王冠型の分子。黄色の針状。放置すると<span class="drop-zone" data-ans="斜方イオウ" onclick="zCl(this)"></span>になる。</td>
+                <td>液体のイオウを加熱し急冷すると生じる。放置すると<span class="drop-zone" data-ans="斜方イオウ" onclick="zCl(this)"></span>になる。</td>
+            </tr>
+        </table>
+
+        <div class="sub-title">② 炭素の同素体</div>
+        <table>
+            <tr><th>ダイヤモンド</th><th>黒鉛（グラファイト）</th><th>フラーレン</th></tr>
+            <tr>
+                <td>非常に<span class="drop-zone" data-ans="かたく" onclick="zCl(this)"></span>、電気を<span class="drop-zone" data-ans="通さない" onclick="zCl(this)"></span>。正四面体の構造。</td>
+                <td>やわらかく層状にはがれやすい。電気を<span class="drop-zone" data-ans="通す" onclick="zCl(this)"></span>。</td>
+                <td><span class="drop-zone" data-ans="サッカーボール" onclick="zCl(this)"></span>型分子。</td>
+            </tr>
+        </table>
+
+        <div class="sub-title">③ 酸素の同素体</div>
+        <table>
+            <tr><th style="width:50%;">酸素 O₂</th><th style="width:50%;">オゾン O₃</th></tr>
+            <tr>
+                <td>無色<span class="drop-zone" data-ans="無臭" onclick="zCl(this)"></span>。空気の約21%。</td>
+                <td><span class="drop-zone" data-ans="淡青" onclick="zCl(this)"></span>色で特異臭あり。強い<span class="drop-zone" data-ans="酸化" onclick="zCl(this)"></span>力をもつ。飲料水の殺菌消毒などに使われる。</td>
+            </tr>
+        </table>
+
+        <div class="sub-title">④ リンの同素体</div>
+        <table>
+            <tr><th style="width:50%;">黄リン</th><th style="width:50%;">赤リン</th></tr>
+            <tr>
+                <td>発火点は約<span class="drop-zone" data-ans="60" onclick="zCl(this)" style="min-width:40px;"></span>℃で自然発火するので<span class="drop-zone" data-ans="水中" onclick="zCl(this)"></span>で保存。淡黄色のロウ状固体。強い<span class="drop-zone" data-ans="毒性" onclick="zCl(this)"></span>あり。</td>
+                <td>常温で安定し毒性は少ない。マッチをこする<span class="drop-zone" data-ans="側板" onclick="zCl(this)"></span>に使われる。</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- セクション2：炎色反応 -->
+    <div class="section-box">
+        <div class="section-title">2. 炎色反応による元素の識別</div>
+        <p>白金線に金属をつけ火中に入れると炎の色が特定の色に変わる。これを<span class="drop-zone" data-ans="炎色反応" onclick="zCl(this)"></span>という。</p>
+        <div class="point-box">
+            【暗記】「リアカーなき K村、動力を借るとうすれどもくれない馬力」<br>
+            <span style="font-size:0.9em;">Li<span style="color:red;">赤</span>・Na<span style="color:orange;">黄</span>・K<span style="color:purple;">紫</span>・Ca<span style="color:darkorange;">橙</span>・Sr<span style="color:crimson;">紅</span>・Ba<span style="color:yellowgreen;">黄緑</span>・Cu<span style="color:green;">緑</span></span>
+        </div>
+        <table>
+            <tr>
+                <th>元素</th>
+                <th>Li<br>リチウム</th>
+                <th>Na<br>ナトリウム</th>
+                <th>K<br>カリウム</th>
+                <th>Ca<br>カルシウム</th>
+                <th>Sr<br>ストロンチウム</th>
+                <th>Ba<br>バリウム</th>
+                <th>Cu<br>銅</th>
+            </tr>
+            <tr>
+                <th>炎色</th>
+                <td><span class="drop-zone" data-ans="赤" onclick="zCl(this)" style="min-width:40px;"></span></td>
+                <td><span class="drop-zone" data-ans="黄" onclick="zCl(this)" style="min-width:40px;"></span></td>
+                <td><span class="drop-zone" data-ans="紫" onclick="zCl(this)" style="min-width:40px;"></span></td>
+                <td><span class="drop-zone" data-ans="橙" onclick="zCl(this)" style="min-width:40px;"></span></td>
+                <td><span class="drop-zone" data-ans="紅" onclick="zCl(this)" style="min-width:40px;"></span></td>
+                <td><span class="drop-zone" data-ans="黄緑" onclick="zCl(this)" style="min-width:40px;"></span></td>
+                <td><span class="drop-zone" data-ans="緑" onclick="zCl(this)" style="min-width:40px;"></span></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- セクション3：沈殿反応 -->
+    <div class="section-box">
+        <div class="section-title">3. 沈殿反応による元素の識別</div>
+        <table>
+            <tr>
+                <th style="width:20%;">検出する元素</th>
+                <th>方法</th>
+                <th>結果</th>
+            </tr>
+            <tr>
+                <td>塩素 Cl の検出</td>
+                <td class="left">食塩水に<span class="drop-zone" data-ans="硝酸銀" onclick="zCl(this)"></span>水溶液を加える<br>Ag⁺ + Cl⁻ → AgCl↓</td>
+                <td class="left"><span class="drop-zone" data-ans="塩化銀" onclick="zCl(this)"></span> AgCl の<span class="drop-zone" data-ans="白" onclick="zCl(this)" style="min-width:30px;"></span>色沈殿が生じる</td>
+            </tr>
+            <tr>
+                <td>二酸化炭素 CO₂ の検出</td>
+                <td class="left"><span class="drop-zone" data-ans="石灰水" onclick="zCl(this)"></span>（水酸化カルシウム水溶液）に CO₂ を通じる</td>
+                <td class="left"><span class="drop-zone" data-ans="炭酸カルシウム" onclick="zCl(this)"></span> CaCO₃ の白色沈殿が生じる<br>Ca(OH)₂ ＋ CO₂ → CaCO₃↓</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="controls">
+        <button class="main-btn" onclick="stCh()" style="background:#e67e22;">▶ チャレンジ開始！</button>
+        <button class="main-btn" onclick="chAn()" style="background:#27ae60;">✔ 答え合わせ</button>
+        <button class="main-btn" onclick="shMo()" style="background:#7f8c8d;">📖 お手本に戻す</button>
+    </div>
+</div>
+
+<script>
+    const words = [
+        "同素体","元素",
+        "S","C","O","P","スコップ",
+        "王冠","黄","斜方イオウ",
+        "かたく","通さない","通す","サッカーボール",
+        "無臭","淡青","酸化",
+        "60","水中","毒性","側板",
+        "炎色反応",
+        "赤","黄","紫","橙","紅","黄緑","緑",
+        "硝酸銀","塩化銀","白","石灰水","炭酸カルシウム"
+    ];
+    let sT, tI, isR = false, sW = null, bestTime = null;
+    function zCl(z) { if (isR && sW) { z.innerText = sW.innerText; sW.classList.remove('selected'); sW = null; } }
+    function stCh() {
+        isR = true; sT = Date.now();
+        tI = setInterval(() => { document.getElementById('timerDisplay').innerText = ((Date.now()-sT)/1000).toFixed(1)+"s"; }, 100);
+        document.querySelectorAll('.drop-zone').forEach(z => { z.innerText=""; z.className="drop-zone"; });
+        const b = document.getElementById('wordBank'); b.innerHTML="";
+        [...new Set(words)].sort(()=>Math.random()-0.5).forEach(w => {
+            const d = document.createElement('div'); d.className='drag-item'; d.innerText=w;
+            d.onclick = function(){ if(sW) sW.classList.remove('selected'); sW=this; this.classList.add('selected'); };
+            b.appendChild(d);
+        });
+    }
+    function chAn() {
+        let ok=true;
+        document.querySelectorAll('.drop-zone').forEach(z => {
+            if(z.innerText.trim()===z.getAttribute('data-ans')) z.classList.add('correct');
+            else { z.classList.add('wrong'); ok=false; }
+        });
+        if(ok && isR){ clearInterval(tI); isR=false; const t=((Date.now()-sT)/1000).toFixed(1); if(bestTime===null||parseFloat(t)<parseFloat(bestTime)){ bestTime=t; document.getElementById('recordDisplay').innerText="🏆 ベスト: "+bestTime+"s"; } startCnf(); }
+    }
+    function shMo() {
+        clearInterval(tI); isR=false;
+        document.querySelectorAll('.drop-zone').forEach(z => { z.innerText=z.getAttribute('data-ans'); z.className="drop-zone"; });
+        document.getElementById('wordBank').innerHTML="お手本表示中。";
+    }
+    const cvs=document.getElementById("confetti-canvas"); const ctx=cvs.getContext("2d"); let pts=[];
+    function startCnf(){ cvs.width=window.innerWidth; cvs.height=window.innerHeight; pts=[]; for(let i=0;i<150;i++) pts.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height-cvs.height,s:Math.random()*8+4,c:`hsl(${Math.random()*360},70%,70%)`,sp:Math.random()*3+2}); updateCnf(); }
+    function updateCnf(){ if(pts.length===0) return; ctx.clearRect(0,0,cvs.width,cvs.height); pts.forEach(p=>{ p.y+=p.sp; ctx.fillStyle=p.c; ctx.fillRect(p.x,p.y,p.s,p.s); if(p.y>cvs.height) p.y=-20; }); requestAnimationFrame(updateCnf); }
+    shMo();
+</script>
+</body>
+</html>
