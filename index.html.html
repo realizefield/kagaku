@@ -1,0 +1,2809 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>化学基礎 ① 物質の構成 — 学習プログラム</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(135deg, #FFF7ED 0%, #FEF3C7 30%, #DBEAFE 70%, #EDE9FE 100%);
+    min-height: 100vh;
+    color: #111;
+    line-height: 1.6;
+  }
+  button { font-family: inherit; }
+  .container { max-width: 960px; margin: 0 auto; padding: 20px 16px; }
+
+  .header {
+    background: linear-gradient(135deg, #fff, #fef3c7);
+    border-radius: 24px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,.08);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: ''; position: absolute; top: -30px; right: -30px;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(251,191,36,.27), transparent);
+  }
+  .header::after {
+    content: ''; position: absolute; bottom: -40px; left: -20px;
+    width: 130px; height: 130px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(96,165,250,.2), transparent);
+  }
+  .header-inner { position: relative; }
+  .header-tag { font-size: 13px; color: #888; letter-spacing: 2px; margin-bottom: 4px; }
+  .header-title {
+    font-size: 30px; font-weight: 900; margin: 0;
+    background: linear-gradient(135deg, #F59E0B, #EC4899, #8B5CF6);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .header-sub { font-size: 14px; color: #666; margin-top: 6px; }
+  .stat-row { display: flex; gap: 16px; margin-top: 20px; flex-wrap: wrap; }
+  .stat-card {
+    background: #fff; border-radius: 12px; padding: 12px 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.05); flex: 1; min-width: 140px;
+  }
+  .stat-label { font-size: 11px; color: #999; }
+  .stat-val { font-size: 22px; font-weight: 800; }
+  .stat-val.amber { color: #F59E0B; }
+  .stat-val.purple { color: #8B5CF6; }
+  .stat-bar { height: 6px; background: #F3F4F6; border-radius: 3px; margin-top: 6px; overflow: hidden; }
+  .stat-bar-fill { height: 100%; background: linear-gradient(90deg, #F59E0B, #EC4899); transition: width .5s; }
+
+  .settings {
+    background: #fff; border-radius: 14px; padding: 12px 16px;
+    margin-bottom: 16px; font-size: 13px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.05);
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .settings-label { font-weight: 700; color: #555; }
+  .toggle-wrap { display: flex; gap: 4px; background: #F3F4F6; border-radius: 999px; padding: 3px; }
+  .toggle-opt {
+    border: none; background: transparent; padding: 6px 14px;
+    border-radius: 999px; font-size: 12px; font-weight: 700; color: #888; cursor: pointer;
+    transition: all .2s;
+  }
+  .toggle-opt.active {
+    background: #fff; color: #F59E0B;
+    box-shadow: 0 2px 6px rgba(245,158,11,.3);
+  }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .unit-card {
+    background: #fff; border-radius: 18px; padding: 16px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.06);
+    position: relative; overflow: hidden;
+    transition: transform .2s, box-shadow .2s;
+    border: 2px solid transparent;
+    cursor: pointer;
+  }
+  .unit-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+  .unit-card.passed { border-color: var(--unit-color); }
+  .unit-card-blob {
+    position: absolute; top: -20px; right: -20px;
+    width: 90px; height: 90px; border-radius: 50%;
+    background: var(--unit-bg); opacity: .55;
+  }
+  .unit-card-inner { position: relative; }
+  .unit-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .unit-symbol {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--unit-color), var(--unit-color-d));
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 20px;
+    box-shadow: 0 3px 8px var(--unit-glow);
+  }
+  .unit-idx { font-size: 11px; color: #999; letter-spacing: 1px; }
+  .unit-name { font-size: 17px; font-weight: 800; }
+  .unit-intro { font-size: 12px; color: #666; margin: 6px 0 12px; line-height: 1.6; }
+  .unit-stats { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; font-size: 11px; }
+  .stat-chip {
+    background: #F9FAFB; padding: 3px 10px; border-radius: 999px;
+    color: #666; border: 1px solid #E5E7EB;
+  }
+  .stat-chip.passed { background: #D1FAE5; color: #065F46; border-color: #6EE7B7; }
+  .stat-chip.steps { background: #DBEAFE; color: #1E40AF; border-color: #93C5FD; }
+  .start-btn {
+    width: 100%; border: none; padding: 10px 14px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--unit-color), var(--unit-color-d));
+    color: #fff; font-weight: 700; font-size: 13px; cursor: pointer;
+    box-shadow: 0 3px 10px var(--unit-glow);
+    transition: transform .15s;
+  }
+  .start-btn:hover { transform: translateY(-1px); }
+  .mark-row { display: flex; gap: 6px; margin-top: 8px; }
+  .mark-btn {
+    flex: 1; border: 2px solid #E5E7EB; background: #fff;
+    padding: 5px 0; border-radius: 8px; font-size: 11px; font-weight: 700;
+    color: #999; cursor: pointer;
+  }
+  .mark-btn.active.A { background: #10B981; color: #fff; border-color: #10B981; }
+  .mark-btn.active.B { background: #F59E0B; color: #fff; border-color: #F59E0B; }
+  .mark-btn.active.C { background: #EF4444; color: #fff; border-color: #EF4444; }
+
+  .footer { text-align: center; color: #aaa; font-size: 11px; margin-top: 30px; }
+
+  .back-btn {
+    background: #fff; border: none; padding: 8px 14px; border-radius: 999px;
+    font-size: 13px; font-weight: 700; color: #666; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06); margin-bottom: 14px;
+  }
+  .back-btn:hover { color: #111; }
+  .unit-header {
+    background: #fff; border-radius: 20px; padding: 22px 26px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.06); margin-bottom: 16px;
+    position: relative; overflow: hidden;
+  }
+  .unit-header::before {
+    content: ''; position: absolute; top: -30px; right: -30px;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: var(--unit-bg); opacity: .6;
+  }
+  .unit-header-inner { position: relative; display: flex; gap: 16px; align-items: center; }
+  .unit-header-symbol {
+    width: 60px; height: 60px; border-radius: 14px;
+    background: linear-gradient(135deg, var(--unit-color), var(--unit-color-d));
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 28px;
+    box-shadow: 0 4px 14px var(--unit-glow);
+  }
+  .unit-header-title { font-size: 22px; font-weight: 900; margin: 0; }
+  .unit-header-sub { font-size: 12px; color: #888; margin-top: 2px; }
+
+  .tabs {
+    display: flex; gap: 6px; background: rgba(255,255,255,.7);
+    padding: 6px; border-radius: 14px; margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  }
+  .tab {
+    flex: 1; border: none; padding: 10px 12px; border-radius: 10px;
+    background: transparent; font-size: 13px; font-weight: 700; color: #888;
+    cursor: pointer; transition: all .2s;
+  }
+  .tab.active {
+    background: linear-gradient(135deg, var(--unit-color), var(--unit-color-d));
+    color: #fff; box-shadow: 0 3px 10px var(--unit-glow);
+  }
+
+  .step-progress {
+    background: #fff; border-radius: 14px; padding: 14px 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.05); margin-bottom: 14px;
+  }
+  .step-progress-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px; font-size: 13px;
+  }
+  .step-progress-title { font-weight: 700; color: #555; }
+  .step-progress-count { color: #999; font-size: 12px; }
+  .step-bar { height: 8px; background: #F3F4F6; border-radius: 4px; overflow: hidden; }
+  .step-bar-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--unit-color), var(--unit-color-d));
+    transition: width .5s ease;
+  }
+  .step-dots { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; border: 2px solid #E5E7EB;
+    background: #fff; font-size: 11px; font-weight: 700; color: #aaa;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .step-dot.done { background: var(--unit-color); color: #fff; border-color: var(--unit-color); }
+  .step-dot.current {
+    border-color: var(--unit-color);
+    color: var(--unit-color);
+    box-shadow: 0 0 0 4px var(--unit-glow);
+  }
+
+  .step-card {
+    background: #fff; border-radius: 18px; padding: 24px 26px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.06); margin-bottom: 14px;
+  }
+  .step-num {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; color: var(--unit-color);
+    background: var(--unit-bg); padding: 3px 12px; border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  .step-heading { font-size: 19px; font-weight: 800; margin: 0 0 12px; }
+  .step-body { font-size: 15px; color: #333; line-height: 1.85; white-space: pre-wrap; }
+  .step-body strong { color: var(--unit-color-d); font-weight: 800; }
+  .term-pill {
+    display: inline-block;
+    background: var(--unit-bg); border: 1px solid var(--unit-color);
+    color: var(--unit-color-d); font-weight: 700;
+    padding: 2px 12px; border-radius: 999px; font-size: 14px;
+    margin: 0 4px;
+  }
+  .info-box {
+    background: #EFF6FF; border-left: 4px solid #3B82F6;
+    padding: 12px 16px; margin: 14px 0; border-radius: 0 8px 8px 0;
+    font-size: 14px;
+  }
+  .info-box strong { color: #1E40AF; }
+  .tip-box {
+    background: #FEF3C7; border: 1px dashed #F59E0B;
+    padding: 12px 16px; margin: 14px 0; border-radius: 8px;
+    font-size: 14px;
+  }
+  .tip-box::before { content: "💡 "; }
+  .warn-box {
+    background: #FEE2E2; border-left: 4px solid #EF4444;
+    padding: 12px 16px; margin: 14px 0; border-radius: 0 8px 8px 0;
+    font-size: 14px;
+  }
+  .warn-box strong { color: #991B1B; }
+  .warn-box::before { content: "⚠️ "; }
+
+  .tree {
+    background: #FAFAFA; border-radius: 12px; padding: 18px;
+    margin: 14px 0; font-size: 14px;
+  }
+  .tree-grid {
+    display: grid;
+    grid-template-columns: 70px 90px 100px 1fr;
+    gap: 10px; align-items: center;
+  }
+  .tree-grid > div { padding: 6px 8px; }
+  .tree-node {
+    color: #fff; text-align: center; font-weight: 800;
+    border-radius: 8px; font-size: 13px;
+  }
+  .tree-node.root { background: #374151; }
+  .tree-node.mix { background: #EF4444; }
+  .tree-node.pure { background: #3B82F6; }
+  .tree-node.elem { background: #10B981; }
+  .tree-node.comp { background: #8B5CF6; }
+
+  .ministep {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 2px dashed #E5E7EB;
+  }
+  .ministep-toggle-btn {
+    width: 100%; border: 2px solid var(--unit-color);
+    background: #fff; color: var(--unit-color-d);
+    padding: 12px; border-radius: 12px; font-weight: 800; font-size: 14px;
+    cursor: pointer; transition: all .2s;
+  }
+  .ministep-toggle-btn:hover {
+    background: var(--unit-bg);
+  }
+  .ministep-title {
+    font-size: 13px; font-weight: 800; color: var(--unit-color-d);
+    letter-spacing: 1px; margin-bottom: 12px;
+  }
+  .ministep-title::before { content: "✏️ "; }
+
+  .miniq {
+    background: #FAFAFA; border-radius: 12px; padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+  .miniq-text {
+    font-size: 14px; font-weight: 600; margin-bottom: 10px; line-height: 1.7;
+  }
+  .miniq-options { display: flex; flex-direction: column; gap: 6px; }
+  .miniq-opt {
+    background: #fff; border: 2px solid #E5E7EB; padding: 9px 14px;
+    border-radius: 10px; cursor: pointer; font-size: 14px;
+    transition: all .15s;
+    text-align: left;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .miniq-opt:hover { border-color: var(--unit-color); }
+  .miniq-opt.selected { border-color: var(--unit-color); background: var(--unit-bg); }
+  .miniq-opt.correct { border-color: #10B981; background: #D1FAE5; font-weight: 700; }
+  .miniq-opt.incorrect { border-color: #EF4444; background: #FEE2E2; }
+  .miniq-mark {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: #fff; border: 1px solid #D1D5DB;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #666;
+    flex-shrink: 0;
+  }
+  .miniq-fill input {
+    border: none; border-bottom: 2px solid var(--unit-color);
+    background: var(--unit-bg);
+    padding: 4px 8px; font-size: 14px; font-weight: 700;
+    color: var(--unit-color-d); width: 110px; text-align: center;
+    border-radius: 4px 4px 0 0;
+  }
+  .miniq-fill input:focus { outline: none; }
+  .miniq-fill input.correct {
+    background: #D1FAE5; border-bottom-color: #10B981; color: #065F46;
+  }
+  .miniq-fill input.incorrect {
+    background: #FEE2E2; border-bottom-color: #EF4444; color: #991B1B;
+  }
+  .ministep-bank {
+    background: #fff; border: 2px dashed #E5E7EB; border-radius: 10px;
+    padding: 10px; margin-bottom: 12px; display: flex; gap: 6px; flex-wrap: wrap;
+    min-height: 50px;
+    align-items: center;
+  }
+  .ministep-bank-label {
+    width: 100%; font-size: 10px; letter-spacing: 1px; color: #aaa;
+    font-weight: 700; margin-bottom: 4px;
+  }
+  .ministep-chip {
+    background: var(--unit-bg); color: var(--unit-color-d);
+    border: 1px solid var(--unit-color);
+    padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 700;
+    cursor: pointer; user-select: none;
+    transition: all .15s;
+  }
+  .ministep-chip:hover { transform: translateY(-1px); }
+  .ministep-chip.used { opacity: .25; pointer-events: none; text-decoration: line-through; }
+  .ministep-chip.selected {
+    background: var(--unit-color); color: #fff;
+    box-shadow: 0 2px 8px var(--unit-glow);
+  }
+
+  .ministep-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .ministep-btn {
+    border: none; padding: 9px 18px; border-radius: 10px;
+    font-weight: 700; font-size: 13px; cursor: pointer;
+    transition: transform .15s;
+  }
+  .ministep-btn:hover { transform: translateY(-1px); }
+  .ministep-btn.primary {
+    background: linear-gradient(135deg, var(--unit-color), var(--unit-color-d));
+    color: #fff;
+    box-shadow: 0 3px 10px var(--unit-glow);
+  }
+  .ministep-btn.secondary {
+    background: #F3F4F6; color: #555;
+  }
+  .ministep-btn:disabled { opacity: .4; cursor: not-allowed; transform: none !important; }
+
+  .ministep-result {
+    margin-top: 10px; padding: 12px 14px; border-radius: 10px;
+    font-size: 13px; font-weight: 700;
+    text-align: center;
+  }
+  .ministep-result.success {
+    background: #D1FAE5; color: #065F46; border: 2px solid #10B981;
+  }
+  .ministep-result.fail {
+    background: #FEE2E2; color: #991B1B; border: 2px solid #EF4444;
+  }
+
+  .next-step-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--unit-color), var(--unit-color-d));
+    color: #fff; border: none; padding: 14px;
+    border-radius: 12px; font-weight: 800; font-size: 15px;
+    cursor: pointer; box-shadow: 0 4px 14px var(--unit-glow);
+    margin-top: 12px;
+    transition: transform .15s;
+  }
+  .next-step-btn:hover { transform: translateY(-2px); }
+  .next-step-btn::after { content: " →"; }
+
+  .practice-card {
+    background: #fff; border-radius: 18px; padding: 22px 26px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.06);
+  }
+  .practice-head {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px; margin-bottom: 16px;
+  }
+  .practice-head h2 { margin: 0; font-size: 20px; }
+  .timer-display {
+    background: #1F2937; color: #FCD34D;
+    padding: 8px 18px; border-radius: 999px;
+    font-family: "JetBrains Mono", monospace, sans-serif;
+    font-weight: 700; font-size: 16px; letter-spacing: 1px;
+  }
+  .timer-display.paused { background: #6B7280; color: #fff; }
+
+  .fill-text {
+    background: #FAFAFA; border-radius: 12px; padding: 22px 24px;
+    font-size: 15px; line-height: 2.4; margin-bottom: 16px;
+  }
+  .blank {
+    display: inline-block; min-width: 90px; height: 30px;
+    border-bottom: 2px dashed var(--unit-color);
+    background: #FFFBEB; padding: 1px 10px;
+    margin: 0 3px; vertical-align: middle; text-align: center;
+    font-weight: 700; color: var(--unit-color-d); cursor: pointer;
+    font-size: 14px;
+    transition: all .2s;
+  }
+  .blank:hover { background: var(--unit-bg); }
+  .blank.filled { background: var(--unit-bg); border-bottom-style: solid; }
+  .blank.correct { background: #D1FAE5; border-bottom-color: #10B981; color: #065F46; }
+  .blank.wrong {
+    background: #FEE2E2; border-bottom-color: #EF4444; color: #991B1B;
+    animation: shake .4s;
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+  }
+
+  .word-bank {
+    background: #FAFAFA; border-radius: 12px; padding: 14px;
+    margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px;
+    min-height: 60px; align-items: center;
+  }
+  .word-bank-label {
+    width: 100%; font-size: 11px; letter-spacing: 1px; color: #999;
+    font-weight: 700; margin-bottom: 4px;
+  }
+  .word-chip {
+    background: #fff; border: 2px solid var(--unit-color);
+    color: var(--unit-color-d);
+    padding: 7px 14px; border-radius: 999px;
+    font-weight: 700; font-size: 13px; cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,.05);
+    transition: all .15s;
+  }
+  .word-chip:hover { transform: translateY(-1px); box-shadow: 0 3px 10px var(--unit-glow); }
+  .word-chip.used { opacity: .25; pointer-events: none; text-decoration: line-through; }
+  .word-chip.selected {
+    background: linear-gradient(135deg, var(--unit-color), var(--unit-color-d));
+    color: #fff;
+  }
+
+  .practice-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .action-btn {
+    border: none; padding: 10px 22px; border-radius: 12px;
+    font-weight: 700; font-size: 14px; cursor: pointer;
+    transition: transform .15s;
+  }
+  .action-btn:hover { transform: translateY(-1px); }
+  .action-btn.primary {
+    background: linear-gradient(135deg, var(--unit-color), var(--unit-color-d));
+    color: #fff; box-shadow: 0 3px 10px var(--unit-glow);
+  }
+  .action-btn.secondary { background: #F3F4F6; color: #555; }
+
+  .records-card {
+    background: #fff; border-radius: 18px; padding: 18px 22px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.06); margin-top: 14px;
+  }
+  .records-card h3 { margin: 0 0 12px; font-size: 15px; color: #555; }
+  .record-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 5px; }
+  .record-list li {
+    display: grid; grid-template-columns: 50px 1fr auto;
+    align-items: center; padding: 8px 14px;
+    background: #FAFAFA; border-radius: 8px;
+    font-family: "JetBrains Mono", monospace, sans-serif;
+    font-size: 13px;
+  }
+  .record-list li:nth-child(1) { background: linear-gradient(90deg, #FEF3C7 0%, #FAFAFA 100%); }
+  .record-list li:nth-child(2) { background: linear-gradient(90deg, #F3F4F6 0%, #FAFAFA 100%); }
+  .record-list li:nth-child(3) { background: linear-gradient(90deg, #FED7AA 0%, #FAFAFA 100%); }
+  .record-list .rank { font-weight: 800; color: var(--unit-color-d); }
+  .record-list .date { color: #aaa; font-size: 11px; }
+  .record-empty { color: #aaa; text-align: center; padding: 14px; font-size: 12px; }
+
+  .quiz-question {
+    background: #fff; border-radius: 14px; padding: 18px 22px;
+    margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  }
+  .qnum {
+    display: inline-block; background: var(--unit-color); color: #fff;
+    font-size: 11px; font-weight: 700; padding: 3px 10px;
+    border-radius: 999px; letter-spacing: 1px; margin-bottom: 8px;
+  }
+  .qtext { font-size: 15px; margin-bottom: 12px; line-height: 1.7; }
+  .qopts { display: flex; flex-direction: column; gap: 6px; }
+  .qopt {
+    background: #FAFAFA; border: 2px solid transparent;
+    padding: 10px 14px; border-radius: 10px; cursor: pointer;
+    font-size: 14px; transition: all .15s;
+    display: flex; align-items: center; gap: 10px;
+    text-align: left; width: 100%;
+  }
+  .qopt:hover { background: #fff; border-color: var(--unit-color); }
+  .qopt.selected { border-color: var(--unit-color); background: var(--unit-bg); font-weight: 700; }
+  .qopt.correct { border-color: #10B981; background: #D1FAE5; font-weight: 700; }
+  .qopt.incorrect { border-color: #EF4444; background: #FEE2E2; }
+  .opt-mark {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: #fff; border: 1px solid #D1D5DB;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px;
+    flex-shrink: 0;
+  }
+  .qfill input {
+    border: none; border-bottom: 2px solid var(--unit-color);
+    background: var(--unit-bg); padding: 4px 10px;
+    font-size: 14px; font-weight: 700; color: var(--unit-color-d);
+    width: 120px; text-align: center; border-radius: 4px 4px 0 0;
+  }
+  .qfill input:focus { outline: none; }
+  .qfill input.correct { background: #D1FAE5; border-bottom-color: #10B981; color: #065F46; }
+  .qfill input.incorrect { background: #FEE2E2; border-bottom-color: #EF4444; color: #991B1B; }
+
+  .score-display {
+    display: inline-block; background: linear-gradient(135deg, var(--unit-color), var(--unit-color-d));
+    color: #fff; font-size: 22px; font-weight: 800;
+    padding: 10px 24px; border-radius: 999px;
+    box-shadow: 0 4px 14px var(--unit-glow);
+  }
+
+  .modal-bg {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.5); z-index: 100;
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-bg.show { display: flex; animation: fadeIn .25s; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .modal {
+    background: #fff; border-radius: 20px; padding: 30px 32px;
+    max-width: 460px; width: 100%; text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+  }
+  .modal h3 { margin: 0 0 10px; font-size: 24px; font-weight: 900; }
+  .modal.success h3 { color: #10B981; }
+  .modal.fail h3 { color: #F59E0B; }
+  .modal p { margin: 0 0 20px; color: #555; font-size: 14px; }
+  .modal-time {
+    font-family: "JetBrains Mono", monospace, sans-serif;
+    font-size: 28px; font-weight: 800; color: #F59E0B;
+    margin: 12px 0;
+  }
+  .modal-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .modal-btn {
+    border: none; padding: 10px 20px; border-radius: 10px;
+    font-weight: 700; font-size: 13px; cursor: pointer;
+    transition: transform .15s;
+  }
+  .modal-btn:hover { transform: translateY(-1px); }
+  .modal-btn.primary {
+    background: linear-gradient(135deg, #F59E0B, #EC4899);
+    color: #fff;
+  }
+  .modal-btn.secondary { background: #F3F4F6; color: #555; }
+
+  .confetti {
+    position: fixed; top: -20px; width: 10px; height: 14px;
+    z-index: 200; pointer-events: none;
+  }
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Flashcards */
+  .flash-intro {
+    background: #fff; border-radius: 16px; padding: 18px 22px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.05); margin-bottom: 14px;
+    text-align: center;
+  }
+  .flash-intro h3 { margin: 0 0 6px; font-size: 17px; color: #333; }
+  .flash-intro p { margin: 0; font-size: 13px; color: #888; }
+  .flash-stats {
+    display: flex; gap: 10px; justify-content: center;
+    margin-top: 14px; flex-wrap: wrap;
+  }
+  .flash-stat {
+    background: #F9FAFB; border-radius: 10px; padding: 8px 14px;
+    font-size: 12px; min-width: 80px;
+  }
+  .flash-stat .label { color: #888; font-size: 10px; }
+  .flash-stat .num { font-size: 18px; font-weight: 800; color: var(--unit-color-d); }
+  .flash-stat.known .num { color: #10B981; }
+  .flash-stat.review .num { color: #EF4444; }
+
+  .flash-mode-row {
+    display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .flash-mode-btn {
+    border: 2px solid var(--unit-color); background: #fff;
+    color: var(--unit-color-d); font-weight: 700; font-size: 13px;
+    padding: 8px 18px; border-radius: 10px; cursor: pointer;
+    transition: all .2s;
+  }
+  .flash-mode-btn.active {
+    background: linear-gradient(135deg, var(--unit-color), var(--unit-color-d));
+    color: #fff; box-shadow: 0 3px 10px var(--unit-glow);
+  }
+  .flash-mode-btn:disabled {
+    opacity: .35; cursor: not-allowed; border-color: #ddd; color: #aaa;
+  }
+
+  .flashcard-wrap {
+    perspective: 1200px;
+    margin: 0 auto 16px; max-width: 540px;
+  }
+  .flashcard {
+    position: relative; width: 100%; min-height: 260px;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.4,.2,.2,1);
+    cursor: pointer;
+  }
+  .flashcard.flipped { transform: rotateY(180deg); }
+  .flashcard-face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border-radius: 18px; padding: 28px 26px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 8px 28px rgba(0,0,0,.08);
+  }
+  .flashcard-face.front {
+    background: linear-gradient(145deg, #fff, var(--unit-bg));
+    border: 2px solid var(--unit-color);
+  }
+  .flashcard-face.back {
+    background: #fff;
+    border: 2px solid var(--unit-color-d);
+    transform: rotateY(180deg);
+    overflow-y: auto;
+  }
+  .flashcard-tag {
+    background: var(--unit-color); color: #fff;
+    font-size: 10px; letter-spacing: 1px; font-weight: 700;
+    padding: 3px 10px; border-radius: 999px; margin-bottom: 14px;
+  }
+  .flashcard-tag.qa { background: var(--unit-color); }
+  .flashcard-tag.term { background: #DC2626; }
+  .flashcard-front-text {
+    font-size: 22px; font-weight: 800; text-align: center;
+    color: var(--unit-color-d); line-height: 1.5;
+  }
+  .flashcard-back-text {
+    font-size: 15px; line-height: 1.8; color: #222;
+    text-align: left; white-space: pre-wrap;
+  }
+  .flashcard-mistake {
+    background: #FEF3C7; border-left: 4px solid #DC2626;
+    padding: 10px 14px; border-radius: 0 8px 8px 0;
+    font-size: 13px; line-height: 1.7; color: #7c2d12;
+    margin-top: 12px;
+  }
+  .flashcard-mistake-label {
+    font-weight: 800; color: #DC2626; font-size: 11px;
+    letter-spacing: 1px; margin-bottom: 4px;
+  }
+  .flashcard-flip-hint {
+    font-size: 11px; color: #aaa; margin-top: 14px; letter-spacing: 1px;
+  }
+
+  .flash-nav {
+    display: flex; gap: 8px; justify-content: center; align-items: center;
+    margin-bottom: 12px;
+  }
+  .flash-nav-btn {
+    background: #fff; border: 2px solid #E5E7EB; color: #666;
+    width: 40px; height: 40px; border-radius: 50%;
+    font-size: 18px; font-weight: 700; cursor: pointer;
+    transition: all .15s;
+  }
+  .flash-nav-btn:hover { border-color: var(--unit-color); color: var(--unit-color-d); }
+  .flash-nav-btn:disabled { opacity: .3; cursor: not-allowed; }
+  .flash-counter {
+    background: #1F2937; color: #FCD34D;
+    font-family: "JetBrains Mono", monospace, sans-serif;
+    font-weight: 700; font-size: 14px; padding: 8px 18px;
+    border-radius: 999px; min-width: 90px; text-align: center;
+  }
+
+  .flash-actions {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .flash-action-btn {
+    border: none; padding: 13px 26px; border-radius: 12px;
+    font-weight: 700; font-size: 14px; cursor: pointer;
+    transition: transform .15s, box-shadow .2s;
+    min-width: 130px;
+  }
+  .flash-action-btn:hover { transform: translateY(-2px); }
+  .flash-action-btn.known {
+    background: linear-gradient(135deg, #10B981, #059669); color: #fff;
+    box-shadow: 0 4px 12px rgba(16,185,129,.4);
+  }
+  .flash-action-btn.review {
+    background: linear-gradient(135deg, #F59E0B, #D97706); color: #fff;
+    box-shadow: 0 4px 12px rgba(245,158,11,.4);
+  }
+  .flash-progress {
+    height: 6px; background: #F3F4F6; border-radius: 3px;
+    margin-bottom: 12px; overflow: hidden;
+  }
+  .flash-progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--unit-color), var(--unit-color-d));
+    transition: width .4s;
+  }
+  .flash-complete {
+    background: #fff; border-radius: 16px; padding: 28px;
+    text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.06);
+  }
+  .flash-complete-emoji { font-size: 56px; margin-bottom: 8px; }
+  .flash-complete h3 { margin: 0 0 8px; color: #333; font-size: 20px; }
+  .flash-complete p { color: #666; font-size: 14px; margin-bottom: 16px; }
+
+  /* Auto-play controls */
+  .flash-autoplay {
+    background: #fff; border-radius: 14px; padding: 14px 18px;
+    margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  }
+  .flash-autoplay-row {
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  }
+  .flash-autoplay-label {
+    font-size: 12px; font-weight: 700; color: #555;
+    letter-spacing: 1px;
+  }
+  .flash-speed-wrap {
+    display: flex; gap: 4px; background: #F3F4F6;
+    border-radius: 999px; padding: 3px;
+  }
+  .flash-speed-opt {
+    border: none; background: transparent; padding: 6px 12px;
+    border-radius: 999px; font-size: 12px; font-weight: 700;
+    color: #888; cursor: pointer; transition: all .2s;
+    min-width: 36px;
+  }
+  .flash-speed-opt.active {
+    background: #fff; color: var(--unit-color-d);
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  }
+  .flash-loop-toggle {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; color: #555; cursor: pointer;
+    user-select: none; padding: 4px 8px;
+    background: #F9FAFB; border-radius: 8px;
+  }
+  .flash-loop-toggle input { cursor: pointer; }
+  .flash-play-btn {
+    border: none; padding: 8px 18px; border-radius: 10px;
+    font-weight: 700; font-size: 13px; cursor: pointer;
+    transition: transform .15s, box-shadow .2s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .flash-play-btn:hover { transform: translateY(-1px); }
+  .flash-play-btn.play {
+    background: linear-gradient(135deg, var(--unit-color), var(--unit-color-d));
+    color: #fff; box-shadow: 0 3px 10px var(--unit-glow);
+  }
+  .flash-play-btn.pause {
+    background: #1F2937; color: #FCD34D;
+  }
+  .flash-play-btn:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+
+  /* Subtle pulsing border when auto-playing */
+  .flashcard.auto-playing .flashcard-face.front,
+  .flashcard.auto-playing .flashcard-face.back {
+    animation: flashPulse 1.5s ease-in-out infinite;
+  }
+  @keyframes flashPulse {
+    0%, 100% { box-shadow: 0 8px 28px rgba(0,0,0,.08); }
+    50% { box-shadow: 0 8px 32px var(--unit-glow); }
+  }
+
+  /* Summary view */
+  .summary-header {
+    background: linear-gradient(135deg, #fff, #ede9fe);
+    border-radius: 18px; padding: 22px 26px; margin-bottom: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.06);
+  }
+  .summary-header h2 {
+    margin: 0; font-size: 24px; font-weight: 900;
+    background: linear-gradient(135deg, #8B5CF6, #EC4899);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .summary-header p { color: #666; font-size: 13px; margin: 4px 0 0; }
+
+  @media (max-width: 720px) {
+    .container { padding: 16px 12px; }
+    .header { padding: 18px 20px; }
+    .header-title { font-size: 24px; }
+    .step-card { padding: 18px 20px; }
+    .practice-card { padding: 18px 20px; }
+    .tabs .tab { font-size: 11px; padding: 9px 4px; }
+    .tree-grid { grid-template-columns: 60px 70px 90px 1fr; gap: 6px; font-size: 12px; }
+    .tree-grid > div { padding: 4px; }
+    .flashcard-front-text { font-size: 18px; }
+    .flashcard-back-text { font-size: 14px; }
+    .flash-action-btn { min-width: 110px; padding: 12px 18px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<div class="modal-bg" id="modal">
+  <div class="modal" id="modalInner">
+    <h3 id="modalTitle"></h3>
+    <p id="modalBody"></p>
+    <div class="modal-actions" id="modalActions"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// 単元データ - 化学基礎 ①物質の構成
+// ============================================================
+const UNITS = [
+  {
+    id: 'pure_mixture',
+    name: '純物質と混合物',
+    symbol: '⚛',
+    color: '#F59E0B',
+    colorD: '#D97706',
+    bgColor: '#FEF3C7',
+    intro: '世の中の「もの」は、たった1種類でできているか、複数が混ざっているかで分類できます。化学の第一歩は、この区別から。',
+    steps: [
+      {
+        title: '純物質と混合物の違い',
+        body: 'まず、世の中の「もの(物質)」を2つに分ける考え方を学びます。\n\n[term:純物質] …… 1種類の物質だけでできているもの。\n例：水、酸素、塩化ナトリウム(食塩)、銅\n\n[term:混合物] …… 2種類以上の物質が混ざり合っているもの。\n例：空気(窒素+酸素+…)、海水(水+食塩+…)、食塩水\n\n[bold:ポイント]：物質の種類が「1つ」か「複数」かで見分けます。',
+        miniTest: [
+          { type:'choice', q:'次のうち、混合物はどれか。', options:['水','酸素','空気','銅'], answer:2 },
+          { type:'fill', q:'1種類の物質だけでできているものを{0}という。', answers:['純物質'], bank:['純物質','混合物','単体','化合物'] }
+        ]
+      },
+      {
+        title: '純物質をさらに分類する',
+        body: '純物質は、さらに [term:単体] と [term:化合物] に分けられます。\n\n[bold:単体]：1つの元素だけでできた物質。\n例：酸素 O₂、水素 H₂、鉄 Fe、銅 Cu\n\n[bold:化合物]：2種類以上の元素が結びついてできた物質。\n例：水 H₂O、二酸化炭素 CO₂、塩化ナトリウム NaCl\n\n化学式を見て、元素の種類が1つなら単体、2つ以上なら化合物 ── と判断できます。',
+        tree: true,
+        miniTest: [
+          { type:'fill', q:'水 H₂O は{0}。酸素 O₂ は{1}。', answers:['化合物','単体'], bank:['単体','化合物','混合物'] },
+          { type:'choice', q:'次のうち、単体はどれか。', options:['食塩水','二酸化炭素','鉄','空気'], answer:2 }
+        ]
+      },
+      {
+        title: '食塩水は混合物?化合物?',
+        body: 'ここで多くの人が間違えるポイント。\n[bold:食塩水]を考えてみましょう。\n\n食塩水は「食塩(NaCl)」という化合物が、「水(H₂O)」という化合物に溶けたもの。\nつまり [bold:2種類以上の物質]が混ざっているので、 [term:混合物] です。\n\n[tip:化合物は「元素同士が結合」、混合物は「物質同士が混ざっただけ」。塩水は塩と水が物理的に混ざっているだけなので、混合物。]\n\nもう一つ要注意なのが [bold:塩酸]。塩酸は、塩化水素HClという気体が水に溶けたものなので、これも混合物です(食塩(NaCl)とは別物!)。',
+        miniTest: [
+          { type:'choice', q:'食塩水は次のうちどれに分類されるか。', options:['単体','化合物','混合物','元素'], answer:2 },
+          { type:'choice', q:'塩酸は何を水に溶かしたものか。', options:['塩化ナトリウム','塩化水素','水酸化ナトリウム','酸素'], answer:1 }
+        ]
+      },
+      {
+        title: '純物質の性質は「一定」',
+        body: '純物質には、もう1つ大事な特徴があります。\n\n[bold:純物質の沸点・融点・密度は「一定」]\n例えば、純粋な水は必ず1気圧で100℃で沸騰し、0℃で凝固します。\n\n一方、混合物はこうした性質が一定にならず、混ざり方によって変わります。\n例えば、海水は約-2℃でも凍らないことがある(食塩のせいで凝固点降下が起きる)。\n\nこの性質を使って「純物質か混合物か」を区別することもできます。',
+        miniTest: [
+          { type:'choice', q:'純物質の沸点や融点は、どのような特徴があるか。', options:['物質ごとに一定である','常に変化する','加熱速度に依存する','測定不可能'], answer:0 },
+          { type:'choice', q:'海水が-2℃でも凍らないことがあるのは何故か。', options:['海水は単体だから','海水は混合物だから','水だけでできているから','空気が混ざっているから'], answer:1 }
+        ]
+      }
+    ],
+    fillBlanks: [
+      {
+        text: '1種類の物質だけでできているものを{0}といい、2種類以上の物質が混ざり合っているものを{1}という。{0}はさらに、1つの元素からなる{2}と、2種以上の元素からなる{3}に分けられる。例えば、酸素 O₂ は{2}、水 H₂O は{3}、食塩水は{1}である。',
+        answers: ['純物質','混合物','単体','化合物'],
+        bank: ['純物質','混合物','単体','化合物','元素','分子']
+      }
+    ],
+    quiz: [
+      { type:'choice', q:'次のうち、混合物はどれか。', options:['塩化ナトリウム','アルゴン','空気','プロパン'], answer:2 },
+      { type:'choice', q:'次のうち、単体はどれか。', options:['アンモニア','水','オゾン','ドライアイス'], answer:2 },
+      { type:'fill', q:'食塩水は{0}に分類される(純物質/混合物)。', answers:['混合物'], bank:['純物質','混合物','単体','化合物'] },
+      { type:'fill', q:'2種類以上の元素からできている純物質を{0}という。', answers:['化合物'], bank:['単体','化合物','混合物','元素'] },
+      { type:'choice', q:'純物質の特徴として正しいのは?', options:['沸点が変動する','融点が物質ごとに一定','常に固体である','水に必ず溶ける'], answer:1 },
+      { type:'choice', q:'次のうち、化合物はどれか。', options:['銅','ヘリウム','水','酸素'], answer:2 },
+      { type:'fill', q:'1つの元素だけでできた純物質を{0}、2種類以上の元素からなる純物質を{1}という。', answers:['単体','化合物'], bank:['単体','化合物','混合物','元素'] },
+      { type:'choice', q:'塩酸は何を水に溶かしたものか。', options:['塩化ナトリウム','塩化水素','塩素ガス','水酸化ナトリウム'], answer:1 },
+      { type:'choice', q:'次の組み合わせのうち、すべて単体であるものはどれか。', options:['水・酸素・水素','鉄・銅・酸素','食塩・水・空気','アンモニア・水・二酸化炭素'], answer:1 },
+      { type:'fill', q:'空気は{0}・酸素などが混ざった{1}である。', answers:['窒素','混合物'], bank:['窒素','水素','単体','混合物','化合物'] }
+    ],
+    flashcards: [
+      { type:'qa', front:'純物質とは?', back:'1種類の物質だけでできているもの。\n例：水、酸素、銅、塩化ナトリウム' },
+      { type:'qa', front:'混合物とは?', back:'2種類以上の物質が混ざり合っているもの。\n例：空気、海水、食塩水、塩酸' },
+      { type:'qa', front:'単体とは?', back:'1つの元素だけでできた純物質。\n例：酸素 O₂、鉄 Fe、銅 Cu' },
+      { type:'qa', front:'化合物とは?', back:'2種類以上の元素が結合してできた純物質。\n例：水 H₂O、二酸化炭素 CO₂' },
+      { type:'term', front:'食塩水', back:'NaCl(食塩)+H₂O(水)が混ざったもの', mistake:'「食塩水」は化合物ではなく [bold:混合物]!\n食塩(NaCl)と水(H₂O)が物理的に混ざっているだけ。' },
+      { type:'term', front:'塩酸', back:'塩化水素 HCl が水に溶けたもの', mistake:'塩酸は[bold:混合物]!\n「塩化ナトリウム(食塩)」とは別物。塩化水素という気体が水に溶けたもの。' },
+      { type:'qa', front:'純物質の沸点・融点・密度の特徴は?', back:'物質ごとに「一定」である。\n(混合物はこれらの値が一定にならない)' },
+      { type:'term', front:'空気', back:'窒素・酸素・アルゴンなどの気体が混ざったもの', mistake:'空気は[bold:混合物]。「酸素だけ」と勘違いしないように!' }
+    ]
+  },
+  {
+    id: 'separation_1',
+    name: '混合物の分離方法 ①',
+    symbol: '⚗',
+    color: '#3B82F6',
+    colorD: '#1E40AF',
+    bgColor: '#DBEAFE',
+    intro: '混合物から純物質を取り出すための、基本的な方法を学びます。ろ過・蒸留・分留 ── 名前は似ていますが、利用する原理が違います。',
+    steps: [
+      {
+        title: '分離と精製の違い',
+        body: '混合物から目的の物質を取り出す操作には、似た言葉が2つあります。\n\n[term:分離] …… 混合物から、物理的方法で純物質を取り出す操作。\n[term:精製] …… 分離した物質の純度を、さらに上げる操作。\n\n[tip:「分離 = 取り出す」「精製 = きれいにする」と覚えると区別しやすい。]\n\nこの単元では、いろいろな分離の方法を順に見ていきます。共通するのは、すべて [bold:物理的な方法]ということ。化学反応で別の物質に変えるわけではない、という点が大事です。',
+        miniTest: [
+          { type:'fill', q:'混合物から物理的方法で純物質を取り出す操作を{0}という。', answers:['分離'], bank:['分離','精製','分解','化合'] },
+          { type:'fill', q:'分離した物質の純度をさらに上げる操作を{0}という。', answers:['精製'], bank:['分離','精製','分解','化合'] }
+        ]
+      },
+      {
+        title: '① ろ過 ─ 固体と液体を分ける',
+        body: '[term:ろ過] は最もシンプルな分離方法です。\n[bold:液体中に混じった固体を、ろ紙を使って取り除く]方法。\n\n例：泥水から泥を取り除く、砂が混じった食塩水から砂を取り除く。\n\n[bold:操作のポイント]\n・ろうとに、適切に折ったろ紙をセットする\n・ろうとの先(細いほう)はビーカーの[bold:壁につける] ← 液はねを防ぐため\n・ガラス棒を伝わせて、静かに液を注ぐ\n\nろ紙の目より大きい固体だけがろ紙の上に残り、液体と小さい粒子はビーカーへ落ちます。',
+        miniTest: [
+          { type:'choice', q:'ろ過で利用しているのは次のどれか。', options:['沸点の差','密度の差','粒子の大きさの差','溶解度の差'], answer:2 },
+          { type:'choice', q:'ろ過のとき、ろうとの先はどうするべきか。', options:['ビーカーから離す','ビーカーの壁につける','液体に浸ける','どこでもよい'], answer:1 }
+        ]
+      },
+      {
+        title: '② 蒸留 ─ 沸点の差で液体を取り出す',
+        body: '[term:蒸留] は、沸点の差を利用した分離方法。\n[bold:液体を加熱→蒸気にして→冷却し液体に戻す] ことで、目的の液体だけを取り出します。\n\n例：海水から真水を取り出す(海水を沸騰させ、出てきた水蒸気を冷却すれば、塩を含まない水が得られる)。\n\n[bold:装置の重要ポイント]\n・温度計の球部 → [bold:枝付きフラスコの「枝の付け根」]\n  (流れ出ていく蒸気の温度を測りたいから)\n・[bold:沸騰石] を入れる → 突沸(急な沸騰)を防ぐ\n・冷却水は [bold:下から上へ] 流す\n  (冷却器の中を水でしっかり満たすため)\n・[bold:密栓はしない] → 圧力で容器が割れる危険\n\n[warn:冷却水の向きと温度計の位置はテストで頻出!絶対に覚えよう。]',
+        miniTest: [
+          { type:'choice', q:'蒸留で利用しているのは次のどれか。', options:['沸点の差','溶解度の差','密度の差','粒子の大きさ'], answer:0 },
+          { type:'choice', q:'蒸留装置で温度計の球部を置く位置として正しいのは?', options:['液体の中','フラスコの底','枝の付け根','冷却器の出口'], answer:2 },
+          { type:'choice', q:'蒸留の冷却水の流す向きとして正しいのは?', options:['上から下','下から上','どちらでもよい','循環不要'], answer:1 }
+        ]
+      },
+      {
+        title: '③ 分留 ─ 複数の液体を分ける',
+        body: '[term:分留] (分別蒸留)は、蒸留の応用版。\n[bold:沸点が異なる2種類以上の液体]を、それぞれ分けて取り出す方法。\n\n蒸留は「液体+不揮発性の固体」を分けるのに対し、\n分留は「液体+液体」(沸点の違いを利用)を分けます。\n\n[bold:身近な例:原油の分留]\n原油はそのままでは使えない、いろいろな物質の混合物。これを分留すると…\n\n・ガス分(沸点が低い)→ LPG、タクシー燃料\n・ナフサ → ガソリン原料、化学製品の原料\n・灯油 → 暖房燃料、ジェット燃料\n・軽油 → トラックなどのディーゼル燃料\n・重油 → 船・火力発電所の燃料\n\n[tip:沸点の低いものほど蒸気として先に出ていくので、塔の上のほうから取り出される。]',
+        miniTest: [
+          { type:'fill', q:'原油から各成分を沸点の差で分ける方法を{0}という。', answers:['分留'], bank:['ろ過','蒸留','分留','再結晶'] },
+          { type:'choice', q:'分留で原油から得られないものはどれか。', options:['ガソリン原料(ナフサ)','灯油','食塩','重油'], answer:2 }
+        ]
+      }
+    ],
+    fillBlanks: [
+      {
+        text: '混合物から物理的方法で純物質を取り出す操作を{0}という。液体に混ざった固体をろ紙で取り除くのが{1}、沸点の差を利用して液体を蒸気にして冷却し液化させるのが{2}、原油のように2種類以上の液体を沸点の差で分けるのが{3}である。蒸留装置では、温度計の球部は{4}に置き、冷却水は{5}から流す。',
+        answers: ['分離','ろ過','蒸留','分留','枝の付け根','下'],
+        bank: ['分離','精製','ろ過','蒸留','分留','枝の付け根','フラスコの底','上','下']
+      }
+    ],
+    quiz: [
+      { type:'choice', q:'液体中に混ざっている固体を取り除く分離方法は?', options:['蒸留','ろ過','分留','抽出'], answer:1 },
+      { type:'choice', q:'沸点の差を利用して、液体の混合物から目的の液体を取り出す方法は?', options:['ろ過','蒸留','再結晶','クロマトグラフィー'], answer:1 },
+      { type:'choice', q:'蒸留で沸騰石を入れる目的は?', options:['冷却を早めるため','突沸を防ぐため','沸点を下げるため','純度を上げるため'], answer:1 },
+      { type:'choice', q:'原油を分けるときに使う分離方法は?', options:['ろ過','蒸留','分留','抽出'], answer:2 },
+      { type:'fill', q:'蒸留装置で冷却水は{0}から流す(上/下)。', answers:['下'], bank:['上','下'] },
+      { type:'fill', q:'分離した物質の純度をさらに上げる操作を{0}という。', answers:['精製'], bank:['分離','精製','分解','化合'] },
+      { type:'choice', q:'蒸留装置で温度計の球部を置くべき位置は?', options:['液体の中','フラスコの底','枝の付け根','三角フラスコ内'], answer:2 },
+      { type:'choice', q:'原油の分留で得られないものはどれか。', options:['ナフサ','灯油','食塩','重油'], answer:2 },
+      { type:'fill', q:'ろ過のとき、ろうとの先は{0}につける。', answers:['ビーカーの壁'], bank:['ビーカーの壁','液体の中','空中','底'] },
+      { type:'choice', q:'蒸留と分留の違いとして正しいのは?', options:['蒸留は固体しか分けられない','分留は沸点の異なる複数の液体を分ける方法である','分留は沸点が同じ液体を分ける','蒸留と分留は同じ操作である'], answer:1 }
+    ],
+    flashcards: [
+      { type:'qa', front:'分離とは?', back:'混合物から物理的方法で純物質を取り出す操作。\n(化学反応で別物質に変えるのではない)' },
+      { type:'qa', front:'精製とは?', back:'分離した物質の純度をさらに上げる操作。' },
+      { type:'qa', front:'ろ過は何の差を利用?', back:'粒子の大きさの差。\nろ紙の目より大きい固体を液体から分離する。' },
+      { type:'qa', front:'蒸留は何の差を利用?', back:'沸点の差。\n液体を加熱して蒸気にし、冷却して液体に戻すことで純粋な液体を得る。' },
+      { type:'qa', front:'分留(分別蒸留)とは?', back:'沸点の異なる2種類以上の液体の混合物を、それぞれ分けて取り出す方法。\n例:原油の分留 → ガソリン・灯油・軽油・重油など' },
+      { type:'term', front:'ろうとの先', back:'ろ過のとき、ろうとの先はビーカーの壁につける', mistake:'なぜ?→液はねを防ぐため。離してしまうとビーカーの中で液体が飛び散る。' },
+      { type:'term', front:'温度計の球部', back:'蒸留では枝付きフラスコの「枝の付け根」に置く', mistake:'なぜ?→[bold:流れていく蒸気の温度を測る]ため。\n液体に浸けるのは間違い!(液体の温度ではなく蒸気の温度を測りたい)' },
+      { type:'term', front:'冷却水の向き', back:'蒸留では「下から上へ」流す', mistake:'なぜ?→冷却器の中を水で完全に満たすため。\n上から流すと上部に空気が溜まり、冷却効率が下がる。テスト頻出!' },
+      { type:'term', front:'沸騰石', back:'蒸留時にフラスコに入れる小さな石', mistake:'目的:[bold:突沸(急な沸騰)を防ぐ]ため。\n「沸点を下げる」ではない!' },
+      { type:'term', front:'密栓', back:'蒸留装置では「密栓しない」', mistake:'なぜ?→密栓すると圧力が上がって容器が割れる危険がある。' },
+      { type:'qa', front:'原油の分留で得られるもの(沸点の低い順)', back:'ガス分(LPG)→ナフサ→灯油→軽油→重油\n沸点が低いものほど塔の上から取り出される。' }
+    ]
+  },
+  // ============================================================
+  // 単元3: 分離方法② (昇華・抽出・再結晶・クロマト)
+  // ============================================================
+  {
+    id: 'separation_2',
+    name: '混合物の分離方法 ②',
+    symbol: '⚛',
+    color: '#06B6D4',
+    colorD: '#0E7490',
+    bgColor: '#CFFAFE',
+    intro: 'ろ過・蒸留・分留に続き、昇華・抽出・再結晶・クロマトグラフィーの4つの分離法を学びます。それぞれが利用する「物質の性質の違い」がポイント。',
+    steps: [
+      {
+        title: '④ 昇華 ─ 固体が直接気体になる性質を利用',
+        body: '[term:昇華] とは、固体が液体を経ずに直接気体になる現象(またはその逆)のこと。\n\nこの性質を持つ物質を含む混合物を加熱すると、[bold:昇華性物質だけが気体]になって出てきます。それを冷却して再び固体に戻すことで、目的の物質を取り出せます。\n\n[bold:昇華しやすい物質(覚えよう)]\n・[bold:ヨウ素 I₂]\n・[bold:ナフタレン]\n・[bold:ドライアイス](CO₂の固体)\n\n[tip:例:ヨウ素と砂が混ざった混合物 → 加熱すると、ヨウ素だけが紫色の気体になり、冷たい部分で再び固体として析出。砂はそのまま残る。]',
+        miniTest: [
+          { type:'fill', q:'固体が液体を経ずに直接気体になる現象を{0}という。', answers:['昇華'], bank:['昇華','蒸発','融解','凝縮'] },
+          { type:'choice', q:'次のうち、昇華しやすい物質はどれか。', options:['食塩','水','ヨウ素','鉄'], answer:2 }
+        ]
+      },
+      {
+        title: '⑤ 抽出 ─ 溶媒に「溶ける/溶けない」を利用',
+        body: '[term:抽出] は、目的の物質が溶ける溶媒を使って、混合物から取り出す方法。\n[bold:溶媒に対する溶解度の違い]を利用します。\n\n例:お茶を入れる → お湯(溶媒)にお茶の成分(目的物質)が溶け出す。これも一種の抽出です。\n\n[bold:実験で使う器具:分液漏斗(ぶんえきろうと)]\n上下に2層になった液体(例:水溶液と有機溶媒)を分けるための、ピアレモン形の特殊なガラス器具。\n\n[bold:実験例]:ヨウ素を含む水溶液にヘキサン(有機溶媒)を加えて振ると、ヨウ素はヘキサン層に移動。ヨウ素はヘキサンによく溶け、水にあまり溶けないため。\n\n[warn:抽出は「溶解度の違い」、ろ過は「粒子の大きさの違い」。混同しないように!]',
+        miniTest: [
+          { type:'fill', q:'目的物質が溶ける溶媒を用い、溶解度の違いで分離する方法を{0}という。', answers:['抽出'], bank:['抽出','ろ過','蒸留','再結晶'] },
+          { type:'choice', q:'抽出で使う、上下に2層の液体を分けるための器具は?', options:['ろうと','分液漏斗','ビュレット','メスシリンダー'], answer:1 }
+        ]
+      },
+      {
+        title: '⑥ 再結晶 ─ 温度による溶解度の違いを利用',
+        body: '[term:再結晶] は、温度によって溶解度が大きく変わる物質を使って、純粋な固体を取り出す方法。\n\n[bold:溶解度] …… 溶媒100gに溶かすことのできる溶質の最大の質量(g)。\n多くの物質は[bold:温度が高いほど多く溶ける]性質があります。\n\n[bold:操作の流れ]\n①目的の物質を高温の溶媒(普通は水)に多量に溶かす\n②冷却する\n③溶解度が下がるため、溶けきれなくなった分が[bold:結晶として析出]\n④これをろ過して取り出すと、不純物の少ない純粋な結晶が得られる\n\n[tip:不純物は溶けたまま残り、目的物質だけが結晶として出てくる(不純物は元から少ないので飽和に達しない)。]',
+        miniTest: [
+          { type:'fill', q:'温度による溶解度の違いを利用して、純粋な固体物質を取り出す方法を{0}という。', answers:['再結晶'], bank:['再結晶','ろ過','抽出','昇華'] },
+          { type:'fill', q:'溶媒100gに溶かすことのできる溶質の最大の質量を{0}という。', answers:['溶解度'], bank:['溶解度','濃度','沸点','密度'] }
+        ]
+      },
+      {
+        title: '⑦ クロマトグラフィー ─ 吸着のしやすさの違い',
+        body: '[term:クロマトグラフィー] は、ろ紙やシリカゲルなどの[bold:吸着剤]に対する物質の吸着のしやすさの違いを利用した分離方法。\n\n[bold:身近な例:ペーパークロマトグラフィー]\n①ろ紙の下端近くに、サインペンのインクをスポット状に付ける\n②下端を水(展開溶媒)に浸す\n③水がろ紙を上昇しながら、インクの成分も一緒に運ばれていく\n④吸着しにくい成分は速く・遠くまで進む。吸着しやすい成分はあまり進まない\n⑤結果、[bold:成分ごとに違う位置で色が分離]される\n\n[tip:インクは「黒1色」に見えても、実は赤・青・黄など複数の色素の混合物。クロマトで分離すると複数の色が現れる。]',
+        miniTest: [
+          { type:'fill', q:'吸着剤に対する物質の吸着の強さの違いを利用した分離方法を{0}という。', answers:['クロマトグラフィー'], bank:['クロマトグラフィー','再結晶','抽出','昇華'] },
+          { type:'choice', q:'クロマトグラフィーで利用しているのは次のどれか。', options:['沸点の差','溶解度の差','吸着のしやすさの差','粒子の大きさの差'], answer:2 }
+        ]
+      }
+    ],
+    fillBlanks: [
+      {
+        text: '固体が液体を経ずに直接気体になる現象を利用した分離法を{0}という。{1}は溶媒に対する溶解度の違いを利用した方法で、{2}という器具を使う。温度による溶解度の違いを利用して純粋な結晶を取り出す方法を{3}という。ろ紙やシリカゲルへの吸着のしやすさの違いを利用するのが{4}である。',
+        answers: ['昇華','抽出','分液漏斗','再結晶','クロマトグラフィー'],
+        bank: ['昇華','抽出','分液漏斗','再結晶','クロマトグラフィー','蒸留','ろ過']
+      }
+    ],
+    quiz: [
+      { type:'choice', q:'ヨウ素と砂の混合物を分けるのに最も適した方法は?', options:['ろ過','再結晶','昇華','蒸留'], answer:2 },
+      { type:'choice', q:'抽出に使う器具として正しいのは?', options:['分液漏斗','ろうと','メスシリンダー','ビーカー'], answer:0 },
+      { type:'fill', q:'温度による溶解度の違いを利用する分離方法は{0}。', answers:['再結晶'], bank:['再結晶','蒸留','クロマトグラフィー','昇華'] },
+      { type:'choice', q:'インクの色素を分離するのに最も適した方法は?', options:['ろ過','蒸留','クロマトグラフィー','昇華'], answer:2 },
+      { type:'choice', q:'次のうち、昇華性のない物質はどれか。', options:['ヨウ素','ナフタレン','ドライアイス','食塩'], answer:3 },
+      { type:'fill', q:'クロマトグラフィーは{0}剤への吸着のしやすさの違いを利用する。', answers:['吸着'], bank:['吸着','溶媒','沸点','密度'] },
+      { type:'choice', q:'抽出で利用しているのは次のどれか。', options:['沸点の差','粒子の大きさ','溶解度の差','吸着のしやすさ'], answer:2 },
+      { type:'fill', q:'溶媒100gに溶かすことのできる溶質の最大の質量を{0}という。', answers:['溶解度'], bank:['溶解度','濃度','密度','沸点'] },
+      { type:'choice', q:'少量の不純物を含む硝酸カリウムを純粋な結晶として得るのに最も適した方法は?', options:['ろ過','蒸留','再結晶','クロマトグラフィー'], answer:2 },
+      { type:'choice', q:'お茶の葉から成分を湯に溶かしてお茶を作る操作は、化学的には何にあたるか。', options:['ろ過','蒸留','抽出','再結晶'], answer:2 }
+    ],
+    flashcards: [
+      { type:'qa', front:'昇華とは?', back:'固体が液体を経ずに直接気体になる現象(またはその逆)。\n例:ヨウ素・ナフタレン・ドライアイス' },
+      { type:'qa', front:'抽出とは?', back:'目的物質が溶ける溶媒を使って、溶解度の違いを利用して取り出す方法。\n器具:分液漏斗' },
+      { type:'qa', front:'再結晶とは?', back:'温度による溶解度の違いを利用して、純粋な固体物質を取り出す方法。\n高温で溶かす→冷却→結晶として析出' },
+      { type:'qa', front:'クロマトグラフィーとは?', back:'ろ紙やシリカゲルなどの吸着剤に対する、物質の吸着のしやすさの違いを利用した分離方法。' },
+      { type:'qa', front:'溶解度とは?', back:'溶媒100gに溶かすことのできる溶質の最大の質量(g)。\n多くの物質は温度が高いほど溶解度が大きい。' },
+      { type:'term', front:'昇華しやすい3物質', back:'ヨウ素 I₂ / ナフタレン / ドライアイス CO₂', mistake:'食塩や水は昇華しない!\n「I₂・ナフタレン・ドライアイス」と1セットで覚える。' },
+      { type:'term', front:'分液漏斗', back:'抽出で使う、ピアレモン形のガラス器具', mistake:'「分液漏斗」=抽出専用。ろ過で使う「ろうと」とは別物。' },
+      { type:'term', front:'抽出 vs ろ過', back:'抽出=溶解度の差を使う / ろ過=粒子の大きさの差を使う', mistake:'「お茶を入れる」のは抽出(成分が溶け出す)。葉っぱを取り除くのがろ過。混ぜないように!' },
+      { type:'qa', front:'インクをクロマトすると?', back:'黒インクには赤・青・黄など複数の色素が混ざっており、それぞれの吸着のしやすさが違うため、ろ紙上で異なる位置に分かれて見える。' }
+    ]
+  },
+  // ============================================================
+  // 単元4: 元素・単体・化合物
+  // ============================================================
+  {
+    id: 'element',
+    name: '元素・単体・化合物',
+    symbol: '⚛',
+    color: '#10B981',
+    colorD: '#047857',
+    bgColor: '#D1FAE5',
+    intro: '「元素」と「単体」は字面が似ているけど、意味が決定的に違う。テスト頻出の区別ポイントをしっかり押さえよう。',
+    steps: [
+      {
+        title: '元素とは ─ 「成分」を表す概念',
+        body: '[term:元素] とは、物質を構成する[bold:成分]のこと。原子の種類を表しています。\n\n[bold:重要]:元素は「実際に存在する物質」ではなく、あくまで「物質を構成する成分」を表す概念です。\n\n現在、約110種類の元素が発見されており、そのうち90種類ほどが天然に存在しています。\n\n[bold:元素は元素記号で表す]\nアルファベット2文字の元素は、1文字目を大文字、2文字目を小文字で書きます。\n例:ナトリウム → Na (NA でも na でもダメ!)\n\n[bold:覚えておきたい元素記号]\n・水素 H / ヘリウム He / 炭素 C / 酸素 O\n・ナトリウム Na / マグネシウム Mg / 鉄 Fe / 銅 Cu',
+        miniTest: [
+          { type:'choice', q:'「元素」が表しているのは次のどれか。', options:['実際に存在する物質','物質を構成する成分','分子の形','物質の状態'], answer:1 },
+          { type:'choice', q:'ナトリウムの元素記号として正しいのは?', options:['NA','Na','na','N'], answer:1 }
+        ]
+      },
+      {
+        title: '単体とは ─ 「実物の物質」',
+        body: '[term:単体] は、[bold:1種類の元素だけからできている、実際に存在する物質]のこと。\n\n例:酸素 O₂、水素 H₂、鉄 Fe、銅 Cu、ヘリウム He\n\n[term:化合物] は、[bold:2種類以上の元素が結合してできた純物質]のこと。\n\n例:水 H₂O(水素+酸素)、二酸化炭素 CO₂(炭素+酸素)、塩化ナトリウム NaCl(ナトリウム+塩素)\n\n[info:単体・化合物はどちらも「純物質」。混合物とは区別しよう。]\n\n物質の分類を整理すると:\n物質 → 純物質(=単体 or 化合物) / 混合物',
+        tree: true,
+        miniTest: [
+          { type:'fill', q:'1種類の元素だけからできた純物質を{0}、2種類以上の元素が結合した純物質を{1}という。', answers:['単体','化合物'], bank:['単体','化合物','混合物','元素'] },
+          { type:'choice', q:'次のうち、化合物はどれか。', options:['酸素','銅','水','水素'], answer:2 }
+        ]
+      },
+      {
+        title: '【重要】元素 vs 単体 ─ どっちの意味?',
+        body: '[warn:ここがテスト最頻出ポイント。元素と単体の使い分けを文脈から判断する練習をしよう。]\n\n[bold:見分け方の合言葉]\n「成分」として使われていれば[bold:元素]、「実物の物質」として使われていれば[bold:単体]。\n\n[bold:例題で確認]\n①「水は水素と酸素からできている」\n→ 水を構成する[bold:成分]の話 → [term:元素]\n\n②「植物の光合成で酸素が放出される」\n→ 実際に出ている気体としての酸素(実物) → [term:単体]\n\n③「ホウレンソウには鉄が含まれる」\n→ 体を作る[bold:成分]として → [term:元素]\n(ホウレンソウに鉄の塊が入っているわけではない!)\n\n④「ヘリウムは空気より軽いので気球に使われる」\n→ 実際に使う物質(実物) → [term:単体]',
+        miniTest: [
+          { type:'choice', q:'「水は水素と酸素からできている」の下線部「酸素」は?', options:['元素','単体','混合物','化合物'], answer:0 },
+          { type:'choice', q:'「ホウレンソウには鉄が含まれる」の下線部「鉄」は?', options:['元素','単体','混合物','化合物'], answer:0 }
+        ]
+      },
+      {
+        title: 'まとめ ─ 物質の分類体系',
+        body: 'ここまでで物質を分類する全体像が見えてきました。整理しましょう。\n\n[bold:物質の全体像]\n物質\n├─ 純物質(1種類の物質)\n│  ├─ 単体(1元素のみ)→ 例:O₂, Fe, Cu\n│  └─ 化合物(2元素以上)→ 例:H₂O, CO₂, NaCl\n└─ 混合物(2種類以上の物質)→ 例:空気、海水、塩酸\n\n[bold:用語の関係を整理]\n・[bold:元素] = 成分の種類(概念)\n・[bold:単体] = 1元素からなる実在の純物質\n・[bold:化合物] = 2元素以上からなる実在の純物質\n・[bold:混合物] = 複数の物質が混ざったもの\n\n[tip:「酸素」という言葉は、文脈によって「元素 O」を指すこともあれば「単体の酸素 O₂」を指すこともある。これが日本語で間違えやすい原因。]',
+        miniTest: [
+          { type:'choice', q:'次のうち、純物質に分類されないものは?', options:['アンモニア','プロパン','空気','オゾン'], answer:2 },
+          { type:'fill', q:'物質は純物質と{0}に分けられ、純物質はさらに単体と{1}に分けられる。', answers:['混合物','化合物'], bank:['混合物','化合物','単体','元素'] }
+        ]
+      }
+    ],
+    fillBlanks: [
+      {
+        text: '物質を構成する成分のことを{0}という。1種類の{0}だけからできた純物質を{1}、2種類以上の{0}が結合してできた純物質を{2}という。例えば、酸素 O₂ は{1}、水 H₂O は{2}、空気は{3}である。「水は水素と酸素からできている」という文の「水素」「酸素」は、物質の成分を指しているので{0}の意味で使われている。',
+        answers: ['元素','単体','化合物','混合物'],
+        bank: ['元素','単体','化合物','混合物']
+      }
+    ],
+    quiz: [
+      { type:'choice', q:'次の記述のうち、下線部が「単体」の意味で使われているものは?', options:['ホウレンソウには鉄が含まれる','水は水素と酸素からできている','植物は光合成で酸素を放出する','骨はカルシウムを含む'], answer:2 },
+      { type:'choice', q:'次の記述のうち、下線部が「元素」の意味で使われているものは?', options:['ヘリウムは空気より軽い','ヨウ素は紫色の気体になる','カルシウムは歯や骨に多く含まれる','酸素吸入を受けながら運ばれた'], answer:2 },
+      { type:'fill', q:'1種類の元素だけからできた純物質を{0}、2種類以上の元素からなる純物質を{1}という。', answers:['単体','化合物'], bank:['単体','化合物','混合物','元素'] },
+      { type:'choice', q:'次のうち、化合物はどれか。', options:['オゾン','黒鉛','水','銅'], answer:2 },
+      { type:'choice', q:'次のうち、単体はどれか。', options:['アンモニア','水酸化ナトリウム','黒鉛','ドライアイス'], answer:2 },
+      { type:'fill', q:'マグネシウムの元素記号は{0}である。', answers:['Mg'], bank:['Mg','MG','mg','Ma'] },
+      { type:'choice', q:'次の文中の下線部「酸素」が「元素」の意味で使われているのはどれか。', options:['空気は窒素と酸素の混合気体である','光合成では酸素が放出される','水は水素と酸素からできている','酸素を入れたボンベを持ち運ぶ'], answer:2 },
+      { type:'choice', q:'次のうち、純物質はどれか。', options:['塩酸','空気','ガラス','プロパン'], answer:3 },
+      { type:'fill', q:'物質を構成する成分を{0}といい、現在約110種類が発見されている。', answers:['元素'], bank:['元素','単体','原子','分子'] },
+      { type:'choice', q:'次の物質のうち、化合物のみを集めた組み合わせは?', options:['水・酸素・銅','アンモニア・水・二酸化炭素','鉄・銅・酸素','水・空気・塩酸'], answer:1 }
+    ],
+    flashcards: [
+      { type:'qa', front:'元素とは?', back:'物質を構成する「成分」を表す概念。\n原子の種類のこと。実在する物質ではない。' },
+      { type:'qa', front:'単体とは?', back:'1種類の元素だけからできた、実際に存在する純物質。\n例:O₂、Fe、Cu、He' },
+      { type:'qa', front:'化合物とは?', back:'2種類以上の元素が結合してできた純物質。\n例:H₂O、CO₂、NaCl' },
+      { type:'term', front:'元素 vs 単体', back:'「成分」として使う=元素 / 「実物の物質」として使う=単体', mistake:'同じ「酸素」でも文脈で違う!\n・「水は水素と酸素からできている」=元素\n・「酸素吸入を受ける」=単体' },
+      { type:'term', front:'「ホウレンソウには鉄が含まれる」', back:'下線部「鉄」=元素', mistake:'実物の鉄(Fe)の塊が入っているわけではない!\n体を作る[bold:成分]としての鉄。元素の意味。' },
+      { type:'term', front:'「光合成で酸素が放出される」', back:'下線部「酸素」=単体', mistake:'実際に外に出てくる気体(O₂分子)。\nこれは実物なので単体。' },
+      { type:'term', front:'元素記号の書き方', back:'1文字目=大文字、2文字目=小文字', mistake:'ナトリウムは [bold:Na]。NAやnaは間違い!\n見落としやすいので注意。' },
+      { type:'qa', front:'物質の分類体系', back:'物質\n├ 純物質\n│ ├ 単体(1元素)\n│ └ 化合物(2元素以上)\n└ 混合物' },
+      { type:'qa', front:'代表的な元素記号', back:'H水素 / He ヘリウム / C 炭素 / O 酸素\nNa ナトリウム / Mg マグネシウム / Fe 鉄 / Cu 銅' }
+    ]
+  },
+  // ============================================================
+  // 単元5: 同素体 (SCOP)
+  // ============================================================
+  {
+    id: 'allotrope',
+    name: '同素体 (SCOP)',
+    symbol: '◇',
+    color: '#A855F7',
+    colorD: '#7E22CE',
+    bgColor: '#F3E8FF',
+    intro: '同じ元素なのに性質が全然違う?「同素体」を持つ4元素「SCOP」を覚えよう。ダイヤモンドと黒鉛、酸素とオゾンなど、身近な例がたくさん。',
+    steps: [
+      {
+        title: '同素体とは ─ 同じ元素 でも 違う物質',
+        body: '[term:同素体] とは、[bold:同じ元素からできている単体]だけれど、原子の結合の仕方が違うため、性質の異なる物質どうしのこと。\n\n例:ダイヤモンドと黒鉛は、どちらも炭素 C だけからできています。でも:\n・ダイヤモンド → 透明、超硬い、電気を通さない\n・黒鉛 → 黒い、柔らかい、電気を通す\n\n同じ「炭素」なのに、原子の並び方(結合の仕方)が違うために、まったく違う物質になっているのです。\n\n[bold:重要な暗記法:同素体は「SCOP(スコップ)」]\n[bold:S]=硫黄(イオウ) / [bold:C]=炭素 / [bold:O]=酸素 / [bold:P]=リン\n\nこの4つの元素には同素体があると覚えよう!',
+        miniTest: [
+          { type:'fill', q:'同じ元素からなるが、原子の結合の仕方が異なり性質の違う単体どうしを{0}という。', answers:['同素体'], bank:['同素体','異性体','化合物','混合物'] },
+          { type:'choice', q:'同素体を持つ4元素の語呂合わせは?', options:['SCOP','SOAP','CHON','HOPE'], answer:0 }
+        ]
+      },
+      {
+        title: '炭素の同素体 ─ ダイヤモンド・黒鉛・フラーレン',
+        body: '炭素 C には代表的な同素体が3つあります。\n\n[bold:① ダイヤモンド]\n・炭素原子が[bold:正四面体]の構造で結合\n・非常にかたい(自然界で最も硬い)\n・電気を[bold:通さない]\n・無色透明\n\n[bold:② 黒鉛(グラファイト)]\n・層状の構造をしていて、層と層は弱い力で結合\n・[bold:やわらかく、層状にはがれやすい](鉛筆の芯)\n・電気を[bold:通す](自由電子があるため)\n・黒色\n\n[bold:③ フラーレン]\n・サッカーボール型の分子(C₆₀ など)\n・1985年に発見された比較的新しい同素体\n\n[warn:同じ「炭素」だけでできていても、結合のしかたで性質はまるで違う。テスト頻出は「ダイヤモンド↔黒鉛」の比較。]',
+        miniTest: [
+          { type:'choice', q:'ダイヤモンドの性質として正しいのは?', options:['電気をよく通す','やわらかい','非常にかたい','黒色である'], answer:2 },
+          { type:'choice', q:'黒鉛の性質として正しいのは?', options:['無色透明','電気を通さない','非常にかたい','電気を通し、層状にはがれやすい'], answer:3 }
+        ]
+      },
+      {
+        title: '酸素の同素体 ─ 酸素 O₂ と オゾン O₃',
+        body: '酸素 O の同素体は2つあります。\n\n[bold:① 酸素 O₂]\n・[bold:無色無臭]\n・空気の約[bold:21%]を占める気体\n・私たちの呼吸に使われる、あの「酸素」\n\n[bold:② オゾン O₃]\n・[bold:淡青色]、[bold:特異臭]あり(プールの消毒のような匂い)\n・酸素中で[bold:無声放電]させるか、[bold:強い紫外線]を当てると発生\n・強い[bold:酸化力]を持ち、[bold:殺菌・消毒]に使われる\n\n[tip:オゾン層(地球の上空)が紫外線を吸収しているため、地表の生命が紫外線から守られている。「オゾンホール」は環境問題でよく聞く言葉。]\n\n[bold:銀の酸化反応]の例:Ag + O₃ → 銀が酸化される。O₃は分解して酸素O₂になりやすい(=酸化力が強い理由)。',
+        miniTest: [
+          { type:'fill', q:'酸素 O₂ の同素体で、淡青色で特異臭があり、強い酸化力を持つ気体を{0}という。', answers:['オゾン'], bank:['オゾン','二酸化炭素','水素','窒素'] },
+          { type:'choice', q:'オゾンの性質として正しいのは?', options:['無色無臭','空気の主成分である','強い酸化力を持つ','水によく溶ける'], answer:2 }
+        ]
+      },
+      {
+        title: '硫黄とリンの同素体',
+        body: '[bold:硫黄 S の同素体は3つ]\n\n[bold:① 斜方硫黄(しゃほういおう)]\n・室温で[bold:黄色]の固体。最も[bold:安定]\n・化学式 S₈(王冠型分子)\n\n[bold:② 単斜硫黄(たんしゃいおう)]\n・黄色の針状結晶。斜方硫黄を加熱して液体にし、ゆっくり冷やすと得られる\n・放置すると斜方硫黄になる\n\n[bold:③ ゴム状硫黄]\n・液体の硫黄を急冷すると得られる、褐色のゴム状の物質\n・放置すると斜方硫黄になる\n\n[bold:リン P の同素体は2つ]\n\n[bold:① 黄リン]\n・淡黄色のロウ状の固体\n・[bold:発火点が約60℃]と低く、自然発火するので[bold:水中で保存]\n・強い毒性、にんにくのような臭い\n・日光にあたると赤リンに変化\n\n[bold:② 赤リン]\n・褐色の粉末固体。常温で[bold:安定]、毒性は少ない\n・マッチの側薬(箱のザラザラ部分)に使われる',
+        miniTest: [
+          { type:'choice', q:'室温で最も安定な硫黄の同素体は?', options:['単斜硫黄','斜方硫黄','ゴム状硫黄','液体硫黄'], answer:1 },
+          { type:'choice', q:'黄リンを水中で保存する理由は?', options:['水によく溶けるから','空気中で自然発火するから','光を吸収するから','水と反応するから'], answer:1 }
+        ]
+      }
+    ],
+    fillBlanks: [
+      {
+        text: '同じ元素からなる単体で、性質の異なる物質どうしを{0}という。同素体を持つ代表的な元素は、語呂合わせで{1}と覚える。炭素の同素体には、非常にかたく電気を通さない{2}と、やわらかく電気を通す{3}がある。酸素の同素体である{4}は淡青色で強い酸化力を持つ。硫黄の同素体で室温で最も安定なのは{5}硫黄である。',
+        answers: ['同素体','SCOP','ダイヤモンド','黒鉛','オゾン','斜方'],
+        bank: ['同素体','SCOP','ダイヤモンド','黒鉛','オゾン','斜方','単斜','ゴム状','フラーレン']
+      }
+    ],
+    quiz: [
+      { type:'choice', q:'同素体の関係にある2つの物質の組み合わせは?', options:['水と過酸化水素','酸素とオゾン','水と氷','食塩と塩酸'], answer:1 },
+      { type:'choice', q:'同素体を持つ元素として正しい組み合わせは?', options:['H, N, Cl, F','S, C, O, P','Na, K, Ca, Mg','Fe, Cu, Zn, Al'], answer:1 },
+      { type:'fill', q:'ダイヤモンドと黒鉛は、どちらも{0}の同素体である。', answers:['炭素'], bank:['炭素','酸素','硫黄','リン'] },
+      { type:'choice', q:'次のうち、電気を通すのはどれか。', options:['ダイヤモンド','黒鉛','フラーレン(C₆₀)','すべて通さない'], answer:1 },
+      { type:'choice', q:'オゾンの製法として正しいのは?', options:['酸素中で無声放電する','酸素を加熱する','酸素を圧縮する','酸素を冷却する'], answer:0 },
+      { type:'fill', q:'酸素 O₂ の同素体で、強い酸化力を持つのは{0}である。', answers:['オゾン'], bank:['オゾン','二酸化炭素','水素','水蒸気'] },
+      { type:'choice', q:'黄リンと赤リンに関する記述として正しいのは?', options:['黄リンは安定で毒性がない','赤リンは水中で保存する','黄リンは自然発火するため水中で保存する','どちらも常温で液体である'], answer:2 },
+      { type:'choice', q:'室温で最も安定な硫黄の同素体は?', options:['ゴム状硫黄','単斜硫黄','斜方硫黄','液体硫黄'], answer:2 },
+      { type:'fill', q:'同素体を持つ4元素の語呂合わせは{0}である。', answers:['SCOP'], bank:['SCOP','SOAP','CHON','HOPE'] },
+      { type:'choice', q:'マッチの箱のザラザラ部分に使われているのは?', options:['黄リン','赤リン','黒鉛','硫黄'], answer:1 }
+    ],
+    flashcards: [
+      { type:'qa', front:'同素体とは?', back:'同じ元素からできているが、原子の結合の仕方が異なるため性質の違う単体どうし。\n例:ダイヤモンドと黒鉛(両方とも炭素)' },
+      { type:'qa', front:'同素体を持つ4元素', back:'SCOP (スコップ)\nS=硫黄、C=炭素、O=酸素、P=リン' },
+      { type:'qa', front:'ダイヤモンドの性質', back:'・正四面体構造\n・非常にかたい(自然界最高)\n・電気を通さない\n・無色透明' },
+      { type:'qa', front:'黒鉛の性質', back:'・層状構造\n・やわらかく、層状にはがれやすい(鉛筆の芯)\n・電気を通す\n・黒色' },
+      { type:'qa', front:'オゾン O₃ の性質', back:'・淡青色、特異臭あり\n・強い酸化力(殺菌・消毒に利用)\n・酸素中の無声放電や強い紫外線で発生' },
+      { type:'term', front:'ダイヤモンド vs 黒鉛', back:'同じ炭素でも性質が真逆', mistake:'ダイヤ=硬・電気通さない / 黒鉛=軟・電気通す。\n[bold:電気を通すのは黒鉛]!ダイヤと混同しないで。' },
+      { type:'term', front:'黄リンの保存方法', back:'水中で保存する', mistake:'なぜ?→[bold:発火点が約60℃と低く、空気中で自然発火]するから。\n空気と接触させないために水中保存。' },
+      { type:'term', front:'硫黄の同素体3種類', back:'斜方硫黄(室温で最安定)/ 単斜硫黄 / ゴム状硫黄', mistake:'放置すると[bold:単斜・ゴム状はどちらも斜方硫黄に戻る]。\n安定なのは斜方硫黄!' },
+      { type:'term', front:'オゾンの作り方', back:'酸素中で無声放電 or 強い紫外線', mistake:'「ただ加熱するだけ」では作れない!\n[bold:無声放電]がキーワード。' },
+      { type:'qa', front:'フラーレンとは?', back:'炭素の同素体の1つ。サッカーボール型の分子(C₆₀ など)。1985年に発見された比較的新しい同素体。' },
+      { type:'qa', front:'赤リンの用途', back:'マッチの側薬(箱のザラザラ部分)。\n常温で安定、毒性が少ない。' }
+    ]
+  },
+  // ============================================================
+  // 単元6: 元素の検出 (沈殿反応・炎色反応)
+  // ============================================================
+  {
+    id: 'detection',
+    name: '元素の検出',
+    symbol: '🔥',
+    color: '#EF4444',
+    colorD: '#B91C1C',
+    bgColor: '#FEE2E2',
+    intro: '物質に含まれる元素を「目で見て」確認できる、沈殿反応と炎色反応。色や沈殿物の特徴を語呂合わせで覚えよう!',
+    steps: [
+      {
+        title: '塩素の検出 ─ 硝酸銀で白色沈殿',
+        body: '物質中に[bold:塩素 Cl(塩化物イオン Cl⁻)]が含まれているかを調べる方法。\n\n[bold:操作]:水溶液に[bold:硝酸銀 AgNO₃] 水溶液を加える。\n→ [bold:塩化銀 AgCl] の[bold:白色沈殿]が生じれば、塩素が含まれていることが分かる。\n\n[bold:反応式]\nAg⁺ + Cl⁻ → AgCl ↓(沈殿)\n\n[bold:なぜ?]\n硝酸銀の水溶液には銀イオン Ag⁺ があり、塩化物イオン Cl⁻ と出会うと、水に溶けにくい塩化銀 AgCl ができて沈殿します。\n\n[tip:身近な応用:水道水に塩素消毒の塩素が含まれているかどうかも、硝酸銀でチェックできる(塩化物イオンの検出)。]',
+        miniTest: [
+          { type:'fill', q:'塩化物イオンを含む水溶液に硝酸銀水溶液を加えると、{0}色の{1}が沈殿する。', answers:['白','塩化銀'], bank:['白','黒','黄','塩化銀','硝酸銀','水酸化銀'] },
+          { type:'choice', q:'塩素 Cl⁻ の検出に使う試薬は?', options:['塩酸','硝酸銀水溶液','水酸化ナトリウム水溶液','石灰水'], answer:1 }
+        ]
+      },
+      {
+        title: '二酸化炭素の検出 ─ 石灰水が白く濁る',
+        body: '[bold:二酸化炭素 CO₂] を確認する方法。\n\n[bold:操作]:[bold:水酸化カルシウム Ca(OH)₂] 水溶液(石灰水)に二酸化炭素を通す。\n→ [bold:白色]の[bold:炭酸カルシウム CaCO₃] が沈殿する。\n\n[bold:反応式]\nCa(OH)₂ + CO₂ → CaCO₃↓ + H₂O\n\n[tip:小学校の理科で「石灰水に息を吹き込むと白く濁る」と習ったあれです。息(呼気)に含まれる二酸化炭素を、石灰水で検出している。]\n\n[warn:石灰水=水酸化カルシウムCa(OH)₂の水溶液。「石灰石(CaCO₃)」とは別物なので混同注意!]',
+        miniTest: [
+          { type:'choice', q:'二酸化炭素の検出に使う水溶液は?', options:['硝酸銀水溶液','石灰水','食塩水','塩酸'], answer:1 },
+          { type:'fill', q:'石灰水に二酸化炭素を通すと、{0}色の炭酸カルシウムが沈殿する。', answers:['白'], bank:['白','黒','赤','青'] }
+        ]
+      },
+      {
+        title: '炎色反応 ─ 金属を燃やすと色がつく',
+        body: '[term:炎色反応]:白金線に金属(またはその化合物)を付けてガスバーナーの炎に入れると、[bold:特定の色]に変わる現象。\n\nアルカリ金属やアルカリ土類金属の検出に使われます。\n\n[bold:重要!炎色反応の暗記法]\n[bold:Li 赤 / Na 黄 / K 紫 / Cu 緑 / Ca 橙 / Sr 紅 / Ba 黄緑]\n\n[bold:【超有名語呂】]\n「[bold:リアカー無き K村、動力借るとうすれども、くれない馬力]」\n・リ(Li)アカー → 赤\n・無き(Na) → 黄(きいろ)\n・K村 → 紫(むらさき)\n・動(銅 Cu) → 緑\n・借る(Ca) → 橙(だいだい)\n・とう(Sr ストロンチウム)、すれども → 紅(くれない)\n・くれない、馬(Ba バリウム)力 → 黄緑\n\n[tip:花火の色はこの炎色反応を利用しています!赤=ストロンチウム、緑=銅、青緑=銅、黄=ナトリウム、紫=カリウムなど。]',
+        miniTest: [
+          { type:'choice', q:'ナトリウム Na の炎色反応の色は?', options:['赤','黄','紫','緑'], answer:1 },
+          { type:'choice', q:'紫色の炎色反応を示す元素は?', options:['Li','Na','K','Ca'], answer:2 }
+        ]
+      },
+      {
+        title: '応用問題 ─ 複数の検出を組み合わせる',
+        body: 'テストや入試では、複数の検出反応を組み合わせて、含まれる元素を特定する問題がよく出ます。\n\n[bold:典型的な出題パターン]\n「ある化合物の水溶液を白金線で炎色反応すると[bold:紫色]を示し、硝酸銀水溶液を加えると[bold:白色沈殿]を生じた。この化合物に含まれる元素は何か?」\n\n[bold:解き方]\n①炎色反応が紫 → [bold:K(カリウム)]が含まれる\n②硝酸銀で白色沈殿 → [bold:Cl(塩素)]が含まれる\n③答え:Kと Cl(つまり塩化カリウム KCl)\n\n[warn:「炎色反応は元素」「沈殿反応は陰イオン」と、それぞれ何を検出しているのかを意識することが大事。]\n\n[tip:練習として、いろいろな組み合わせを試してみよう:\n・黄+白 → Na と Cl(食塩 NaCl)\n・橙+白 → Ca と Cl\n・黄緑+白 → Ba と Cl]',
+        miniTest: [
+          { type:'choice', q:'炎色反応が黄色で、硝酸銀水溶液で白色沈殿を生じる化合物は?', options:['KCl','NaCl','CaCl₂','BaCl₂'], answer:1 },
+          { type:'choice', q:'炎色反応が紅(深紅)色を示す元素は?', options:['Li','Sr','K','Cu'], answer:1 }
+        ]
+      }
+    ],
+    fillBlanks: [
+      {
+        text: '塩化物イオン Cl⁻ を検出するには{0}水溶液を加える。{1}色の{2}が沈殿すれば塩素が含まれている。二酸化炭素 CO₂ を検出するには{3}に通すと、白色の{4}が沈殿する。リチウム Li の炎色反応の色は{5}、ナトリウム Na は{6}、カリウム K は{7}である。',
+        answers: ['硝酸銀','白','塩化銀','石灰水','炭酸カルシウム','赤','黄','紫'],
+        bank: ['硝酸銀','水酸化ナトリウム','白','黒','塩化銀','水酸化銀','石灰水','炭酸カルシウム','炭酸ナトリウム','赤','黄','紫','緑']
+      }
+    ],
+    quiz: [
+      { type:'choice', q:'塩素 Cl⁻ の検出に使う試薬は?', options:['石灰水','硝酸銀水溶液','水酸化ナトリウム水溶液','水素ガス'], answer:1 },
+      { type:'choice', q:'石灰水に二酸化炭素を通すと生じる白色沈殿は?', options:['塩化カルシウム','炭酸カルシウム','水酸化カルシウム','酸化カルシウム'], answer:1 },
+      { type:'choice', q:'カリウム K の炎色反応の色は?', options:['赤','黄','紫','緑'], answer:2 },
+      { type:'choice', q:'橙(だいだい)色の炎色反応を示す元素は?', options:['Li','Ca','K','Cu'], answer:1 },
+      { type:'fill', q:'銅 Cu の炎色反応の色は{0}である。', answers:['緑'], bank:['赤','黄','紫','緑','橙','紅','黄緑'] },
+      { type:'choice', q:'炎色反応が紫色で、硝酸銀水溶液で白色沈殿を生じる化合物に含まれる元素の組み合わせは?', options:['Naと Cl','Kと Cl','Caと Cl','Baと Cl'], answer:1 },
+      { type:'fill', q:'石灰水は{0}の水溶液で、二酸化炭素を吹き込むと白く濁る。', answers:['水酸化カルシウム'], bank:['水酸化カルシウム','水酸化ナトリウム','炭酸カルシウム','酸化カルシウム'] },
+      { type:'choice', q:'バリウム Ba の炎色反応の色は?', options:['赤','黄','黄緑','紫'], answer:2 },
+      { type:'choice', q:'食塩水(NaCl水溶液)で確認できる反応は?', options:['炎色反応で黄色 + 硝酸銀で白色沈殿','炎色反応で紫色 + 石灰水が濁る','炎色反応で赤色 + 硝酸銀で黒色沈殿','炎色反応で緑色 + 石灰水が濁る'], answer:0 },
+      { type:'fill', q:'ストロンチウム Sr の炎色反応の色は{0}である。', answers:['紅'], bank:['赤','紅','黄','紫','緑','橙','黄緑'] }
+    ],
+    flashcards: [
+      { type:'qa', front:'塩素 Cl⁻ の検出', back:'硝酸銀 AgNO₃ 水溶液を加える。\n白色の塩化銀 AgCl が沈殿。\nAg⁺ + Cl⁻ → AgCl↓' },
+      { type:'qa', front:'二酸化炭素 CO₂ の検出', back:'石灰水(水酸化カルシウム Ca(OH)₂ 水溶液)に通す。\n白色の炭酸カルシウム CaCO₃ が沈殿。' },
+      { type:'qa', front:'炎色反応とは?', back:'白金線に金属を付けて炎に入れると、特定の色に変わる現象。\nアルカリ金属・アルカリ土類金属などの検出に使う。' },
+      { type:'term', front:'炎色反応の暗記法', back:'リアカー無きK村、動力借るとうすれども、くれない馬力', mistake:'Li赤・Na黄・K紫・Cu緑・Ca橙・Sr紅・Ba黄緑\nこの語呂は化学基礎の超頻出!' },
+      { type:'qa', front:'リチウム Li の炎色反応', back:'赤色' },
+      { type:'qa', front:'ナトリウム Na の炎色反応', back:'黄色' },
+      { type:'qa', front:'カリウム K の炎色反応', back:'紫色' },
+      { type:'qa', front:'銅 Cu の炎色反応', back:'緑色\n(花火の青緑色も銅の炎色反応)' },
+      { type:'qa', front:'カルシウム Ca の炎色反応', back:'橙(だいだい)色' },
+      { type:'qa', front:'ストロンチウム Sr / バリウム Ba の炎色反応', back:'Sr=紅(くれない、深紅)\nBa=黄緑' },
+      { type:'term', front:'石灰水', back:'水酸化カルシウム Ca(OH)₂ の水溶液', mistake:'「石灰水」と「石灰石(CaCO₃)」は別物!\n石灰水は液体、石灰石は固体(炭酸カルシウム)。' },
+      { type:'term', front:'KClの検出パターン', back:'炎色反応=紫(K) / 硝酸銀で白色沈殿(Cl)', mistake:'「炎色反応は陽イオン側を、硝酸銀沈殿は陰イオン側を検出している」と理解すると間違えにくい。' }
+    ]
+  },
+  // ============================================================
+  // 単元7: 物質の三態と状態変化
+  // ============================================================
+  {
+    id: 'states',
+    name: '物質の三態と状態変化',
+    symbol: '❄',
+    color: '#3B82F6',
+    colorD: '#1D4ED8',
+    bgColor: '#DBEAFE',
+    intro: '固体・液体・気体の三態と、その間の変化(融解・蒸発・凝縮など)を学びます。状態変化中は温度が変わらない理由 = エネルギーの行方を理解しよう。',
+    steps: [
+      {
+        title: '物質の三態 ─ 固体・液体・気体',
+        body: '物質は温度や圧力によって、3つの状態のいずれかをとります。\n\n[bold:固体]\n・物質の構成粒子が[bold:互いに決まった位置]にある\n・一定の形を持つ\n・粒子は振動するだけで、移動はしない\n\n[bold:液体]\n・物質の構成粒子の[bold:配列が自由に変わる]\n・形は容器に従う\n・粒子は互いに近いが、移動できる\n\n[bold:気体]\n・物質の構成粒子が[bold:自由に高速で運動]している\n・粒子間の距離が大きく、空間を満たす\n\n[tip:水(液体)・氷(固体)・水蒸気(気体)が、三態の身近な例。同じH₂Oでも、温度によって状態が変わる。]',
+        miniTest: [
+          { type:'choice', q:'物質の構成粒子が決まった位置で振動しているのはどの状態か。', options:['固体','液体','気体','プラズマ'], answer:0 },
+          { type:'choice', q:'物質の構成粒子が自由に高速で運動しているのはどの状態か。', options:['固体','液体','気体','非晶質'], answer:2 }
+        ]
+      },
+      {
+        title: '状態変化の名前を覚える',
+        body: '三態の間の移り変わりには、それぞれ名前があります。\n\n[bold:固体 ⇄ 液体]\n・[term:融解]:固体 → 液体(温度=融点)\n・[term:凝固]:液体 → 固体(温度=凝固点)\n\n[bold:液体 ⇄ 気体]\n・[term:蒸発]:液体 → 気体(液体の表面から、何度でも起こる)\n・[term:沸騰]:液体 → 気体(液体の内部から起こる、温度=沸点)\n・[term:凝縮]:気体 → 液体\n\n[bold:固体 ⇄ 気体]\n・[term:昇華]:固体 → 気体(またはその逆)\n\n[warn:「蒸発」と「沸騰」の違いに注意。蒸発は表面で何℃でも起こるが、沸騰は内部から泡が出る現象で、沸点に達したときだけ起こる。]\n\n[tip:水の場合:融点=0℃、沸点=100℃(1気圧のとき)]',
+        miniTest: [
+          { type:'fill', q:'固体から液体になる現象を{0}、液体から固体になる現象を{1}という。', answers:['融解','凝固'], bank:['融解','凝固','蒸発','凝縮','昇華','沸騰'] },
+          { type:'fill', q:'気体から液体になる現象を{0}、固体が液体を経ずに直接気体になる現象を{1}という。', answers:['凝縮','昇華'], bank:['凝縮','蒸発','昇華','融解','沸騰'] }
+        ]
+      },
+      {
+        title: '【超重要】状態変化中は温度が変わらない',
+        body: '氷を加熱して水蒸気にするとき、温度はどう変化するか?\n\n[bold:氷 → 水(0℃で融解中)]\n・温度は[bold:0℃のまま]\n・なぜ?:加えた熱は、氷の[bold:粒子の配列をくずす]ために使われる(融解熱として吸収)\n・分子の運動エネルギーは増えない=温度は上がらない\n\n[bold:水 → 水蒸気(100℃で沸騰中)]\n・温度は[bold:100℃のまま]\n・なぜ?:加えた熱は、[bold:粒子間の結合を切って分子を自由に動けるようにする]ために使われる(蒸発熱として吸収)\n\n[warn:【重要事実】水の蒸発熱は融解熱の約7倍!]\nこれは「分子間力を完全に切り離す(蒸発)」のは、「位置を変えるだけ(融解)」よりずっと多くのエネルギーが必要だから。\n\n[tip:純物質は沸点・融点で温度が一定になる(混合物は一定にならない)。これを使うと「純物質か混合物か」も判別できる。]',
+        miniTest: [
+          { type:'choice', q:'氷が融解している間、温度は?', options:['上がり続ける','0℃のまま一定','100℃のまま一定','下がる'], answer:1 },
+          { type:'choice', q:'水の蒸発熱と融解熱を比べると?', options:['蒸発熱の方が約7倍大きい','融解熱の方が約7倍大きい','ほぼ同じ','蒸発熱はほぼゼロ'], answer:0 }
+        ]
+      },
+      {
+        title: '熱運動・拡散・絶対温度',
+        body: '[bold:熱運動]:物質を構成する粒子は、絶えず不規則に運動しています。これを[term:熱運動]と呼びます。温度が高いほど熱運動が活発になります。\n\n[bold:拡散]:臭素の気体をビンに1滴入れると、時間が経つと全体に広がります。このように、物質が自然に全体に広がっていく現象を[term:拡散]といいます。\n例:水中にインクを1滴落とすと広がる/部屋の隅に置いた香水が部屋中に広がる。\n\n[bold:絶対温度]:粒子の運動は、低温ほど穏やかになります。理論上[bold:-273℃]で粒子の運動は停止し、これ以下の温度はありません。これを[term:絶対零度]といいます。\n\nこれを基準にして、目盛りの間隔をセルシウス温度(℃)に合わせた温度を[term:絶対温度]といいます。\n単位:K(ケルビン)\n\n[bold:変換式(超重要)]\nT(K) = t(℃) + 273\n\n[bold:例題]\n・0℃ → 273 K\n・100℃ → 373 K\n・27℃ → 300 K\n・-20℃ → 253 K',
+        miniTest: [
+          { type:'fill', q:'物質を構成する粒子の不規則な運動を{0}という。', answers:['熱運動'], bank:['熱運動','拡散','蒸発','凝縮'] },
+          { type:'choice', q:'27℃を絶対温度で表すと?', options:['273 K','300 K','327 K','246 K'], answer:1 }
+        ]
+      }
+    ],
+    fillBlanks: [
+      {
+        text: '物質には固体・液体・気体の3つの状態があり、これを物質の{0}という。固体から液体になる現象を{1}、液体から気体になる現象のうち液体内部から起こるものを{2}、気体から液体になるのを{3}、固体が直接気体になるのを{4}という。状態変化中は温度が一定で、そのとき加えた熱は粒子の{5}や結合を切るのに使われる。物質を構成する粒子の不規則な運動を{6}という。絶対零度は約-273℃で、絶対温度との関係はT(K)=t(℃)+{7}。',
+        answers: ['三態','融解','沸騰','凝縮','昇華','配列','熱運動','273'],
+        bank: ['三態','融解','凝固','沸騰','蒸発','凝縮','昇華','配列','結合','熱運動','拡散','273','100','0']
+      }
+    ],
+    quiz: [
+      { type:'choice', q:'液体から固体になる現象を何というか。', options:['融解','凝固','蒸発','昇華'], answer:1 },
+      { type:'choice', q:'気体から液体になる現象を何というか。', options:['凝縮','凝固','蒸発','昇華'], answer:0 },
+      { type:'fill', q:'固体が液体を経ずに直接気体になる現象を{0}という。', answers:['昇華'], bank:['昇華','蒸発','融解','凝縮'] },
+      { type:'choice', q:'純粋な氷が融解している間、温度は?', options:['上昇する','0℃のまま一定','100℃のまま一定','下降する'], answer:1 },
+      { type:'choice', q:'状態変化中に温度が変わらないのはなぜか。', options:['熱が逃げているから','加えた熱が粒子の配列変化や結合切断に使われるから','温度計が壊れているから','室温と同じになるから'], answer:1 },
+      { type:'fill', q:'水の融点は{0}℃、沸点は{1}℃である(1気圧のとき)。', answers:['0','100'], bank:['0','100','273','373','-273'] },
+      { type:'fill', q:'絶対温度 T(K) とセルシウス温度 t(℃) の関係式は T = t + {0}。', answers:['273'], bank:['273','100','0','373'] },
+      { type:'choice', q:'100℃を絶対温度で表すと?', options:['273 K','300 K','373 K','100 K'], answer:2 },
+      { type:'choice', q:'物質が自然に全体に広がっていく現象を何というか。', options:['熱運動','拡散','蒸発','凝縮'], answer:1 },
+      { type:'choice', q:'水の蒸発熱は融解熱の約何倍か。', options:['同じ','2倍','7倍','100倍'], answer:2 }
+    ],
+    flashcards: [
+      { type:'qa', front:'物質の三態とは?', back:'固体・液体・気体の3つの状態。\n温度や圧力によって相互に変化する。' },
+      { type:'qa', front:'融解 / 凝固', back:'融解=固体→液体(温度:融点)\n凝固=液体→固体(温度:凝固点)' },
+      { type:'qa', front:'蒸発 / 沸騰 / 凝縮', back:'蒸発=液体→気体(表面から、何℃でも)\n沸騰=液体→気体(内部から、沸点で)\n凝縮=気体→液体' },
+      { type:'qa', front:'昇華', back:'固体が液体を経ずに直接気体になる現象(またはその逆)。\n例:ヨウ素・ナフタレン・ドライアイス' },
+      { type:'term', front:'状態変化中の温度', back:'温度は一定(変わらない)', mistake:'なぜ?→加えた熱は[bold:粒子の配列をくずす(融解)]や[bold:粒子間の結合を切る(蒸発)]ために使われ、運動エネルギー(=温度)には変わらない。' },
+      { type:'term', front:'蒸発熱 vs 融解熱', back:'水の蒸発熱は融解熱の[bold:約7倍]', mistake:'なぜ?→融解は位置の変化、蒸発は分子間力を完全に切り離す必要があるため、より多くのエネルギーが必要。' },
+      { type:'term', front:'蒸発と沸騰の違い', back:'蒸発=表面から、何℃でも起こる / 沸騰=内部から、沸点で起こる', mistake:'洗濯物が乾くのは「蒸発」(沸騰ではない)。区別を意識しよう。' },
+      { type:'qa', front:'熱運動とは?', back:'物質を構成する粒子の不規則な運動。\n温度が高いほど活発になる。' },
+      { type:'qa', front:'拡散とは?', back:'物質が自然に全体に広がっていく現象。\n例:水中のインク、部屋の香水の匂い、ビンの中の臭素気体' },
+      { type:'qa', front:'絶対零度とは?', back:'理論上、粒子の運動が停止する温度。-273℃(=0 K)。\nこれ以下の温度はない。' },
+      { type:'term', front:'絶対温度の換算式', back:'T(K) = t(℃) + 273', mistake:'プラス273を忘れない!\n0℃=273 K、100℃=373 K、27℃=300 K' },
+      { type:'qa', front:'純物質と混合物の見分け方(熱)', back:'純物質→沸点・融点が一定\n混合物→温度が一定にならない\n海水が-2℃でも凍らないのはこのため。' }
+    ]
+  }
+];
+
+// ============================================================
+// State + Storage
+// ============================================================
+const STORAGE_KEY = 'chem-basic-progress-v1';
+const SETTINGS_KEY = 'chem-basic-settings-v1';
+
+function loadProgress() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+  catch(e) { return {}; }
+}
+function saveProgress(d) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch(e) {}
+}
+function loadSettings() {
+  try { return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || { miniTestMode:'auto' }; }
+  catch(e) { return { miniTestMode:'auto' }; }
+}
+function saveSettings(s) {
+  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); } catch(e) {}
+}
+
+let state = {
+  progress: loadProgress(),
+  settings: loadSettings(),
+  view: 'dashboard',
+  activeUnit: null,
+  tab: 'learn',
+  currentStep: 0,
+  miniTestVisible: {},
+  miniTestSelected: {},
+  miniTestPickedChip: {},
+  miniTestJudged: {},
+  miniTestPassed: {},
+  practicePickedChip: null,
+  startTime: 0,
+  elapsed: 0,
+  timerId: null,
+  timerPaused: false,
+  testSelected: {},
+  testPickedChip: null,
+  testJudged: false,
+  // Flashcard state
+  flashDeck: [],          // 現在のデッキ (カードオブジェクトの配列)
+  flashIndex: 0,          // 現在のカードのインデックス
+  flashFlipped: false,    // 表/裏
+  flashMode: 'all',       // 'all' or 'review' (もう一度のみ)
+  flashKnown: new Set(),  // 「覚えた」と分類されたカードID
+  flashReview: new Set(), // 「もう一度」と分類されたカードID
+  flashSummaryMode: false,// true なら全単元横断モード
+  flashSpeed: 'manual',   // 'manual' | 2 | 3 | 4 | 5 (秒)
+  flashLoop: false,       // 1周終わったらループするか
+  flashPlaying: false,    // 自動再生中か
+  flashTimerId: null      // 自動再生のタイマーID
+};
+
+function getProg(unitId) {
+  return state.progress[unitId] || { steps:{}, passed:false, mark:null, bestTimes:[], flashKnown:[], flashReview:[] };
+}
+function updateProg(unitId, patch) {
+  const cur = getProg(unitId);
+  state.progress[unitId] = { ...cur, ...patch };
+  saveProgress(state.progress);
+}
+
+function formatBody(text) {
+  return text
+    .replace(/\[term:([^\]]+)\]/g, '<span class="term-pill">$1</span>')
+    .replace(/\[bold:([^\]]+)\]/g, '<strong>$1</strong>')
+    .replace(/\[tip:([^\]]+)\]/g, '<div class="tip-box">$1</div>')
+    .replace(/\[warn:([^\]]+)\]/g, '<div class="warn-box">$1</div>')
+    .replace(/\[info:([^\]]+)\]/g, '<div class="info-box">$1</div>');
+}
+
+function formatTime(sec) {
+  const m = Math.floor(sec/60).toString().padStart(2,'0');
+  const s = (sec%60).toFixed(1).padStart(4,'0');
+  return `${m}:${s}`;
+}
+
+function fireConfetti() {
+  const colors = ['#F59E0B','#EC4899','#3B82F6','#10B981','#8B5CF6','#FCD34D'];
+  for (let i=0; i<60; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti';
+    el.style.left = Math.random()*100 + '%';
+    el.style.background = colors[i%colors.length];
+    el.style.borderRadius = (i%2===0) ? '50%' : '2px';
+    const dur = 2 + Math.random()*2;
+    const delay = Math.random()*0.5;
+    el.style.animation = `fall ${dur}s ${delay}s ease-in forwards`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), (dur+delay)*1000+200);
+  }
+}
+
+function showModal(opts) {
+  document.getElementById('modal').className = 'modal-bg show';
+  const inner = document.getElementById('modalInner');
+  inner.className = 'modal ' + (opts.type||'');
+  document.getElementById('modalTitle').textContent = opts.title || '';
+  document.getElementById('modalBody').innerHTML = opts.body || '';
+  const actions = document.getElementById('modalActions');
+  actions.innerHTML = '';
+  (opts.buttons||[]).forEach(b => {
+    const btn = document.createElement('button');
+    btn.className = 'modal-btn ' + (b.primary ? 'primary' : 'secondary');
+    btn.textContent = b.label;
+    btn.onclick = b.action;
+    actions.appendChild(btn);
+  });
+}
+function closeModal() { document.getElementById('modal').className = 'modal-bg'; }
+
+function render() {
+  if (state.view === 'dashboard') renderDashboard();
+  else if (state.view === 'summary') renderSummary();
+  else renderUnit();
+}
+
+function renderDashboard() {
+  const totalSteps = UNITS.reduce((s,u) => s + u.steps.length, 0);
+  const doneSteps = UNITS.reduce((s,u) => {
+    const p = getProg(u.id);
+    return s + Object.values(p.steps||{}).filter(v=>v).length;
+  }, 0);
+  const passedUnits = UNITS.filter(u => getProg(u.id).passed).length;
+  const pct = totalSteps > 0 ? Math.round(doneSteps/totalSteps*100) : 0;
+
+  let html = '<div class="container">';
+  html += `
+    <div class="header">
+      <div class="header-inner">
+        <div class="header-tag">CHEMISTRY BASIC ／ 化学基礎</div>
+        <h1 class="header-title">物質の構成</h1>
+        <div class="header-sub">純物質・混合物 / 分離精製 / 元素 / 同素体 / 物質の三態</div>
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-label">学習進捗</div>
+            <div class="stat-val amber">${doneSteps} / ${totalSteps} <span style="font-size:12px;color:#888;">ステップ</span></div>
+            <div class="stat-bar"><div class="stat-bar-fill" style="width:${pct}%"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">合格単元</div>
+            <div class="stat-val purple">${passedUnits} / ${UNITS.length} <span style="font-size:12px;color:#888;">単元</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  html += `
+    <div class="settings">
+      <span class="settings-label">⚙ ステップごとのミニテスト</span>
+      <div class="toggle-wrap">
+        <button class="toggle-opt ${state.settings.miniTestMode==='auto'?'active':''}" onclick="setMiniMode('auto')">自動表示</button>
+        <button class="toggle-opt ${state.settings.miniTestMode==='button'?'active':''}" onclick="setMiniMode('button')">ボタン式</button>
+      </div>
+      <span style="color:#aaa;font-size:11px;">${state.settings.miniTestMode==='auto'?'説明文の下に自動で出ます':'ボタンを押すと出ます'}</span>
+    </div>
+  `;
+
+  html += '<div class="grid">';
+  UNITS.forEach((u, i) => {
+    const p = getProg(u.id);
+    const cssVars = `--unit-color:${u.color};--unit-color-d:${u.colorD};--unit-bg:${u.bgColor};--unit-glow:${u.color}66`;
+    const stepsDone = Object.values(p.steps||{}).filter(v=>v).length;
+    html += `
+      <div class="unit-card ${p.passed?'passed':''}" style="${cssVars}" onclick="openUnit('${u.id}')">
+        <div class="unit-card-blob"></div>
+        <div class="unit-card-inner">
+          <div class="unit-head">
+            <div class="unit-symbol">${u.symbol}</div>
+            <div>
+              <div class="unit-idx">単元 ${i+1}</div>
+              <div class="unit-name">${u.name}</div>
+            </div>
+          </div>
+          <div class="unit-intro">${u.intro}</div>
+          <div class="unit-stats">
+            <span class="stat-chip steps">📚 ${stepsDone}/${u.steps.length} ステップ</span>
+            ${p.passed ? '<span class="stat-chip passed">✓ 合格</span>' : ''}
+          </div>
+          <button class="start-btn">学習を開始 →</button>
+          <div class="mark-row" onclick="event.stopPropagation()">
+            <button class="mark-btn A ${p.mark==='A'?'active':''}" onclick="setMark('${u.id}','A')">😊 OK</button>
+            <button class="mark-btn B ${p.mark==='B'?'active':''}" onclick="setMark('${u.id}','B')">🤔 微妙</button>
+            <button class="mark-btn C ${p.mark==='C'?'active':''}" onclick="setMark('${u.id}','C')">😣 苦手</button>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  // 全体まとめフラッシュカード(全単元)
+  const totalCards = UNITS.reduce((s,u) => s + (u.flashcards?.length || 0), 0);
+  const cssVarsAll = `--unit-color:#8B5CF6;--unit-color-d:#6D28D9;--unit-bg:#EDE9FE;--unit-glow:#8B5CF666`;
+  html += `
+    <div class="unit-card" style="${cssVarsAll}" onclick="openSummaryFlash()">
+      <div class="unit-card-blob"></div>
+      <div class="unit-card-inner">
+        <div class="unit-head">
+          <div class="unit-symbol">📇</div>
+          <div>
+            <div class="unit-idx">SUMMARY</div>
+            <div class="unit-name">全体まとめ</div>
+          </div>
+        </div>
+        <div class="unit-intro">全単元の重要ポイント・ミスしがちな箇所をフラッシュカードで横断的に復習。試験前の総ざらいに最適。</div>
+        <div class="unit-stats">
+          <span class="stat-chip steps">📇 ${totalCards} 枚のカード</span>
+        </div>
+        <button class="start-btn">フラッシュカードを開く →</button>
+      </div>
+    </div>
+  `;
+  html += '</div>';
+
+  html += '<div class="footer">化学基礎 ① 物質の構成 / 全7単元</div>';
+  html += '</div>';
+  document.getElementById('app').innerHTML = html;
+}
+
+function setMiniMode(mode) {
+  state.settings.miniTestMode = mode;
+  saveSettings(state.settings);
+  render();
+}
+
+function setMark(unitId, mark) {
+  const cur = getProg(unitId).mark;
+  updateProg(unitId, { mark: cur === mark ? null : mark });
+  render();
+}
+
+function openUnit(unitId) {
+  state.activeUnit = unitId;
+  state.view = 'unit';
+  state.tab = 'learn';
+  state.currentStep = 0;
+  state.flashSummaryMode = false;
+  state.flashMode = 'all';
+  state.miniTestVisible = {};
+  state.miniTestSelected = {};
+  state.miniTestJudged = {};
+  state.miniTestPassed = {};
+  state.miniTestPickedChip = {};
+  const p = getProg(unitId);
+  const u = UNITS.find(x=>x.id===unitId);
+  for (let i=0; i<u.steps.length; i++) {
+    if (!(p.steps||{})[i]) { state.currentStep = i; break; }
+    if (i === u.steps.length-1) state.currentStep = i;
+  }
+  render();
+  window.scrollTo(0,0);
+}
+
+function backToDashboard() {
+  stopTimer();
+  pauseFlashPlay();
+  state.view = 'dashboard';
+  state.flashSummaryMode = false;
+  render();
+}
+
+function renderUnit() {
+  const u = UNITS.find(x => x.id === state.activeUnit);
+  if (!u) return renderDashboard();
+  const p = getProg(u.id);
+  const cssVars = `--unit-color:${u.color};--unit-color-d:${u.colorD};--unit-bg:${u.bgColor};--unit-glow:${u.color}66`;
+
+  let html = `<div class="container" style="${cssVars}">`;
+  html += `<button class="back-btn" onclick="backToDashboard()">← 単元表に戻る</button>`;
+  html += `
+    <div class="unit-header">
+      <div class="unit-header-inner">
+        <div class="unit-header-symbol">${u.symbol}</div>
+        <div>
+          <h2 class="unit-header-title">${u.name}</h2>
+          <div class="unit-header-sub">${u.intro}</div>
+        </div>
+      </div>
+    </div>
+  `;
+  html += `
+    <div class="tabs">
+      <button class="tab ${state.tab==='learn'?'active':''}" onclick="setTab('learn')">📖 学習</button>
+      <button class="tab ${state.tab==='flash'?'active':''}" onclick="setTab('flash')">📇 カード</button>
+      <button class="tab ${state.tab==='practice'?'active':''}" onclick="setTab('practice')">✏️ 練習</button>
+      <button class="tab ${state.tab==='test'?'active':''}" onclick="setTab('test')">📝 確認テスト</button>
+    </div>
+  `;
+
+  if (state.tab === 'learn') html += renderLearnTab(u, p);
+  else if (state.tab === 'flash') html += renderFlashTab(u, p);
+  else if (state.tab === 'practice') html += renderPracticeTab(u, p);
+  else html += renderTestTab(u, p);
+
+  html += '</div>';
+  document.getElementById('app').innerHTML = html;
+
+  if (state.tab === 'learn') attachMiniTestHandlers(u);
+  if (state.tab === 'practice') attachPracticeHandlers(u);
+  if (state.tab === 'test') attachTestHandlers(u);
+}
+
+function setTab(tab) {
+  if (state.tab === 'practice' && tab !== 'practice') stopTimer();
+  if (state.tab === 'flash' && tab !== 'flash') {
+    pauseFlashPlay();
+  }
+  state.tab = tab;
+  if (tab === 'practice') {
+    resetPractice();
+    return; // resetPractice calls render
+  }
+  if (tab === 'test') {
+    state.testSelected = {};
+    state.testPickedChip = null;
+    state.testJudged = false;
+  }
+  if (tab === 'flash') {
+    initFlashDeck();
+  }
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+// LEARN TAB
+// ============================================================
+function renderLearnTab(u, p) {
+  const stepsDone = Object.keys(p.steps||{}).filter(k => (p.steps||{})[k]).length;
+  const progressPct = Math.round(stepsDone / u.steps.length * 100);
+  const stepIdx = state.currentStep;
+  const step = u.steps[stepIdx];
+
+  let html = '';
+  html += `
+    <div class="step-progress">
+      <div class="step-progress-head">
+        <span class="step-progress-title">学習ステップ</span>
+        <span class="step-progress-count">${stepsDone} / ${u.steps.length} 完了</span>
+      </div>
+      <div class="step-bar"><div class="step-bar-fill" style="width:${progressPct}%"></div></div>
+      <div class="step-dots">
+        ${u.steps.map((s,i) => {
+          const done = (p.steps||{})[i];
+          const cls = done ? 'done' : (i===stepIdx ? 'current' : '');
+          return `<span class="step-dot ${cls}" onclick="goToStep(${i})" title="${s.title}">${i+1}</span>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+
+  html += `
+    <div class="step-card">
+      <span class="step-num">STEP ${stepIdx+1} / ${u.steps.length}</span>
+      <h3 class="step-heading">${step.title}</h3>
+      <div class="step-body">${formatBody(step.body)}</div>
+      ${step.tree ? renderClassificationTree() : ''}
+  `;
+
+  if (step.miniTest && step.miniTest.length > 0) {
+    const passed = state.miniTestPassed[stepIdx];
+    const mode = state.settings.miniTestMode;
+    const visible = mode === 'auto' || state.miniTestVisible[stepIdx] || passed;
+
+    html += `<div class="ministep">`;
+    if (!visible) {
+      html += `
+        <button class="ministep-toggle-btn" onclick="showMiniTest(${stepIdx})">
+          ✏️ このステップの確認テストを始める (${step.miniTest.length}問)
+        </button>
+      `;
+    } else {
+      html += `<div class="ministep-title">このステップの確認 (${step.miniTest.length}問)</div>`;
+      html += renderMiniTest(step, stepIdx);
+    }
+    html += `</div>`;
+  } else {
+    if (!(p.steps||{})[stepIdx]) {
+      html += `<button class="next-step-btn" onclick="completeStep(${stepIdx})">次のステップへ進む</button>`;
+    } else if (stepIdx < u.steps.length - 1) {
+      html += `<button class="next-step-btn" onclick="goToStep(${stepIdx+1})">次のステップへ</button>`;
+    }
+  }
+
+  html += `</div>`;
+
+  if (stepsDone === u.steps.length) {
+    html += `
+      <div style="text-align:center; margin-top:18px;">
+        <button class="action-btn primary" onclick="setTab('practice')" style="padding:14px 32px; font-size:15px;">
+          ✏️ 練習問題に挑戦する →
+        </button>
+      </div>
+    `;
+  }
+
+  return html;
+}
+
+function renderClassificationTree() {
+  return `
+    <div class="tree">
+      <div class="tree-grid">
+        <div class="tree-node root" style="grid-row: span 4;">物 質</div>
+        <div class="tree-node mix">混合物</div>
+        <div></div>
+        <div>例: 空気、海水、食塩水、塩酸</div>
+
+        <div class="tree-node pure" style="grid-row: span 3;">純物質</div>
+        <div class="tree-node elem">単体</div>
+        <div>1元素　例: O₂、Fe、Cu</div>
+
+        <div class="tree-node comp">化合物</div>
+        <div>2種以上の元素　例: H₂O、CO₂、NaCl</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderMiniTest(step, stepIdx) {
+  let html = '';
+  const fillQs = step.miniTest.filter(q => q.type === 'fill');
+  if (fillQs.length > 0) {
+    const allBank = [...new Set(fillQs.flatMap(q => q.bank || []))];
+    html += `
+      <div class="ministep-bank" data-step="${stepIdx}">
+        <div class="ministep-bank-label">▸ 語群(タップして選択)</div>
+        ${allBank.map(w => `<span class="ministep-chip" data-word="${w}">${w}</span>`).join('')}
+      </div>
+    `;
+  }
+  step.miniTest.forEach((q, qIdx) => {
+    const key = `${stepIdx}_${qIdx}`;
+    const selected = state.miniTestSelected[key];
+    const judged = state.miniTestJudged[stepIdx];
+
+    html += `<div class="miniq" data-q="${qIdx}">`;
+    html += `<div class="miniq-text">問${qIdx+1}: ${q.q.replace(/\{(\d+)\}/g, (_,i) => {
+      if (q.type === 'fill') {
+        const idx = parseInt(i);
+        const val = (selected && selected[idx]) || '';
+        let cls = '';
+        if (judged) {
+          if (val === q.answers[idx]) cls = 'correct';
+          else cls = 'incorrect';
+        }
+        return `<span class="miniq-fill"><input type="text" data-step="${stepIdx}" data-q="${qIdx}" data-blank="${idx}" value="${val}" readonly class="${cls}"></span>`;
+      }
+      return _;
+    })}</div>`;
+
+    if (q.type === 'choice') {
+      html += `<div class="miniq-options">`;
+      q.options.forEach((opt, i) => {
+        let cls = 'miniq-opt';
+        if (selected === i) cls += ' selected';
+        if (judged) {
+          if (i === q.answer) cls += ' correct';
+          else if (selected === i) cls += ' incorrect';
+        }
+        html += `<button class="${cls}" data-step="${stepIdx}" data-q="${qIdx}" data-opt="${i}" ${judged?'disabled':''}>
+          <span class="miniq-mark">${String.fromCharCode(65+i)}</span>${opt}
+        </button>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+
+  if (!state.miniTestJudged[stepIdx]) {
+    html += `
+      <div class="ministep-actions">
+        <button class="ministep-btn primary" onclick="judgeMiniTest(${stepIdx})">採点する</button>
+      </div>
+    `;
+  } else if (state.miniTestPassed[stepIdx]) {
+    html += `<div class="ministep-result success">🎉 全問正解!次のステップへ進めます</div>`;
+    const u = UNITS.find(x=>x.id===state.activeUnit);
+    if (stepIdx < u.steps.length - 1) {
+      html += `<button class="next-step-btn" onclick="goToStep(${stepIdx+1})">次のステップへ</button>`;
+    } else {
+      html += `<div style="text-align:center;margin-top:14px;color:#666;font-size:13px;">全ステップ完了!練習問題に挑戦できます。</div>`;
+    }
+  } else {
+    html += `<div class="ministep-result fail">もう少し!間違えたところを直して再挑戦しよう</div>`;
+    html += `
+      <div class="ministep-actions">
+        <button class="ministep-btn primary" onclick="retryMiniTest(${stepIdx})">もう一度挑戦</button>
+        <button class="ministep-btn secondary" onclick="reviewStep(${stepIdx})">説明を見直す</button>
+      </div>
+    `;
+  }
+  return html;
+}
+
+function showMiniTest(stepIdx) {
+  state.miniTestVisible[stepIdx] = true;
+  render();
+}
+
+function attachMiniTestHandlers(u) {
+  document.querySelectorAll('.ministep-bank').forEach(bank => {
+    const stepIdx = parseInt(bank.dataset.step);
+    bank.querySelectorAll('.ministep-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        if (chip.classList.contains('used')) return;
+        bank.querySelectorAll('.ministep-chip').forEach(c => c.classList.remove('selected'));
+        if (state.miniTestPickedChip[stepIdx] === chip.dataset.word) {
+          state.miniTestPickedChip[stepIdx] = null;
+        } else {
+          chip.classList.add('selected');
+          state.miniTestPickedChip[stepIdx] = chip.dataset.word;
+        }
+      });
+    });
+  });
+
+  document.querySelectorAll('.miniq input[data-blank]').forEach(inp => {
+    inp.addEventListener('click', () => {
+      const stepIdx = parseInt(inp.dataset.step);
+      const qIdx = parseInt(inp.dataset.q);
+      const blankIdx = parseInt(inp.dataset.blank);
+      const key = `${stepIdx}_${qIdx}`;
+
+      if (inp.value) {
+        const word = inp.value;
+        const stillUsedSomewhere = [...document.querySelectorAll(`input[data-step="${stepIdx}"]`)]
+          .filter(o => o !== inp && o.value === word).length > 0;
+        if (!stillUsedSomewhere) {
+          const bank = document.querySelector(`.ministep-bank[data-step="${stepIdx}"]`);
+          if (bank) {
+            const chip = bank.querySelector(`.ministep-chip[data-word="${word}"]`);
+            if (chip) chip.classList.remove('used');
+          }
+        }
+        inp.value = '';
+        inp.classList.remove('correct','incorrect');
+        if (state.miniTestSelected[key]) state.miniTestSelected[key][blankIdx] = '';
+        return;
+      }
+
+      const picked = state.miniTestPickedChip[stepIdx];
+      if (!picked) return;
+      inp.value = picked;
+      const bank = document.querySelector(`.ministep-bank[data-step="${stepIdx}"]`);
+      if (bank) {
+        const chip = bank.querySelector(`.ministep-chip[data-word="${picked}"]`);
+        if (chip) { chip.classList.add('used'); chip.classList.remove('selected'); }
+      }
+      state.miniTestPickedChip[stepIdx] = null;
+      if (!state.miniTestSelected[key]) state.miniTestSelected[key] = {};
+      state.miniTestSelected[key][blankIdx] = picked;
+    });
+  });
+
+  document.querySelectorAll('.miniq-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.disabled) return;
+      const stepIdx = parseInt(btn.dataset.step);
+      const qIdx = parseInt(btn.dataset.q);
+      const optIdx = parseInt(btn.dataset.opt);
+      const key = `${stepIdx}_${qIdx}`;
+      const parent = btn.parentElement;
+      parent.querySelectorAll('.miniq-opt').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      state.miniTestSelected[key] = optIdx;
+    });
+  });
+}
+
+function judgeMiniTest(stepIdx) {
+  const u = UNITS.find(x => x.id === state.activeUnit);
+  const step = u.steps[stepIdx];
+  let allCorrect = true;
+
+  step.miniTest.forEach((q, qIdx) => {
+    const key = `${stepIdx}_${qIdx}`;
+    const sel = state.miniTestSelected[key];
+    if (q.type === 'choice') {
+      if (sel !== q.answer) allCorrect = false;
+    } else if (q.type === 'fill') {
+      q.answers.forEach((ans, i) => {
+        if (!sel || sel[i] !== ans) allCorrect = false;
+      });
+    }
+  });
+
+  state.miniTestJudged[stepIdx] = true;
+  state.miniTestPassed[stepIdx] = allCorrect;
+
+  if (allCorrect) {
+    const p = getProg(state.activeUnit);
+    const newSteps = { ...(p.steps||{}), [stepIdx]: true };
+    updateProg(state.activeUnit, { steps: newSteps });
+  }
+
+  render();
+}
+
+function retryMiniTest(stepIdx) {
+  state.miniTestJudged[stepIdx] = false;
+  state.miniTestPassed[stepIdx] = false;
+  Object.keys(state.miniTestSelected).forEach(k => {
+    if (k.startsWith(stepIdx+'_')) delete state.miniTestSelected[k];
+  });
+  state.miniTestPickedChip[stepIdx] = null;
+  render();
+}
+
+function reviewStep(stepIdx) {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goToStep(idx) {
+  state.currentStep = idx;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function completeStep(stepIdx) {
+  const p = getProg(state.activeUnit);
+  const newSteps = { ...(p.steps||{}), [stepIdx]: true };
+  updateProg(state.activeUnit, { steps: newSteps });
+  const u = UNITS.find(x => x.id === state.activeUnit);
+  if (stepIdx < u.steps.length - 1) state.currentStep = stepIdx + 1;
+  render();
+}
+
+// ============================================================
+// PRACTICE TAB
+// ============================================================
+function renderPracticeTab(u, p) {
+  const fb = u.fillBlanks[0];
+  const bestTimes = (p.bestTimes || []).slice().sort((a,b) => a.time - b.time);
+
+  let html = `
+    <div class="practice-card">
+      <div class="practice-head">
+        <h2>穴埋めチャレンジ</h2>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <div class="timer-display ${state.timerPaused?'paused':''}" id="timer">${formatTime(state.elapsed/1000)}</div>
+        </div>
+      </div>
+
+      <div class="word-bank" id="wordBank">
+        <div class="word-bank-label">▸ 語群</div>
+        ${fb.bank.map(w => `<span class="word-chip" data-word="${w}">${w}</span>`).join('')}
+      </div>
+
+      <div class="fill-text" id="fillText">${buildFillTextHtml(fb)}</div>
+
+      <div class="practice-actions">
+        <button class="action-btn primary" onclick="judgePractice()">判定</button>
+        <button class="action-btn secondary" onclick="resetPractice()">やり直す</button>
+        ${state.timerPaused ? '<button class="action-btn primary" onclick="resumePractice()">再開する</button>' : ''}
+      </div>
+    </div>
+
+    <div class="records-card">
+      <h3>⏱ ベストタイム TOP5</h3>
+      ${bestTimes.length > 0 ? `
+        <ul class="record-list">
+          ${bestTimes.slice(0,5).map((r,i) => {
+            const d = new Date(r.date);
+            const dt = `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${d.getMinutes().toString().padStart(2,'0')}`;
+            return `<li><span class="rank">${i+1}位</span><span>${formatTime(r.time/1000)}</span><span class="date">${dt}</span></li>`;
+          }).join('')}
+        </ul>
+      ` : '<div class="record-empty">まだ記録がありません</div>'}
+    </div>
+  `;
+  return html;
+}
+
+function buildFillTextHtml(fb) {
+  return fb.text.replace(/\{(\d+)\}/g, (_, idx) => {
+    const i = parseInt(idx);
+    return `<span class="blank" data-idx="${i}" data-answer="${fb.answers[i]}">　</span>`;
+  });
+}
+
+function attachPracticeHandlers(u) {
+  document.querySelectorAll('#wordBank .word-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (chip.classList.contains('used')) return;
+      document.querySelectorAll('#wordBank .word-chip.selected').forEach(c => c.classList.remove('selected'));
+      if (state.practicePickedChip === chip.dataset.word) {
+        state.practicePickedChip = null;
+      } else {
+        chip.classList.add('selected');
+        state.practicePickedChip = chip.dataset.word;
+      }
+    });
+  });
+
+  document.querySelectorAll('.blank').forEach(blank => {
+    blank.addEventListener('click', () => {
+      if (blank.classList.contains('correct')) return;
+      if (blank.dataset.filled) {
+        const word = blank.dataset.filled;
+        const chip = document.querySelector(`#wordBank .word-chip[data-word="${word}"]`);
+        if (chip) chip.classList.remove('used');
+        blank.dataset.filled = '';
+        blank.textContent = '　';
+        blank.classList.remove('filled','wrong');
+        return;
+      }
+      if (!state.practicePickedChip) return;
+      if (!state.timerId && !state.timerPaused) startTimer();
+      blank.dataset.filled = state.practicePickedChip;
+      blank.textContent = state.practicePickedChip;
+      blank.classList.add('filled');
+      blank.classList.remove('wrong');
+      const chip = document.querySelector(`#wordBank .word-chip[data-word="${state.practicePickedChip}"]`);
+      if (chip) { chip.classList.add('used'); chip.classList.remove('selected'); }
+      state.practicePickedChip = null;
+    });
+  });
+}
+
+function startTimer() {
+  if (state.timerId) return;
+  state.startTime = Date.now() - state.elapsed;
+  state.timerPaused = false;
+  state.timerId = setInterval(() => {
+    state.elapsed = Date.now() - state.startTime;
+    const el = document.getElementById('timer');
+    if (el) el.textContent = formatTime(state.elapsed/1000);
+  }, 100);
+}
+function stopTimer() {
+  if (state.timerId) {
+    clearInterval(state.timerId);
+    state.timerId = null;
+  }
+}
+function pauseTimer() {
+  if (!state.timerId) return;
+  state.elapsed = Date.now() - state.startTime;
+  stopTimer();
+  state.timerPaused = true;
+}
+function resumePractice() {
+  state.timerPaused = false;
+  startTimer();
+  render();
+}
+
+function resetPractice() {
+  stopTimer();
+  state.elapsed = 0;
+  state.timerPaused = false;
+  state.practicePickedChip = null;
+  render();
+}
+
+function judgePractice() {
+  const blanks = [...document.querySelectorAll('.blank')];
+  const empty = blanks.filter(b => !b.dataset.filled);
+  if (empty.length > 0) {
+    showModal({
+      type: 'fail',
+      title: 'まだ空欄があります',
+      body: 'すべての空欄を埋めてから判定してください。',
+      buttons: [{ label:'OK', primary:true, action:closeModal }]
+    });
+    return;
+  }
+  let allCorrect = true;
+  blanks.forEach(b => {
+    if (b.dataset.filled === b.dataset.answer) {
+      b.classList.add('correct');
+      b.classList.remove('wrong');
+    } else {
+      b.classList.add('wrong');
+      b.classList.remove('correct');
+      allCorrect = false;
+    }
+  });
+
+  pauseTimer();
+
+  if (allCorrect) {
+    const p = getProg(state.activeUnit);
+    const newRecords = [...(p.bestTimes||[]), { time: state.elapsed, date: Date.now() }]
+      .sort((a,b) => a.time - b.time)
+      .slice(0,5);
+    updateProg(state.activeUnit, { bestTimes: newRecords });
+    fireConfetti();
+    showModal({
+      type: 'success',
+      title: '🌸 合格!',
+      body: `<div class="modal-time">${formatTime(state.elapsed/1000)}</div>すべて正解です!`,
+      buttons: [
+        { label:'もう一度', primary:true, action: () => { closeModal(); resetPractice(); } },
+        { label:'確認テストへ', action: () => { closeModal(); setTab('test'); } }
+      ]
+    });
+  } else {
+    showModal({
+      type: 'fail',
+      title: 'おしい!',
+      body: '間違っているところがあります。説明文を確認しますか?',
+      buttons: [
+        { label:'説明にもどる', primary:true, action: () => { closeModal(); setTab('learn'); } },
+        { label:'継続する', action: () => {
+            closeModal();
+            document.querySelectorAll('.blank.wrong').forEach(b => {
+              const word = b.dataset.filled;
+              b.dataset.filled = '';
+              b.textContent = '　';
+              b.classList.remove('filled','wrong');
+              const chip = document.querySelector(`#wordBank .word-chip[data-word="${word}"]`);
+              if (chip) chip.classList.remove('used');
+            });
+            startTimer();
+          }
+        }
+      ]
+    });
+  }
+}
+
+// ============================================================
+// TEST TAB
+// ============================================================
+function renderTestTab(u, p) {
+  const quiz = u.quiz;
+  const fillBank = [...new Set(quiz.filter(q => q.type==='fill').flatMap(q => q.bank || []))];
+
+  let html = `
+    <div class="practice-card">
+      <h2 style="margin-top:0;">確認テスト</h2>
+      <div style="color:#666;font-size:13px;margin-bottom:16px;">本単元の総まとめ。空所補充と四択の混合です。</div>
+  `;
+  if (fillBank.length > 0) {
+    html += `
+      <div class="ministep-bank" data-test="1">
+        <div class="ministep-bank-label">▸ 空所補充用 語群</div>
+        ${fillBank.map(w => `<span class="ministep-chip test-chip" data-word="${w}">${w}</span>`).join('')}
+      </div>
+    `;
+  }
+
+  quiz.forEach((q, qIdx) => {
+    const sel = state.testSelected[qIdx];
+    html += `<div class="quiz-question">`;
+    html += `<span class="qnum">問 ${qIdx+1}</span>`;
+    html += `<div class="qtext">${q.q.replace(/\{(\d+)\}/g, (_, i) => {
+      if (q.type === 'fill') {
+        const idx = parseInt(i);
+        const val = (sel && sel[idx]) || '';
+        let cls = '';
+        if (state.testJudged) {
+          if (val === q.answers[idx]) cls = 'correct';
+          else cls = 'incorrect';
+        }
+        return `<span class="qfill"><input type="text" data-q="${qIdx}" data-blank="${idx}" value="${val}" readonly class="${cls}"></span>`;
+      }
+      return _;
+    })}</div>`;
+    if (q.type === 'choice') {
+      html += `<div class="qopts">`;
+      q.options.forEach((opt, i) => {
+        let cls = 'qopt';
+        if (sel === i) cls += ' selected';
+        if (state.testJudged) {
+          if (i === q.answer) cls += ' correct';
+          else if (sel === i) cls += ' incorrect';
+        }
+        html += `<button class="${cls}" data-q="${qIdx}" data-opt="${i}" ${state.testJudged?'disabled':''}>
+          <span class="opt-mark">${String.fromCharCode(65+i)}</span>${opt}
+        </button>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+
+  html += `<div class="practice-actions" style="margin-top:14px;">`;
+  if (!state.testJudged) {
+    html += `<button class="action-btn primary" onclick="judgeTest()">採点する</button>`;
+  } else {
+    html += `<button class="action-btn primary" onclick="resetTest()">もう一度</button>`;
+    html += `<button class="action-btn secondary" onclick="setTab('learn')">説明にもどる</button>`;
+  }
+  html += `</div>`;
+
+  if (state.testJudged) {
+    let correct = 0;
+    quiz.forEach((q, qIdx) => {
+      const sel = state.testSelected[qIdx];
+      if (q.type === 'choice') { if (sel === q.answer) correct++; }
+      else if (q.type === 'fill') {
+        if (sel && q.answers.every((a, i) => sel[i] === a)) correct++;
+      }
+    });
+    const pct = Math.round(correct / quiz.length * 100);
+    let msg = '';
+    if (pct === 100) msg = '🌸 満点!';
+    else if (pct >= 80) msg = '👏 よくできました!';
+    else if (pct >= 60) msg = '💪 もう一歩!';
+    else msg = '📖 説明をもう一度読みましょう';
+    html += `
+      <div style="text-align:center; margin-top:20px;">
+        <div class="score-display">${correct} / ${quiz.length} 正解</div>
+        <div style="margin-top:10px; font-size:15px; font-weight:700;">${msg}</div>
+      </div>
+    `;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+function attachTestHandlers(u) {
+  document.querySelectorAll('.test-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (chip.classList.contains('used')) return;
+      document.querySelectorAll('.test-chip').forEach(c => c.classList.remove('selected'));
+      if (state.testPickedChip === chip.dataset.word) {
+        state.testPickedChip = null;
+      } else {
+        chip.classList.add('selected');
+        state.testPickedChip = chip.dataset.word;
+      }
+    });
+  });
+  document.querySelectorAll('.qfill input').forEach(inp => {
+    inp.addEventListener('click', () => {
+      if (state.testJudged) return;
+      const qIdx = parseInt(inp.dataset.q);
+      const blankIdx = parseInt(inp.dataset.blank);
+      if (inp.value) {
+        const word = inp.value;
+        const stillUsed = [...document.querySelectorAll('.qfill input')]
+          .filter(o => o !== inp && o.value === word).length > 0;
+        if (!stillUsed) {
+          const chip = document.querySelector(`.test-chip[data-word="${word}"]`);
+          if (chip) chip.classList.remove('used');
+        }
+        inp.value = '';
+        if (state.testSelected[qIdx]) state.testSelected[qIdx][blankIdx] = '';
+        return;
+      }
+      if (!state.testPickedChip) return;
+      inp.value = state.testPickedChip;
+      const chip = document.querySelector(`.test-chip[data-word="${state.testPickedChip}"]`);
+      if (chip) { chip.classList.add('used'); chip.classList.remove('selected'); }
+      if (!state.testSelected[qIdx]) state.testSelected[qIdx] = {};
+      state.testSelected[qIdx][blankIdx] = state.testPickedChip;
+      state.testPickedChip = null;
+    });
+  });
+  document.querySelectorAll('.qopt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.disabled) return;
+      const qIdx = parseInt(btn.dataset.q);
+      const optIdx = parseInt(btn.dataset.opt);
+      btn.parentElement.querySelectorAll('.qopt').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      state.testSelected[qIdx] = optIdx;
+    });
+  });
+}
+
+function judgeTest() {
+  state.testJudged = true;
+  const u = UNITS.find(x => x.id === state.activeUnit);
+  let correct = 0;
+  u.quiz.forEach((q, qIdx) => {
+    const sel = state.testSelected[qIdx];
+    if (q.type === 'choice') { if (sel === q.answer) correct++; }
+    else if (q.type === 'fill') {
+      if (sel && q.answers.every((a, i) => sel[i] === a)) correct++;
+    }
+  });
+  if (correct === u.quiz.length) {
+    fireConfetti();
+    updateProg(state.activeUnit, { passed: true });
+  }
+  render();
+}
+
+function resetTest() {
+  state.testSelected = {};
+  state.testJudged = false;
+  state.testPickedChip = null;
+  render();
+}
+
+// ============================================================
+// FLASHCARDS
+// ============================================================
+function getCardId(unitId, idx) {
+  return `${unitId}_${idx}`;
+}
+
+function initFlashDeck() {
+  // Build the deck from current unit, sync known/review from progress
+  let cards = [];
+  if (state.flashSummaryMode) {
+    UNITS.forEach(u => {
+      (u.flashcards || []).forEach((c, i) => {
+        cards.push({ ...c, _id: getCardId(u.id, i), _unitId: u.id, _unitName: u.name, _unitColor: u.color, _unitColorD: u.colorD, _unitBg: u.bgColor });
+      });
+    });
+  } else {
+    const u = UNITS.find(x => x.id === state.activeUnit);
+    if (!u || !u.flashcards) { state.flashDeck = []; return; }
+    u.flashcards.forEach((c, i) => {
+      cards.push({ ...c, _id: getCardId(u.id, i), _unitId: u.id, _unitName: u.name, _unitColor: u.color, _unitColorD: u.colorD, _unitBg: u.bgColor });
+    });
+  }
+  // Sync known/review from progress
+  state.flashKnown = new Set();
+  state.flashReview = new Set();
+  cards.forEach(c => {
+    const prog = getProg(c._unitId);
+    if ((prog.flashKnown || []).includes(c._id)) state.flashKnown.add(c._id);
+    if ((prog.flashReview || []).includes(c._id)) state.flashReview.add(c._id);
+  });
+
+  // Filter by mode
+  if (state.flashMode === 'review') {
+    cards = cards.filter(c => state.flashReview.has(c._id));
+  }
+
+  state.flashDeck = cards;
+  state.flashIndex = 0;
+  state.flashFlipped = false;
+}
+
+function renderFlashTab(u, p) {
+  return renderFlashUI(u);
+}
+
+function renderFlashUI(u) {
+  // u is null for summary mode
+  const total = state.flashSummaryMode
+    ? UNITS.reduce((s,uu) => s + (uu.flashcards?.length||0), 0)
+    : (u.flashcards?.length || 0);
+
+  if (total === 0) {
+    return `<div class="flash-intro"><h3>カードが用意されていません</h3><p>この単元のフラッシュカードはまだありません。</p></div>`;
+  }
+
+  // Compute counts across the whole pool (not just filtered deck)
+  let knownCount = 0, reviewCount = 0;
+  if (state.flashSummaryMode) {
+    UNITS.forEach(uu => {
+      (uu.flashcards||[]).forEach((c, i) => {
+        const id = getCardId(uu.id, i);
+        if (state.flashKnown.has(id)) knownCount++;
+        if (state.flashReview.has(id)) reviewCount++;
+      });
+    });
+  } else {
+    (u.flashcards||[]).forEach((c, i) => {
+      const id = getCardId(u.id, i);
+      if (state.flashKnown.has(id)) knownCount++;
+      if (state.flashReview.has(id)) reviewCount++;
+    });
+  }
+
+  let html = `
+    <div class="flash-intro">
+      <h3>📇 フラッシュカード</h3>
+      <p>カードをタップで裏返し → 「覚えた」「もう一度」で仕分けしましょう</p>
+      <div class="flash-stats">
+        <div class="flash-stat"><div class="label">全カード</div><div class="num">${total}</div></div>
+        <div class="flash-stat known"><div class="label">覚えた</div><div class="num">${knownCount}</div></div>
+        <div class="flash-stat review"><div class="label">もう一度</div><div class="num">${reviewCount}</div></div>
+      </div>
+    </div>
+  `;
+
+  // Mode toggle
+  html += `
+    <div class="flash-mode-row">
+      <button class="flash-mode-btn ${state.flashMode==='all'?'active':''}" onclick="setFlashMode('all')">すべて (${total})</button>
+      <button class="flash-mode-btn ${state.flashMode==='review'?'active':''}" onclick="setFlashMode('review')" ${reviewCount===0?'disabled':''}>「もう一度」のみ (${reviewCount})</button>
+      <button class="flash-mode-btn" onclick="resetFlashProgress()" style="border-color:#aaa;color:#666;">仕分けをリセット</button>
+    </div>
+  `;
+
+  // Auto-play controls
+  const speeds = ['manual', 2, 3, 4, 5];
+  const speedLabel = (s) => s === 'manual' ? '手動' : `${s}秒`;
+  html += `
+    <div class="flash-autoplay">
+      <div class="flash-autoplay-row">
+        <span class="flash-autoplay-label">⏱ 自動再生</span>
+        <div class="flash-speed-wrap">
+          ${speeds.map(s => `
+            <button class="flash-speed-opt ${state.flashSpeed===s?'active':''}" onclick="setFlashSpeed(${typeof s==='string'?`'${s}'`:s})">${speedLabel(s)}</button>
+          `).join('')}
+        </div>
+        ${state.flashSpeed !== 'manual' ? `
+          <button class="flash-play-btn ${state.flashPlaying?'pause':'play'}" onclick="toggleFlashPlay()">
+            ${state.flashPlaying ? '⏸ 一時停止' : '▶ 再生'}
+          </button>` : ''}
+        <label class="flash-loop-toggle">
+          <input type="checkbox" ${state.flashLoop?'checked':''} onchange="toggleFlashLoop()">
+          🔁 ループ
+        </label>
+      </div>
+    </div>
+  `;
+
+  if (state.flashDeck.length === 0) {
+    html += `
+      <div class="flash-complete">
+        <div class="flash-complete-emoji">🎉</div>
+        <h3>「もう一度」のカードがありません!</h3>
+        <p>すべてのカードを覚えた状態です。お疲れさまでした。</p>
+        <button class="action-btn primary" onclick="setFlashMode('all')">すべてのカードに戻る</button>
+      </div>
+    `;
+    return html;
+  }
+
+  // Done with current deck?
+  if (state.flashIndex >= state.flashDeck.length) {
+    const sessionKnown = state.flashDeck.filter(c => state.flashKnown.has(c._id)).length;
+    const sessionReview = state.flashDeck.filter(c => state.flashReview.has(c._id)).length;
+    html += `
+      <div class="flash-complete">
+        <div class="flash-complete-emoji">✨</div>
+        <h3>1周しました!</h3>
+        <p>覚えた: ${sessionKnown} 枚 / もう一度: ${sessionReview} 枚</p>
+        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+          ${sessionReview > 0 ? `<button class="action-btn primary" onclick="setFlashMode('review')">「もう一度」だけ復習する</button>` : ''}
+          <button class="action-btn secondary" onclick="restartFlash()">最初から見直す</button>
+        </div>
+      </div>
+    `;
+    return html;
+  }
+
+  const card = state.flashDeck[state.flashIndex];
+  const cardCss = state.flashSummaryMode
+    ? `--unit-color:${card._unitColor};--unit-color-d:${card._unitColorD};--unit-bg:${card._unitBg};--unit-glow:${card._unitColor}66`
+    : '';
+  const progressPct = ((state.flashIndex) / state.flashDeck.length) * 100;
+
+  html += `<div class="flash-progress" style="${cardCss}"><div class="flash-progress-fill" style="width:${progressPct}%"></div></div>`;
+
+  html += `
+    <div class="flash-nav">
+      <button class="flash-nav-btn" onclick="prevFlash()" ${state.flashIndex===0?'disabled':''}>‹</button>
+      <div class="flash-counter">${state.flashIndex+1} / ${state.flashDeck.length}</div>
+      <button class="flash-nav-btn" onclick="nextFlash()" ${state.flashIndex>=state.flashDeck.length-1?'disabled':''}>›</button>
+    </div>
+  `;
+
+  const tagLabel = card.type === 'term' ? 'ミス注意' : 'Q&A';
+  const tagClass = card.type === 'term' ? 'term' : 'qa';
+  const unitTag = state.flashSummaryMode ? `<div style="font-size:10px;color:#888;margin-bottom:6px;letter-spacing:1px;">${card._unitName}</div>` : '';
+
+  html += `
+    <div class="flashcard-wrap" style="${cardCss}">
+      <div class="flashcard ${state.flashFlipped?'flipped':''} ${state.flashPlaying?'auto-playing':''}" onclick="flipFlash()">
+        <div class="flashcard-face front">
+          ${unitTag}
+          <span class="flashcard-tag ${tagClass}">${tagLabel}</span>
+          <div class="flashcard-front-text">${escapeHtml(card.front)}</div>
+          <div class="flashcard-flip-hint">タップで答えを見る</div>
+        </div>
+        <div class="flashcard-face back">
+          ${unitTag}
+          <span class="flashcard-tag ${tagClass}">${tagLabel}</span>
+          <div class="flashcard-back-text">${formatBody(card.back || '')}</div>
+          ${card.mistake ? `
+            <div class="flashcard-mistake">
+              <div class="flashcard-mistake-label">⚠ ミス注意ポイント</div>
+              ${formatBody(card.mistake)}
+            </div>` : ''}
+          <div class="flashcard-flip-hint">タップで戻る</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Action buttons (only show after flip)
+  html += `
+    <div class="flash-actions">
+      <button class="flash-action-btn review" onclick="markFlash('review')">🔁 もう一度</button>
+      <button class="flash-action-btn known" onclick="markFlash('known')">✓ 覚えた</button>
+    </div>
+  `;
+
+  return html;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function flipFlash() {
+  // While auto-playing, manual flip should pause to give user control
+  if (state.flashPlaying) {
+    pauseFlashPlay();
+  }
+  state.flashFlipped = !state.flashFlipped;
+  render();
+}
+
+function nextFlash() {
+  if (state.flashIndex < state.flashDeck.length - 1) {
+    state.flashIndex++;
+    state.flashFlipped = false;
+    render();
+  } else if (state.flashIndex === state.flashDeck.length - 1) {
+    // Move to "complete" state
+    state.flashIndex++;
+    render();
+  }
+}
+
+function prevFlash() {
+  if (state.flashIndex > 0) {
+    state.flashIndex--;
+    state.flashFlipped = false;
+    render();
+  }
+}
+
+function markFlash(action) {
+  const card = state.flashDeck[state.flashIndex];
+  if (!card) return;
+  const id = card._id;
+  if (action === 'known') {
+    state.flashKnown.add(id);
+    state.flashReview.delete(id);
+  } else {
+    state.flashReview.add(id);
+    state.flashKnown.delete(id);
+  }
+  // Persist to that unit's progress
+  const prog = getProg(card._unitId);
+  const known = (prog.flashKnown || []).filter(x => x !== id);
+  const review = (prog.flashReview || []).filter(x => x !== id);
+  if (action === 'known') known.push(id);
+  else review.push(id);
+  updateProg(card._unitId, { flashKnown: known, flashReview: review });
+
+  // If auto-playing, pause briefly so user sees their action register, then continue
+  // (we don't pause auto-play permanently — manual mark is just an interjection)
+  // Auto-advance to next card
+  state.flashIndex++;
+  state.flashFlipped = false;
+
+  // Reset timer if auto-playing (so the new card gets a fresh full duration)
+  if (state.flashPlaying) {
+    clearFlashTimer();
+    render();
+    scheduleFlashTick();
+  } else {
+    render();
+  }
+}
+
+// ----- Auto-play controls -----
+function clearFlashTimer() {
+  if (state.flashTimerId) {
+    clearTimeout(state.flashTimerId);
+    state.flashTimerId = null;
+  }
+}
+
+function scheduleFlashTick() {
+  clearFlashTimer();
+  if (!state.flashPlaying || state.flashSpeed === 'manual') return;
+  const ms = state.flashSpeed * 1000;
+  state.flashTimerId = setTimeout(autoPlayTick, ms);
+}
+
+function autoPlayTick() {
+  state.flashTimerId = null;
+  if (!state.flashPlaying) return;
+
+  // If we're past the end, handle loop or stop
+  if (state.flashIndex >= state.flashDeck.length) {
+    if (state.flashLoop) {
+      state.flashIndex = 0;
+      state.flashFlipped = false;
+      render();
+      scheduleFlashTick();
+    } else {
+      state.flashPlaying = false;
+      render();
+    }
+    return;
+  }
+
+  if (!state.flashFlipped) {
+    // Front showing → flip to back
+    state.flashFlipped = true;
+    render();
+    scheduleFlashTick();
+  } else {
+    // Back showing → advance to next card
+    state.flashIndex++;
+    state.flashFlipped = false;
+    if (state.flashIndex >= state.flashDeck.length) {
+      // End reached on this tick
+      if (state.flashLoop) {
+        state.flashIndex = 0;
+        render();
+        scheduleFlashTick();
+      } else {
+        state.flashPlaying = false;
+        render();
+      }
+    } else {
+      render();
+      scheduleFlashTick();
+    }
+  }
+}
+
+function setFlashSpeed(speed) {
+  state.flashSpeed = speed;
+  if (speed === 'manual') {
+    pauseFlashPlay();
+  } else if (state.flashPlaying) {
+    // Re-schedule with new speed
+    scheduleFlashTick();
+  }
+  render();
+}
+
+function toggleFlashPlay() {
+  if (state.flashSpeed === 'manual') return;
+  if (state.flashPlaying) {
+    pauseFlashPlay();
+  } else {
+    startFlashPlay();
+  }
+}
+
+function startFlashPlay() {
+  // If at completion screen and no loop, restart from beginning
+  if (state.flashIndex >= state.flashDeck.length) {
+    state.flashIndex = 0;
+    state.flashFlipped = false;
+  }
+  state.flashPlaying = true;
+  render();
+  scheduleFlashTick();
+}
+
+function pauseFlashPlay() {
+  state.flashPlaying = false;
+  clearFlashTimer();
+  render();
+}
+
+function toggleFlashLoop() {
+  state.flashLoop = !state.flashLoop;
+  render();
+}
+
+function setFlashMode(mode) {
+  pauseFlashPlay();
+  state.flashMode = mode;
+  initFlashDeck();
+  render();
+}
+
+function restartFlash() {
+  state.flashIndex = 0;
+  state.flashFlipped = false;
+  render();
+}
+
+function resetFlashProgress() {
+  if (!confirm('「覚えた / もう一度」の仕分けをリセットしますか?')) return;
+  if (state.flashSummaryMode) {
+    UNITS.forEach(u => {
+      updateProg(u.id, { flashKnown: [], flashReview: [] });
+    });
+  } else {
+    updateProg(state.activeUnit, { flashKnown: [], flashReview: [] });
+  }
+  state.flashKnown.clear();
+  state.flashReview.clear();
+  state.flashMode = 'all';
+  initFlashDeck();
+  render();
+}
+
+// ============================================================
+// SUMMARY VIEW (全体まとめ)
+// ============================================================
+function openSummaryFlash() {
+  state.view = 'summary';
+  state.flashSummaryMode = true;
+  state.flashMode = 'all';
+  state.flashPlaying = false;
+  clearFlashTimer();
+  initFlashDeck();
+  render();
+  window.scrollTo(0,0);
+}
+
+function backToDashboardFromSummary() {
+  pauseFlashPlay();
+  state.flashSummaryMode = false;
+  state.view = 'dashboard';
+  render();
+}
+
+function renderSummary() {
+  const cssVars = `--unit-color:#8B5CF6;--unit-color-d:#6D28D9;--unit-bg:#EDE9FE;--unit-glow:#8B5CF666`;
+  let html = `<div class="container" style="${cssVars}">`;
+  html += `<button class="back-btn" onclick="backToDashboardFromSummary()">← 単元表に戻る</button>`;
+  html += `
+    <div class="summary-header">
+      <h2>📇 全体まとめ フラッシュカード</h2>
+      <p>全単元の重要ポイント・ミス注意ポイントを横断的に確認できます。試験前の総復習にどうぞ。</p>
+    </div>
+  `;
+  html += renderFlashUI(null);
+  html += '</div>';
+  document.getElementById('app').innerHTML = html;
+}
+
+render();
+</script>
+
+</body>
+</html>
