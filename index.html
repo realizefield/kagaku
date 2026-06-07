@@ -1590,6 +1590,147 @@ const UNITS = [
       {type:'qa',front:'希HNO₃ vs Cu',back:'mol比 2：3\n2HNO₃+6H⁺+3Cu→3Cu²⁺+2NO↑+4H₂O'}
     ]
   },
+  // ── 酸化還元応用 ──
+  { id:'redox_titration', name:'ヨウ素滴定・酸化還元滴定', chapter:'redox_app',
+    symbol:'🧪', color:'#EC4899', colorD:'#BE185D', bgColor:'#FCE7F3',
+    intro:'ヨウ素滴定・KMnO₄滴定の計算方法を、テキスト例題をもとに学びます。「mol の橋渡し」で確実に解けるようになりましょう。',
+    steps:[
+      { title:'ヨウ素滴定の基本と mol の橋渡し',
+        body:'[bold:ヨウ素滴定の流れ]\n① 試料（還元剤）に I₂（酸化剤）を反応させる\n② 余った I₂ を Na₂S₂O₃ で逆滴定\n③ 終点：デンプン液で青紫色 → 無色\n\n[bold:重要な反応式]\nI₂ + 2e⁻ → 2I⁻　　（I₂ が酸化剤、e⁻ 2個）\nI₂ + 2Na₂S₂O₃ → 2NaI + Na₂S₄O₆\nS₂O₃²⁻ → ½ S₄O₆²⁻ + e⁻　（Na₂S₂O₃ は 1mol で e⁻ 1個）\n\n[bold:mol の橋渡し表]\nI₂ 1mol ≡ Na₂S₂O₃ 2mol\nI₂ 1mol ≡ SO₂ 1mol（SO₂ + 2H₂O → SO₄²⁻ + 4H⁺ + 2e⁻）\nI₂ 1mol ≡ H₂O₂ 1mol（H₂O₂ + 2H⁺ + 2e⁻ → 2H₂O）\n\n[tip:Na₂S₂O₃ 2mol で I₂ 1mol と反応！この比を必ず覚えよう。]',
+        miniTest:[
+          {type:'choice',q:'I₂ 1mol と反応する Na₂S₂O₃ は何 mol か？',options:['1mol','2mol','3mol','4mol'],answer:1},
+          {type:'choice',q:'ヨウ素滴定の終点の色変化は？',options:['無色→青紫色','青紫色→無色','赤紫色→無色','無色→橙赤色'],answer:1}
+        ]
+      },
+      { title:'【例題1】SO₂ の定量（テキスト例題）',
+        body:'[bold:問題]\n0.20mol/L の I₂ 水溶液 25mL に SO₂ を通じ完全に反応させた。\n余った I₂ を 0.050mol/L の Na₂S₂O₃ 水溶液で滴定 → 20mL で終点。\nSO₂ の物質量を求めよ。\n\n[bold:解法の手順]\n① I₂ の総量：0.20 × 25/1000 = 5.0×10⁻³ mol\n② Na₂S₂O₃ → I₂ の換算（2mol で I₂ 1mol）：\n   0.050 × 20/1000 × 1/2 = 5.0×10⁻⁴ mol（余った I₂）\n③ SO₂ と反応した I₂：5.0×10⁻³ − 5.0×10⁻⁴ = 4.5×10⁻³ mol\n④ SO₂：I₂ = 1：1 なので SO₂ = 4.5×10⁻³ mol\n\n[bold:電子の橋渡し式]\n酸化剤 I₂ の受け取るe⁻ = 還元剤が渡すe⁻\n5.0×10⁻³ × 2 = 2×SO₂ + 0.050×(20/1000)×1\n→ SO₂ = 4.5×10⁻³ mol\n\n[term:答：4.5×10⁻³ mol]',
+        miniTest:[
+          {type:'fill',q:'I₂ 0.20mol/L × 25mL の I₂ の物質量は{0} mol。',answers:['5.0×10⁻³'],bank:['5.0×10⁻³','2.5×10⁻³','1.0×10⁻²','4.0×10⁻³']},
+          {type:'choice',q:'余った I₂ の物質量（Na₂S₂O₃ 0.050mol/L × 20mL から）は？',options:['5.0×10⁻⁴ mol','1.0×10⁻³ mol','2.0×10⁻³ mol','5.0×10⁻³ mol'],answer:0}
+        ]
+      },
+      { title:'H₂O₂ の定量・オゾンの定量',
+        body:'[bold:H₂O₂ の定量（間接ヨウ素滴定）]\nH₂O₂ + 2H⁺ + 2e⁻ → 2H₂O　（H₂O₂ が酸化剤、e⁻ 2個）\n2I⁻ → I₂ + 2e⁻　（I⁻ が還元剤）\n→ H₂O₂ 1mol ≡ I₂ 1mol ≡ Na₂S₂O₃ 2mol\n\n[bold:練習1より]\nH₂O₂ 水溶液を 20 倍希釈→ 20mL。\n0.102mol/L の Na₂S₂O₃ で 19.4mL。\nH₂O₂ 濃度（希釈前）χ mol/L：\nχ × (1/20) × (20/1000) = 0.102 × (19.4/1000) × (1/2)\nχ = 0.99 mol/L\n\n[bold:オゾンの定量（練習4より）]\nO₃ + H₂O + 2e⁻ → O₂ + 2OH⁻\nO₃ 1mol ≡ I₂ 1mol ≡ Na₂S₂O₃ 2mol\n\n[tip:H₂O₂もO₃も「1mol → I₂ 1mol → Na₂S₂O₃ 2mol」！]',
+        miniTest:[
+          {type:'choice',q:'H₂O₂ 1mol から生じる I₂ は何 mol か？',options:['0.5mol','1mol','2mol','4mol'],answer:1},
+          {type:'fill',q:'Na₂S₂O₃ 0.102mol/L × 19.4mL の物質量は{0} mol（有効数字3桁）。',answers:['1.98×10⁻³'],bank:['1.98×10⁻³','9.90×10⁻⁴','3.96×10⁻³','1.02×10⁻³']}
+        ]
+      },
+      { title:'実験器具の選択と滴定操作',
+        body:'[bold:ヨウ素滴定で使う器具]\nホールピペット（B）：正確な体積を量り取る\nメスフラスコ（D）：正確に希釈する\n三角フラスコ（C）：反応・滴定容器\nビュレット（F）：滴定液を少しずつ加える\n\n[bold:各器具の用途（練習3 より）]\nア：試料を正確に取る → ホールピペット（B）\nイ：希釈する容器 → メスフラスコ（D）\nオ：滴定液を滴下 → ビュレット（F）\n\n[bold:指示薬と終点]\nヨウ素滴定：デンプン液\n  → I₂ があると青紫色、I₂ がなくなると無色\n  → 青紫色から無色に変わった瞬間が終点\n\nKMnO₄ 滴定：指示薬不要（KMnO₄ 自身が赤紫色）\n  → わずかに赤紫色が消えなくなった瞬間が終点\n\n[tip:「指示薬を加える理由」→ 滴定の終点を見やすくするため。]',
+        miniTest:[
+          {type:'choice',q:'正確な体積を量り取る器具は？',options:['メスシリンダー','駒込ピペット','ホールピペット','ビュレット'],answer:2},
+          {type:'fill',q:'ヨウ素滴定でデンプン液を加える理由は「{0}ため」。',answers:['終点を見やすくする'],bank:['終点を見やすくする','反応を速くする','I₂を分解する','色を消す']}
+        ]
+      }
+    ],
+    fillBlanks:[{
+      text:'I₂ 1mol に対して Na₂S₂O₃ は{0}mol 必要。H₂O₂ 1mol から I₂ が{1}mol 生じる。ヨウ素滴定の終点はデンプン液で{2}色から{3}色に変化。KMnO₄ 滴定の終点は{4}色が消えなくなること。',
+      answers:['2','1','青紫','無色','赤紫'],
+      bank:['1','2','4','青紫','無色','赤','赤紫','黄緑']
+    }],
+    quiz:[
+      {type:'choice',q:'I₂ 0.20mol/L × 25mL と Na₂S₂O₃ 0.050mol/L × 20mL から求めたSO₂の物質量は？',options:['4.5×10⁻³mol','5.0×10⁻³mol','1.0×10⁻³mol','9.0×10⁻³mol'],answer:0},
+      {type:'choice',q:'H₂O₂ の定量でH₂O₂ 1mol と等価なNa₂S₂O₃は何 mol か？',options:['1mol','2mol','4mol','0.5mol'],answer:1},
+      {type:'fill',q:'O₃ 1mol ≡ I₂ {0}mol ≡ Na₂S₂O₃ {1}mol。',answers:['1','2'],bank:['1','2','3','4']},
+      {type:'choice',q:'ヨウ素滴定の指示薬はどれか？',options:['フェノールフタレイン','メチルオレンジ','デンプン液','BTB溶液'],answer:2}
+    ],
+    flashcards:[
+      {type:'qa',front:'ヨウ素滴定 mol 比',back:'I₂ 1mol ≡ Na₂S₂O₃ 2mol\nI₂ 1mol ≡ SO₂ 1mol\nI₂ 1mol ≡ H₂O₂ 1mol'},
+      {type:'qa',front:'ヨウ素滴定の終点',back:'デンプン液で青紫色 → 無色\nI₂がなくなった瞬間'},
+      {type:'qa',front:'KMnO₄滴定の終点',back:'わずかに赤紫色が消えなくなる\n（自己指示薬・指示薬不要）'},
+      {type:'qa',front:'実験器具の選択',back:'正確に取る→ホールピペット\n希釈する→メスフラスコ\n滴定する→ビュレット'}
+    ]
+  },
+  { id:'redox_cod', name:'COD（化学的酸素要求量）', chapter:'redox_app',
+    symbol:'🌊', color:'#0EA5E9', colorD:'#0369A1', bgColor:'#E0F2FE',
+    intro:'KMnO₄ 滴定で水の汚染度を測る COD 計算を、テキスト例題・練習問題をもとにしっかり理解します。',
+    steps:[
+      { title:'COD とは・測定の原理',
+        body:'[bold:COD（Chemical Oxygen Demand)]\n試料 1L 中の有機物を酸化するのに必要な酸化剤の量を\nO₂ の質量（mg）に換算した値。値が大きいほど汚染が深刻。\n\n[bold:測定手順（KMnO₄ 法）]\n操作Ⅰ：試料水 + 過剰の KMnO₄（酸性）→ 有機物を酸化\n操作Ⅱ：余った KMnO₄ を (COOH)₂ で逆滴定\n操作Ⅲ：使われた KMnO₄ 量を O₂ に換算\n\n[bold:KMnO₄ と O₂ の換算（重要！）]\nKMnO₄：e⁻ 5個受け取る　O₂：e⁻ 4個受け取る\n最小公倍数 20 → KMnO₄ 4mol ≡ O₂ 5mol\n→ KMnO₄ 1mol ≡ O₂ 5/4 mol\n\n[tip:KMnO₄ 4mol ≡ O₂ 5mol は必ず覚えよう！]',
+        miniTest:[
+          {type:'choice',q:'KMnO₄ 4mol と等価な O₂ は何 mol か？',options:['2mol','4mol','5mol','8mol'],answer:2},
+          {type:'choice',q:'COD の値が大きいと？',options:['水が清潔','有機物が多く汚染が深刻','酸素が多い','pH が高い'],answer:1}
+        ]
+      },
+      { title:'【例題2】COD の計算（摂南大）',
+        body:'[bold:問題]\n試料水 100mL に KMnO₄（5.00×10⁻³mol/L）10mL 投入。\n余った KMnO₄ を (COOH)₂（5.00×10⁻³mol/L）7.50mL で逆滴定。\n\n[bold:（2）有機物に使われた KMnO₄]\n総 KMnO₄：5.00×10⁻³ × 10/1000 = 5.00×10⁻⁵ mol\n(COOH)₂ と反応した KMnO₄（2：5 の比）：\n5.00×10⁻³ × 7.50/1000 × 2/5 = 1.50×10⁻⁵ mol\n有機物分：5.00×10⁻⁵ − 1.50×10⁻⁵ = 3.50×10⁻⁵ mol\n\n[bold:（3）O₂ の物質量]\n3.50×10⁻⁵ × 5/4 = 4.38×10⁻⁵ mol\n\n[bold:（4）COD（mg/L）]\n4.375×10⁻⁵ × 32.0 × (1000/100) × 1000 = 14.0 mg/L\n\n[term:答：(2) 3.50×10⁻⁵mol　(3) 4.38×10⁻⁵mol　(4) 14.0mg/L]',
+        miniTest:[
+          {type:'choice',q:'有機物に使われた KMnO₄ の物質量は？',options:['3.50×10⁻⁵mol','5.00×10⁻⁵mol','1.50×10⁻⁵mol','4.38×10⁻⁵mol'],answer:0},
+          {type:'fill',q:'KMnO₄ 3.50×10⁻⁵mol に等価な O₂ は{0}×10⁻⁵mol（小数2桁）。',answers:['4.38'],bank:['4.38','3.50','5.00','2.80']}
+        ]
+      },
+      { title:'【練習6】KMnO₄ の標定 → COD 計算（香川大）',
+        body:'[bold:操作1：KMnO₄ の濃度を標定]\n(COOH)₂ 5.00×10⁻³mol/L × 10mL（e⁻ 2個）\n= KMnO₄ χmol/L × 10.96mL（e⁻ 5個）\n5.00×10⁻³ × 10/1000 × 2 = χ × 10.96/1000 × 5\nχ = 1.82×10⁻³ mol/L\n\n[bold:操作3・4：試料水 − ブランク（蒸留水）]\n滴定量の差：4.22 − 1.69 = 2.53 mL\n使われた KMnO₄：1.82×10⁻³ × 2.53/1000 = 4.607×10⁻⁶ mol\ne⁻ mol：4.607×10⁻⁶ × 5 = 2.303×10⁻⁵ mol\nO₂：y × 4 = 2.303×10⁻⁵ → y = 5.76×10⁻⁶ mol\nCOD：5.76×10⁻⁶ × 32.0 × 1000/50 × 1000 ≒ 3.69 mg/L\n\n[tip:「試料水 − ブランク（蒸留水）」の差が有機物分！]',
+        miniTest:[
+          {type:'choice',q:'ブランク（蒸留水）の操作をする理由は？',options:['試薬の消費量を補正するため','KMnO₄の濃度を測るため','シュウ酸を標定するため','温度を統一するため'],answer:0},
+          {type:'fill',q:'試料水と蒸留水の滴定量の差 4.22 − 1.69 = {0}mL が有機物分。',answers:['2.53'],bank:['2.53','4.22','1.69','5.91']}
+        ]
+      }
+    ],
+    fillBlanks:[{
+      text:'COD は水中の{0}を酸化するのに必要な O₂ の量（mg/L）。値が{1}ほど汚染が深刻。KMnO₄ {2}mol ≡ O₂ {3}mol（e⁻ の橋渡し）。余った KMnO₄ を{4}で逆滴定する。',
+      answers:['有機物','大きい','4','5','(COOH)₂'],
+      bank:['有機物','無機物','大きい','小さい','4','5','2','(COOH)₂','FeSO₄']
+    }],
+    quiz:[
+      {type:'choice',q:'KMnO₄ 3.50×10⁻⁵mol に等価な O₂ は？（KMnO₄ 4mol≡O₂ 5mol）',options:['4.375×10⁻⁵mol','2.80×10⁻⁵mol','7.00×10⁻⁵mol','1.40×10⁻⁵mol'],answer:0},
+      {type:'fill',q:'KMnO₄ と (COOH)₂ のmol比は{0}：{1}（KMnO₄ e⁻ 5個、(COOH)₂ e⁻ 2個）。',answers:['2','5'],bank:['1','2','5','4','10']},
+      {type:'choice',q:'COD を 100mL → 1L に換算するときの倍率は？',options:['×5','×10','×100','÷10'],answer:1},
+      {type:'choice',q:'COD 測定でブランク（蒸留水）を取る理由は？',options:['試薬の消費量を補正するため','指示薬の色を確認するため','KMnO₄ の濃度を測るため','温度を統一するため'],answer:0}
+    ],
+    flashcards:[
+      {type:'qa',front:'COD とは',back:'試料 1L 中の有機物を酸化するのに\n必要なO₂の質量（mg/L）\n大きいほど汚染が深刻'},
+      {type:'qa',front:'KMnO₄ と O₂ の換算',back:'KMnO₄ 4mol ≡ O₂ 5mol\n（e⁻ 各 5個・4個、最小公倍数 20）'},
+      {type:'qa',front:'COD 計算の手順',back:'①総KMnO₄ mol\n②余りKMnO₄ mol（逆滴定）\n③差 × 5/4 → O₂ mol\n④ × 32 × 1000/試料(L)'},
+      {type:'qa',front:'KMnO₄ vs (COOH)₂ のmol比',back:'2：5\n（e⁻ の最小公倍数 10）'}
+    ]
+  },
+  { id:'redox_do', name:'DO（溶存酸素）・ウィンクラー法', chapter:'redox_app',
+    symbol:'💧', color:'#10B981', colorD:'#059669', bgColor:'#D1FAE5',
+    intro:'水中の溶存酸素（DO）をウィンクラー法で定量する計算方法を、テキスト練習5をもとに理解します。',
+    steps:[
+      { title:'DO とは・ウィンクラー法の4段階',
+        body:'[bold:DO（Dissolved Oxygen）溶存酸素量]\n水中に溶けている O₂ の量（mg/L）。大きいほど水質が良い。\n\n[bold:ウィンクラー法の4反応]\n① MnSO₄ + 2NaOH → Mn(OH)₂ + Na₂SO₄（白色）\n② 2Mn(OH)₂ + O₂ → 2H₂MnO₃（褐色）← O₂ が固定される\n③ H₂MnO₃ + 2KI + 2H₂SO₄ → MnSO₄ + K₂SO₄ + 3H₂O + I₂\n   → O₂ 量に比例した I₂ が生成\n④ I₂ + 2Na₂S₂O₃ → 2NaI + Na₂S₄O₆\n   → Na₂S₂O₃ で滴定（終点：デンプンで青紫→無色）\n\n[bold:mol の連鎖]\nO₂ 1mol → H₂MnO₃ 2mol → I₂ 2mol → Na₂S₂O₃ 4mol\n[term:O₂ 1mol ≡ Na₂S₂O₃ 4mol]\n\n[tip:O₂ 1mol ≡ Na₂S₂O₃ 4mol が計算の核心！]',
+        miniTest:[
+          {type:'choice',q:'O₂ 1mol と等価な Na₂S₂O₃ は何 mol か？',options:['1mol','2mol','3mol','4mol'],answer:3},
+          {type:'choice',q:'ウィンクラー法で最終的に滴定するのは？',options:['O₂','Mn²⁺','I₂','KI'],answer:2}
+        ]
+      },
+      { title:'【練習5】DO の計算（星薬科大学）',
+        body:'[bold:問題]\nある池の水 100mL をウィンクラー法で処理。\n0.025mol/L の Na₂S₂O₃ 水溶液 5.5mL で終点。\nDO（mg/L）を有効数字2桁で求めよ。\n\n[bold:mol の連鎖（練習5の解法）]\n② O₂ 1mol → H₂MnO₃ 2mol\n③ H₂MnO₃ 2mol → I₂ 2mol\n④ I₂ 1mol → Na₂S₂O₃ 2mol（I₂ 2mol → Na₂S₂O₃ 4mol）\n∴ O₂ 1mol → Na₂S₂O₃ 4mol\n\n[bold:計算]\nNa₂S₂O₃：0.025 × 5.5/1000 = 1.375×10⁻⁴ mol\nO₂：1.375×10⁻⁴ × 1/4 = 3.4375×10⁻⁵ mol\nDO = 3.4375×10⁻⁵ × 32 × 1000/100 × 1000\n   = 0.011 g/L = 11 mg/L\n\n[term:答：11 mg/L]',
+        miniTest:[
+          {type:'choice',q:'Na₂S₂O₃ 0.025mol/L × 5.5mL の物質量は？',options:['1.375×10⁻⁴mol','2.75×10⁻⁴mol','6.875×10⁻⁵mol','5.5×10⁻³mol'],answer:0},
+          {type:'fill',q:'O₂ の物質量 = 1.375×10⁻⁴ × {0}（O₂ と Na₂S₂O₃ の比より）。',answers:['1/4'],bank:['1/4','1/2','1','4']}
+        ]
+      },
+      { title:'COD・DO・BOD のまとめ',
+        body:'[bold:3指標の比較]\n\nDO（溶存酸素量）\n単位：mg/L　大きいほど良い\n清潔な川：約 8〜10 mg/L\n測定：ウィンクラー法\n\nCOD（化学的酸素要求量）\n単位：mg/L　小さいほど良い\n測定：KMnO₄（速い・数時間）\n\nBOD（生物化学的酸素要求量）\n単位：mg/L　小さいほど良い\n測定：微生物（遅い・5日間）\n\n[bold:環境基準（日本・湖沼）]\nAA 類型：COD ≤ 1mg/L、DO ≥ 7.5mg/L（最高水準）\nA 類型：COD ≤ 2mg/L\nB 類型：COD ≤ 3mg/L\n\n[tip:DO は大きいほど良い、COD・BOD は小さいほど良い！]',
+        miniTest:[
+          {type:'choice',q:'DO が高い水はどういう状態か？',options:['汚染が深刻','酸素が豊富で水質が良い','有機物が多い','pHが高い'],answer:1},
+          {type:'choice',q:'COD と BOD のうち速く測定できるのは？',options:['COD（化学薬品・数時間）','BOD（微生物・5日間）','同じ','試料による'],answer:0}
+        ]
+      }
+    ],
+    fillBlanks:[{
+      text:'DO は水中の{0}量（mg/L）で{1}いほど水質が良い。ウィンクラー法：O₂ 1mol → H₂MnO₃ {2}mol → I₂ {2}mol → Na₂S₂O₃ {3}mol。終点はデンプンで{4}色→無色。',
+      answers:['溶存酸素','大き','2','4','青紫'],
+      bank:['溶存酸素','有機物','大き','小さ','1','2','4','青紫','赤紫']
+    }],
+    quiz:[
+      {type:'choice',q:'O₂ 1mol ≡ Na₂S₂O₃ 何 mol か？',options:['1','2','4','5'],answer:2},
+      {type:'choice',q:'Na₂S₂O₃ 0.025mol/L × 5.5mL から求めた DO（100mL 試料）は？',options:['5.5mg/L','11mg/L','22mg/L','8.8mg/L'],answer:1},
+      {type:'choice',q:'DO・COD のどちらが「小さいほど良い水」か？',options:['DO','COD','どちらも','どちらも違う'],answer:1},
+      {type:'choice',q:'ウィンクラー法で O₂ を最初に固定する物質は？',options:['Na₂S₂O₃','I₂','Mn(OH)₂','デンプン'],answer:2}
+    ],
+    flashcards:[
+      {type:'qa',front:'DO とは',back:'溶存酸素量（mg/L）\n大きいほど水質が良い\n清潔な川：約 8〜10 mg/L'},
+      {type:'qa',front:'ウィンクラー法の mol 連鎖',back:'O₂ 1mol → H₂MnO₃ 2mol\n→ I₂ 2mol → Na₂S₂O₃ 4mol\nO₂ 1mol ≡ Na₂S₂O₃ 4mol'},
+      {type:'qa',front:'DO 計算式',back:'Na₂S₂O₃(mol) × 1/4 × 32 × 1000/試料(mL) × 1000 [mg/L]'},
+      {type:'qa',front:'COD・DO・BOD の大小',back:'DO：大きいほど良い\nCOD・BOD：小さいほど良い'}
+    ]
+  },
+
 ];
 
 // ============================================================
@@ -1774,7 +1915,7 @@ function renderDashboard() {
     { id:'oxred',      label:'酸化還元',     icon:'⚡', color:'#8B5CF6', done:true  },
     { id:'ionization', label:'イオンと電離', icon:'🔋', color:'#0EA5E9', done:false },
     { id:'acid_base',  label:'酸と塩基',     icon:'🧫', color:'#10B981', done:false },
-    { id:'redox_app',  label:'酸化還元応用', icon:'🏭', color:'#EC4899', done:false }
+    { id:'redox_app',  label:'酸化還元応用', icon:'🏭', color:'#EC4899', done:true  }
   ];
   var tabHtml = '<div style="margin-bottom:12px;">'
     + '<div style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:.08em;margin-bottom:6px;">📚 化学基礎 ─ 単元を選ぶ</div>'
