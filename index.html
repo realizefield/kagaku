@@ -454,6 +454,7 @@
     background: linear-gradient(135deg, var(--unit-color), var(--unit-color-d));
     color: #fff;
   }
+  .word-chip.challenge-chip { border-color: #94A3B8; color: #334155; background: #F8FAFC; }
 
   .practice-actions { display: flex; gap: 10px; flex-wrap: wrap; }
   .action-btn {
@@ -1758,7 +1759,7 @@ function saveSettings(s) {
 let state = {
   progress: loadProgress(),
   settings: loadSettings(),
-  view: 'dashboard', chapter: 'busshitsu',
+  view: 'dashboard', chapter: 'busshitsu', practiceChallenge: false, practiceShowHint: false,
   activeUnit: null,
   tab: 'learn',
   currentStep: 0,
@@ -2441,27 +2442,57 @@ function completeStep(stepIdx) {
 function renderPracticeTab(u, p) {
   const fb = u.fillBlanks[0];
   const bestTimes = (p.bestTimes || []).slice().sort((a,b) => a.time - b.time);
+  const inChallenge = state.practiceChallenge;
+  const showHint    = state.practiceShowHint;
+
+  // チップ（語群）HTML：チャレンジ中はカラーなし、手本表示中は非表示
+  const chipsHtml = showHint ? '' :
+    fb.bank.map(w => {
+      const cls = inChallenge ? 'word-chip challenge-chip' : 'word-chip';
+      return '<span class="' + cls + '" data-word="' + w + '">' + w + '</span>';
+    }).join('');
+
+  // 本文 HTML
+  const fillHtml = showHint
+    ? buildAnswerTextHtml(fb)          // 手本：答え入り・カラー
+    : inChallenge
+      ? buildChallengeTextHtml(fb)     // チャレンジ：空欄
+      : buildFillTextHtml(fb);         // 通常：ヒント（黄色）
+
+  // ボタン行
+  let actionHtml = '';
+  if (!inChallenge && !showHint) {
+    // 通常状態
+    actionHtml = '<button class="action-btn primary" style="background:var(--unit-color);" onclick="startChallengePractice()">🏁 チャレンジ開始</button>';
+  } else if (inChallenge && !showHint) {
+    // チャレンジ中
+    actionHtml = '<button class="action-btn primary" onclick="judgePractice()">判定</button>'
+               + '<button class="action-btn secondary" onclick="resetPractice()">やり直す</button>'
+               + (state.timerPaused ? '<button class="action-btn primary" onclick="resumePractice()">再開する</button>' : '')
+               + '<button class="action-btn secondary" onclick="toggleHintPractice()" style="margin-left:auto;">👁 手本を見る</button>';
+  } else if (showHint) {
+    // 手本表示中
+    actionHtml = '<button class="action-btn secondary" onclick="toggleHintPractice()">📝 本文に戻る</button>';
+  }
 
   let html = `
     <div class="practice-card">
       <div class="practice-head">
         <h2>穴埋めチャレンジ</h2>
         <div style="display:flex;gap:10px;align-items:center;">
-          <div class="timer-display ${state.timerPaused?'paused':''}" id="timer">${formatTime(state.elapsed/1000)}</div>
+          ${inChallenge ? '<div class="timer-display ' + (state.timerPaused?'paused':'') + '" id="timer">' + formatTime(state.elapsed/1000) + '</div>' : ''}
         </div>
       </div>
 
-      <div class="word-bank" id="wordBank">
+      <div class="word-bank" id="wordBank" ${!chipsHtml ? 'style="display:none;"' : ''}>
         <div class="word-bank-label">▸ 語群</div>
-        ${fb.bank.map(w => `<span class="word-chip" data-word="${w}">${w}</span>`).join('')}
+        ${chipsHtml}
       </div>
 
-      <div class="fill-text" id="fillText">${buildFillTextHtml(fb)}</div>
+      <div class="fill-text" id="fillText">${fillHtml}</div>
 
-      <div class="practice-actions">
-        <button class="action-btn primary" onclick="judgePractice()">判定</button>
-        <button class="action-btn secondary" onclick="resetPractice()">やり直す</button>
-        ${state.timerPaused ? '<button class="action-btn primary" onclick="resumePractice()">再開する</button>' : ''}
+      <div class="practice-actions" style="flex-wrap:wrap;">
+        ${actionHtml}
       </div>
     </div>
 
@@ -2479,6 +2510,54 @@ function renderPracticeTab(u, p) {
     </div>
   `;
   return html;
+}
+
+// 手本表示（答え入り・カラー強調）
+function buildAnswerTextHtml(fb) {
+  return fb.text.replace(/\{(\d+)\}/g, (_, idx) => {
+    const i = parseInt(idx);
+    const ans = fb.answers[i];
+    return '<span style="display:inline-block;min-width:80px;padding:1px 10px;margin:0 3px;background:var(--unit-bg);border-bottom:2px solid var(--unit-color);font-weight:800;color:var(--unit-color-d);border-radius:4px;">' + ans + '</span>';
+  });
+}
+
+// チャレンジ表示（空欄）
+function buildChallengeTextHtml(fb) {
+  return fb.text.replace(/\{(\d+)\}/g, (_, idx) => {
+    const i = parseInt(idx);
+    return '<span class="blank" data-idx="' + i + '" data-answer="' + fb.answers[i] + '">　　</span>';
+  });
+}
+
+// チャレンジ開始
+function startChallengePractice() {
+  state.practiceChallenge = true;
+  state.practiceShowHint  = false;
+  state.practicePickedChip = null;
+  state.elapsed = 0;
+  state.timerPaused = false;
+  render();
+  // イベント設定は attachPracticeHandlers が行う
+}
+
+// 手本 ↔ 本文切り替え
+function toggleHintPractice() {
+  if (!state.practiceChallenge) return;
+  if (!state.practiceShowHint) {
+    // 手本を見る → タイマー停止
+    pauseTimer();
+    state.practiceShowHint = true;
+  } else {
+    // 本文に戻る → タイマー再開（再開ボタンは出さず自動再開）
+    state.practiceShowHint = false;
+    render();
+    // タイマーを再開
+    if (state.elapsed > 0) {
+      startTimer();
+    }
+    return;
+  }
+  render();
 }
 
 function buildFillTextHtml(fb) {
@@ -2570,6 +2649,8 @@ function resetPractice() {
   state.elapsed = 0;
   state.timerPaused = false;
   state.practicePickedChip = null;
+  state.practiceChallenge = false;
+  state.practiceShowHint  = false;
   render();
 }
 
