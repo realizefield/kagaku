@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>半反応式マスター | GAMBA化学</title>
+<style>
+:root{
+  --bg:#f0f4ff;--card:#fff;--primary:#2563eb;--primary-light:#dbeafe;
+  --primary-dark:#1e40af;--accent:#dc2626;--accent-light:#fee2e2;
+  --success:#16a34a;--success-light:#dcfce7;
+  --warn:#d97706;--warn-light:#fffbeb;
+  --text:#1e293b;--text-sub:#64748b;--border:#bfdbfe;--radius:12px;
+  --ox:#dc2626;--rd:#16a34a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'BIZ UDPGothic','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+
+/* NAV */
+.topnav{display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;flex-wrap:wrap;}
+.topnav .brand{font-weight:700;font-size:.9em;}
+.topnav .sep{opacity:.4;}
+.topnav a{color:#bfdbfe;text-decoration:none;font-size:.82em;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);color:#fff;padding:22px 20px 20px;}
+.hero .crumb{font-size:.75em;opacity:.7;margin-bottom:5px;}
+.hero h1{font-size:clamp(1.3em,4vw,1.9em);font-weight:800;margin-bottom:5px;}
+.hero .sub{font-size:.85em;opacity:.88;line-height:1.7;}
+
+.wrap{max-width:860px;margin:0 auto;padding:0;}
+main{padding:16px 14px 0;}
+
+/* SECTION TABS */
+.sec-tabs{display:flex;gap:0;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;}
+.sec-tab{flex:1;padding:11px 4px;font-family:inherit;font-size:.82em;font-weight:700;border:none;background:transparent;cursor:pointer;color:var(--text-sub);border-right:1px solid var(--border);transition:.15s;line-height:1.3;text-align:center;}
+.sec-tab:last-child{border-right:none;}
+.sec-tab.active{background:var(--primary);color:#fff;}
+.sec-tab:hover:not(.active){background:var(--primary-light);}
+
+.section{display:none;}
+.section.active{display:block;}
+
+/* ===================== SECTION 1: CARDS ===================== */
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.card-header h2{font-size:1em;font-weight:700;color:var(--primary-dark);}
+.card-progress{font-size:.82em;color:var(--text-sub);}
+
+/* Filter buttons */
+.filter-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.filter-btn{font-family:inherit;font-size:.78em;padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-weight:600;transition:.15s;}
+.filter-btn.active-ox{background:#fee2e2;border-color:var(--ox);color:var(--ox);}
+.filter-btn.active-rd{background:#dcfce7;border-color:var(--rd);color:var(--rd);}
+.filter-btn.active-all{background:var(--primary-light);border-color:var(--primary);color:var(--primary);}
+
+/* Flash card */
+.flashcard-wrap{perspective:900px;margin-bottom:16px;}
+.flashcard{
+  width:100%;min-height:220px;position:relative;
+  transform-style:preserve-3d;
+  transition:transform .5s cubic-bezier(.4,0,.2,1);
+  cursor:pointer;
+}
+.flashcard.flipped{transform:rotateY(180deg);}
+.fc-face{
+  position:absolute;width:100%;min-height:220px;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:var(--radius);padding:20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+}
+.fc-front{
+  background:linear-gradient(135deg,#4f46e5,#7c3aed);
+  border:2px solid #6d28d9;color:#fff;
+}
+.fc-back{
+  background:var(--card);border:2px solid var(--border);
+  transform:rotateY(180deg);
+}
+.fc-type-badge{font-size:.75em;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:4px;}
+.fc-type-ox{background:rgba(255,255,255,.25);color:#fff;}
+.fc-type-rd{background:rgba(255,255,255,.25);color:#fff;}
+.fc-name{font-size:1.3em;font-weight:800;text-align:center;line-height:1.4;}
+.fc-hint{font-size:.8em;opacity:.75;margin-top:4px;}
+.fc-back-title{font-size:.78em;font-weight:700;color:var(--text-sub);margin-bottom:6px;width:100%;text-align:center;}
+.fc-row{width:100%;background:#f8faff;border-radius:8px;padding:10px 14px;text-align:center;}
+.fc-row-label{font-size:.72em;font-weight:700;color:var(--text-sub);margin-bottom:3px;}
+.fc-row-val{font-size:.98em;font-weight:700;line-height:1.5;}
+.fc-row-val .arrow{color:#94a3b8;margin:0 6px;}
+.ox-color{color:var(--ox);}
+.rd-color{color:var(--rd);}
+
+.fc-eq{width:100%;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:8px;padding:10px 14px;text-align:center;margin-top:4px;}
+.fc-eq-label{font-size:.72em;color:#92400e;margin-bottom:3px;font-weight:700;}
+.fc-eq-val{font-size:.9em;font-weight:700;line-height:1.6;}
+
+.card-nav{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:4px;}
+.card-nav button{font-family:inherit;font-size:.85em;padding:8px 20px;border-radius:50px;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-weight:700;transition:.15s;}
+.card-nav button:hover{background:var(--primary-light);border-color:var(--primary);}
+.card-nav .flip-btn{background:var(--primary);color:#fff;border-color:var(--primary);}
+.card-nav .flip-btn:hover{background:var(--primary-dark);}
+.card-counter{font-size:.82em;color:var(--text-sub);min-width:60px;text-align:center;}
+
+/* ===================== SECTION 2: QUIZ ===================== */
+.quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.quiz-header h2{font-size:1em;font-weight:700;color:var(--primary-dark);}
+.quiz-score-badge{background:var(--primary-light);color:var(--primary-dark);font-size:.82em;font-weight:700;padding:4px 12px;border-radius:20px;}
+
+.quiz-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px;}
+.quiz-q-label{font-size:.75em;font-weight:700;color:var(--text-sub);margin-bottom:8px;}
+.quiz-reagent{font-size:1.15em;font-weight:800;color:var(--primary-dark);margin-bottom:4px;}
+.quiz-reagent .badge{display:inline-block;font-size:.68em;font-weight:700;padding:2px 8px;border-radius:12px;margin-left:6px;vertical-align:middle;}
+.badge-ox{background:var(--accent-light);color:var(--ox);}
+.badge-rd{background:var(--success-light);color:var(--rd);}
+.quiz-q-text{font-size:.9em;color:var(--text-sub);margin-bottom:14px;}
+.quiz-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.quiz-choice{font-family:inherit;padding:10px 12px;border-radius:8px;border:2px solid #cbd5e1;background:#fff;font-size:.88em;font-weight:600;cursor:pointer;text-align:left;transition:.15s;line-height:1.4;}
+.quiz-choice:hover:not(.disabled){border-color:var(--primary);background:var(--primary-light);}
+.quiz-choice.correct{background:var(--success);border-color:var(--success);color:#fff;}
+.quiz-choice.wrong{background:var(--accent);border-color:var(--accent);color:#fff;}
+.quiz-choice.disabled{cursor:default;}
+.quiz-exp{display:none;margin-top:10px;font-size:.85em;background:#f0fdf4;border-left:4px solid var(--success);padding:10px 14px;border-radius:0 8px 8px 0;line-height:1.7;}
+.quiz-exp.show{display:block;}
+
+.quiz-result{background:linear-gradient(135deg,var(--primary-light),#f0fdf4);border:2px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;display:none;}
+.quiz-result.show{display:block;}
+.quiz-result .score{font-size:2em;font-weight:800;color:var(--primary);}
+.quiz-result .msg{font-size:.9em;color:var(--text-sub);margin-top:6px;}
+.quiz-reset-btn{font-family:inherit;margin-top:14px;background:var(--primary);color:#fff;border:none;padding:10px 24px;border-radius:50px;cursor:pointer;font-size:.88em;font-weight:700;}
+
+/* ===================== SECTION 3: STEPPER ===================== */
+.stepper-select{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;}
+.stepper-select h2{font-size:.95em;font-weight:700;color:var(--primary-dark);margin-bottom:10px;}
+.reagent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;}
+.reagent-btn{font-family:inherit;padding:9px 12px;border-radius:8px;border:2px solid var(--border);background:#fff;font-size:.84em;font-weight:600;cursor:pointer;text-align:left;transition:.15s;line-height:1.4;}
+.reagent-btn:hover{border-color:var(--primary);background:var(--primary-light);}
+.reagent-btn.selected{border-color:var(--primary);background:var(--primary);color:#fff;}
+.reagent-btn .rbadge{font-size:.7em;display:block;margin-top:2px;opacity:.75;}
+
+.stepper-body{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;display:none;}
+.stepper-body.active{display:block;}
+.stepper-title-bar{background:linear-gradient(90deg,var(--primary-light),#eff6ff);padding:12px 16px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.stepper-title-bar h3{font-size:1em;font-weight:700;color:var(--primary-dark);}
+.stepper-progress{display:flex;gap:6px;align-items:center;}
+.stepper-dot{width:10px;height:10px;border-radius:50%;border:2px solid #cbd5e1;background:transparent;transition:.2s;}
+.stepper-dot.active{background:var(--primary);border-color:var(--primary);}
+.stepper-dot.done{background:#93c5fd;border-color:#93c5fd;}
+
+.step-panel{display:none;padding:16px;}
+.step-panel.active{display:block;}
+
+.step-tag{display:inline-block;font-size:.75em;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+.step-tag-0{background:#ede9fe;color:#6d28d9;}
+.step-tag-1{background:#fef3c7;color:#92400e;}
+.step-tag-2{background:#dcfce7;color:#14532d;}
+.step-tag-3{background:#fee2e2;color:#991b1b;}
+.step-tag-4{background:var(--primary-light);color:var(--primary-dark);}
+
+.step-rule{background:#f8faff;border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:.88em;line-height:1.8;}
+.step-rule .rule-title{font-weight:700;color:var(--primary-dark);margin-bottom:4px;font-size:.92em;}
+
+.eq-build{background:#fffbeb;border:2px solid #fcd34d;border-radius:10px;padding:12px 16px;margin:10px 0;text-align:center;}
+.eq-build .eq-line{font-size:1.05em;font-weight:700;letter-spacing:.03em;line-height:1.8;}
+.eq-build .eq-note{font-size:.78em;color:#92400e;margin-top:4px;}
+.eq-build .added{color:var(--ox);font-weight:800;}
+.eq-build .balanced{color:var(--rd);font-weight:800;}
+.eq-build .electron{color:#7c3aed;font-weight:800;}
+
+.step-explain{font-size:.88em;line-height:1.85;color:var(--text);}
+.step-explain ul{margin:6px 0 6px 18px;}
+.step-explain li{margin-bottom:4px;}
+.step-explain .hl{font-weight:700;color:var(--primary-dark);}
+.step-explain .hl-ox{font-weight:700;color:var(--ox);}
+.step-explain .hl-rd{font-weight:700;color:var(--rd);}
+.step-explain .hl-e{font-weight:700;color:#7c3aed;}
+
+.oxnum-tag{display:inline-block;background:#e0e7ff;color:#4338ca;font-size:.75em;font-weight:700;padding:1px 6px;border-radius:5px;margin:0 2px;}
+
+.stepper-nav{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-top:1px solid #e2e8f0;}
+.stepper-nav button{font-family:inherit;font-size:.84em;padding:8px 20px;border-radius:50px;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-weight:700;transition:.15s;}
+.stepper-nav button:hover{background:var(--primary-light);}
+.stepper-nav .next-btn{background:var(--primary);color:#fff;border-color:var(--primary);}
+.stepper-nav .next-btn:hover{background:var(--primary-dark);}
+.stepper-nav button:disabled{opacity:.35;cursor:default;}
+.stepper-nav .step-lbl{font-size:.8em;color:var(--text-sub);}
+
+/* complete banner */
+.complete-banner{background:linear-gradient(135deg,#f0fdf4,#dbeafe);border:2px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;margin:0 16px 16px;}
+.complete-banner .icon{font-size:2em;margin-bottom:6px;}
+.complete-banner h4{font-weight:700;color:var(--primary-dark);margin-bottom:4px;}
+.complete-banner p{font-size:.85em;color:var(--text-sub);}
+
+/* pagenav */
+.pagenav{display:flex;gap:0;margin:20px 0 0;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.pagenav a{flex:1;display:flex;flex-direction:column;padding:12px 14px;text-decoration:none;background:#fff;border-right:1.5px solid var(--border);transition:.15s;}
+.pagenav a:last-child{border-right:none;}
+.pagenav a:hover{background:var(--primary-light);}
+.pagenav a.next{text-align:right;}
+.pagenav .pnlabel{font-size:.72em;color:var(--text-sub);font-weight:600;}
+.pagenav .pntitle{font-size:.88em;font-weight:700;color:var(--primary-dark);margin-top:2px;}
+
+
+
+
+/* ── なぜ？ポップアップ ── */
+.why-btn{font-family:inherit;display:inline-flex;align-items:center;gap:6px;margin-top:10px;margin-left:16px;margin-bottom:4px;padding:7px 18px;border-radius:50px;border:2px solid #f59e0b;background:#fffbeb;color:#92400e;font-size:.84em;font-weight:700;cursor:pointer;transition:.15s;}
+.why-btn:hover{background:#fef3c7;border-color:#d97706;}
+.why-btn .why-icon{font-size:1.1em;}
+
+.popup-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center;padding:16px;}
+.popup-overlay.open{display:flex;}
+.popup-box{background:#fff;border-radius:16px;max-width:640px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:popIn .22s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{transform:scale(.88);opacity:0;}to{transform:scale(1);opacity:1;}}
+.popup-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:linear-gradient(135deg,#fffbeb,#fef3c7);border-bottom:1.5px solid #fde68a;border-radius:16px 16px 0 0;position:sticky;top:0;}
+.popup-head h3{font-size:.95em;font-weight:800;color:#92400e;}
+.popup-close{font-family:inherit;background:none;border:none;font-size:1.3em;cursor:pointer;color:#92400e;padding:2px 6px;border-radius:6px;line-height:1;}
+.popup-close:hover{background:#fde68a;}
+.popup-body{padding:16px 18px 20px;font-size:.88em;line-height:1.85;color:#1e293b;}
+.popup-body h4{font-size:.92em;font-weight:700;color:#1e40af;border-left:4px solid #3b82f6;padding-left:10px;margin:14px 0 6px;}
+.popup-body p{margin-bottom:8px;}
+.popup-body .eq-line{background:#fffbeb;border:1.5px solid #fcd34d;border-radius:8px;padding:8px 14px;font-weight:700;font-size:.95em;text-align:center;margin:8px 0;letter-spacing:.03em;}
+.popup-body table{border-collapse:collapse;width:100%;font-size:.88em;margin:8px 0;}
+.popup-body th{background:#dbeafe;color:#1e40af;font-weight:700;padding:7px 10px;border:1.5px solid #bfdbfe;text-align:center;}
+.popup-body td{padding:7px 10px;border:1px solid #e2e8f0;text-align:center;vertical-align:middle;}
+.popup-body .hl-b{font-weight:700;color:#1e40af;}
+.popup-body .hl-ox{font-weight:700;color:#dc2626;}
+.popup-body .hl-rd{font-weight:700;color:#16a34a;}
+.popup-body .note-box{background:#f0fdf4;border-left:4px solid #16a34a;border-radius:0 8px 8px 0;padding:10px 14px;margin-top:10px;font-size:.88em;}
+.popup-body .warn-box{background:#fff7ed;border-left:4px solid #f97316;border-radius:0 8px 8px 0;padding:10px 14px;margin-top:10px;}
+
+/* ── イオン色バッジ ── */
+.ion-badge{display:inline-block;font-size:.78em;font-weight:700;padding:2px 9px;border-radius:12px;margin-left:4px;vertical-align:middle;border:1px solid rgba(0,0,0,.1);}
+.color-table{border-collapse:collapse;width:100%;font-size:.85em;margin:10px 0;}
+.color-table th{background:var(--primary-light);color:var(--primary-dark);font-weight:700;padding:7px 10px;border:1.5px solid #bfdbfe;text-align:center;}
+.color-table td{padding:7px 10px;border:1px solid #e2e8f0;text-align:center;vertical-align:middle;}
+.color-swatch{display:inline-block;width:16px;height:16px;border-radius:50%;border:1.5px solid #94a3b8;vertical-align:middle;margin-right:5px;}
+
+/* ===================== SECTION 4: 二面性 ===================== */
+.dual-notice{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:2px solid #f59e0b;border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;display:flex;flex-direction:column;gap:6px;}
+.dn-icon{font-size:1.6em;line-height:1;}
+.dn-title{font-size:1.05em;font-weight:800;color:#92400e;}
+.dn-lead{font-size:.88em;line-height:1.8;color:#78350f;}
+
+.dual-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:16px;overflow:hidden;}
+.dual-card-title{display:flex;align-items:center;gap:8px;background:linear-gradient(90deg,var(--primary-light),#eff6ff);padding:12px 16px;font-weight:700;font-size:1em;border-bottom:1.5px solid var(--border);}
+.dual-badge{font-size:.72em;font-weight:700;padding:3px 10px;border-radius:20px;}
+.dual-badge-both{background:#fef3c7;color:#92400e;border:1px solid #fbbf24;}
+.dual-why{font-size:.88em;line-height:1.8;padding:12px 16px 8px;color:var(--text);}
+.dual-table-wrap{padding:0 16px 12px;overflow-x:auto;}
+.dual-table{border-collapse:collapse;width:100%;font-size:.84em;min-width:480px;}
+.dual-table th{background:var(--primary-light);color:var(--primary-dark);font-weight:700;padding:8px 10px;border:1.5px solid #bfdbfe;text-align:center;}
+.dual-table td{padding:8px 10px;border:1px solid #e2e8f0;text-align:center;vertical-align:middle;}
+.dual-table .row-ox td{background:#fff7ed;}
+.dual-table .row-rd td{background:#f0fdf4;}
+.role-cell{font-weight:700;}
+.pill-ox{display:inline-block;background:var(--accent-light);color:var(--ox);font-size:.8em;font-weight:700;padding:2px 10px;border-radius:20px;}
+.pill-rd{display:inline-block;background:var(--success-light);color:var(--rd);font-size:.8em;font-weight:700;padding:2px 10px;border-radius:20px;}
+.dual-point{background:#f8faff;border-top:1px solid var(--border);padding:10px 16px;font-size:.86em;line-height:1.8;color:var(--text);}
+.dp-label{display:inline-block;background:var(--primary);color:#fff;font-size:.75em;font-weight:700;padding:2px 10px;border-radius:20px;margin-right:6px;margin-bottom:4px;}
+
+/* 語群＆穴埋め */
+.fill-section{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;}
+.fill-title{font-weight:700;font-size:.95em;color:var(--primary-dark);margin-bottom:6px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.fill-lead{font-size:.85em;color:var(--text-sub);margin-bottom:12px;line-height:1.6;}
+.fill-subtitle{font-weight:700;font-size:.88em;color:var(--primary-dark);margin-bottom:6px;}
+.tbl-scroll{overflow-x:auto;}
+
+.word-pool{display:flex;flex-wrap:wrap;gap:8px;background:#f8faff;border:1.5px solid var(--border);border-radius:10px;padding:12px;margin-bottom:14px;min-height:52px;}
+.word-chip{font-family:inherit;font-size:.88em;font-weight:700;padding:6px 14px;border-radius:20px;border:2px solid var(--primary);background:#fff;color:var(--primary-dark);cursor:pointer;transition:.15s;user-select:none;}
+.word-chip:hover{background:var(--primary-light);}
+.word-chip.selected{background:var(--primary);color:#fff;}
+.word-chip.used{opacity:.35;cursor:default;pointer-events:none;text-decoration:line-through;}
+
+.fill-table{border-collapse:collapse;width:100%;font-size:.86em;min-width:440px;}
+.fill-table th{background:var(--primary-light);color:var(--primary-dark);font-weight:700;padding:8px 10px;border:1.5px solid #bfdbfe;text-align:center;}
+.fill-table td{padding:8px 10px;border:1px solid #e2e8f0;text-align:center;vertical-align:middle;}
+.fill-table-wrap{margin-bottom:4px;}
+
+.blank{display:inline-block;min-width:60px;padding:4px 10px;border-radius:6px;border:2px dashed #94a3b8;background:#f8faff;color:var(--text-sub);cursor:pointer;font-size:.88em;font-weight:600;transition:.15s;text-align:center;vertical-align:middle;}
+.blank:hover{border-color:var(--primary);background:var(--primary-light);}
+.blank.filled{border-style:solid;border-color:var(--primary);background:var(--primary-light);color:var(--primary-dark);}
+.blank.correct{border-color:var(--rd);background:var(--success-light);color:var(--rd);cursor:default;}
+.blank.wrong{border-color:var(--ox);background:var(--accent-light);color:var(--ox);cursor:default;}
+
+.fill-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+.fill-check-btn{font-family:inherit;background:var(--primary);color:#fff;border:none;padding:9px 22px;border-radius:50px;cursor:pointer;font-size:.88em;font-weight:700;}
+.fill-reset-btn{font-family:inherit;background:var(--primary-light);color:var(--primary-dark);border:1.5px solid var(--border);padding:9px 22px;border-radius:50px;cursor:pointer;font-size:.88em;font-weight:700;}
+.fill-result{margin-top:10px;font-weight:700;font-size:.95em;color:var(--primary);}
+
+/* 花吹雪 */
+@keyframes confettiFall{
+  0%{transform:translateY(0) rotate(0deg);opacity:1;}
+  80%{opacity:1;}
+  100%{transform:translateY(105vh) rotate(720deg);opacity:0;}
+}
+@media(max-width:520px){
+  .quiz-choices{grid-template-columns:1fr;}
+  .reagent-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">⚗️ GAMBA 化学</span>
+  <span class="sep">|</span>
+  <a href="chem_oxred.html">← 酸化還元(1)</a>
+  <a href="chem_oxred2.html">酸化還元(2)</a>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="crumb">酸化還元 / 半反応式マスター</div>
+  <h1>⚗️ 半反応式マスター</h1>
+  <p class="sub">STEP1：フラッシュカードで「反応前→反応後」を覚える　→　STEP2：クイズで確認　→　STEP3：半反応式を段階的に作る</p>
+</header>
+
+<main>
+
+<!-- タブ -->
+<div class="sec-tabs">
+  <button class="sec-tab active" onclick="showSection(0)">① カードで覚える</button>
+  <button class="sec-tab" onclick="showSection(1)">② クイズで確認</button>
+  <button class="sec-tab" onclick="showSection(2)">③ 半反応式を作る</button>
+  <button class="sec-tab" onclick="showSection(3)">④ 二面性をマスター</button>
+</div>
+
+
+<!-- =============================================================== -->
+<!-- SECTION 1: フラッシュカード                                      -->
+<!-- =============================================================== -->
+<div class="section active" id="sec0">
+
+  <div class="card-header">
+    <h2>📇 フラッシュカード（全12種）</h2>
+    <span class="card-progress" id="card-prog">1 / 12</span>
+  </div>
+
+  <!-- フィルター -->
+  <div class="filter-btns">
+    <button class="filter-btn active-all" onclick="setFilter('all',this)">全て</button>
+    <button class="filter-btn" onclick="setFilter('ox',this)">酸化剤のみ</button>
+    <button class="filter-btn" onclick="setFilter('rd',this)">還元剤のみ</button>
+  </div>
+
+  <div class="flashcard-wrap">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <!-- front -->
+      <div class="fc-face fc-front" id="fc-front">
+        <span class="fc-type-badge" id="fc-badge"></span>
+        <div class="fc-name" id="fc-name"></div>
+        <div class="fc-hint">タップして反応前後を確認 →</div>
+      </div>
+      <!-- back -->
+      <div class="fc-face fc-back" id="fc-back">
+        <div class="fc-back-title">反応前 → 反応後</div>
+        <div class="fc-row" id="fc-row-before">
+          <div class="fc-row-label">反応前の物質</div>
+          <div class="fc-row-val" id="fc-before"></div>
+        </div>
+        <div class="fc-row" id="fc-row-after" style="margin-top:8px;">
+          <div class="fc-row-label">反応後の物質</div>
+          <div class="fc-row-val" id="fc-after"></div>
+        </div>
+        <div class="fc-eq">
+          <div class="fc-eq-label">半反応式</div>
+          <div class="fc-eq-val" id="fc-eq"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-nav">
+    <button onclick="cardMove(-1)">← 前</button>
+    <span class="card-counter" id="card-counter">1 / 12</span>
+    <button onclick="cardMove(1)">次 →</button>
+    <button class="flip-btn" onclick="flipCard()">↺ 裏返す</button>
+  </div>
+
+</div><!-- /sec0 -->
+
+
+<!-- =============================================================== -->
+<!-- SECTION 2: クイズ                                                -->
+<!-- =============================================================== -->
+<div class="section" id="sec1">
+
+  <div class="quiz-header">
+    <h2>✏️ クイズ：反応後の物質は何？</h2>
+    <span class="quiz-score-badge" id="quiz-score">0 / 0</span>
+  </div>
+
+  <div id="quiz-area"></div>
+
+  <div class="quiz-result" id="quiz-result">
+    <div class="score" id="quiz-final-score"></div>
+    <div class="msg" id="quiz-final-msg"></div>
+    <button class="quiz-reset-btn" onclick="initQuiz()">↻ もう一度挑戦</button>
+  </div>
+
+</div><!-- /sec1 -->
+
+
+<!-- =============================================================== -->
+<!-- SECTION 3: 半反応式ステッパー                                    -->
+<!-- =============================================================== -->
+<div class="section" id="sec2">
+
+  <div class="stepper-select">
+    <h2>試薬を選んで半反応式を作ろう</h2>
+    <div class="reagent-grid" id="reagent-grid"></div>
+  </div>
+
+  <div class="stepper-body" id="stepper-body">
+    <div class="stepper-title-bar">
+      <h3 id="stepper-title"></h3>
+      <div class="stepper-progress" id="stepper-dots"></div>
+    </div>
+    <div id="stepper-panels"></div>
+    <div class="stepper-nav">
+      <button onclick="stepMove(-1)" id="step-prev" disabled>← 前へ</button>
+      <span class="step-lbl" id="step-lbl"></span>
+      <button onclick="stepMove(1)" id="step-next" class="next-btn">次へ →</button>
+    </div>
+  </div>
+
+
+<!-- =============================================================== -->
+<!-- SECTION 4: 二面性マスター                                        -->
+<!-- =============================================================== -->
+<div class="section" id="sec3">
+
+  <!-- ── 解説ブロック ── -->
+  <div class="dual-notice">
+    <div class="dn-icon">⚠️</div>
+    <div class="dn-title">SO₂・H₂O₂ の「二面性」に注意！</div>
+    <p class="dn-lead">この2つの物質は、<strong>反応する相手によって酸化剤にも還元剤にもなります。</strong><br>入試でも頻出のポイントです。しっかり整理しておきましょう。</p>
+
+    <!-- 色一覧ミニ表 -->
+    <div style="margin-top:12px;overflow-x:auto;">
+      <table class="color-table">
+        <thead>
+          <tr>
+            <th>イオン・物質</th>
+            <th>色</th>
+            <th>備考</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>MnO₄⁻</strong>（過マンガン酸イオン）</td>
+            <td><span class="color-swatch" style="background:#9333ea;"></span><span style="color:#7e22ce;font-weight:700;">赤紫色</span></td>
+            <td>KMnO₄ 水溶液の色</td>
+          </tr>
+          <tr>
+            <td><strong>Mn²⁺</strong>（マンガン(II)イオン）</td>
+            <td><span class="color-swatch" style="background:#fce7f3;"></span><span style="color:#9d174d;font-weight:700;">淡桃色〜ほぼ無色</span></td>
+            <td>酸性条件での KMnO₄ の反応後</td>
+          </tr>
+          <tr>
+            <td><strong>MnO₂</strong>（酸化マンガン(IV)）</td>
+            <td><span class="color-swatch" style="background:#292524;"></span><span style="color:#292524;font-weight:700;">黒色</span>の沈殿</td>
+            <td>中性・塩基性条件での KMnO₄ の反応後</td>
+          </tr>
+          <tr>
+            <td><strong>Cr₂O₇²⁻</strong>（ニクロム酸イオン）</td>
+            <td><span class="color-swatch" style="background:#f97316;"></span><span style="color:#c2410c;font-weight:700;">橙色</span></td>
+            <td>酸性条件で安定　K₂Cr₂O₇ の色</td>
+          </tr>
+          <tr>
+            <td><strong>CrO₄²⁻</strong>（クロム酸イオン）</td>
+            <td><span class="color-swatch" style="background:#eab308;"></span><span style="color:#a16207;font-weight:700;">黄色</span></td>
+            <td>塩基性条件で安定　K₂CrO₄ の色</td>
+          </tr>
+          <tr>
+            <td><strong>Cr³⁺</strong>（クロム(III)イオン）</td>
+            <td><span class="color-swatch" style="background:#16a34a;"></span><span style="color:#15803d;font-weight:700;">緑色</span></td>
+            <td>K₂Cr₂O₇ が還元された後の色</td>
+          </tr>
+          <tr>
+            <td><strong>I₂</strong>（ヨウ素）</td>
+            <td><span class="color-swatch" style="background:#78350f;"></span><span style="color:#78350f;font-weight:700;">褐色</span>（水溶液は<span style="color:#b45309;font-weight:700;">黄褐色</span>）</td>
+            <td>デンプンと反応すると<span style="color:#4338ca;font-weight:700;">青紫色</span></td>
+          </tr>
+          <tr>
+            <td><strong>I⁻</strong>（ヨウ化物イオン）</td>
+            <td><span class="color-swatch" style="background:#f1f5f9;"></span><span style="color:#475569;font-weight:700;">無色</span></td>
+            <td>I₂ が還元されると無色になる</td>
+          </tr>
+          <tr>
+            <td><strong>NO₂</strong>（二酸化窒素）</td>
+            <td><span class="color-swatch" style="background:#b45309;"></span><span style="color:#92400e;font-weight:700;">赤褐色</span>の気体</td>
+            <td>濃硝酸の反応後</td>
+          </tr>
+          <tr>
+            <td><strong>S</strong>（硫黄単体）</td>
+            <td><span class="color-swatch" style="background:#eab308;"></span><span style="color:#a16207;font-weight:700;">黄色</span>の固体</td>
+            <td>H₂S が酸化された後</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- SO2 カード -->
+  <div class="dual-card">
+    <div class="dual-card-title">
+      <span class="dual-badge dual-badge-both">二面性あり</span>
+      SO₂（二酸化硫黄）
+    </div>
+    <p class="dual-why">S の酸化数は <strong>+4</strong>。<br>
+      +4 は中間の値なので、<span style="color:var(--ox);">より大きく（酸化）</span>も <span style="color:var(--rd);">より小さく（還元）</span>もなれます。</p>
+
+    <div class="dual-table-wrap">
+      <table class="dual-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>反応の相手</th>
+            <th>SO₂ のはたらき</th>
+            <th>S の酸化数変化</th>
+            <th>反応後の SO₂ 側</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-ox">
+            <td class="role-cell"><span class="pill-ox">還元剤</span></td>
+            <td>KMnO₄・K₂Cr₂O₇・Cl₂・I₂<br><small>（強い酸化剤）</small></td>
+            <td>電子を<strong>渡す</strong></td>
+            <td>+4 → <span style="color:var(--rd);">+6</span>（増える）</td>
+            <td><span style="color:#64748b;font-weight:700;">SO₄²⁻</span>（無色）</td>
+          </tr>
+          <tr class="row-rd">
+            <td class="role-cell"><span class="pill-rd">酸化剤</span></td>
+            <td>H₂S・Fe・Zn など<br><small>（強い還元剤）</small></td>
+            <td>電子を<strong>受け取る</strong></td>
+            <td>+4 → <span style="color:var(--ox);">0</span>（減る）</td>
+            <td><span style="color:#ca8a04;font-weight:700;">S</span>（<span style="color:#ca8a04;">黄色</span>の固体）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="dual-point">
+      <span class="dp-label">🔑 覚え方</span>
+      強い酸化剤と会えば → SO₂ は還元剤（SO₄²⁻ へ）<br>
+      強い還元剤と会えば → SO₂ は酸化剤（S へ）
+    </div>
+    <button class="why-btn" style="border-color:#0ea5e9;background:#f0f9ff;color:#0c4a6e;" onclick="openPopup('popup-so2')">
+      <span class="why-icon">❓</span> なぜ SO₂ は酸化剤にも還元剤にもなるの？
+    </button>
+  </div>
+
+  <!-- H2O2 カード -->
+  <div class="dual-card">
+    <div class="dual-card-title">
+      <span class="dual-badge dual-badge-both">二面性あり</span>
+      H₂O₂（過酸化水素）
+    </div>
+    <p class="dual-why">O の酸化数は <strong>−1</strong>（通常の −2 でも 0 でもない中間値）。<br>
+      中間値なので、<span style="color:var(--ox);">−2 に向かう（酸化剤）</span>か <span style="color:var(--rd);">0 に向かう（還元剤）</span>かが相手次第。</p>
+
+    <div class="dual-table-wrap">
+      <table class="dual-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>反応の相手</th>
+            <th>H₂O₂ のはたらき</th>
+            <th>O の酸化数変化</th>
+            <th>反応後の H₂O₂ 側</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-ox">
+            <td class="role-cell"><span class="pill-ox">酸化剤</span><br><small>（ほとんどの場合）</small></td>
+            <td>KI・FeSO₄・SO₂ など<br><small>（一般的な還元剤）</small></td>
+            <td>電子を<strong>受け取る</strong></td>
+            <td>−1 → <span style="color:var(--ox);">−2</span>（減る）</td>
+            <td><span style="color:#3b82f6;font-weight:700;">H₂O</span>（無色）</td>
+          </tr>
+          <tr class="row-rd">
+            <td class="role-cell"><span class="pill-rd">還元剤</span><br><small>（例外的）</small></td>
+            <td>KMnO₄<br><small>（強い酸化剤）</small></td>
+            <td>電子を<strong>渡す</strong></td>
+            <td>−1 → <span style="color:var(--rd);">0</span>（増える）</td>
+            <td><span style="color:#64748b;font-weight:700;">O₂</span>（無色の気体）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="dual-point">
+      <span class="dp-label">🔑 覚え方</span>
+      KMnO₄ と反応するときだけ → H₂O₂ は還元剤（O₂ へ）<br>
+      それ以外はほぼすべて → H₂O₂ は酸化剤（H₂O へ）
+    </div>
+    <button class="why-btn" onclick="openPopup('popup-h2o2-reason')" style="margin-top:6px;">
+      <span class="why-icon">❓</span> なぜ H₂O₂ は酸化剤にも還元剤にもなるの？
+    </button>
+    <button class="why-btn" onclick="openPopup('popup-h2o2')">
+      <span class="why-icon">❓</span> なぜ酸性では H₂O、中性・塩基性では OH⁻ になるの？
+    </button>
+  </div>
+
+  <!-- ── ミニテスト：語群から選ぶ ── -->
+  <div class="fill-section">
+    <div class="fill-title">✏️ 確認ミニテスト：語群から選んで表を完成させよう</div>
+    <p class="fill-lead">下の語群から正しい語句を選び、空欄（＿＿）をクリックして埋めてください。</p>
+
+    <!-- 語群 -->
+    <div class="word-pool" id="word-pool"></div>
+
+    <!-- 表1：SO2 -->
+    <div class="fill-table-wrap">
+      <div class="fill-subtitle">【SO₂ の二面性】</div>
+      <div class="tbl-scroll">
+      <table class="fill-table" id="fill-so2">
+        <thead><tr>
+          <th>反応の相手</th><th>SO₂ のはたらき</th><th>S の酸化数変化</th><th>反応後</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td>KMnO₄・I₂ など（強い酸化剤）</td>
+            <td><span class="blank" data-ans="還元剤" data-id="b1">＿＿</span></td>
+            <td>+4 → <span class="blank" data-ans="+6" data-id="b2">＿＿</span></td>
+            <td><span class="blank" data-ans="SO₄²⁻" data-id="b3">＿＿</span></td>
+          </tr>
+          <tr>
+            <td>H₂S など（強い還元剤）</td>
+            <td><span class="blank" data-ans="酸化剤" data-id="b4">＿＿</span></td>
+            <td>+4 → <span class="blank" data-ans="0" data-id="b5">＿＿</span></td>
+            <td><span class="blank" data-ans="S" data-id="b6">＿＿</span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <!-- 表2：H2O2 -->
+    <div class="fill-table-wrap" style="margin-top:16px;">
+      <div class="fill-subtitle">【H₂O₂ の二面性】</div>
+      <div class="tbl-scroll">
+      <table class="fill-table" id="fill-h2o2">
+        <thead><tr>
+          <th>反応の相手</th><th>H₂O₂ のはたらき</th><th>O の酸化数変化</th><th>反応後</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td>KI など（一般的な還元剤）</td>
+            <td><span class="blank" data-ans="酸化剤" data-id="b7">＿＿</span></td>
+            <td>−1 → <span class="blank" data-ans="-2" data-id="b8">＿＿</span></td>
+            <td><span class="blank" data-ans="H₂O" data-id="b9">＿＿</span></td>
+          </tr>
+          <tr>
+            <td>KMnO₄（強い酸化剤）</td>
+            <td><span class="blank" data-ans="還元剤" data-id="b10">＿＿</span></td>
+            <td>−1 → <span class="blank" data-ans="0" data-id="b11">＿＿</span></td>
+            <td><span class="blank" data-ans="O₂" data-id="b12">＿＿</span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="fill-actions">
+      <button class="fill-check-btn" onclick="checkFill()">✅ 答え合わせ</button>
+      <button class="fill-reset-btn" onclick="resetFill()">↻ やり直す</button>
+    </div>
+    <div class="fill-result" id="fill-result"></div>
+  </div>
+
+</div><!-- /sec3 -->
+
+</div><!-- /sec2 -->
+
+
+<nav class="pagenav">
+  <a href="chem_oxred.html">
+    <span class="pnlabel">◀ BACK</span>
+    <span class="pntitle">酸化還元(1) レッスン</span>
+  </a>
+  <a href="chem_oxred2.html" class="next">
+    <span class="pnlabel">NEXT ▶</span>
+    <span class="pntitle">酸化還元(2) レッスン</span>
+  </a>
+</nav>
+
+</main>
+</div><!-- /wrap -->
+
+<script>
+/* ===================================================
+   DATA：酸化剤・還元剤 全12種
+=================================================== */
+const REAGENTS = [
+  {
+    id:'kmno4_acid', name:'KMnO₄（酸性条件）', type:'ox',
+    before:'MnO₄⁻', after:'Mn²⁺',
+    before_desc:'過マンガン酸イオン（赤紫色）', before_color:'#9333ea',
+    after_desc:'Mn²⁺（淡桃色〜ほぼ無色）', after_color:'#fce7f3',
+    oxnum_before:'+7', oxnum_after:'+2', delta:5,
+    eq:'MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O',
+    steps:[
+      {
+        tag:'Step 0', tagClass:'step-tag-0',
+        title:'反応前後を書く',
+        rule:'酸化剤は「反応前の物質 → 反応後の物質」を覚える。KMnO₄（酸性）は Mn の酸化数が +7 → +2 に変わる。',
+        eq_before:'MnO₄⁻　→　Mn²⁺',
+        eq_after:null,
+        added_note:null,
+        explain:'<span class="hl">MnO₄⁻</span>（Mn の酸化数 <span class="oxnum-tag">+7</span>）が反応して <span class="hl" style="color:#9d174d;">Mn²⁺</span>（<span class="ion-badge" style="background:#fce7f3;color:#9d174d;">淡桃〜無色</span>　酸化数 <span class="oxnum-tag">+2</span>）になります。<br>酸化数が <span class="hl-ox">5 減った</span> → 酸化剤として電子を 5mol 受け取ります。'
+      },
+      {
+        tag:'Step 1', tagClass:'step-tag-1',
+        title:'O の数を合わせる（H₂O を加える）',
+        rule:'左辺に O が 4個ある → 右辺に H₂O を 4個加えて O の数を揃える。',
+        eq_before:'MnO₄⁻　→　Mn²⁺ + <span class="added">4H₂O</span>',
+        eq_after:null,
+        explain:'左辺の MnO₄⁻ に O が 4個 → 右辺に <span class="hl-ox">4H₂O</span> を加えて O を揃えます。<br>（O の数：左辺 4 個 ＝ 右辺 4 個 ✓）'
+      },
+      {
+        tag:'Step 2', tagClass:'step-tag-2',
+        title:'H の数を合わせる（H⁺ を加える）',
+        rule:'右辺に H が 8個（4H₂O = 8H）→ 左辺に H⁺ を 8個加える。',
+        eq_before:'MnO₄⁻ + <span class="added">8H⁺</span>　→　Mn²⁺ + 4H₂O',
+        eq_after:null,
+        explain:'右辺に H₂O が 4個 → H は 8個。<br>左辺に <span class="hl-ox">8H⁺</span> を加えて H の数を揃えます。<br>（H の数：左辺 8 個 ＝ 右辺 8 個 ✓）'
+      },
+      {
+        tag:'Step 3', tagClass:'step-tag-3',
+        title:'電荷を合わせる（e⁻ を加える）',
+        rule:'電荷の差を e⁻ で補う。左辺の電荷合計 vs 右辺の電荷合計を計算する。',
+        eq_before:'MnO₄⁻ + 8H⁺ + <span class="electron">5e⁻</span>　→　Mn²⁺ + 4H₂O',
+        eq_after:null,
+        explain:'左辺の電荷：MnO₄⁻(−1) + 8H⁺(+8) = <span class="hl">+7</span><br>右辺の電荷：Mn²⁺(+2) + 4H₂O(0) = <span class="hl">+2</span><br>差 = 7 − 2 = 5 → 左辺に <span class="hl-e">5e⁻</span> を加えて電荷を揃えます。'
+      },
+      {
+        tag:'完成！', tagClass:'step-tag-4',
+        title:'半反応式の完成',
+        rule:null,
+        eq_before:'<span class="balanced">MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</span>',
+        eq_after:null,
+        explain:'<ul><li>Mn の酸化数：+7 → +2（<span class="hl-ox">5 減る</span> → 還元された → <strong>酸化剤</strong>）</li><li>電子を <span class="hl-e">5mol</span> 受け取る</li><li>H⁺ が <strong>8個</strong>、H₂O が <strong>4個</strong> 必要（酸性条件）</li></ul>'
+      }
+    ]
+  },
+  {
+    id:'k2cr2o7', name:'K₂Cr₂O₇（酸性条件）', type:'ox',
+    before:'Cr₂O₇²⁻', after:'2Cr³⁺',
+    before_desc:'Cr₂O₇²⁻（橙色）', before_color:'#f97316',
+    after_desc:'Cr³⁺（緑色）', after_color:'#16a34a',
+    oxnum_before:'+6', oxnum_after:'+3', delta:6,
+    eq:'Cr₂O₇²⁻ + 14H⁺ + 6e⁻ → 2Cr³⁺ + 7H₂O',
+    steps:[
+      {tag:'Step 0',tagClass:'step-tag-0',title:'反応前後を書く（Cr が 2個に注意）',
+       rule:'K₂Cr₂O₇ は Cr が 2個 → 生成物も 2Cr³⁺ と書く。Cr の酸化数 +6 → +3（1個あたり3減る、2個で合計6減る）。',
+       eq_before:'Cr₂O₇²⁻　→　<span class="added">2</span>Cr³⁺',
+       explain:'<span class="hl">Cr₂O₇²⁻</span>（Cr：酸化数 <span class="oxnum-tag">+6</span>×2個）→ <span class="hl">2Cr³⁺</span>（酸化数 <span class="oxnum-tag">+3</span>×2個）<br>1個の Cr あたり酸化数が <span class="hl-ox">3 減る</span>。2個合計で <span class="hl-ox">6 減る</span> → e⁻ を 6mol 受け取ります。'},
+      {tag:'Step 1',tagClass:'step-tag-1',title:'O の数を合わせる（H₂O を 7個加える）',
+       rule:'左辺の O が 7個 → 右辺に 7H₂O を加える。',
+       eq_before:'Cr₂O₇²⁻　→　2Cr³⁺ + <span class="added">7H₂O</span>',
+       explain:'Cr₂O₇²⁻ の O は 7個 → 右辺に <span class="hl-ox">7H₂O</span> を追加。（O の数：左辺 7 = 右辺 7 ✓）'},
+      {tag:'Step 2',tagClass:'step-tag-2',title:'H の数を合わせる（H⁺ を 14個加える）',
+       rule:'右辺の H は 14個（7H₂O）→ 左辺に 14H⁺ を加える。',
+       eq_before:'Cr₂O₇²⁻ + <span class="added">14H⁺</span>　→　2Cr³⁺ + 7H₂O',
+       explain:'右辺 7H₂O の H が 14個 → 左辺に <span class="hl-ox">14H⁺</span> を追加。（H の数：左辺 14 = 右辺 14 ✓）'},
+      {tag:'Step 3',tagClass:'step-tag-3',title:'電荷を合わせる（e⁻ を 6個加える）',
+       rule:'左辺の電荷：−2 + 14 = +12。右辺の電荷：+6 + 0 = +6。差 = 6 → 左辺に 6e⁻。',
+       eq_before:'Cr₂O₇²⁻ + 14H⁺ + <span class="electron">6e⁻</span>　→　2Cr³⁺ + 7H₂O',
+       explain:'左辺：Cr₂O₇²⁻(−2) + 14H⁺(+14) = <span class="hl">+12</span><br>右辺：2Cr³⁺(+6) + 7H₂O(0) = <span class="hl">+6</span><br>差 12 − 6 = 6 → <span class="hl-e">6e⁻</span> を左辺に追加。'},
+      {tag:'完成！',tagClass:'step-tag-4',title:'半反応式の完成',
+       rule:null,
+       eq_before:'<span class="balanced">Cr₂O₇²⁻ + 14H⁺ + 6e⁻ → 2Cr³⁺ + 7H₂O</span>',
+       explain:'<ul><li>Cr の酸化数：+6 → +3（<span class="hl-ox">6 減る</span> → 酸化剤）</li><li>電子を <span class="hl-e">6mol</span> 受け取る</li><li>H⁺ が 14個、H₂O が 7個</li><li>色の変化：<span class="ion-badge" style="background:#fed7aa;color:#c2410c;">Cr₂O₇²⁻ 橙色</span> → <span class="ion-badge" style="background:#dcfce7;color:#15803d;">Cr³⁺ 緑色</span></li><li>塩基性では <span class="ion-badge" style="background:#fef9c3;color:#a16207;">CrO₄²⁻ 黄色</span> が安定（酸性⇌塩基性で橙⇌黄と変化）</li></ul>'}
+    ]
+  },
+  {
+    id:'h2o2_ox', name:'H₂O₂（酸化剤）', type:'ox',
+    before:'H₂O₂', after:'2H₂O',
+    before_desc:'過酸化水素（無色・O の酸化数 −1）', before_color:'#e2e8f0',
+    after_desc:'水（無色・O の酸化数 −2）', after_color:'#e2e8f0',
+    oxnum_before:'−1', oxnum_after:'−2', delta:2,
+    eq:'H₂O₂ + 2H⁺ + 2e⁻ → 2H₂O',
+    steps:[
+      {tag:'Step 0',tagClass:'step-tag-0',title:'反応前後を書く',
+       rule:'H₂O₂ の O：酸化数 −1 → H₂O の O：酸化数 −2（1個あたり1減る、2個で合計2減る → e⁻ 2mol 受け取る）。',
+       eq_before:'H₂O₂　→　<span class="added">2</span>H₂O',
+       explain:'H₂O₂（O 酸化数 <span class="oxnum-tag">−1</span>）→ 2H₂O（O 酸化数 <span class="oxnum-tag">−2</span>）<br>O 2個それぞれ酸化数が <span class="hl-ox">1 減る</span>、合計 <span class="hl-ox">2 減る</span> → e⁻ を 2mol 受け取る酸化剤。'},
+      {tag:'Step 1',tagClass:'step-tag-1',title:'O の数を確認（すでに合っている）',
+       rule:'左辺 H₂O₂ に O が 2個、右辺 2H₂O に O が 2個 → すでに揃っている。',
+       eq_before:'H₂O₂　→　2H₂O',
+       explain:'O の数：左辺 2個 = 右辺 2個 ✓<br>H₂O を追加する必要はありません。'},
+      {tag:'Step 2',tagClass:'step-tag-2',title:'H の数を合わせる（H⁺ を加える）',
+       rule:'左辺の H：H₂O₂ の H = 2個。右辺の H：2H₂O の H = 4個。差 2 → 左辺に 2H⁺ を加える。',
+       eq_before:'H₂O₂ + <span class="added">2H⁺</span>　→　2H₂O',
+       explain:'左辺 H = 2個（H₂O₂）、右辺 H = 4個（2H₂O）<br>左辺に <span class="hl-ox">2H⁺</span> を追加 → 左辺 H = 4個 = 右辺 H = 4個 ✓'},
+      {tag:'Step 3',tagClass:'step-tag-3',title:'電荷を合わせる（e⁻ を加える）',
+       rule:'左辺の電荷：0 + 2 = +2。右辺の電荷：0。差 = 2 → 左辺に 2e⁻。',
+       eq_before:'H₂O₂ + 2H⁺ + <span class="electron">2e⁻</span>　→　2H₂O',
+       explain:'左辺：H₂O₂(0) + 2H⁺(+2) = <span class="hl">+2</span><br>右辺：2H₂O(0) = <span class="hl">0</span><br>差 2 → <span class="hl-e">2e⁻</span> を左辺に追加。'},
+      {tag:'完成！',tagClass:'step-tag-4',title:'半反応式の完成',
+       rule:null,
+       eq_before:'<span class="balanced">H₂O₂ + 2H⁺ + 2e⁻ → 2H₂O</span>',
+       explain:'<ul><li>O の酸化数：−1 → −2（<span class="hl-ox">2 減る</span> → 酸化剤）</li><li>電子を <span class="hl-e">2mol</span> 受け取る</li><li>H₂O₂ が還元剤になる場合（KMnO₄ との反応）は別の式になる</li></ul>'}
+    ]
+  },
+  {
+    id:'cl2', name:'Cl₂（塩素）', type:'ox',
+    before:'Cl₂', after:'2Cl⁻',
+    before_desc:'塩素分子（黄緑色の気体）', before_color:'#84cc16',
+    after_desc:'塩化物イオン（無色）', after_color:'#e2e8f0',
+    oxnum_before:'0', oxnum_after:'−1', delta:2,
+    eq:'Cl₂ + 2e⁻ → 2Cl⁻',
+    steps:[
+      {tag:'Step 0',tagClass:'step-tag-0',title:'反応前後を書く',
+       rule:'Cl₂ の Cl：酸化数 0 → Cl⁻：酸化数 −1（1個あたり1減る、2個で合計2減る）。',
+       eq_before:'Cl₂　→　<span class="added">2</span>Cl⁻',
+       explain:'Cl₂（Cl 酸化数 <span class="oxnum-tag">0</span>）→ 2Cl⁻（酸化数 <span class="oxnum-tag">−1</span>）<br>2個の Cl それぞれ <span class="hl-ox">1 減る</span>、合計 <span class="hl-ox">2 減る</span> → e⁻ を 2mol 受け取る酸化剤。'},
+      {tag:'Step 1',tagClass:'step-tag-1',title:'O の数を確認（O なし・H₂O 不要）',
+       rule:'この反応には O が含まれないので H₂O の追加は不要。',
+       eq_before:'Cl₂　→　2Cl⁻',
+       explain:'Cl₂ と Cl⁻ はどちらも O を含まない → H₂O の追加は不要。'},
+      {tag:'Step 2',tagClass:'step-tag-2',title:'H の数を確認（H なし・H⁺ 不要）',
+       rule:'この反応には H が含まれないので H⁺ の追加も不要。',
+       eq_before:'Cl₂　→　2Cl⁻',
+       explain:'Cl₂ と Cl⁻ はどちらも H を含まない → H⁺ の追加も不要。<br>Cl₂ の半反応式は H₂O も H⁺ も現れないシンプルな式になります。'},
+      {tag:'Step 3',tagClass:'step-tag-3',title:'電荷を合わせる（e⁻ を加える）',
+       rule:'左辺の電荷：0。右辺の電荷：2Cl⁻ = −2。差 = 2 → 左辺に 2e⁻。',
+       eq_before:'Cl₂ + <span class="electron">2e⁻</span>　→　2Cl⁻',
+       explain:'左辺：Cl₂(0) = <span class="hl">0</span><br>右辺：2Cl⁻(−2) = <span class="hl">−2</span><br>差 2 → <span class="hl-e">2e⁻</span> を左辺に追加。'},
+      {tag:'完成！',tagClass:'step-tag-4',title:'半反応式の完成',
+       rule:null,
+       eq_before:'<span class="balanced">Cl₂ + 2e⁻ → 2Cl⁻</span>',
+       explain:'<ul><li>Cl の酸化数：0 → −1（<span class="hl-ox">2 減る</span> → 酸化剤）</li><li>電子を <span class="hl-e">2mol</span> 受け取る</li><li>H₂O も H⁺ も不要なシンプルな式</li><li>塩素水で金属を溶かすとき（例：Fe + Cl₂ → FeCl₃）などで登場</li></ul>'}
+    ]
+  },
+  {
+    id:'hno3_dil', name:'希硝酸 HNO₃（希）', type:'ox',
+    before:'NO₃⁻', after:'NO',
+    before_desc:'硝酸イオン（無色・N 酸化数 +5）', before_color:'#e2e8f0',
+    after_desc:'一酸化窒素（無色の気体）', after_color:'#e2e8f0',
+    oxnum_before:'+5', oxnum_after:'+2', delta:3,
+    eq:'NO₃⁻ + 4H⁺ + 3e⁻ → NO + 2H₂O',
+    steps:[
+      {tag:'Step 0',tagClass:'step-tag-0',title:'反応前後を書く',
+       rule:'希硝酸は NO（一酸化窒素）を生成。N の酸化数 +5 → +2（3減る → e⁻ 3mol 受け取る）。',
+       eq_before:'NO₃⁻　→　NO',
+       explain:'希 HNO₃（N 酸化数 <span class="oxnum-tag">+5</span>）→ NO（N 酸化数 <span class="oxnum-tag">+2</span>）<br><span class="hl-ox">3 減る</span> → e⁻ を 3mol 受け取る酸化剤。<br>⚠️ 濃硝酸は NO₂（N 酸化数 +4）を生成します。'},
+      {tag:'Step 1',tagClass:'step-tag-1',title:'O の数を合わせる（H₂O を加える）',
+       rule:'左辺 NO₃⁻ の O が 3個、右辺 NO の O が 1個 → 差 2個 → 右辺に 2H₂O を加える。',
+       eq_before:'NO₃⁻　→　NO + <span class="added">2H₂O</span>',
+       explain:'左辺 O = 3個（NO₃⁻）、右辺 O = 1個（NO）<br>差 2個 → 右辺に <span class="hl-ox">2H₂O</span> を追加。（O：左辺 3 = 右辺 3 ✓）'},
+      {tag:'Step 2',tagClass:'step-tag-2',title:'H の数を合わせる（H⁺ を加える）',
+       rule:'右辺の H：2H₂O の H = 4個 → 左辺に 4H⁺ を加える。',
+       eq_before:'NO₃⁻ + <span class="added">4H⁺</span>　→　NO + 2H₂O',
+       explain:'右辺 H = 4個（2H₂O）→ 左辺に <span class="hl-ox">4H⁺</span> を追加。（H：左辺 4 = 右辺 4 ✓）'},
+      {tag:'Step 3',tagClass:'step-tag-3',title:'電荷を合わせる（e⁻ を加える）',
+       rule:'左辺：−1 + 4 = +3。右辺：0 + 0 = 0。差 = 3 → 左辺に 3e⁻。',
+       eq_before:'NO₃⁻ + 4H⁺ + <span class="electron">3e⁻</span>　→　NO + 2H₂O',
+       explain:'左辺：NO₃⁻(−1) + 4H⁺(+4) = <span class="hl">+3</span><br>右辺：NO(0) + 2H₂O(0) = <span class="hl">0</span><br>差 3 → <span class="hl-e">3e⁻</span> を左辺に追加。'},
+      {tag:'完成！',tagClass:'step-tag-4',title:'半反応式の完成',
+       rule:null,
+       eq_before:'<span class="balanced">NO₃⁻ + 4H⁺ + 3e⁻ → NO + 2H₂O</span>',
+       explain:'<ul><li>N の酸化数：+5 → +2（<span class="hl-ox">3 減る</span> → 酸化剤）</li><li>電子を <span class="hl-e">3mol</span> 受け取る</li><li>生成物は <strong>NO（無色）</strong>。空気に触れると NO₂（赤褐色）に変化</li><li>⚠️ 濃硝酸は NO₂（N：+5→+4, e⁻ 1mol）が生成</li></ul>'}
+    ]
+  },
+  {
+    id:'hno3_conc', name:'濃硝酸 HNO₃（濃）', type:'ox',
+    before:'NO₃⁻', after:'NO₂',
+    before_desc:'硝酸イオン（無色・N 酸化数 +5）', before_color:'#e2e8f0',
+    after_desc:'二酸化窒素（赤褐色の気体）', after_color:'#b45309',
+    oxnum_before:'+5', oxnum_after:'+4', delta:1,
+    eq:'NO₃⁻ + 2H⁺ + e⁻ → NO₂ + H₂O',
+    steps:[
+      {tag:'Step 0',tagClass:'step-tag-0',title:'反応前後を書く',
+       rule:'濃硝酸は NO₂（二酸化窒素）を生成。N の酸化数 +5 → +4（1減る → e⁻ 1mol 受け取る）。',
+       eq_before:'NO₃⁻　→　NO₂',
+       explain:'濃 HNO₃（N 酸化数 <span class="oxnum-tag">+5</span>）→ NO₂（N 酸化数 <span class="oxnum-tag">+4</span>）<br><span class="hl-ox">1 減る</span> → e⁻ を 1mol 受け取る酸化剤。'},
+      {tag:'Step 1',tagClass:'step-tag-1',title:'O の数を合わせる（H₂O を加える）',
+       rule:'左辺 O = 3個（NO₃⁻）、右辺 O = 2個（NO₂）→ 差 1個 → 右辺に 1H₂O を加える。',
+       eq_before:'NO₃⁻　→　NO₂ + <span class="added">H₂O</span>',
+       explain:'左辺 O = 3個、右辺 O = 2個（NO₂）<br>差 1個 → 右辺に <span class="hl-ox">H₂O</span> を追加。（O：左辺 3 = 右辺 3 ✓）'},
+      {tag:'Step 2',tagClass:'step-tag-2',title:'H の数を合わせる（H⁺ を加える）',
+       rule:'右辺の H：H₂O の H = 2個 → 左辺に 2H⁺ を加える。',
+       eq_before:'NO₃⁻ + <span class="added">2H⁺</span>　→　NO₂ + H₂O',
+       explain:'右辺 H = 2個（H₂O）→ 左辺に <span class="hl-ox">2H⁺</span> を追加。（H：左辺 2 = 右辺 2 ✓）'},
+      {tag:'Step 3',tagClass:'step-tag-3',title:'電荷を合わせる（e⁻ を加える）',
+       rule:'左辺：−1 + 2 = +1。右辺：0 + 0 = 0。差 = 1 → 左辺に 1e⁻。',
+       eq_before:'NO₃⁻ + 2H⁺ + <span class="electron">e⁻</span>　→　NO₂ + H₂O',
+       explain:'左辺：NO₃⁻(−1) + 2H⁺(+2) = <span class="hl">+1</span><br>右辺：NO₂(0) + H₂O(0) = <span class="hl">0</span><br>差 1 → <span class="hl-e">e⁻</span> を左辺に追加。'},
+      {tag:'完成！',tagClass:'step-tag-4',title:'半反応式の完成',
+       rule:null,
+       eq_before:'<span class="balanced">NO₃⁻ + 2H⁺ + e⁻ → NO₂ + H₂O</span>',
+       explain:'<ul><li>N の酸化数：+5 → +4（<span class="hl-ox">1 減る</span> → 酸化剤）</li><li>電子を <span class="hl-e">1mol</span> 受け取る</li><li>生成物は <strong>NO₂（赤褐色）</strong></li><li>Cu + 濃 HNO₃ → Cu(NO₃)₂ + 2NO₂ + H₂O などで登場</li></ul>'}
+    ]
+  },
+  {
+    id:'h2so4', name:'濃硫酸 H₂SO₄（濃）', type:'ox',
+    before:'H₂SO₄', after:'SO₂',
+    before_desc:'硫酸（無色・S 酸化数 +6）', before_color:'#e2e8f0',
+    after_desc:'二酸化硫黄（無色の刺激臭気体）', after_color:'#e2e8f0',
+    oxnum_before:'+6', oxnum_after:'+4', delta:2,
+    eq:'H₂SO₄ + 2H⁺ + 2e⁻ → SO₂ + 2H₂O',
+    steps:[
+      {tag:'Step 0',tagClass:'step-tag-0',title:'反応前後を書く',
+       rule:'濃硫酸は SO₂（二酸化硫黄）を生成。S の酸化数 +6 → +4（2減る → e⁻ 2mol 受け取る）。',
+       eq_before:'H₂SO₄　→　SO₂',
+       explain:'濃 H₂SO₄（S 酸化数 <span class="oxnum-tag">+6</span>）→ SO₂（S 酸化数 <span class="oxnum-tag">+4</span>）<br><span class="hl-ox">2 減る</span> → e⁻ を 2mol 受け取る酸化剤。'},
+      {tag:'Step 1',tagClass:'step-tag-1',title:'O の数を合わせる（H₂O を加える）',
+       rule:'左辺 O = 4個（H₂SO₄）、右辺 O = 2個（SO₂）→ 差 2個 → 右辺に 2H₂O を加える。',
+       eq_before:'H₂SO₄　→　SO₂ + <span class="added">2H₂O</span>',
+       explain:'左辺 O = 4個（H₂SO₄）、右辺 O = 2個（SO₂）<br>差 2個 → 右辺に <span class="hl-ox">2H₂O</span> を追加。（O：左辺 4 = 右辺 4 ✓）'},
+      {tag:'Step 2',tagClass:'step-tag-2',title:'H の数を合わせる（H⁺ を加える）',
+       rule:'左辺 H = 2個（H₂SO₄）、右辺 H = 4個（2H₂O）→ 差 2個 → 左辺に 2H⁺ を加える。',
+       eq_before:'H₂SO₄ + <span class="added">2H⁺</span>　→　SO₂ + 2H₂O',
+       explain:'左辺 H = 2個（H₂SO₄）、右辺 H = 4個（2H₂O）<br>差 2個 → 左辺に <span class="hl-ox">2H⁺</span> を追加。（H：左辺 4 = 右辺 4 ✓）'},
+      {tag:'Step 3',tagClass:'step-tag-3',title:'電荷を合わせる（e⁻ を加える）',
+       rule:'左辺：0 + 2 = +2。右辺：0 + 0 = 0。差 = 2 → 左辺に 2e⁻。',
+       eq_before:'H₂SO₄ + 2H⁺ + <span class="electron">2e⁻</span>　→　SO₂ + 2H₂O',
+       explain:'左辺：H₂SO₄(0) + 2H⁺(+2) = <span class="hl">+2</span><br>右辺：SO₂(0) + 2H₂O(0) = <span class="hl">0</span><br>差 2 → <span class="hl-e">2e⁻</span> を左辺に追加。'},
+      {tag:'完成！',tagClass:'step-tag-4',title:'半反応式の完成',
+       rule:null,
+       eq_before:'<span class="balanced">H₂SO₄ + 2H⁺ + 2e⁻ → SO₂ + 2H₂O</span>',
+       explain:'<ul><li>S の酸化数：+6 → +4（<span class="hl-ox">2 減る</span> → 酸化剤）</li><li>電子を <span class="hl-e">2mol</span> 受け取る</li><li>Cu + 2H₂SO₄（濃）→ CuSO₄ + SO₂ + 2H₂O などで登場</li></ul>'}
+    ]
+  },
+  {
+    id:'so2', name:'SO₂（二酸化硫黄）', type:'rd',
+    before:'SO₂', after:'SO₄²⁻',
+    before_desc:'二酸化硫黄（無色の刺激臭気体・S 酸化数 +4）', before_color:'#e2e8f0',
+    after_desc:'硫酸イオン（無色・S 酸化数 +6）', after_color:'#e2e8f0',
+    oxnum_before:'+4', oxnum_after:'+6', delta:2,
+    eq:'SO₂ + 2H₂O → SO₄²⁻ + 4H⁺ + 2e⁻',
+    steps:[
+      {tag:'Step 0',tagClass:'step-tag-0',title:'反応前後を書く',
+       rule:'SO₂ は還元剤として SO₄²⁻ に変化。S の酸化数 +4 → +6（2増える → e⁻ 2mol 渡す）。',
+       eq_before:'SO₂　→　SO₄²⁻',
+       explain:'SO₂（S 酸化数 <span class="oxnum-tag">+4</span>）→ SO₄²⁻（S 酸化数 <span class="oxnum-tag">+6</span>）<br><span class="hl-rd">2 増える</span> → e⁻ を 2mol 渡す還元剤。'},
+      {tag:'Step 1',tagClass:'step-tag-1',title:'O の数を合わせる（H₂O を加える）',
+       rule:'左辺 O = 2個（SO₂）、右辺 O = 4個（SO₄²⁻）→ 差 2個 → 左辺に 2H₂O を加える。',
+       eq_before:'SO₂ + <span class="added">2H₂O</span>　→　SO₄²⁻',
+       explain:'左辺 O = 2個（SO₂）、右辺 O = 4個（SO₄²⁻）<br>差 2個 → <span class="hl-rd">左辺</span>に <span class="hl-ox">2H₂O</span> を追加。（O：左辺 4 = 右辺 4 ✓）<br>※還元剤の場合は H₂O を左辺に加えることが多い'},
+      {tag:'Step 2',tagClass:'step-tag-2',title:'H の数を合わせる（H⁺ を右辺に加える）',
+       rule:'左辺 H = 4個（2H₂O）→ 右辺に 4H⁺ を加える。',
+       eq_before:'SO₂ + 2H₂O　→　SO₄²⁻ + <span class="added">4H⁺</span>',
+       explain:'左辺 H = 4個（2H₂O）→ 右辺に <span class="hl-rd">4H⁺</span> を追加。（H：左辺 4 = 右辺 4 ✓）'},
+      {tag:'Step 3',tagClass:'step-tag-3',title:'電荷を合わせる（e⁻ を右辺に加える）',
+       rule:'左辺：0 + 0 = 0。右辺：−2 + 4 = +2。差 = 2 → 右辺に 2e⁻（還元剤は e⁻ を右辺に）。',
+       eq_before:'SO₂ + 2H₂O　→　SO₄²⁻ + 4H⁺ + <span class="electron">2e⁻</span>',
+       explain:'左辺：SO₂(0) + 2H₂O(0) = <span class="hl">0</span><br>右辺：SO₄²⁻(−2) + 4H⁺(+4) = <span class="hl">+2</span><br>差 2 → <span class="hl-e">2e⁻</span> を<strong>右辺</strong>に追加（還元剤は e⁻ を右辺へ）。'},
+      {tag:'完成！',tagClass:'step-tag-4',title:'半反応式の完成',
+       rule:null,
+       eq_before:'<span class="balanced">SO₂ + 2H₂O → SO₄²⁻ + 4H⁺ + 2e⁻</span>',
+       explain:'<ul><li>S の酸化数：+4 → +6（<span class="hl-rd">2 増える</span> → 還元剤）</li><li>電子を <span class="hl-e">2mol</span> 渡す</li><li>I₂ との反応（ヨウ素滴定）で登場：SO₂ + I₂ + 2H₂O → SO₄²⁻ + 4H⁺ + 2HI</li></ul>'}
+    ]
+  },
+  {
+    id:'h2o2_rd', name:'H₂O₂（還元剤）', type:'rd',
+    before:'H₂O₂', after:'O₂',
+    before_desc:'過酸化水素（無色・O 酸化数 −1）', before_color:'#e2e8f0',
+    after_desc:'酸素（無色の気体・O 酸化数 0）', after_color:'#e2e8f0',
+    oxnum_before:'−1', oxnum_after:'0', delta:2,
+    eq:'H₂O₂ → O₂ + 2H⁺ + 2e⁻',
+    steps:[
+      {tag:'Step 0',tagClass:'step-tag-0',title:'反応前後を書く（KMnO₄ と反応するとき）',
+       rule:'H₂O₂ が還元剤として O₂ を生成。O の酸化数 −1 → 0（2個で合計2増える → e⁻ 2mol 渡す）。',
+       eq_before:'H₂O₂　→　O₂',
+       explain:'H₂O₂（O 酸化数 <span class="oxnum-tag">−1</span>）→ O₂（O 酸化数 <span class="oxnum-tag">0</span>）<br><span class="hl-rd">2 増える</span> → e⁻ を 2mol 渡す還元剤。<br>⚠️ KMnO₄（強い酸化剤）と反応するときのみ還元剤になる。'},
+      {tag:'Step 1',tagClass:'step-tag-1',title:'O の数を確認（すでに合っている）',
+       rule:'左辺 O = 2個（H₂O₂）、右辺 O = 2個（O₂）→ すでに揃っている。',
+       eq_before:'H₂O₂　→　O₂',
+       explain:'O の数：左辺 2個 = 右辺 2個 ✓<br>H₂O の追加は不要です。'},
+      {tag:'Step 2',tagClass:'step-tag-2',title:'H の数を合わせる（H⁺ を右辺に加える）',
+       rule:'左辺 H = 2個（H₂O₂）→ 右辺に 2H⁺ を加える。',
+       eq_before:'H₂O₂　→　O₂ + <span class="added">2H⁺</span>',
+       explain:'左辺 H = 2個（H₂O₂）→ 右辺に <span class="hl-rd">2H⁺</span> を追加。（H：左辺 2 = 右辺 2 ✓）'},
+      {tag:'Step 3',tagClass:'step-tag-3',title:'電荷を合わせる（e⁻ を右辺に加える）',
+       rule:'左辺：0。右辺：0 + 2 = +2。差 = 2 → 右辺に 2e⁻。',
+       eq_before:'H₂O₂　→　O₂ + 2H⁺ + <span class="electron">2e⁻</span>',
+       explain:'左辺：H₂O₂(0) = <span class="hl">0</span><br>右辺：O₂(0) + 2H⁺(+2) = <span class="hl">+2</span><br>差 2 → <span class="hl-e">2e⁻</span> を右辺に追加。'},
+      {tag:'完成！',tagClass:'step-tag-4',title:'半反応式の完成',
+       rule:null,
+       eq_before:'<span class="balanced">H₂O₂ → O₂ + 2H⁺ + 2e⁻</span>',
+       explain:'<ul><li>O の酸化数：−1 → 0（<span class="hl-rd">2 増える</span> → 還元剤）</li><li>電子を <span class="hl-e">2mol</span> 渡す</li><li>KMnO₄ との反応（ヨウ素滴定）で登場</li><li>H₂O₂ の二面性：普段は酸化剤、KMnO₄ とは還元剤</li></ul>'}
+    ]
+  },
+  {
+    id:'cooh2', name:'シュウ酸 (COOH)₂', type:'rd',
+    before:'(COOH)₂', after:'2CO₂',
+    before_desc:'シュウ酸（無色の結晶・C 酸化数 +3）', before_color:'#e2e8f0',
+    after_desc:'二酸化炭素（無色の気体・C 酸化数 +4）', after_color:'#e2e8f0',
+    oxnum_before:'+3', oxnum_after:'+4', delta:2,
+    eq:'(COOH)₂ → 2CO₂ + 2H⁺ + 2e⁻',
+    steps:[
+      {tag:'Step 0',tagClass:'step-tag-0',title:'反応前後を書く（C が 2個に注意）',
+       rule:'シュウ酸の C は +3、CO₂ の C は +4（1個あたり1増える、2個で2増える → e⁻ 2mol 渡す）。',
+       eq_before:'(COOH)₂　→　<span class="added">2</span>CO₂',
+       explain:'(COOH)₂（C 酸化数 <span class="oxnum-tag">+3</span>×2個）→ 2CO₂（C 酸化数 <span class="oxnum-tag">+4</span>×2個）<br><span class="hl-rd">合計 2 増える</span> → e⁻ を 2mol 渡す還元剤。'},
+      {tag:'Step 1',tagClass:'step-tag-1',title:'O の数を確認（すでに合っている）',
+       rule:'左辺 O = 4個（(COOH)₂）、右辺 O = 4個（2CO₂）→ すでに揃っている。',
+       eq_before:'(COOH)₂　→　2CO₂',
+       explain:'O の数：左辺 4個 = 右辺 4個 ✓　H₂O の追加は不要です。'},
+      {tag:'Step 2',tagClass:'step-tag-2',title:'H の数を合わせる（H⁺ を右辺に加える）',
+       rule:'左辺 H = 2個（(COOH)₂）→ 右辺に 2H⁺ を加える。',
+       eq_before:'(COOH)₂　→　2CO₂ + <span class="added">2H⁺</span>',
+       explain:'左辺 H = 2個（(COOH)₂）→ 右辺に <span class="hl-rd">2H⁺</span> を追加。（H：左辺 2 = 右辺 2 ✓）'},
+      {tag:'Step 3',tagClass:'step-tag-3',title:'電荷を合わせる（e⁻ を右辺に加える）',
+       rule:'左辺：0。右辺：0 + 2 = +2。差 = 2 → 右辺に 2e⁻。',
+       eq_before:'(COOH)₂　→　2CO₂ + 2H⁺ + <span class="electron">2e⁻</span>',
+       explain:'左辺：(COOH)₂(0) = <span class="hl">0</span><br>右辺：2CO₂(0) + 2H⁺(+2) = <span class="hl">+2</span><br>差 2 → <span class="hl-e">2e⁻</span> を右辺に追加。'},
+      {tag:'完成！',tagClass:'step-tag-4',title:'半反応式の完成',
+       rule:null,
+       eq_before:'<span class="balanced">(COOH)₂ → 2CO₂ + 2H⁺ + 2e⁻</span>',
+       explain:'<ul><li>C の酸化数：+3 → +4（<span class="hl-rd">2 増える</span> → 還元剤）</li><li>電子を <span class="hl-e">2mol</span> 渡す</li><li>KMnO₄ 滴定（標定・COD 測定）で登場</li><li>H₂O を含まないシンプルな還元剤の式</li></ul>'}
+    ]
+  },
+  {
+    id:'na2s2o3', name:'Na₂S₂O₃（チオ硫酸Na）', type:'rd',
+    before:'2S₂O₃²⁻', after:'S₄O₆²⁻',
+    before_desc:'チオ硫酸イオン（無色・2mol 単位）', before_color:'#e2e8f0',
+    after_desc:'テトラチオン酸イオン（無色）', after_color:'#e2e8f0',
+    oxnum_before:'+2', oxnum_after:'+2.5', delta:1,
+    eq:'2S₂O₃²⁻ → S₄O₆²⁻ + 2e⁻',
+    steps:[
+      {tag:'Step 0',tagClass:'step-tag-0',title:'反応前後を書く（2mol 単位で書く）',
+       rule:'2S₂O₃²⁻ → S₄O₆²⁻ と 2mol まとめて書く。合計 e⁻ 2mol を渡すが、1mol あたり e⁻ 1mol。',
+       eq_before:'<span class="added">2</span>S₂O₃²⁻　→　S₄O₆²⁻',
+       explain:'S₂O₃²⁻（2mol）→ S₄O₆²⁻（1mol）<br>S の酸化数変化は複雑なため、<span class="hl-rd">2mol まとめて e⁻ 2mol を渡す</span>と覚えます。<br>→ <strong>S₂O₃²⁻ 1mol あたり e⁻ 1mol</strong>（ヨウ素滴定の計算で最重要）'},
+      {tag:'Step 1',tagClass:'step-tag-1',title:'O の数を確認（すでに合っている）',
+       rule:'左辺 O = 6個（2S₂O₃²⁻）、右辺 O = 6個（S₄O₆²⁻）→ すでに揃っている。',
+       eq_before:'2S₂O₃²⁻　→　S₄O₆²⁻',
+       explain:'O の数：左辺 6個 = 右辺 6個 ✓<br>S の数：左辺 4個 = 右辺 4個 ✓　H₂O・H⁺ の追加は不要です。'},
+      {tag:'Step 2',tagClass:'step-tag-2',title:'H の確認（H なし・H⁺ 不要）',
+       rule:'この反応には H が含まれないので H⁺ の追加も不要。',
+       eq_before:'2S₂O₃²⁻　→　S₄O₆²⁻',
+       explain:'2S₂O₃²⁻ と S₄O₆²⁻ はどちらも H を含まない → H⁺ の追加は不要。<br>Cl₂ と同様に H₂O・H⁺ が現れないシンプルな式になります。'},
+      {tag:'Step 3',tagClass:'step-tag-3',title:'電荷を合わせる（e⁻ を右辺に加える）',
+       rule:'左辺：2×(−2) = −4。右辺：−2。差 = 2 → 右辺に 2e⁻。',
+       eq_before:'2S₂O₃²⁻　→　S₄O₆²⁻ + <span class="electron">2e⁻</span>',
+       explain:'左辺：2S₂O₃²⁻(−4) = <span class="hl">−4</span><br>右辺：S₄O₆²⁻(−2) = <span class="hl">−2</span><br>差 −4 − (−2) = −2 → <span class="hl-e">2e⁻</span> を右辺に追加（左辺に合わせる）。'},
+      {tag:'完成！',tagClass:'step-tag-4',title:'半反応式の完成',
+       rule:null,
+       eq_before:'<span class="balanced">2S₂O₃²⁻ → S₄O₆²⁻ + 2e⁻</span>',
+       explain:'<ul><li>2mol まとめて e⁻ を <span class="hl-e">2mol</span> 渡す → <strong>S₂O₃²⁻ 1mol ＝ e⁻ 1mol</strong></li><li>H₂O も H⁺ も現れないシンプルな式</li><li>I₂ : Na₂S₂O₃ = 1 : 2（ヨウ素滴定の計算の核心）</li></ul>'}
+    ]
+  },
+  {
+    id:'h2s', name:'H₂S（硫化水素）', type:'rd',
+    before:'H₂S', after:'S',
+    before_desc:'硫化水素（無色の腐卵臭気体・S 酸化数 −2）', before_color:'#e2e8f0',
+    after_desc:'硫黄単体（黄色の固体・S 酸化数 0）', after_color:'#fbbf24',
+    oxnum_before:'−2', oxnum_after:'0', delta:2,
+    eq:'H₂S → S + 2H⁺ + 2e⁻',
+    steps:[
+      {tag:'Step 0',tagClass:'step-tag-0',title:'反応前後を書く',
+       rule:'H₂S の S：酸化数 −2 → 単体 S：酸化数 0（2増える → e⁻ 2mol 渡す）。',
+       eq_before:'H₂S　→　S',
+       explain:'H₂S（S 酸化数 <span class="oxnum-tag">−2</span>）→ S（酸化数 <span class="oxnum-tag">0</span>）<br><span class="hl-rd">2 増える</span> → e⁻ を 2mol 渡す還元剤。'},
+      {tag:'Step 1',tagClass:'step-tag-1',title:'O の確認（O なし・H₂O 不要）',
+       rule:'H₂S と S はどちらも O を含まない → H₂O の追加は不要。',
+       eq_before:'H₂S　→　S',
+       explain:'O を含まない → H₂O の追加は不要。'},
+      {tag:'Step 2',tagClass:'step-tag-2',title:'H の数を合わせる（H⁺ を右辺に加える）',
+       rule:'左辺 H = 2個（H₂S）→ 右辺に 2H⁺ を加える。',
+       eq_before:'H₂S　→　S + <span class="added">2H⁺</span>',
+       explain:'左辺 H = 2個（H₂S）→ 右辺に <span class="hl-rd">2H⁺</span> を追加。（H：左辺 2 = 右辺 2 ✓）'},
+      {tag:'Step 3',tagClass:'step-tag-3',title:'電荷を合わせる（e⁻ を右辺に加える）',
+       rule:'左辺：0。右辺：0 + 2 = +2。差 = 2 → 右辺に 2e⁻。',
+       eq_before:'H₂S　→　S + 2H⁺ + <span class="electron">2e⁻</span>',
+       explain:'左辺：H₂S(0) = <span class="hl">0</span><br>右辺：S(0) + 2H⁺(+2) = <span class="hl">+2</span><br>差 2 → <span class="hl-e">2e⁻</span> を右辺に追加。'},
+      {tag:'完成！',tagClass:'step-tag-4',title:'半反応式の完成',
+       rule:null,
+       eq_before:'<span class="balanced">H₂S → S + 2H⁺ + 2e⁻</span>',
+       explain:'<ul><li>S の酸化数：−2 → 0（<span class="hl-rd">2 増える</span> → 還元剤）</li><li>電子を <span class="hl-e">2mol</span> 渡す</li><li>Cl₂ や I₂ との反応で登場：H₂S + Cl₂ → 2HCl + S など</li></ul>'}
+    ]
+  }
+];
+
+/* ===================================================
+   SECTION タブ切り替え
+=================================================== */
+function showSection(n){
+  document.querySelectorAll('.section').forEach((s,i)=>{
+    s.classList.toggle('active',i===n);
+  });
+  document.querySelectorAll('.sec-tab').forEach((t,i)=>{
+    t.classList.toggle('active',i===n);
+  });
+}
+
+/* ===================================================
+   SECTION 1: フラッシュカード
+=================================================== */
+let cardFilter='all', cardIndex=0, cardFlipped=false;
+let filteredCards=[];
+
+function setFilter(f, btn){
+  cardFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>{
+    b.className='filter-btn';
+  });
+  if(f==='all') btn.classList.add('active-all');
+  else if(f==='ox') btn.classList.add('active-ox');
+  else btn.classList.add('active-rd');
+  filteredCards=REAGENTS.filter(r=>f==='all'||r.type===f);
+  cardIndex=0; cardFlipped=false;
+  renderCard();
+}
+
+function renderCard(){
+  const r=filteredCards[cardIndex];
+  const fc=document.getElementById('flashcard');
+  if(cardFlipped) fc.classList.remove('flipped');
+  cardFlipped=false;
+
+  const badge=document.getElementById('fc-badge');
+  badge.textContent=r.type==='ox'?'酸化剤':'還元剤';
+  badge.className='fc-type-badge '+(r.type==='ox'?'fc-type-ox':'fc-type-rd');
+
+  document.getElementById('fc-name').textContent=r.name;
+
+  const befCol=r.type==='ox'?'var(--ox)':'var(--rd)';
+  const befSwatch = r.before_color
+    ? `<span style="display:inline-block;width:13px;height:13px;border-radius:50%;background:${r.before_color};border:1.5px solid #94a3b8;vertical-align:middle;margin-right:4px;flex-shrink:0;"></span>`
+    : '';
+  document.getElementById('fc-before').innerHTML=
+    `<span style="color:${befCol};font-size:1.1em;">${r.before}</span>
+     <span style="font-size:.8em;color:var(--text-sub);display:flex;align-items:center;justify-content:center;margin-top:3px;">${befSwatch}${r.before_desc}</span>`;
+
+  const aftCol=r.type==='ox'?'var(--rd)':'var(--ox)';
+  const aftSwatch = r.after_color
+    ? `<span style="display:inline-block;width:13px;height:13px;border-radius:50%;background:${r.after_color};border:1.5px solid #94a3b8;vertical-align:middle;margin-right:4px;flex-shrink:0;"></span>`
+    : '';
+  document.getElementById('fc-after').innerHTML=
+    `<span style="color:${aftCol};font-size:1.1em;">${r.after}</span>
+     <span style="font-size:.8em;color:var(--text-sub);display:flex;align-items:center;justify-content:center;margin-top:3px;">${aftSwatch}${r.after_desc}</span>`;
+
+  document.getElementById('fc-eq').textContent=r.eq;
+
+  // 色付きボーダー
+  const rowB = document.getElementById('fc-row-before');
+  const rowA = document.getElementById('fc-row-after');
+  const bc = r.before_color && r.before_color !== '#e2e8f0' ? r.before_color : '#cbd5e1';
+  const ac = r.after_color  && r.after_color  !== '#e2e8f0' ? r.after_color  : '#cbd5e1';
+  rowB.style.borderLeft = `4px solid ${bc}`;
+  rowA.style.borderLeft = `4px solid ${ac}`;
+  rowB.style.paddingLeft = '10px';
+  rowA.style.paddingLeft = '10px';
+
+  const tot=filteredCards.length;
+  document.getElementById('card-counter').textContent=`${cardIndex+1} / ${tot}`;
+  document.getElementById('card-prog').textContent=`${cardIndex+1} / ${tot}`;
+}
+
+function flipCard(){
+  cardFlipped=!cardFlipped;
+  document.getElementById('flashcard').classList.toggle('flipped',cardFlipped);
+}
+
+function cardMove(d){
+  cardFlipped=false;
+  document.getElementById('flashcard').classList.remove('flipped');
+  cardIndex=(cardIndex+d+filteredCards.length)%filteredCards.length;
+  setTimeout(renderCard,300);
+}
+
+/* ===================================================
+   SECTION 2: クイズ
+=================================================== */
+let quizData=[], quizAnswered=0, quizCorrect=0;
+
+function initQuiz(){
+  document.getElementById('quiz-result').classList.remove('show');
+  quizAnswered=0; quizCorrect=0;
+  updateQuizScore();
+  // シャッフルしてクイズ生成
+  quizData=[...REAGENTS].sort(()=>Math.random()-.5);
+  const area=document.getElementById('quiz-area');
+  area.innerHTML='';
+  quizData.forEach((r,i)=>{
+    // 誤答選択肢：同じ type の他の試薬の after から3つ選ぶ
+    const pool=REAGENTS.filter(x=>x.id!==r.id).map(x=>x.after);
+    const shuffled=pool.sort(()=>Math.random()-.5).slice(0,3);
+    const choices=[r.after,...shuffled].sort(()=>Math.random()-.5);
+
+    const card=document.createElement('div');
+    card.className='quiz-card';
+    card.id=`qcard-${i}`;
+    card.innerHTML=`
+      <div class="quiz-q-label">問 ${i+1}　反応後の物質は？</div>
+      <div class="quiz-reagent">${r.name}<span class="badge ${r.type==='ox'?'badge-ox':'badge-rd'}">${r.type==='ox'?'酸化剤':'還元剤'}</span></div>
+      <div class="quiz-q-text">${r.before} が反応して何になるか。</div>
+      <div class="quiz-choices">
+        ${choices.map(c=>`<button class="quiz-choice" onclick="answerQuiz(${i},'${c}','${r.after}',this)">${c}</button>`).join('')}
+      </div>
+      <div class="quiz-exp" id="qexp-${i}">
+        <strong>${r.before} → ${r.after}</strong>（${r.after_desc}）<br>
+        半反応式：${r.eq}
+      </div>
+    `;
+    area.appendChild(card);
+  });
+}
+
+function answerQuiz(idx, chosen, correct, btn){
+  const card=document.getElementById(`qcard-${idx}`);
+  if(card.querySelector('.correct,.wrong')) return;
+  card.querySelectorAll('.quiz-choice').forEach(b=>b.classList.add('disabled'));
+  if(chosen===correct){
+    btn.classList.add('correct');
+    quizCorrect++;
+    launchConfetti();
+  } else {
+    btn.classList.add('wrong');
+    card.querySelectorAll('.quiz-choice').forEach(b=>{
+      if(b.textContent===correct) b.classList.add('correct');
+    });
+  }
+  document.getElementById(`qexp-${idx}`).classList.add('show');
+  quizAnswered++;
+  updateQuizScore();
+  if(quizAnswered===quizData.length){
+    setTimeout(showQuizResult, 500);
+  }
+}
+
+function updateQuizScore(){
+  document.getElementById('quiz-score').textContent=`${quizCorrect} / ${quizAnswered}`;
+}
+
+function showQuizResult(){
+  const res=document.getElementById('quiz-result');
+  const total=quizData.length;
+  document.getElementById('quiz-final-score').textContent=`${quizCorrect} / ${total} 正解`;
+  const pct=quizCorrect/total;
+  let msg='';
+  if(pct===1) msg='🎉 全問正解！完璧です！';
+  else if(pct>=.8) msg='👏 よくできました！もう一度挑戦してみよう。';
+  else if(pct>=.6) msg='📖 もう少し！カードで復習してから再挑戦しよう。';
+  else msg='💪 カードに戻って反応前後をしっかり覚えよう。';
+  document.getElementById('quiz-final-msg').textContent=msg;
+  res.classList.add('show');
+}
+
+/* ===================================================
+   SECTION 3: 半反応式ステッパー
+=================================================== */
+let stepCurrent=0, stepTotal=0, selectedReagent=null;
+
+function initStepperGrid(){
+  const grid=document.getElementById('reagent-grid');
+  REAGENTS.forEach(r=>{
+    const btn=document.createElement('button');
+    btn.className='reagent-btn';
+    btn.innerHTML=`${r.name}<span class="rbadge">${r.type==='ox'?'🔴 酸化剤':'🟢 還元剤'}</span>`;
+    btn.onclick=()=>selectReagent(r,btn);
+    grid.appendChild(btn);
+  });
+}
+
+function selectReagent(r, btn){
+  document.querySelectorAll('.reagent-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedReagent=r;
+  buildStepper(r);
+}
+
+function buildStepper(r){
+  const body=document.getElementById('stepper-body');
+  body.classList.add('active');
+
+  document.getElementById('stepper-title').textContent=`📝 ${r.name} の半反応式を作ろう`;
+
+  // dots
+  const dotsEl=document.getElementById('stepper-dots');
+  dotsEl.innerHTML='';
+  r.steps.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='stepper-dot'+(i===0?' active':'');
+    dotsEl.appendChild(d);
+  });
+
+  // panels
+  const panels=document.getElementById('stepper-panels');
+  panels.innerHTML='';
+  r.steps.forEach((s,i)=>{
+    const div=document.createElement('div');
+    div.className='step-panel'+(i===0?' active':'');
+    div.id=`spanel-${i}`;
+    div.innerHTML=`
+      <span class="step-tag ${s.tagClass}">${s.tag}：${s.title}</span>
+      ${s.rule?`<div class="step-rule"><div class="rule-title">📌 ルール</div>${s.rule}</div>`:''}
+      <div class="eq-build">
+        <div class="eq-line">${s.eq_before}</div>
+        ${s.eq_note?`<div class="eq-note">${s.eq_note}</div>`:''}
+      </div>
+      <div class="step-explain">${s.explain}</div>
+    `;
+    panels.appendChild(div);
+  });
+
+  stepCurrent=0;
+  stepTotal=r.steps.length;
+  updateStepperNav();
+  body.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function stepMove(d){
+  const panels=document.querySelectorAll('#stepper-panels .step-panel');
+  const dots=document.querySelectorAll('#stepper-dots .stepper-dot');
+  if(!panels.length) return;
+  panels[stepCurrent].classList.remove('active');
+  dots[stepCurrent].classList.remove('active');
+  dots[stepCurrent].classList.add('done');
+  stepCurrent+=d;
+  if(stepCurrent<0) stepCurrent=0;
+  if(stepCurrent>=stepTotal) stepCurrent=stepTotal-1;
+  panels[stepCurrent].classList.add('active');
+  dots[stepCurrent].classList.add('active');
+  dots[stepCurrent].classList.remove('done');
+  updateStepperNav();
+}
+
+function updateStepperNav(){
+  const prev=document.getElementById('step-prev');
+  const next=document.getElementById('step-next');
+  const lbl=document.getElementById('step-lbl');
+  prev.disabled=stepCurrent===0;
+  next.disabled=stepCurrent===stepTotal-1;
+  next.textContent=stepCurrent===stepTotal-2?'完成へ →':'次へ →';
+  lbl.textContent=`${stepCurrent+1} / ${stepTotal}`;
+}
+
+/* ===================================================
+   花吹雪
+=================================================== */
+function launchConfetti(){
+  const C=['#f472b6','#facc15','#34d399','#60a5fa','#f87171','#a78bfa','#fb923c','#2dd4bf'];
+  for(let i=0;i<80;i++){
+    const el=document.createElement('div');
+    const size=Math.random()*10+6, left=Math.random()*100;
+    const delay=Math.random()*.6, dur=Math.random()*1.2+1.2;
+    const color=C[Math.floor(Math.random()*C.length)];
+    const shape=Math.random()>.5?'50%':'2px';
+    el.style.cssText=`position:fixed;top:-20px;left:${left}vw;width:${size}px;height:${size}px;background:${color};border-radius:${shape};opacity:1;pointer-events:none;z-index:9999;animation:confettiFall ${dur}s ${delay}s ease-in forwards;`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),(dur+delay)*1000+200);
+  }
+}
+
+/* ===================================================
+   初期化
+=================================================== */
+document.addEventListener('DOMContentLoaded',()=>{
+  filteredCards=[...REAGENTS];
+  renderCard();
+  initQuiz();
+  initStepperGrid();
+  initFill();
+});
+
+/* ===================================================
+   SECTION 4: 語群穴埋めミニテスト
+=================================================== */
+const WORD_POOL_LIST = [
+  '酸化剤','還元剤','SO₄²⁻','S','H₂O','O₂','+6','0','-2'
+];
+
+let selectedWord = null;
+let fillAnswers = {}; // blankId -> word
+
+function initFill(){
+  selectedWord = null;
+  fillAnswers = {};
+  // 語群を描画
+  const pool = document.getElementById('word-pool');
+  pool.innerHTML = '';
+  WORD_POOL_LIST.forEach(w => {
+    const chip = document.createElement('button');
+    chip.className = 'word-chip';
+    chip.textContent = w;
+    chip.dataset.word = w;
+    chip.onclick = () => selectWord(chip);
+    pool.appendChild(chip);
+  });
+  // 空欄をリセット
+  document.querySelectorAll('.blank').forEach(b => {
+    b.textContent = '＿＿';
+    b.className = 'blank';
+    b.onclick = () => fillBlank(b);
+  });
+  document.getElementById('fill-result').textContent = '';
+}
+
+function selectWord(chip){
+  // 使用済みはスキップ
+  if(chip.classList.contains('used')) return;
+  // 選択状態トグル
+  document.querySelectorAll('.word-chip').forEach(c => c.classList.remove('selected'));
+  if(selectedWord === chip.dataset.word){
+    selectedWord = null;
+  } else {
+    selectedWord = chip.dataset.word;
+    chip.classList.add('selected');
+  }
+}
+
+function fillBlank(blank){
+  if(blank.classList.contains('correct') || blank.classList.contains('wrong')) return;
+  if(!selectedWord){
+    // 空欄クリックで選択中の語がなければ、入力済みなら取り消す
+    if(fillAnswers[blank.dataset.id]){
+      const removed = fillAnswers[blank.dataset.id];
+      delete fillAnswers[blank.dataset.id];
+      blank.textContent = '＿＿';
+      blank.classList.remove('filled');
+      // 語群に戻す
+      document.querySelectorAll('.word-chip').forEach(c => {
+        if(c.dataset.word === removed) c.classList.remove('used');
+      });
+    }
+    return;
+  }
+  // すでに埋まっている場合は前の語を語群に戻す
+  if(fillAnswers[blank.dataset.id]){
+    const old = fillAnswers[blank.dataset.id];
+    document.querySelectorAll('.word-chip').forEach(c => {
+      if(c.dataset.word === old) c.classList.remove('used');
+    });
+  }
+  // 埋める
+  fillAnswers[blank.dataset.id] = selectedWord;
+  blank.textContent = selectedWord;
+  blank.classList.add('filled');
+  // 語群を使用済みに
+  document.querySelectorAll('.word-chip').forEach(c => {
+    if(c.dataset.word === selectedWord){
+      c.classList.remove('selected');
+      c.classList.add('used');
+    }
+  });
+  selectedWord = null;
+}
+
+function checkFill(){
+  let correct = 0, total = 0;
+  document.querySelectorAll('.blank').forEach(b => {
+    total++;
+    b.onclick = null; // ロック
+    if(fillAnswers[b.dataset.id] === b.dataset.ans){
+      b.classList.remove('filled');
+      b.classList.add('correct');
+      correct++;
+    } else {
+      b.classList.remove('filled');
+      b.classList.add('wrong');
+      // 正解を括弧で追記
+      if(!fillAnswers[b.dataset.id]){
+        b.textContent = `（${b.dataset.ans}）`;
+      } else {
+        b.textContent = fillAnswers[b.dataset.id] + ` → ${b.dataset.ans}`;
+      }
+    }
+  });
+  const res = document.getElementById('fill-result');
+  if(correct === total){
+    res.textContent = `🎉 全問正解！ ${correct} / ${total}`;
+    res.style.color = 'var(--rd)';
+    launchConfetti();
+  } else {
+    res.textContent = `結果：${correct} / ${total} 正解。赤い欄を確認して復習しよう。`;
+    res.style.color = 'var(--ox)';
+  }
+  // 語群のボタンを全ロック
+  document.querySelectorAll('.word-chip').forEach(c => c.onclick = null);
+}
+
+function resetFill(){
+  initFill();
+}
+
+
+/* ── ポップアップ制御 ── */
+function openPopup(id){
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closePopup(id){
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    document.querySelectorAll('.popup-overlay.open').forEach(p=>{
+      p.classList.remove('open');
+      document.body.style.overflow='';
+    });
+  }
+});
+
+</script>
+
+
+<!-- ======================================================== -->
+<!-- SO₂ なぜ？ポップアップ                                     -->
+<!-- ======================================================== -->
+<div class="popup-overlay" id="popup-so2" onclick="closePopup('popup-so2')">
+  <div class="popup-box" onclick="event.stopPropagation()">
+    <div class="popup-head" style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border-color:#7dd3fc;">
+      <h3 style="color:#0c4a6e;">❓ なぜ SO₂ は酸化剤にも還元剤にもなるのか</h3>
+      <button class="popup-close" style="color:#0c4a6e;" onclick="closePopup('popup-so2')">✕</button>
+    </div>
+    <div class="popup-body">
+
+      <h4>カギは「S の酸化数 +4 が中間値であること」</h4>
+      <p>硫黄（S）の酸化数は <span class="hl-b">−2 〜 +6</span> の範囲で変化できます。<br>
+      SO₂ の S は <span class="hl-b">+4</span> で、ちょうど中間あたりにあります。</p>
+
+      <table>
+        <tr>
+          <th>物質</th><th>S の酸化数</th><th>特徴</th>
+        </tr>
+        <tr>
+          <td><strong>H₂S</strong></td>
+          <td><span class="hl-rd">−2（最小）</span></td>
+          <td>これ以上下がれない → 電子を渡すしかない → <strong>強力な還元剤</strong></td>
+        </tr>
+        <tr style="background:#fffbeb;">
+          <td><strong>SO₂</strong></td>
+          <td><span class="hl-b">+4（中間）</span></td>
+          <td>上にも下にも動ける → <strong>二面性あり</strong></td>
+        </tr>
+        <tr>
+          <td><strong>H₂SO₄（濃）</strong></td>
+          <td><span class="hl-ox">+6（最大）</span></td>
+          <td>これ以上上がれない → 電子を受け取るしかない → <strong>酸化剤のみ</strong></td>
+        </tr>
+      </table>
+
+      <h4>① SO₂ が還元剤になるとき（強い酸化剤と出会うとき）</h4>
+      <p>KMnO₄・K₂Cr₂O₇・I₂・Cl₂ などの<span class="hl-ox">強力な酸化剤</span>と反応するとき、<br>
+      SO₂ は電子を<strong>渡す側</strong>（還元剤）に回ります。</p>
+      <div class="eq-line">SO₂ + 2H₂O → SO₄²⁻ + 4H⁺ + 2e⁻</div>
+      <p>S の酸化数：<span class="hl-b">+4 → +6</span>（増える → 酸化された → 還元剤）</p>
+      <div class="warn-box">
+        💡 「強い酸化剤に引っ張られて、S がさらに電子を手放す（+4 → +6）」
+      </div>
+
+      <h4>② SO₂ が酸化剤になるとき（強い還元剤と出会うとき）</h4>
+      <p>H₂S のような<span class="hl-rd">強力な還元剤</span>と反応するとき、<br>
+      相手（H₂S）の方が電子を渡す力が強いので、<br>
+      SO₂ は電子を<strong>受け取る側</strong>（酸化剤）に回ります。</p>
+      <div class="eq-line">2H₂S + SO₂ → 3S + 2H₂O</div>
+      <table>
+        <tr><th>物質</th><th>S の酸化数変化</th><th>役割</th></tr>
+        <tr>
+          <td><strong>H₂S</strong></td>
+          <td>−2 → <span class="hl-rd">0</span>（増える）</td>
+          <td><span class="hl-rd">還元剤</span>（酸化された）</td>
+        </tr>
+        <tr>
+          <td><strong>SO₂</strong></td>
+          <td>+4 → <span class="hl-ox">0</span>（減る）</td>
+          <td><span class="hl-ox">酸化剤</span>（還元された）</td>
+        </tr>
+      </table>
+      <div class="warn-box">
+        💡 H₂S の S（−2）は「これ以上電子を抱えられない」最底辺。<br>
+        SO₂ の S（+4）より圧倒的に強い還元剤なので、<br>
+        SO₂ が「やむなく」電子を受け取る側に回る。
+      </div>
+
+      <h4>まとめ：力関係で決まる</h4>
+      <table>
+        <tr><th>相手</th><th>力関係</th><th>SO₂ の役割</th><th>S の変化</th></tr>
+        <tr>
+          <td>KMnO₄・I₂ など</td>
+          <td>相手が<span class="hl-ox">強い酸化剤</span></td>
+          <td><span class="hl-rd">還元剤</span></td>
+          <td>+4 → +6</td>
+        </tr>
+        <tr>
+          <td>H₂S など</td>
+          <td>相手が<span class="hl-rd">強い還元剤</span></td>
+          <td><span class="hl-ox">酸化剤</span></td>
+          <td>+4 → 0</td>
+        </tr>
+      </table>
+
+      <div class="note-box">
+        <strong>一言まとめ：</strong><br>
+        SO₂ の S は酸化数 <strong>+4（中間値）</strong> なので上にも下にも動ける。<br>
+        強い相手に出会ったとき、その相手の<em>逆の役割</em>を引き受ける。
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================== -->
+<!-- H₂O₂ 酸化剤・還元剤になる理由 ポップアップ               -->
+<!-- ======================================================== -->
+<div class="popup-overlay" id="popup-h2o2-reason" onclick="closePopup('popup-h2o2-reason')">
+  <div class="popup-box" onclick="event.stopPropagation()">
+    <div class="popup-head" style="background:linear-gradient(135deg,#fdf2f8,#fce7f3);border-color:#f9a8d4;">
+      <h3 style="color:#831843;">❓ なぜ H₂O₂ は酸化剤にも還元剤にもなるのか</h3>
+      <button class="popup-close" style="color:#831843;" onclick="closePopup('popup-h2o2-reason')">✕</button>
+    </div>
+    <div class="popup-body">
+
+      <h4>カギは「O の酸化数 −1 が中間値であること」</h4>
+      <p>酸素（O）の酸化数は通常 <span class="hl-ox">−2</span>（最小値）ですが、<br>
+      H₂O₂ の O は <span class="hl-b">−1</span> という<strong>例外的な中間値</strong>をとります。</p>
+
+      <table>
+        <tr>
+          <th>物質</th><th>O の酸化数</th><th>特徴</th>
+        </tr>
+        <tr>
+          <td><strong>H₂O・OH⁻</strong></td>
+          <td><span class="hl-rd">−2（最小）</span></td>
+          <td>これ以上下がれない → 酸化剤にはなれない</td>
+        </tr>
+        <tr style="background:#fdf2f8;">
+          <td><strong>H₂O₂</strong></td>
+          <td><span class="hl-b">−1（中間）</span></td>
+          <td>上（0）にも下（−2）にも動ける → <strong>二面性あり</strong></td>
+        </tr>
+        <tr>
+          <td><strong>O₂</strong></td>
+          <td><span class="hl-ox">0（最大）</span></td>
+          <td>これ以上上がれない → 還元剤にはなれない</td>
+        </tr>
+      </table>
+
+      <h4>① H₂O₂ が酸化剤になるとき（ほとんどの場合）</h4>
+      <p>KI・FeSO₄・SO₂ などの一般的な還元剤と反応するとき、<br>
+      H₂O₂ は電子を<strong>受け取る側</strong>（酸化剤）になります。</p>
+      <div class="eq-line">H₂O₂ + 2H⁺ + 2e⁻ → 2H₂O　（酸性）</div>
+      <div class="eq-line">H₂O₂ + 2e⁻ → 2OH⁻　（中性・塩基性）</div>
+      <p>O の酸化数：<span class="hl-b">−1 → −2</span>（減る → 還元された → 酸化剤）</p>
+      <div class="warn-box">
+        💡 O が −1 → −2 に下がる（電子をもらう）のが「普通の H₂O₂」の動き
+      </div>
+
+      <h4>② H₂O₂ が還元剤になるとき（KMnO₄ との反応のみ）</h4>
+      <p>KMnO₄ は非常に強力な酸化剤（Mn：+7）なので、<br>
+      H₂O₂ よりも「電子を引き寄せる力」が圧倒的に強く、<br>
+      H₂O₂ が電子を<strong>渡す側</strong>（還元剤）に回らざるを得なくなります。</p>
+      <div class="eq-line">H₂O₂ → O₂ + 2H⁺ + 2e⁻　（還元剤として）</div>
+      <p>O の酸化数：<span class="hl-b">−1 → 0</span>（増える → 酸化された → 還元剤）</p>
+      <div class="warn-box">
+        💡 KMnO₄ の「電子を奪う力」が強すぎて、<br>
+        H₂O₂ の O が −1 → 0 に押し上げられてしまう。
+      </div>
+
+      <h4>図解：O の酸化数の動き</h4>
+      <table>
+        <tr><th></th><th>O の酸化数</th><th>方向</th><th>役割</th><th>生成物</th></tr>
+        <tr>
+          <td>通常</td>
+          <td>−1 → <span class="hl-ox">−2</span></td>
+          <td>⬇ 下がる</td>
+          <td><span class="hl-ox">酸化剤</span></td>
+          <td>H₂O または OH⁻</td>
+        </tr>
+        <tr>
+          <td>KMnO₄と反応</td>
+          <td>−1 → <span class="hl-rd">0</span></td>
+          <td>⬆ 上がる</td>
+          <td><span class="hl-rd">還元剤</span></td>
+          <td>O₂</td>
+        </tr>
+      </table>
+
+      <div class="note-box">
+        <strong>一言まとめ：</strong><br>
+        H₂O₂ の O は酸化数 <strong>−1（中間値）</strong> なので上（0）にも下（−2）にも動ける。<br>
+        相手が KMnO₄ のような超強力な酸化剤のときだけ、<br>
+        O が 0 の方向（O₂）に押し上げられて還元剤になる。<br>
+        それ以外はすべて酸化剤（H₂O または OH⁻ へ）。
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================== -->
+<!-- H₂O₂ なぜ？ポップアップ                                    -->
+<!-- ======================================================== -->
+<div class="popup-overlay" id="popup-h2o2" onclick="closePopup('popup-h2o2')">
+  <div class="popup-box" onclick="event.stopPropagation()">
+    <div class="popup-head">
+      <h3>❓ なぜ酸性では H₂O、中性・塩基性では OH⁻ になるのか</h3>
+      <button class="popup-close" onclick="closePopup('popup-h2o2')">✕</button>
+    </div>
+    <div class="popup-body">
+
+      <h4>核心は「H⁺ が使えるかどうか」</h4>
+      <p>H₂O₂ が酸化剤としてはたらくとき、O の酸化数が −1 → −2 に変わります。<br>
+      この「−2 になった O」が <span class="hl-b">H⁺ を拾えるかどうか</span>で生成物が変わります。</p>
+
+      <h4>① 酸性条件：H⁺ がたくさんある</h4>
+      <div class="eq-line">H₂O₂ + 2H⁺ + 2e⁻ → 2H₂O</div>
+      <p>O が e⁻ を受け取って −2 になる<br>
+      → 外から <span class="hl-ox">H⁺ が 2個</span> やってくる<br>
+      → OH⁻ + H⁺ → <span class="hl-b">H₂O</span> まで一気に進める</p>
+      <div class="warn-box">
+        💡 酸性 = H⁺ が豊富 → O²⁻ が H⁺ を 2個拾って <strong>H₂O</strong> になれる
+      </div>
+
+      <h4>② 中性・塩基性条件：H⁺ がほとんどない</h4>
+      <div class="eq-line">H₂O₂ + 2e⁻ → 2OH⁻</div>
+      <p>O が e⁻ を受け取って −2 になる<br>
+      → 外から H⁺ が来ない<br>
+      → H₂O₂ <strong>自身の H</strong> をそのまま使う<br>
+      → H−O⁻ の形、つまり <span class="hl-rd">OH⁻</span> のまま止まる</p>
+      <div class="warn-box">
+        💡 中性・塩基性 = H⁺ が不足 → OH⁻ のまま止まる
+      </div>
+
+      <h4>図で整理</h4>
+      <table>
+        <tr>
+          <th>条件</th><th>H⁺</th><th>生成物</th><th>理由</th>
+        </tr>
+        <tr>
+          <td><strong>酸性</strong></td>
+          <td><span class="hl-ox">豊富にある</span></td>
+          <td><span class="hl-b">H₂O</span></td>
+          <td>OH⁻ + H⁺ → H₂O まで進める</td>
+        </tr>
+        <tr>
+          <td><strong>中性・塩基性</strong></td>
+          <td><span class="hl-rd">ほとんどない</span></td>
+          <td><span class="hl-rd">OH⁻</span></td>
+          <td>H⁺ がないので OH⁻ のまま</td>
+        </tr>
+      </table>
+
+      <h4>KMnO₄ も同じ理由</h4>
+      <p>これは H₂O₂ だけでなく KMnO₄ にも当てはまります。</p>
+      <table>
+        <tr><th>条件</th><th>KMnO₄ の反応後</th></tr>
+        <tr><td><strong>酸性</strong></td><td><span class="hl-b">Mn²⁺</span>（H⁺ が豊富 → 最後まで還元）</td></tr>
+        <tr><td><strong>中性・塩基性</strong></td><td><span class="hl-rd">MnO₂</span>（H⁺ 不足 → 途中で止まる）</td></tr>
+      </table>
+
+      <div class="note-box">
+        <strong>一言まとめ：</strong><br>
+        「OH⁻ に H⁺ を渡せるかどうかの違い」<br>
+        酸性 → H⁺ がある → H₂O まで行ける<br>
+        中性・塩基性 → H⁺ がない → OH⁻ のまま止まる
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

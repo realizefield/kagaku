@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>酸化剤・還元剤 | GAMBA化学</title>
+<style>
+:root{
+  --bg:#f0f4ff;
+  --card:#fff;
+  --primary:#2563eb;
+  --primary-light:#dbeafe;
+  --primary-dark:#1e40af;
+  --accent:#dc2626;
+  --accent-light:#fee2e2;
+  --success:#16a34a;
+  --success-light:#dcfce7;
+  --warn:#d97706;
+  --warn-light:#fffbeb;
+  --purple:#7c3aed;
+  --purple-light:#ede9fe;
+  --text:#1e293b;
+  --text-sub:#64748b;
+  --border:#bfdbfe;
+  --radius:14px;
+  --ox:#dc2626;
+  --rd:#16a34a;
+  /* 化学物質の色 */
+  --c-kmno4:#9333ea;      /* 赤紫 */
+  --c-mn2:#fce7f3;        /* 淡桃（ほぼ無色） */
+  --c-cr2o7:#f97316;      /* 橙 */
+  --c-cr3:#16a34a;        /* 緑 */
+  --c-no2:#b45309;        /* 赤褐 */
+  --c-cl2:#84cc16;        /* 黄緑 */
+  --c-s:#eab308;          /* 黄 */
+  --c-i2:#78350f;         /* 褐色 */
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'BIZ UDPGothic','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+
+/* ── NAV ── */
+.topnav{display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;flex-wrap:wrap;}
+.topnav .brand{font-weight:700;font-size:.9em;}
+.topnav .sep{opacity:.4;}
+.topnav a{color:#bfdbfe;text-decoration:none;font-size:.82em;}
+.topnav a:hover{color:#fff;}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,#1e40af 0%,#7c3aed 100%);color:#fff;padding:26px 20px 24px;}
+.hero .crumb{font-size:.75em;opacity:.7;margin-bottom:6px;}
+.hero h1{font-size:clamp(1.4em,4vw,2em);font-weight:800;margin-bottom:8px;}
+.hero .sub{font-size:.87em;opacity:.9;line-height:1.8;max-width:680px;}
+.hero .level-badge{display:inline-block;margin-top:10px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:4px 14px;font-size:.78em;font-weight:700;}
+
+.wrap{max-width:860px;margin:0 auto;}
+main{padding:20px 14px 0;}
+
+/* ── UNIT ── */
+.unit{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:28px;overflow:hidden;}
+.unit-title{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,var(--primary-light),#f8faff);padding:13px 16px;font-weight:700;font-size:1.05em;border-bottom:1.5px solid var(--border);}
+.unit-title .num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;background:var(--primary);color:#fff;border-radius:8px;font-size:.88em;flex-shrink:0;}
+.unit-title .num.ox{background:var(--ox);}
+.unit-title .num.rd{background:var(--rd);}
+
+.stage{padding:16px;}
+
+/* ── READ BOX ── */
+.read-box{background:#f8faff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;line-height:1.9;font-size:.93em;margin-bottom:12px;}
+.read-box p{margin-bottom:10px;}
+.read-box p:last-child{margin-bottom:0;}
+
+/* ── 定義カード ── */
+.def-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
+.def-card{border-radius:10px;padding:14px;border:2px solid;text-align:center;}
+.def-card.ox{background:var(--accent-light);border-color:#fca5a5;}
+.def-card.rd{background:var(--success-light);border-color:#86efac;}
+.def-card .dc-label{font-size:.78em;font-weight:700;padding:3px 12px;border-radius:20px;display:inline-block;margin-bottom:8px;}
+.def-card.ox .dc-label{background:var(--ox);color:#fff;}
+.def-card.rd .dc-label{background:var(--rd);color:#fff;}
+.def-card .dc-body{font-size:.9em;font-weight:700;line-height:1.6;color:var(--text);}
+.def-card .dc-sub{font-size:.8em;color:var(--text-sub);margin-top:4px;line-height:1.5;}
+
+/* ── 試薬カード（1試薬ずつの詳細） ── */
+.agent-card{background:var(--card);border:1.5px solid var(--border);border-radius:12px;margin:12px 0;overflow:hidden;}
+.ac-header{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #e2e8f0;flex-wrap:wrap;}
+.ac-name{font-weight:800;font-size:1em;flex:1;}
+.ac-role{font-size:.75em;font-weight:700;padding:3px 10px;border-radius:20px;}
+.ac-role.ox{background:var(--accent-light);color:var(--ox);}
+.ac-role.rd{background:var(--success-light);color:var(--rd);}
+.ac-body{padding:12px 14px;}
+.ac-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.88em;flex-wrap:wrap;}
+.ac-row:last-child{margin-bottom:0;}
+.ac-label{font-size:.75em;font-weight:700;color:var(--text-sub);min-width:70px;flex-shrink:0;}
+.chem-chip{display:inline-flex;align-items:center;gap:5px;font-weight:700;padding:4px 12px;border-radius:8px;font-size:.92em;border:1.5px solid;}
+.chem-chip .color-dot{width:11px;height:11px;border-radius:50%;border:1px solid rgba(0,0,0,.15);flex-shrink:0;}
+.ac-arrow{font-size:1.2em;color:#94a3b8;flex-shrink:0;}
+.ac-condition{font-size:.78em;background:var(--warn-light);color:#92400e;padding:3px 10px;border-radius:20px;border:1px solid #fde68a;}
+.ac-note{font-size:.82em;color:var(--text-sub);line-height:1.6;margin-top:6px;padding-top:6px;border-top:1px dashed #e2e8f0;}
+
+/* 色付き化学式 */
+.c-purple{color:#9333ea;font-weight:700;}
+.c-pink{color:#db2777;font-weight:700;}
+.c-orange{color:#f97316;font-weight:700;}
+.c-green{color:#16a34a;font-weight:700;}
+.c-brown{color:#b45309;font-weight:700;}
+.c-lime{color:#65a30d;font-weight:700;}
+.c-yellow{color:#ca8a04;font-weight:700;}
+.c-blue{color:#2563eb;font-weight:700;}
+.c-red{color:#dc2626;font-weight:700;}
+.c-teal{color:#0f766e;font-weight:700;}
+
+/* 色スウォッチバッジ */
+.color-badge{display:inline-flex;align-items:center;gap:4px;font-size:.78em;font-weight:700;padding:2px 8px;border-radius:12px;border:1px solid rgba(0,0,0,.1);}
+.cb-dot{width:10px;height:10px;border-radius:50%;border:1px solid rgba(0,0,0,.15);}
+
+/* ── なぜ？ボタン ── */
+.why-btn{font-family:inherit;display:inline-flex;align-items:center;gap:6px;margin:8px 0 4px;padding:7px 16px;border-radius:50px;border:2px solid #f59e0b;background:#fffbeb;color:#92400e;font-size:.83em;font-weight:700;cursor:pointer;transition:.15s;}
+.why-btn:hover{background:#fef3c7;}
+.why-btn.blue{border-color:#7dd3fc;background:#f0f9ff;color:#0c4a6e;}
+.why-btn.blue:hover{background:#e0f2fe;}
+
+/* ── ポップアップ ── */
+.popup-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center;padding:16px;}
+.popup-overlay.open{display:flex;}
+.popup-box{background:#fff;border-radius:16px;max-width:640px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:popIn .22s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{transform:scale(.88);opacity:0;}to{transform:scale(1);opacity:1;}}
+.popup-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1.5px solid #e2e8f0;border-radius:16px 16px 0 0;position:sticky;top:0;background:#fff;z-index:1;}
+.popup-head h3{font-size:.95em;font-weight:800;}
+.popup-close{font-family:inherit;background:none;border:none;font-size:1.3em;cursor:pointer;padding:2px 8px;border-radius:6px;line-height:1;}
+.popup-close:hover{background:#e2e8f0;}
+.popup-body{padding:16px 18px 20px;font-size:.88em;line-height:1.85;}
+.popup-body h4{font-size:.92em;font-weight:700;color:var(--primary-dark);border-left:4px solid var(--primary);padding-left:10px;margin:14px 0 6px;}
+.popup-body p{margin-bottom:8px;}
+.popup-body .eq-line{background:#fffbeb;border:1.5px solid #fcd34d;border-radius:8px;padding:8px 14px;font-weight:700;font-size:.95em;text-align:center;margin:8px 0;letter-spacing:.03em;}
+.popup-body .step-box{background:#f8faff;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;margin:8px 0;}
+.popup-body .step-box .sn{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:var(--primary);color:#fff;border-radius:50%;font-size:.78em;font-weight:700;margin-right:6px;flex-shrink:0;}
+.popup-body .note-box{background:var(--success-light);border-left:4px solid var(--success);border-radius:0 8px 8px 0;padding:10px 14px;margin-top:10px;}
+.popup-body .warn-inner{background:var(--warn-light);border-left:4px solid var(--warn);border-radius:0 8px 8px 0;padding:10px 14px;margin-top:8px;}
+.popup-body table{border-collapse:collapse;width:100%;font-size:.88em;margin:8px 0;}
+.popup-body th{background:var(--primary-light);color:var(--primary-dark);font-weight:700;padding:7px 10px;border:1.5px solid var(--border);text-align:center;}
+.popup-body td{padding:7px 10px;border:1px solid #e2e8f0;text-align:center;vertical-align:middle;}
+
+/* ── まとめ表 ── */
+.summary-tbl{overflow-x:auto;margin:12px 0;}
+.summary-tbl table{border-collapse:collapse;width:100%;font-size:.86em;min-width:480px;}
+.summary-tbl th{background:var(--primary-light);color:var(--primary-dark);font-weight:700;padding:9px 10px;border:1.5px solid #bfdbfe;text-align:center;}
+.summary-tbl td{padding:8px 10px;border:1px solid #e2e8f0;text-align:center;vertical-align:middle;line-height:1.5;}
+.summary-tbl .ox-row td{background:#fff7f7;}
+.summary-tbl .rd-row td{background:#f0fdf4;}
+
+/* ── ポイント・警告 ── */
+.point-box{background:var(--success-light);border:2px solid #86efac;border-radius:10px;padding:12px 14px;margin:12px 0;}
+.point-box .label{display:inline-block;background:var(--success);color:#fff;font-size:.78em;font-weight:700;padding:2px 10px;border-radius:20px;margin-bottom:8px;}
+.point-box ul{margin:0 0 0 18px;font-size:.9em;line-height:1.9;}
+.warn-box{background:var(--warn-light);border:2px solid #fde68a;border-radius:10px;padding:12px 14px;margin:12px 0;font-size:.88em;line-height:1.8;color:#78350f;}
+.warn-box .label{display:inline-block;background:var(--warn);color:#fff;font-size:.78em;font-weight:700;padding:2px 10px;border-radius:20px;margin-bottom:6px;}
+
+/* ── ミニテスト ── */
+.minitest-wrap{padding:14px 16px;border-top:1.5px solid var(--border);background:#fafafa;}
+.mt-title{font-weight:700;font-size:.9em;color:var(--primary-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.q4{margin-bottom:18px;}
+.q4:last-of-type{margin-bottom:4px;}
+.q4-stem{font-size:.92em;font-weight:600;margin-bottom:9px;line-height:1.65;}
+.q4-num{display:inline-flex;align-items:center;justify-content:center;background:var(--primary);color:#fff;font-size:.74em;padding:2px 8px;border-radius:5px;margin-right:6px;font-weight:700;}
+.q4-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
+.q4-c{font-family:inherit;padding:10px 12px;border-radius:8px;border:2px solid #cbd5e1;background:#fff;font-size:.85em;font-weight:600;cursor:pointer;text-align:left;transition:border-color .12s,background .12s;line-height:1.4;-webkit-tap-highlight-color:transparent;}
+.q4-c:hover{border-color:var(--primary);background:var(--primary-light);}
+.q4-c.correct{background:var(--success);border-color:var(--success);color:#fff;}
+.q4-c.wrong{background:var(--accent);border-color:var(--accent);color:#fff;}
+.q4-c.disabled{cursor:default;}
+.q4-exp{display:none;font-size:.84em;background:#f0fdf4;border-left:4px solid var(--success);padding:10px 14px;border-radius:0 8px 8px 0;line-height:1.8;margin-top:5px;}
+.q4-exp.show{display:block;}
+.mt-result{font-weight:700;text-align:center;margin:12px 0 6px;font-size:.95em;color:var(--primary);}
+.mt-reset{display:block;margin:0 auto;font-family:inherit;background:var(--primary-light);color:var(--primary-dark);border:1.5px solid var(--border);padding:8px 22px;border-radius:50px;cursor:pointer;font-size:.82em;font-weight:700;transition:.2s;}
+.mt-reset:hover{background:var(--border);}
+
+/* ── 次のアクション ── */
+.next-actions{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:2px solid var(--border);border-radius:var(--radius);padding:22px;margin:24px 0 0;text-align:center;}
+.next-actions h3{color:var(--primary-dark);margin-bottom:8px;font-size:1.1em;}
+.next-actions p{font-size:.87em;color:var(--text-sub);margin-bottom:14px;}
+.next-actions .links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.next-actions a{text-decoration:none;padding:11px 20px;border-radius:8px;font-size:.88em;font-weight:700;background:var(--primary);color:#fff;transition:.15s;}
+.next-actions a:hover{background:var(--primary-dark);}
+.next-actions a.sub{background:#fff;color:var(--primary);border:1.5px solid var(--border);}
+
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}80%{opacity:1;}100%{transform:translateY(105vh) rotate(720deg);opacity:0;}}
+@media(max-width:520px){.def-grid{grid-template-columns:1fr;}.q4-choices{grid-template-columns:1fr;}.ac-row{flex-direction:column;align-items:flex-start;}}
+
+/* ── 縦型分数 ── */
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;font-size:.9em;line-height:1.1;}
+.frac .fn{padding:0 3px;border-bottom:1.5px solid currentColor;}
+.frac .fd{padding:0 3px;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">⚗️ GAMBA 化学</span>
+  <span class="sep">|</span>
+  <a href="oxred_index.html">📊 単元表</a>
+  <a href="oxred_def_lesson.html">← 第2章：定義</a>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="crumb">化学基礎 / 酸化還元 / 第3章</div>
+  <h1>酸化剤・還元剤</h1>
+  <p class="sub">主な酸化剤8種・還元剤6種の<strong>反応前後と生成物</strong>を学びます。<br>
+  色の変化・条件・なぜその生成物になるかの理由まで、しっかり理解しましょう。</p>
+  <span class="level-badge">⚗️ 第3章　色付き解説</span>
+</header>
+
+<main>
+
+<!-- ============================================================ -->
+<!-- 単元0：酸化剤・還元剤の定義                                    -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">0</span>酸化剤・還元剤とは</div>
+  <div class="stage">
+    <div class="read-box">
+      <p>前章で「酸化還元の本質は電子のやり取り」と学びました。<br>
+      その「電子を渡す・受け取る」という役割を担う物質に名前があります。</p>
+    </div>
+
+    <div class="def-grid">
+      <div class="def-card ox">
+        <span class="dc-label">酸化剤</span>
+        <div class="dc-body">相手から電子を<strong>受け取る</strong><br>→ 相手を酸化させる</div>
+        <div class="dc-sub">自分自身は<strong>還元される</strong><br>（酸化数が減る）</div>
+      </div>
+      <div class="def-card rd">
+        <span class="dc-label">還元剤</span>
+        <div class="dc-body">相手に電子を<strong>渡す</strong><br>→ 相手を還元させる</div>
+        <div class="dc-sub">自分自身は<strong>酸化される</strong><br>（酸化数が増える）</div>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      <div class="label">⚠️ 名前と逆の変化に注意！</div>
+      「酸化剤」という名前なのに、<strong>自分自身は還元される</strong>（酸化数が減る）。<br>
+      「還元剤」という名前なのに、<strong>自分自身は酸化される</strong>（酸化数が増える）。<br>
+      →「酸化剤は相手を酸化させる道具」であって、自分が酸化されるわけではありません。
+    </div>
+
+    <div class="point-box">
+      <span class="label">★ セットで覚える</span>
+      <ul>
+        <li>酸化剤 → 電子を受け取る → 自分は還元される → 自分の酸化数が<strong>減る</strong></li>
+        <li>還元剤 → 電子を渡す → 自分は酸化される → 自分の酸化数が<strong>増える</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="minitest-wrap">
+    <div class="mt-title">✏️ 確認問題（全2問）</div>
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問1</span>酸化剤が反応するとき、酸化剤自身はどうなるか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：酸化される（酸化数が増える）</button>
+        <button class="q4-c" data-v="b">イ：還元される（酸化数が減る）</button>
+        <button class="q4-c" data-v="c">ウ：変化しない</button>
+        <button class="q4-c" data-v="d">エ：分解する</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ：還元される</strong>。<br>酸化剤は相手から電子を受け取る → 自分の酸化数が減る → 自分は還元される。<br>「酸化剤なのに還元される」という逆の関係が重要です。</div>
+    </div>
+    <div class="q4" data-correct="c">
+      <div class="q4-stem"><span class="q4-num">問2</span>還元剤が電子を渡すとき、還元剤自身の酸化数はどうなるか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：減る</button>
+        <button class="q4-c" data-v="b">イ：変化しない</button>
+        <button class="q4-c" data-v="c">ウ：増える</button>
+        <button class="q4-c" data-v="d">エ：必ず0になる</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ウ：増える</strong>。<br>還元剤は電子を渡す → 電子が減る → 酸化数が増える → 自分は酸化される。</div>
+    </div>
+    <div class="mt-result" id="res0"></div>
+    <button class="mt-reset" onclick="resetMT(this)">↻ もう一度</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 単元1：主な酸化剤（8種）                                       -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num ox">酸</span>主な酸化剤8種 ─ 反応前後と生成物</div>
+  <div class="stage">
+    <div class="read-box">
+      <p>酸化剤は「電子を受け取る物質」です。<strong>何が何に変わるか</strong>（反応前 → 生成物）をしっかり覚えましょう。<br>
+      特に色の変化があるものは、<strong style="color:var(--c-kmno4);">色付き</strong>で表示しています。</p>
+    </div>
+
+    <!-- 1. KMnO4 -->
+    <div class="agent-card">
+      <div class="ac-header">
+        <div class="ac-name"><span class="c-purple">KMnO₄</span>　過マンガン酸カリウム</div>
+        <span class="ac-role ox">酸化剤</span>
+        <span class="ac-condition">硫酸酸性下</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-row">
+          <span class="ac-label">反応前</span>
+          <div class="chem-chip" style="background:#f5f0ff;border-color:#9333ea;color:#6b21a8;">
+            <div class="color-dot" style="background:#9333ea;"></div>
+            MnO₄⁻　<span style="font-size:.8em;font-weight:400;">赤紫色</span>
+          </div>
+          <span class="ac-arrow">→</span>
+          <span class="ac-label">生成物</span>
+          <div class="chem-chip" style="background:#fdf2f8;border-color:#f9a8d4;color:#9d174d;">
+            <div class="color-dot" style="background:#fce7f3;border-color:#f9a8d4;"></div>
+            Mn²⁺　<span style="font-size:.8em;font-weight:400;">淡桃色〜ほぼ無色</span>
+          </div>
+        </div>
+        <div class="ac-note">
+          Mn の酸化数：<span class="c-purple">+7</span> → <span class="c-red">+2</span>（5減る → e⁻ 5個受け取る）<br>
+          <strong>色の変化：</strong><span class="c-purple">赤紫色</span>が<span style="color:#9d174d;">ほぼ無色（淡桃）</span>になる → 終点の目印
+        </div>
+        <button class="why-btn" onclick="openPopup('pop-kmno4')">❓ なぜ Mn²⁺ ができるのか</button>
+      </div>
+    </div>
+
+    <!-- 2. K2Cr2O7 -->
+    <div class="agent-card">
+      <div class="ac-header">
+        <div class="ac-name"><span class="c-orange">K₂Cr₂O₇</span>　ニクロム酸カリウム</div>
+        <span class="ac-role ox">酸化剤</span>
+        <span class="ac-condition">硫酸酸性下</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-row">
+          <span class="ac-label">反応前</span>
+          <div class="chem-chip" style="background:#fff7ed;border-color:#f97316;color:#c2410c;">
+            <div class="color-dot" style="background:#f97316;"></div>
+            Cr₂O₇²⁻　<span style="font-size:.8em;font-weight:400;">橙赤色</span>
+          </div>
+          <span class="ac-arrow">→</span>
+          <span class="ac-label">生成物</span>
+          <div class="chem-chip" style="background:#f0fdf4;border-color:#86efac;color:#15803d;">
+            <div class="color-dot" style="background:#16a34a;"></div>
+            Cr³⁺　<span style="font-size:.8em;font-weight:400;">緑色</span>
+          </div>
+        </div>
+        <div class="ac-note">
+          Cr の酸化数：<span class="c-orange">+6</span> → <span class="c-green">+3</span>（3減る × 2個 = e⁻ 6個受け取る）<br>
+          <strong>色の変化：</strong><span class="c-orange">橙赤色</span> → <span class="c-green">緑色</span>
+        </div>
+        <button class="why-btn" onclick="openPopup('pop-cr2o7')">❓ なぜ Cr³⁺ になるのか</button>
+      </div>
+    </div>
+
+    <!-- 3. H2O2（酸化剤） -->
+    <div class="agent-card">
+      <div class="ac-header">
+        <div class="ac-name">H₂O₂　過酸化水素</div>
+        <span class="ac-role ox">酸化剤</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-row">
+          <span class="ac-label">酸性下</span>
+          <div class="chem-chip" style="background:#f8faff;border-color:#93c5fd;color:#1e40af;">H₂O₂</div>
+          <span class="ac-arrow">→</span>
+          <div class="chem-chip" style="background:#eff6ff;border-color:#93c5fd;color:#1e40af;">
+            <div class="color-dot" style="background:#e0f2fe;border-color:#7dd3fc;"></div>
+            H₂O　<span style="font-size:.8em;font-weight:400;">無色</span>
+          </div>
+        </div>
+        <div class="ac-row" style="margin-top:6px;">
+          <span class="ac-label">中性・塩基性</span>
+          <div class="chem-chip" style="background:#f8faff;border-color:#93c5fd;color:#1e40af;">H₂O₂</div>
+          <span class="ac-arrow">→</span>
+          <div class="chem-chip" style="background:#f0fdf4;border-color:#86efac;color:#15803d;">OH⁻　<span style="font-size:.8em;font-weight:400;">無色</span></div>
+        </div>
+        <div class="ac-note">
+          O の酸化数：<span class="c-red">−1</span> → <span class="c-red">−2</span>（1減る × 2 = e⁻ 2個受け取る）<br>
+          条件によって生成物が変わることに注意！
+        </div>
+        <button class="why-btn" onclick="openPopup('pop-h2o2-ox')">❓ なぜ酸性と塩基性で生成物が違うのか</button>
+      </div>
+    </div>
+
+    <!-- 4. 希硝酸 -->
+    <div class="agent-card">
+      <div class="ac-header">
+        <div class="ac-name">HNO₃（希）　希硝酸</div>
+        <span class="ac-role ox">酸化剤</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-row">
+          <span class="ac-label">反応前</span>
+          <div class="chem-chip" style="background:#f8faff;border-color:#cbd5e1;color:var(--text);">HNO₃（N：<span class="c-red">+5</span>）</div>
+          <span class="ac-arrow">→</span>
+          <span class="ac-label">生成物</span>
+          <div class="chem-chip" style="background:#f1f5f9;border-color:#cbd5e1;color:var(--text);">
+            <div class="color-dot" style="background:#e2e8f0;"></div>
+            NO　<span style="font-size:.8em;font-weight:400;">無色の気体</span>
+          </div>
+        </div>
+        <div class="ac-note">
+          N の酸化数：<span class="c-red">+5</span> → <span class="c-red">+2</span>（3減る → e⁻ 3個受け取る）<br>
+          ⚠️ NO は空気に触れると酸化されて <span class="c-brown">NO₂（赤褐色）</span>になります
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. 濃硝酸 -->
+    <div class="agent-card">
+      <div class="ac-header">
+        <div class="ac-name">HNO₃（濃）　濃硝酸</div>
+        <span class="ac-role ox">酸化剤</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-row">
+          <span class="ac-label">反応前</span>
+          <div class="chem-chip" style="background:#f8faff;border-color:#cbd5e1;color:var(--text);">HNO₃（N：<span class="c-red">+5</span>）</div>
+          <span class="ac-arrow">→</span>
+          <span class="ac-label">生成物</span>
+          <div class="chem-chip" style="background:#fef3c7;border-color:#d97706;color:#92400e;">
+            <div class="color-dot" style="background:#b45309;"></div>
+            NO₂　<span style="font-size:.8em;font-weight:400;">赤褐色の気体</span>
+          </div>
+        </div>
+        <div class="ac-note">
+          N の酸化数：<span class="c-red">+5</span> → <span class="c-red">+4</span>（1減る → e⁻ 1個受け取る）<br>
+          希硝酸（→ NO）と濃硝酸（→ <span class="c-brown">NO₂</span>）の違いを区別しましょう
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. 熱濃硫酸 -->
+    <div class="agent-card">
+      <div class="ac-header">
+        <div class="ac-name">H₂SO₄（熱濃）　熱濃硫酸</div>
+        <span class="ac-role ox">酸化剤</span>
+        <span class="ac-condition">加熱が必要</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-row">
+          <span class="ac-label">反応前</span>
+          <div class="chem-chip" style="background:#f8faff;border-color:#cbd5e1;color:var(--text);">H₂SO₄（S：<span class="c-red">+6</span>）</div>
+          <span class="ac-arrow">→</span>
+          <span class="ac-label">生成物</span>
+          <div class="chem-chip" style="background:#f1f5f9;border-color:#cbd5e1;color:var(--text);">
+            <div class="color-dot" style="background:#e2e8f0;"></div>
+            SO₂　<span style="font-size:.8em;font-weight:400;">無色の刺激臭気体</span>
+          </div>
+        </div>
+        <div class="ac-note">
+          S の酸化数：<span class="c-red">+6</span> → <span class="c-red">+4</span>（2減る → e⁻ 2個受け取る）<br>
+          ⚠️ <strong>希硫酸は酸化剤にならない</strong>（H⁺ として酸として反応するのみ）
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. SO2（酸化剤として） -->
+    <div class="agent-card">
+      <div class="ac-header">
+        <div class="ac-name">SO₂　二酸化硫黄（酸化剤として）</div>
+        <span class="ac-role ox">酸化剤</span>
+        <span class="ac-condition">強い還元剤（H₂S等）と反応時</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-row">
+          <span class="ac-label">反応前</span>
+          <div class="chem-chip" style="background:#f8faff;border-color:#cbd5e1;color:var(--text);">SO₂（S：<span class="c-red">+4</span>）</div>
+          <span class="ac-arrow">→</span>
+          <span class="ac-label">生成物</span>
+          <div class="chem-chip" style="background:#fefce8;border-color:#fde047;color:#854d0e;">
+            <div class="color-dot" style="background:#eab308;"></div>
+            S　<span style="font-size:.8em;font-weight:400;">黄色の固体</span>
+          </div>
+        </div>
+        <div class="ac-note">
+          S の酸化数：<span class="c-red">+4</span> → <span class="c-yellow">0</span>（4減る → e⁻ 4個受け取る）<br>
+          ⚠️ SO₂ は<strong>二面性あり</strong>（通常は還元剤、H₂S など強い還元剤と反応するときだけ酸化剤）
+        </div>
+        <button class="why-btn" onclick="openPopup('pop-so2-dual')">❓ なぜ SO₂ は二面性を持つのか</button>
+      </div>
+    </div>
+
+    <!-- 8. Cl2 -->
+    <div class="agent-card">
+      <div class="ac-header">
+        <div class="ac-name"><span class="c-lime">Cl₂</span>　塩素</div>
+        <span class="ac-role ox">酸化剤</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-row">
+          <span class="ac-label">反応前</span>
+          <div class="chem-chip" style="background:#f7fee7;border-color:#a3e635;color:#3f6212;">
+            <div class="color-dot" style="background:#84cc16;"></div>
+            Cl₂　<span style="font-size:.8em;font-weight:400;">黄緑色の気体</span>
+          </div>
+          <span class="ac-arrow">→</span>
+          <span class="ac-label">生成物</span>
+          <div class="chem-chip" style="background:#f8faff;border-color:#cbd5e1;color:var(--text);">
+            <div class="color-dot" style="background:#f1f5f9;"></div>
+            2Cl⁻　<span style="font-size:.8em;font-weight:400;">無色</span>
+          </div>
+        </div>
+        <div class="ac-note">
+          Cl の酸化数：<span class="c-red">0</span>（単体）→ <span class="c-red">−1</span>（2減る → e⁻ 2個受け取る）<br>
+          <strong>色の変化：</strong><span class="c-lime">黄緑色</span> → 無色
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /stage -->
+
+  <div class="minitest-wrap">
+    <div class="mt-title">✏️ 酸化剤の確認（全4問）</div>
+
+    <div class="q4" data-correct="a">
+      <div class="q4-stem"><span class="q4-num">問1</span>KMnO₄ が酸性条件下で酸化剤としてはたらくとき、生成するイオンと色は何か。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：Mn²⁺（淡桃色〜ほぼ無色）</button>
+        <button class="q4-c" data-v="b">イ：MnO₄⁻（赤紫色）</button>
+        <button class="q4-c" data-v="c">ウ：MnO₂（黒色）</button>
+        <button class="q4-c" data-v="d">エ：Mn（銀色）</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ア：Mn²⁺（淡桃色〜ほぼ無色）</strong>。<br>
+      <span class="c-purple">KMnO₄（赤紫色）</span> → 反応後 Mn²⁺（ほぼ無色）。<br>
+      Mn の酸化数：+7 → +2（5減る）。この色変化が滴定の終点判定に使われます。</div>
+    </div>
+
+    <div class="q4" data-correct="c">
+      <div class="q4-stem"><span class="q4-num">問2</span>K₂Cr₂O₇ が酸化剤としてはたらいた後、Cr³⁺ の色は何色か。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：橙赤色</button>
+        <button class="q4-c" data-v="b">イ：無色</button>
+        <button class="q4-c" data-v="c">ウ：緑色</button>
+        <button class="q4-c" data-v="d">エ：赤紫色</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ウ：緑色</strong>。<br>
+      <span class="c-orange">Cr₂O₇²⁻（橙赤色）</span> → <span class="c-green">Cr³⁺（緑色）</span>。<br>
+      Cr の酸化数：+6 → +3（3減る × 2個 = e⁻ 6個）。色変化もセットで覚えましょう。</div>
+    </div>
+
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問3</span>希硝酸と濃硝酸で生成する気体の違いとして正しいものはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：希→NO₂（赤褐色）、濃→NO（無色）</button>
+        <button class="q4-c" data-v="b">イ：希→NO（無色）、濃→NO₂（赤褐色）</button>
+        <button class="q4-c" data-v="c">ウ：どちらも NO（無色）</button>
+        <button class="q4-c" data-v="d">エ：どちらも NO₂（赤褐色）</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ</strong>。<br>
+      希 HNO₃ → <strong>NO</strong>（無色、N：+5→+2）<br>
+      濃 HNO₃ → <span class="c-brown"><strong>NO₂</strong>（赤褐色）</span>（N：+5→+4）<br>
+      この区別は入試頻出です。「希→NO、濃→NO₂」とセットで。</div>
+    </div>
+
+    <div class="q4" data-correct="d">
+      <div class="q4-stem"><span class="q4-num">問4</span>次のうち酸化剤として正しいものはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：希硫酸（H₂SO₄ 希薄）</button>
+        <button class="q4-c" data-v="b">イ：H₂S</button>
+        <button class="q4-c" data-v="c">ウ：シュウ酸 (COOH)₂</button>
+        <button class="q4-c" data-v="d">エ：Cl₂</button>
+      </div>
+      <div class="q4-exp">正解は<strong>エ：Cl₂</strong>。<br>
+      Cl₂ は e⁻ を受け取り Cl⁻ になる酸化剤。<br>
+      希硫酸は酸化剤にならない（酸として反応するのみ）。H₂S とシュウ酸は還元剤です。</div>
+    </div>
+
+    <div class="mt-result" id="res1"></div>
+    <button class="mt-reset" onclick="resetMT(this)">↻ もう一度</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 単元2：主な還元剤（6種）                                       -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num rd">還</span>主な還元剤6種 ─ 反応前後と生成物</div>
+  <div class="stage">
+    <div class="read-box">
+      <p>還元剤は「電子を渡す物質」です。自分自身が酸化されることで相手を還元します。<br>
+      <strong>何が何に変わるか</strong>（反応前 → 生成物）と<strong>その理由</strong>を理解しましょう。</p>
+    </div>
+
+    <!-- 1. H2O2（還元剤） -->
+    <div class="agent-card">
+      <div class="ac-header">
+        <div class="ac-name">H₂O₂　過酸化水素（還元剤として）</div>
+        <span class="ac-role rd">還元剤</span>
+        <span class="ac-condition">KMnO₄など強い酸化剤と反応時</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-row">
+          <span class="ac-label">反応前</span>
+          <div class="chem-chip" style="background:#f8faff;border-color:#93c5fd;color:#1e40af;">H₂O₂（O：<span class="c-red">−1</span>）</div>
+          <span class="ac-arrow">→</span>
+          <span class="ac-label">生成物</span>
+          <div class="chem-chip" style="background:#f1f5f9;border-color:#cbd5e1;color:var(--text);">
+            <div class="color-dot" style="background:#e2e8f0;"></div>
+            O₂　<span style="font-size:.8em;font-weight:400;">無色の気体</span>
+          </div>
+        </div>
+        <div class="ac-note">
+          O の酸化数：<span class="c-red">−1</span> → <span class="c-red">0</span>（1増える × 2 = e⁻ 2個渡す）<br>
+          ⚠️ H₂O₂ は<strong>二面性あり</strong>（通常は酸化剤、KMnO₄ など強い酸化剤と反応するときだけ還元剤）
+        </div>
+        <button class="why-btn" onclick="openPopup('pop-h2o2-rd')">❓ なぜ H₂O₂ は二面性を持つのか</button>
+      </div>
+    </div>
+
+    <!-- 2. SO2（還元剤） -->
+    <div class="agent-card">
+      <div class="ac-header">
+        <div class="ac-name">SO₂　二酸化硫黄（還元剤として）</div>
+        <span class="ac-role rd">還元剤</span>
+        <span class="ac-condition">通常はこちらが主</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-row">
+          <span class="ac-label">反応前</span>
+          <div class="chem-chip" style="background:#f8faff;border-color:#cbd5e1;color:var(--text);">SO₂（S：<span class="c-red">+4</span>）</div>
+          <span class="ac-arrow">→</span>
+          <span class="ac-label">生成物</span>
+          <div class="chem-chip" style="background:#f8faff;border-color:#cbd5e1;color:var(--text);">SO₄²⁻（S：<span class="c-red">+6</span>）</div>
+        </div>
+        <div class="ac-note">
+          S の酸化数：<span class="c-red">+4</span> → <span class="c-red">+6</span>（2増える → e⁻ 2個渡す）<br>
+          KMnO₄・K₂Cr₂O₇・I₂ などの強い酸化剤と反応するとき還元剤になる（通常はこちら）
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. H2S -->
+    <div class="agent-card">
+      <div class="ac-header">
+        <div class="ac-name">H₂S　硫化水素</div>
+        <span class="ac-role rd">還元剤</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-row">
+          <span class="ac-label">反応前</span>
+          <div class="chem-chip" style="background:#f8faff;border-color:#cbd5e1;color:var(--text);">H₂S（S：<span class="c-red">−2</span>）</div>
+          <span class="ac-arrow">→</span>
+          <span class="ac-label">生成物</span>
+          <div class="chem-chip" style="background:#fefce8;border-color:#fde047;color:#854d0e;">
+            <div class="color-dot" style="background:#eab308;"></div>
+            S　<span style="font-size:.8em;font-weight:400;">黄色の固体</span>
+          </div>
+        </div>
+        <div class="ac-note">
+          S の酸化数：<span class="c-red">−2</span> → <span class="c-yellow">0</span>（2増える → e⁻ 2個渡す）<br>
+          H₂S の S（−2）は硫黄の最小酸化数 → 電子を渡すしかない → 強力な還元剤<br>
+          生成物の <span class="c-yellow">S（硫黄）は黄色の固体</span>として析出します
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. シュウ酸 -->
+    <div class="agent-card">
+      <div class="ac-header">
+        <div class="ac-name">(COOH)₂　シュウ酸</div>
+        <span class="ac-role rd">還元剤</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-row">
+          <span class="ac-label">反応前</span>
+          <div class="chem-chip" style="background:#f8faff;border-color:#cbd5e1;color:var(--text);">C₂O₄²⁻（C：<span class="c-red">+3</span>）</div>
+          <span class="ac-arrow">→</span>
+          <span class="ac-label">生成物</span>
+          <div class="chem-chip" style="background:#f1f5f9;border-color:#cbd5e1;color:var(--text);">
+            <div class="color-dot" style="background:#e2e8f0;"></div>
+            2CO₂　<span style="font-size:.8em;font-weight:400;">無色の気体</span>
+          </div>
+        </div>
+        <div class="ac-note">
+          C の酸化数：<span class="c-red">+3</span> → <span class="c-red">+4</span>（1増える × 2 = e⁻ 2個渡す）<br>
+          KMnO₄ 滴定の標定に使用。1mol で e⁻ 2mol を渡す。
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. KI -->
+    <div class="agent-card">
+      <div class="ac-header">
+        <div class="ac-name">KI（2I⁻）　ヨウ化カリウム</div>
+        <span class="ac-role rd">還元剤</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-row">
+          <span class="ac-label">反応前</span>
+          <div class="chem-chip" style="background:#f8faff;border-color:#cbd5e1;color:var(--text);">2I⁻（I：<span class="c-red">−1</span>）</div>
+          <span class="ac-arrow">→</span>
+          <span class="ac-label">生成物</span>
+          <div class="chem-chip" style="background:#fef3c7;border-color:#d97706;color:#78350f;">
+            <div class="color-dot" style="background:#78350f;"></div>
+            I₂　<span style="font-size:.8em;font-weight:400;">褐色（デンプンと→青紫）</span>
+          </div>
+        </div>
+        <div class="ac-note">
+          I の酸化数：<span class="c-red">−1</span> → <span class="c-red">0</span>（1増える × 2 = e⁻ 2個渡す）<br>
+          生成した <span class="c-brown">I₂ はデンプンと反応して青紫色</span>になる → ヨウ素滴定の指示薬に利用
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. FeSO4 -->
+    <div class="agent-card">
+      <div class="ac-header">
+        <div class="ac-name">FeSO₄　硫酸鉄(Ⅱ)（Fe²⁺）</div>
+        <span class="ac-role rd">還元剤</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-row">
+          <span class="ac-label">反応前</span>
+          <div class="chem-chip" style="background:#f0fdf4;border-color:#86efac;color:#166534;">Fe²⁺（Fe：<span class="c-red">+2</span>）</div>
+          <span class="ac-arrow">→</span>
+          <span class="ac-label">生成物</span>
+          <div class="chem-chip" style="background:#fff7ed;border-color:#fdba74;color:#9a3412;">Fe³⁺（Fe：<span class="c-red">+3</span>）</div>
+        </div>
+        <div class="ac-note">
+          Fe の酸化数：<span class="c-red">+2</span> → <span class="c-red">+3</span>（1増える → e⁻ 1個渡す）<br>
+          KMnO₄ や K₂Cr₂O₇ との反応で還元剤としてはたらく
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /stage -->
+
+  <div class="minitest-wrap">
+    <div class="mt-title">✏️ 還元剤の確認（全4問）</div>
+
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問1</span>H₂S が還元剤としてはたらくとき、生成する物質と色は何か。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：SO₄²⁻（無色）</button>
+        <button class="q4-c" data-v="b">イ：S（黄色の固体）</button>
+        <button class="q4-c" data-v="c">ウ：SO₂（無色の気体）</button>
+        <button class="q4-c" data-v="d">エ：H₂SO₄（無色）</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ：S（黄色の固体）</strong>。<br>
+      H₂S の S：−2 → 0（2増える → e⁻ 2個渡す → 還元剤）。<br>
+      反応後は <span class="c-yellow">硫黄（黄色の固体）</span>が析出します。</div>
+    </div>
+
+    <div class="q4" data-correct="d">
+      <div class="q4-stem"><span class="q4-num">問2</span>SO₂ が還元剤としてはたらくとき、生成するのは何か。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：S（硫黄単体）</button>
+        <button class="q4-c" data-v="b">イ：H₂S</button>
+        <button class="q4-c" data-v="c">ウ：SO₃</button>
+        <button class="q4-c" data-v="d">エ：SO₄²⁻</button>
+      </div>
+      <div class="q4-exp">正解は<strong>エ：SO₄²⁻</strong>。<br>
+      SO₂（S：+4）→ SO₄²⁻（S：+6）。S の酸化数が増えた → 酸化された → 還元剤。<br>
+      SO₂ が酸化剤のとき（H₂S との反応）は S（単体）になりますが、還元剤のときは SO₄²⁻ です。</div>
+    </div>
+
+    <div class="q4" data-correct="c">
+      <div class="q4-stem"><span class="q4-num">問3</span>シュウ酸 (COOH)₂ が還元剤としてはたらくとき、生成するのは何か。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：CO（一酸化炭素）</button>
+        <button class="q4-c" data-v="b">イ：C（炭素単体）</button>
+        <button class="q4-c" data-v="c">ウ：CO₂（二酸化炭素）</button>
+        <button class="q4-c" data-v="d">エ：H₂CO₃（炭酸）</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ウ：CO₂（二酸化炭素）</strong>。<br>
+      (COOH)₂ の C：+3 → CO₂ の C：+4（1増える × 2 = e⁻ 2個渡す）。<br>
+      1mol のシュウ酸から e⁻ 2mol を渡します。KMnO₄ 滴定の計算に重要です。</div>
+    </div>
+
+    <div class="q4" data-correct="a">
+      <div class="q4-stem"><span class="q4-num">問4</span>H₂O₂ が還元剤としてはたらくのはどのときか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：KMnO₄ など強い酸化剤と反応するとき</button>
+        <button class="q4-c" data-v="b">イ：KI と反応するとき</button>
+        <button class="q4-c" data-v="c">ウ：常に還元剤としてはたらく</button>
+        <button class="q4-c" data-v="d">エ：酸性条件のとき</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ア</strong>。<br>
+      H₂O₂ は通常<strong>酸化剤</strong>（→ H₂O または OH⁻）ですが、<br>
+      KMnO₄ のような超強力な酸化剤と出会ったときだけ<strong>還元剤</strong>（→ O₂）になります。<br>
+      KI との反応では H₂O₂ が酸化剤として I⁻ を I₂ に酸化します。</div>
+    </div>
+
+    <div class="mt-result" id="res2"></div>
+    <button class="mt-reset" onclick="resetMT(this)">↻ もう一度</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 単元3：まとめ表                                                -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">3</span>酸化剤・還元剤　まとめ一覧</div>
+  <div class="stage">
+
+    <div class="summary-tbl">
+      <table>
+        <thead>
+          <tr>
+            <th>種別</th>
+            <th>物質</th>
+            <th>反応前（酸化数）</th>
+            <th>生成物（酸化数）</th>
+            <th>e⁻</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ox-row">
+            <td rowspan="8" style="font-weight:700;color:var(--ox);background:#fff0f0;">酸化剤</td>
+            <td><span class="c-purple">KMnO₄</span>（酸性）</td>
+            <td><span class="c-purple">MnO₄⁻（+7）赤紫</span></td>
+            <td>Mn²⁺（+2）淡桃</td>
+            <td>5個</td>
+          </tr>
+          <tr class="ox-row">
+            <td><span class="c-orange">K₂Cr₂O₇</span>（酸性）</td>
+            <td><span class="c-orange">Cr₂O₇²⁻（+6）橙赤</span></td>
+            <td><span class="c-green">Cr³⁺（+3）緑</span></td>
+            <td>6個</td>
+          </tr>
+          <tr class="ox-row">
+            <td>H₂O₂（酸性）</td>
+            <td>H₂O₂（O：−1）</td>
+            <td>H₂O（O：−2）</td>
+            <td>2個</td>
+          </tr>
+          <tr class="ox-row">
+            <td>H₂O₂（中・塩基性）</td>
+            <td>H₂O₂（O：−1）</td>
+            <td>OH⁻（O：−2）</td>
+            <td>2個</td>
+          </tr>
+          <tr class="ox-row">
+            <td>HNO₃（希）</td>
+            <td>HNO₃（N：+5）</td>
+            <td>NO（+2）無色</td>
+            <td>3個</td>
+          </tr>
+          <tr class="ox-row">
+            <td>HNO₃（濃）</td>
+            <td>HNO₃（N：+5）</td>
+            <td><span class="c-brown">NO₂（+4）赤褐</span></td>
+            <td>1個</td>
+          </tr>
+          <tr class="ox-row">
+            <td>H₂SO₄（熱濃）</td>
+            <td>H₂SO₄（S：+6）</td>
+            <td>SO₂（+4）無色</td>
+            <td>2個</td>
+          </tr>
+          <tr class="ox-row">
+            <td><span class="c-lime">Cl₂</span></td>
+            <td><span class="c-lime">Cl₂（0）黄緑</span></td>
+            <td>2Cl⁻（−1）無色</td>
+            <td>2個</td>
+          </tr>
+          <tr class="rd-row">
+            <td rowspan="6" style="font-weight:700;color:var(--rd);background:#f0fff4;">還元剤</td>
+            <td>H₂O₂（KMnO₄と）</td>
+            <td>H₂O₂（O：−1）</td>
+            <td>O₂（0）無色</td>
+            <td>2個</td>
+          </tr>
+          <tr class="rd-row">
+            <td>SO₂（通常）</td>
+            <td>SO₂（S：+4）</td>
+            <td>SO₄²⁻（+6）</td>
+            <td>2個</td>
+          </tr>
+          <tr class="rd-row">
+            <td>H₂S</td>
+            <td>H₂S（S：−2）</td>
+            <td><span class="c-yellow">S（0）黄色固体</span></td>
+            <td>2個</td>
+          </tr>
+          <tr class="rd-row">
+            <td>(COOH)₂</td>
+            <td>C₂O₄²⁻（C：+3）</td>
+            <td>2CO₂（+4）</td>
+            <td>2個</td>
+          </tr>
+          <tr class="rd-row">
+            <td>KI（2I⁻）</td>
+            <td>2I⁻（I：−1）</td>
+            <td><span class="c-brown">I₂（0）褐色</span></td>
+            <td>2個</td>
+          </tr>
+          <tr class="rd-row">
+            <td>FeSO₄（Fe²⁺）</td>
+            <td>Fe²⁺（+2）</td>
+            <td>Fe³⁺（+3）</td>
+            <td>1個</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="warn-box">
+      <div class="label">⚠️ 二面性を持つ物質</div>
+      <strong>H₂O₂</strong>：通常は酸化剤（→ H₂O）/ KMnO₄ などと反応するときは還元剤（→ O₂）<br>
+      <strong>SO₂</strong>：通常は還元剤（→ SO₄²⁻）/ H₂S など強い還元剤と反応するときは酸化剤（→ S）
+    </div>
+
+  </div>
+</div>
+
+
+<!-- 次のアクション -->
+<div class="next-actions">
+  <h3>🎉 レッスン完了！</h3>
+  <p>次は語群穴埋め練習で反応前後をしっかり定着させましょう！</p>
+  <div class="links">
+    <a href="oxred_agent_fill.html">📝 語群穴埋め練習へ</a>
+    <a href="oxred_agent_half.html" class="sub">⚗️ 半反応式ステッパーへ</a>
+    <a href="oxred_def_lesson.html" class="sub">← 第2章へ戻る</a>
+  </div>
+</div>
+
+</main>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- ポップアップ群                                                  -->
+<!-- ============================================================ -->
+
+<!-- KMnO4 -->
+<div class="popup-overlay" id="pop-kmno4" onclick="closePopup('pop-kmno4')">
+  <div class="popup-box" onclick="event.stopPropagation()">
+    <div class="popup-head" style="background:#f5f0ff;">
+      <h3 style="color:#6b21a8;">❓ KMnO₄ ─ なぜ Mn²⁺ ができるのか</h3>
+      <button class="popup-close" onclick="closePopup('pop-kmno4')">✕</button>
+    </div>
+    <div class="popup-body">
+      <h4>Mn の酸化数の変化を追う</h4>
+      <p>KMnO₄ の Mn の酸化数は <strong style="color:#9333ea;">+7</strong>（最大付近）です。<br>
+      酸化剤として電子を受け取ると、酸化数が下がります。</p>
+      <div class="eq-line" style="color:#9333ea;">MnO₄⁻（+7）+ 8H⁺ + 5e⁻ → Mn²⁺（+2）+ 4H₂O</div>
+      <div class="step-box">
+        <p><span class="sn">①</span>Mn：+7 → +2（5減る → e⁻ を5個受け取る）</p>
+        <p><span class="sn">②</span>O が4個あるので右辺に H₂O を4個加える</p>
+        <p><span class="sn">③</span>H を合わせるために左辺に H⁺ を8個加える</p>
+        <p><span class="sn">④</span>電荷を合わせるために左辺に e⁻ を5個加える</p>
+      </div>
+      <h4>酸性条件が必要な理由</h4>
+      <p>H⁺ が8個必要なため、<strong>硫酸酸性</strong>にして H⁺ を供給します。<br>
+      中性・塩基性では H⁺ が不足し、代わりに <strong>MnO₂（黒色の沈殿）</strong>が生成します。</p>
+      <div class="warn-inner">
+        酸性 → <strong style="color:#9333ea;">Mn²⁺（淡桃〜無色）</strong>｜中性・塩基性 → <strong>MnO₂（黒色）</strong>
+      </div>
+      <div class="note-box">
+        <strong>色の変化が終点のサイン：</strong><br>
+        <span style="color:#9333ea;">赤紫色（MnO₄⁻）</span> → 反応中は脱色 → 終点で<span style="color:#9d174d;">淡桃色が残る</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- K2Cr2O7 -->
+<div class="popup-overlay" id="pop-cr2o7" onclick="closePopup('pop-cr2o7')">
+  <div class="popup-box" onclick="event.stopPropagation()">
+    <div class="popup-head" style="background:#fff7ed;">
+      <h3 style="color:#c2410c;">❓ K₂Cr₂O₇ ─ なぜ Cr³⁺ になるのか</h3>
+      <button class="popup-close" onclick="closePopup('pop-cr2o7')">✕</button>
+    </div>
+    <div class="popup-body">
+      <h4>Cr の酸化数の変化</h4>
+      <p>Cr₂O₇²⁻ の Cr は酸化数 <strong style="color:#f97316;">+6</strong>。<br>
+      酸化剤として電子を受け取ると +3 に下がります。</p>
+      <div class="eq-line" style="color:#c2410c;">Cr₂O₇²⁻（+6）+ 14H⁺ + 6e⁻ → 2Cr³⁺（+3）+ 7H₂O</div>
+      <div class="step-box">
+        <p><span class="sn">①</span>Cr が <strong>2個</strong>あるので：1個あたり 3 減る × 2個 = e⁻ 6個受け取る</p>
+        <p><span class="sn">②</span>O が7個あるので右辺に H₂O を7個加える</p>
+        <p><span class="sn">③</span>H を合わせるために左辺に H⁺ を14個加える</p>
+        <p><span class="sn">④</span>電荷を合わせるために左辺に e⁻ を6個加える</p>
+      </div>
+      <div class="warn-inner">
+        <span style="color:#f97316;">Cr₂O₇²⁻（橙赤色）</span> → <span style="color:#16a34a;">Cr³⁺（緑色）</span><br>
+        塩基性では <strong style="color:#ca8a04;">CrO₄²⁻（黄色）</strong>が安定（酸性⇌塩基性で橙⇌黄と変化）
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- H2O2 酸化剤 -->
+<div class="popup-overlay" id="pop-h2o2-ox" onclick="closePopup('pop-h2o2-ox')">
+  <div class="popup-box" onclick="event.stopPropagation()">
+    <div class="popup-head" style="background:#eff6ff;">
+      <h3 style="color:#1e40af;">❓ H₂O₂ ─ なぜ酸性と塩基性で生成物が違うのか</h3>
+      <button class="popup-close" onclick="closePopup('pop-h2o2-ox')">✕</button>
+    </div>
+    <div class="popup-body">
+      <h4>カギは「H⁺ が使えるかどうか」</h4>
+      <p>H₂O₂ が e⁻ を受け取ると O の酸化数が −1 → −2 になります。<br>
+      この「−2 になった O」が H⁺ を拾えるかどうかで生成物が変わります。</p>
+
+      <h4>① 酸性条件（H⁺ が豊富にある）</h4>
+      <div class="eq-line">H₂O₂ + 2H⁺ + 2e⁻ → 2H₂O</div>
+      <p>O²⁻ が外から H⁺ を2個拾える → <strong>OH⁻ + H⁺ → H₂O</strong> まで進める</p>
+      <div class="step-box" style="background:#eff6ff;border-color:#93c5fd;">
+        💡 H⁺ が豊富 → O が H⁺ を2個引き寄せて <strong>H₂O</strong> になる
+      </div>
+
+      <h4>② 中性・塩基性条件（H⁺ がほとんどない）</h4>
+      <div class="eq-line">H₂O₂ + 2e⁻ → 2OH⁻</div>
+      <p>H⁺ が来ないので H₂O₂ <strong>自身の H</strong> をそのまま使う<br>
+      → H−O⁻ の形、つまり <strong>OH⁻</strong> のまま止まる</p>
+      <div class="step-box" style="background:#f0fdf4;border-color:#86efac;">
+        💡 H⁺ が不足 → OH⁻ のまま止まる
+      </div>
+
+      <div class="note-box">
+        <strong>一言まとめ：</strong><br>
+        「OH⁻ に H⁺ を渡せるかどうかの違い」<br>
+        酸性 → H⁺ がある → H₂O へ　｜　中性・塩基性 → OH⁻ のまま
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- H2O2 還元剤（二面性） -->
+<div class="popup-overlay" id="pop-h2o2-rd" onclick="closePopup('pop-h2o2-rd')">
+  <div class="popup-box" onclick="event.stopPropagation()">
+    <div class="popup-head" style="background:#fdf2f8;">
+      <h3 style="color:#831843;">❓ H₂O₂ ─ なぜ二面性を持つのか</h3>
+      <button class="popup-close" onclick="closePopup('pop-h2o2-rd')">✕</button>
+    </div>
+    <div class="popup-body">
+      <h4>カギは O の酸化数 −1 が「中間値」であること</h4>
+      <p>酸素の酸化数は通常 <strong>−2（最小値）</strong>ですが、<br>
+      H₂O₂ の O は <strong style="color:#db2777;">−1（中間値）</strong> という例外的な値をとります。</p>
+      <table>
+        <tr><th>物質</th><th>O の酸化数</th><th>動ける方向</th></tr>
+        <tr><td>H₂O・OH⁻</td><td style="color:var(--rd);">−2（最小）</td><td>これ以上下がれない</td></tr>
+        <tr style="background:#fdf2f8;"><td><strong>H₂O₂</strong></td><td style="color:#db2777;"><strong>−1（中間）</strong></td><td>↓−2 にも ↑0 にもなれる</td></tr>
+        <tr><td>O₂</td><td style="color:var(--ox);">0（最大）</td><td>これ以上上がれない</td></tr>
+      </table>
+
+      <h4>通常（酸化剤）：−1 → −2 へ下がる</h4>
+      <div class="eq-line">H₂O₂ + 2H⁺ + 2e⁻ → 2H₂O</div>
+      <p>相手より H₂O₂ の方が電子を引き寄せる力が強い → e⁻ を受け取る → <strong>酸化剤</strong></p>
+
+      <h4>KMnO₄ と反応するとき（還元剤）：−1 → 0 へ上がる</h4>
+      <div class="eq-line">H₂O₂ → O₂ + 2H⁺ + 2e⁻</div>
+      <p>KMnO₄（Mn：+7）の方が圧倒的に電子を引き寄せる力が強い<br>
+      → H₂O₂ が逆に e⁻ を渡す側に回る → <strong>還元剤</strong></p>
+
+      <div class="note-box">
+        <strong>一言まとめ：</strong><br>
+        O の酸化数 −1 は中間値 → 上にも下にも動ける<br>
+        KMnO₄ との反応のときだけ → O が 0 の方向へ → <strong>還元剤</strong>（→ O₂）<br>
+        それ以外はすべて → O が −2 の方向へ → <strong>酸化剤</strong>（→ H₂O または OH⁻）
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SO2 二面性 -->
+<div class="popup-overlay" id="pop-so2-dual" onclick="closePopup('pop-so2-dual')">
+  <div class="popup-box" onclick="event.stopPropagation()">
+    <div class="popup-head" style="background:#f0f9ff;">
+      <h3 style="color:#0c4a6e;">❓ SO₂ ─ なぜ二面性を持つのか</h3>
+      <button class="popup-close" onclick="closePopup('pop-so2-dual')">✕</button>
+    </div>
+    <div class="popup-body">
+      <h4>カギは S の酸化数 +4 が「中間値」であること</h4>
+      <p>硫黄 S の酸化数は <strong>−2 〜 +6</strong> の範囲で変化できます。<br>
+      SO₂ の S は <strong style="color:#0369a1;">+4</strong> で、ちょうど中間付近にあります。</p>
+      <table>
+        <tr><th>物質</th><th>S の酸化数</th><th>特徴</th></tr>
+        <tr><td>H₂S</td><td style="color:var(--rd);">−2（最小）</td><td>電子を渡すしかない → <strong>強力な還元剤</strong></td></tr>
+        <tr style="background:#f0f9ff;"><td><strong>SO₂</strong></td><td style="color:#0369a1;"><strong>+4（中間）</strong></td><td>上にも下にも動ける → <strong>二面性あり</strong></td></tr>
+        <tr><td>H₂SO₄（濃）</td><td style="color:var(--ox);">+6（最大）</td><td>電子を受け取るしかない → <strong>酸化剤のみ</strong></td></tr>
+      </table>
+
+      <h4>還元剤になるとき（通常）：+4 → +6 へ上がる</h4>
+      <div class="eq-line">SO₂ + 2H₂O → SO₄²⁻ + 4H⁺ + 2e⁻</div>
+      <p>KMnO₄・I₂ などの強い酸化剤と出会う → SO₂ が e⁻ を渡す → <strong>還元剤</strong></p>
+
+      <h4>酸化剤になるとき（H₂S との反応）：+4 → 0 へ下がる</h4>
+      <div class="eq-line">2H₂S + SO₂ → 3S + 2H₂O</div>
+      <p>H₂S の S（−2）は最底辺 → 電子を渡す力が SO₂ より圧倒的に強い<br>
+      → SO₂ が「やむなく」e⁻ を受け取る側に → <strong>酸化剤</strong></p>
+
+      <div class="note-box">
+        <strong>力関係で決まる：</strong><br>
+        強い酸化剤（KMnO₄・I₂ など）と出会う → SO₂ は<strong>還元剤</strong>（S：+4→+6）<br>
+        強い還元剤（H₂S）と出会う → SO₂ は<strong>酸化剤</strong>（S：+4→0）
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+function launchConfetti(){
+  const C=['#f472b6','#facc15','#34d399','#60a5fa','#f87171','#a78bfa','#fb923c','#2dd4bf'];
+  for(let i=0;i<80;i++){
+    const el=document.createElement('div');
+    const s=Math.random()*10+6,l=Math.random()*100;
+    const d=Math.random()*.6,r=Math.random()*1.2+1.2;
+    const c=C[Math.floor(Math.random()*C.length)];
+    const sh=Math.random()>.5?'50%':'2px';
+    el.style.cssText=`position:fixed;top:-20px;left:${l}vw;width:${s}px;height:${s}px;background:${c};border-radius:${sh};opacity:1;pointer-events:none;z-index:9999;animation:confettiFall ${r}s ${d}s ease-in forwards;`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),(r+d)*1000+200);
+  }
+}
+function openPopup(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
+function closePopup(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') document.querySelectorAll('.popup-overlay.open').forEach(p=>{p.classList.remove('open');document.body.style.overflow='';});
+});
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.q4').forEach(q=>{
+    const correct=q.dataset.correct;
+    const exp=q.querySelector('.q4-exp');
+    q.querySelectorAll('.q4-c').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        if(btn.classList.contains('disabled')) return;
+        q.querySelectorAll('.q4-c').forEach(b=>b.classList.add('disabled'));
+        if(btn.dataset.v===correct){btn.classList.add('correct');launchConfetti();}
+        else{btn.classList.add('wrong');q.querySelectorAll('.q4-c').forEach(b=>{if(b.dataset.v===correct)b.classList.add('correct');});}
+        exp.classList.add('show');
+        updateResult(q.closest('.minitest-wrap'));
+      });
+    });
+  });
+  function updateResult(wrap){
+    if(!wrap) return;
+    const qs=[...wrap.querySelectorAll('.q4')];
+    if(qs.some(q=>!q.querySelector('.q4-c.correct,.q4-c.wrong'))) return;
+    const ok=qs.filter(q=>![...q.querySelectorAll('.q4-c')].some(b=>b.classList.contains('wrong'))).length;
+    const res=wrap.querySelector('.mt-result');
+    if(res) res.textContent=`結果：${ok} / ${qs.length} 正解`;
+  }
+});
+function resetMT(btn){
+  const wrap=btn.closest('.minitest-wrap');
+  wrap.querySelectorAll('.q4-c').forEach(b=>b.classList.remove('correct','wrong','disabled'));
+  wrap.querySelectorAll('.q4-exp').forEach(e=>e.classList.remove('show'));
+  const res=wrap.querySelector('.mt-result');
+  if(res) res.textContent='';
+}
+</script>
+</body>
+</html>

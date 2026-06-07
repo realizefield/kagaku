@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>化学 酸化還元(2) ヨウ素滴定・COD・DO | GAMBA化学</title>
+<style>
+:root{
+  --bg:#f0f4ff;--card:#fff;--primary:#2563eb;--primary-light:#dbeafe;
+  --primary-dark:#1e40af;--accent:#dc2626;--accent-light:#fee2e2;
+  --success:#16a34a;--success-light:#dcfce7;
+  --warn:#d97706;--warn-light:#fffbeb;
+  --text:#1e293b;--text-sub:#64748b;--border:#bfdbfe;--radius:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'BIZ UDPGothic','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+
+.topnav{display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;flex-wrap:wrap;}
+.topnav .brand{font-weight:700;font-size:.9em;}
+.topnav .sep{opacity:.4;}
+.topnav a{color:#bfdbfe;text-decoration:none;font-size:.82em;}
+.topnav a:hover{color:#fff;}
+
+.hero{background:linear-gradient(135deg,#1e40af 0%,#0f766e 60%,#065f46 100%);color:#fff;padding:24px 20px 22px;text-shadow:0 1px 3px rgba(0,0,0,.3);}
+.hero .crumb{font-size:.75em;opacity:.7;margin-bottom:6px;letter-spacing:.05em;}
+.hero h1{font-size:clamp(1.4em,4vw,2em);font-weight:800;margin-bottom:6px;}
+.hero .stars{font-size:.7em;opacity:.8;}
+.hero .sub{font-size:.85em;opacity:.88;line-height:1.7;max-width:680px;}
+
+.wrap{max-width:860px;margin:0 auto;padding:0;}
+main{padding:20px 14px 0;}
+
+.unit{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:24px;overflow:hidden;}
+.unit-title{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,var(--primary-light),#eff6ff);padding:12px 16px;font-weight:700;font-size:1.05em;border-bottom:1.5px solid var(--border);}
+.unit-title .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--primary);color:#fff;border-radius:8px;font-size:.88em;flex-shrink:0;}
+
+.stage{padding:16px;}
+.stage-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.stage-label{font-size:.8em;font-weight:700;padding:4px 10px;border-radius:20px;background:var(--primary);color:#fff;}
+
+.read-box{background:#f8faff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;line-height:1.85;font-size:.95em;}
+.read-box p{margin-bottom:10px;}
+.read-box p:last-child{margin-bottom:0;}
+.read-box h4{color:var(--primary-dark);margin:16px 0 8px;border-left:4px solid var(--primary);padding-left:10px;font-size:.95em;}
+.read-box ul{margin:6px 0 6px 20px;line-height:1.9;}
+.read-box li{margin-bottom:4px;}
+
+.formula-box{background:#fffbeb;border:2px solid var(--warn);border-radius:10px;padding:12px 16px;margin:12px 0;text-align:center;}
+.formula-box .formula{font-size:1.1em;font-weight:700;margin:6px 0;letter-spacing:.04em;line-height:1.7;}
+.formula-box .caption{font-size:.8em;color:#92400e;margin-top:4px;}
+
+.tbl-wrap{overflow-x:auto;margin:12px 0;}
+table{border-collapse:collapse;width:100%;font-size:.88em;}
+th,td{border:1.5px solid #cbd5e1;padding:8px 12px;text-align:center;}
+th{background:var(--primary-light);font-weight:700;color:var(--primary-dark);}
+tr:nth-child(even) td{background:#f8faff;}
+
+.point-box{background:#f0f9ff;border:2px solid #38bdf8;border-radius:10px;padding:12px 16px;margin:12px 0;}
+.point-box .label{display:inline-block;background:#0ea5e9;color:#fff;font-size:.78em;font-weight:700;padding:2px 10px;border-radius:20px;margin-bottom:8px;}
+.point-box ul{margin:0 0 0 18px;line-height:1.9;font-size:.9em;}
+.point-box li{margin-bottom:3px;}
+.point-box.warn{background:var(--warn-light);border-color:var(--warn);}
+.point-box.warn .label{background:var(--warn);}
+.point-box.success{background:var(--success-light);border-color:var(--success);}
+.point-box.success .label{background:var(--success);}
+
+/* ── 計算ステッパー ── */
+.calc-stepper{background:#f8faff;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:12px 0;}
+.calc-step{border-bottom:1px solid #e2e8f0;padding:12px 16px;display:flex;gap:12px;align-items:flex-start;}
+.calc-step:last-child{border-bottom:none;}
+.calc-step-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:var(--primary);color:#fff;border-radius:50%;font-size:.82em;font-weight:700;flex-shrink:0;margin-top:2px;}
+.calc-step-body{font-size:.9em;line-height:1.8;flex:1;}
+.calc-step-body .eq{font-weight:700;color:var(--primary-dark);display:block;margin:4px 0;}
+.calc-step-body .result{color:var(--accent);font-weight:700;}
+
+/* 流れ図 */
+.flow-diagram{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;margin:12px 0;}
+.flow-box{background:#fff;border:2px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center;min-width:100px;font-size:.85em;line-height:1.5;}
+.flow-box .flow-title{font-weight:700;color:var(--primary-dark);font-size:.9em;}
+.flow-box .flow-sub{font-size:.78em;color:var(--text-sub);margin-top:3px;}
+.flow-box.highlight{border-color:var(--accent);background:var(--accent-light);}
+.flow-box.highlight .flow-title{color:var(--accent);}
+.flow-arrow{font-size:1.4em;color:#94a3b8;padding:0 4px;align-self:center;}
+.flow-label{font-size:.75em;color:var(--text-sub);text-align:center;margin-top:2px;}
+
+/* ミニテスト */
+.minitest-block{background:#fafafa;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;margin:14px 0;}
+.mt-block-title{font-weight:700;font-size:.9em;color:var(--primary-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.minitest,.q4{margin-bottom:16px;}
+.mt-stem,.q4-stem{font-size:.93em;font-weight:600;margin-bottom:8px;line-height:1.6;}
+.mt-num,.q4-num{display:inline-flex;align-items:center;justify-content:center;background:var(--primary);color:#fff;font-size:.75em;padding:2px 8px;border-radius:5px;margin-right:6px;font-weight:700;}
+.mt-choices{display:flex;gap:8px;margin-bottom:6px;}
+.mt-c{font-family:inherit;flex:1;padding:10px;border-radius:8px;border:2px solid #cbd5e1;background:#fff;font-size:.95em;font-weight:700;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;}
+.mt-c:hover{border-color:var(--primary);background:var(--primary-light);}
+.mt-c.correct{background:var(--success);border-color:var(--success);color:#fff;}
+.mt-c.wrong{background:var(--accent);border-color:var(--accent);color:#fff;}
+.mt-c.disabled{cursor:default;}
+.q4-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
+.q4-c{font-family:inherit;padding:10px 12px;border-radius:8px;border:2px solid #cbd5e1;background:#fff;font-size:.85em;font-weight:600;cursor:pointer;text-align:left;transition:all .15s;-webkit-tap-highlight-color:transparent;line-height:1.4;}
+.q4-c:hover{border-color:var(--primary);background:var(--primary-light);}
+.q4-c.correct{background:var(--success);border-color:var(--success);color:#fff;}
+.q4-c.wrong{background:var(--accent);border-color:var(--accent);color:#fff;}
+.q4-c.disabled{cursor:default;}
+.mt-exp,.q4-exp{display:none;font-size:.85em;background:#f0fdf4;border-left:4px solid var(--success);padding:10px 14px;border-radius:0 8px 8px 0;line-height:1.7;margin-top:4px;}
+.mt-exp.show,.q4-exp.show{display:block;}
+.mt-block-result{font-weight:700;text-align:center;margin:10px 0 6px;font-size:.95em;color:var(--primary);}
+.mt-block-reset{font-family:inherit;background:var(--primary-light);color:var(--primary-dark);border:1.5px solid var(--border);padding:8px 20px;border-radius:50px;cursor:pointer;font-size:.82em;font-weight:700;transition:.2s;}
+.mt-block-reset:hover{background:var(--border);}
+
+.next-actions{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:2px solid var(--border);border-radius:var(--radius);padding:20px;margin:24px 14px 0;text-align:center;}
+.next-actions h3{color:var(--primary-dark);margin-bottom:8px;font-size:1.1em;}
+.next-actions p{font-size:.88em;color:var(--text-sub);margin-bottom:14px;}
+.next-actions .links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.next-actions a{text-decoration:none;padding:10px 18px;border-radius:8px;font-size:.88em;font-weight:700;background:var(--primary);color:#fff;transition:.15s;}
+.next-actions a:hover{background:var(--primary-dark);}
+.next-actions a.sub{background:#fff;color:var(--primary);border:1.5px solid var(--border);}
+
+.pagenav{display:flex;gap:0;margin:20px 14px 0;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.pagenav a{flex:1;display:flex;flex-direction:column;padding:12px 14px;text-decoration:none;background:#fff;border-right:1.5px solid var(--border);transition:.15s;}
+.pagenav a:last-child{border-right:none;}
+.pagenav a:hover{background:var(--primary-light);}
+.pagenav a.next{text-align:right;}
+.pagenav .label{font-size:.72em;color:var(--text-sub);font-weight:600;}
+.pagenav .title{font-size:.88em;font-weight:700;color:var(--primary-dark);margin-top:2px;}
+
+/* 花吹雪 */
+@keyframes confettiFall{
+  0%{transform:translateY(0) rotate(0deg);opacity:1;}
+  80%{opacity:1;}
+  100%{transform:translateY(105vh) rotate(720deg);opacity:0;}
+}
+
+@media(max-width:520px){
+  .q4-choices{grid-template-columns:1fr;}
+  .flow-diagram{flex-direction:column;}
+  .flow-arrow{transform:rotate(90deg);}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">⚗️ GAMBA 化学</span>
+  <span class="sep">|</span>
+  <a href="chem_oxred_index.html">📊 単元表</a>
+  <a href="chem_oxred.html">酸化還元(1)へ</a>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="crumb">化学 / 酸化還元(2)</div>
+  <h1>酸化還元(2) <span class="stars">★★★</span></h1>
+  <p class="sub">ヨウ素滴定・チオ硫酸ナトリウム滴定・COD・DO を学びます。計算の「mol の橋渡し」を理解するのがこの単元の核心です。</p>
+</header>
+
+<main>
+
+<!-- ============================================================ -->
+<!-- 単元1：ヨウ素滴定の原理                                        -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">1</span>ヨウ素滴定の原理</div>
+  <div class="stage">
+    <div class="stage-head"><span class="stage-label">📖 説明</span></div>
+    <div class="read-box">
+      <p><strong>ヨウ素滴定</strong>とは、ヨウ素（I₂）を酸化剤または還元剤として利用し、その量をチオ硫酸ナトリウム（Na₂S₂O₃）で逆滴定して目的物質の濃度を求める方法です。</p>
+
+      <h4>▶ 基本の3試薬とその役割</h4>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>試薬</th><th>役割</th><th>電子の授受</th><th>半反応式</th></tr>
+          <tr>
+            <td><strong>I₂（ヨウ素）</strong></td>
+            <td>酸化剤</td>
+            <td>e⁻ を 2mol 受け取る</td>
+            <td>I₂ + 2e⁻ → 2I⁻</td>
+          </tr>
+          <tr>
+            <td><strong>SO₂（二酸化硫黄）</strong></td>
+            <td>還元剤</td>
+            <td>e⁻ を 2mol 渡す</td>
+            <td>SO₂ + 2H₂O → SO₄²⁻ + 4H⁺ + 2e⁻</td>
+          </tr>
+          <tr>
+            <td><strong>Na₂S₂O₃（チオ硫酸Na）</strong></td>
+            <td>還元剤（逆滴定用）</td>
+            <td>e⁻ を 1mol 渡す</td>
+            <td>2S₂O₃²⁻ → S₄O₆²⁻ + 2e⁻</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="point-box warn">
+        <span class="label">⚠️ チオ硫酸Naは1molで電子1mol！</span>
+        <ul>
+          <li>2S₂O₃²⁻ → S₄O₆²⁻ + 2e⁻ だから、<strong>S₂O₃²⁻ 1mol あたり e⁻ 1mol</strong> を渡す</li>
+          <li>I₂ は 1mol で e⁻ を 2mol 受け取る</li>
+          <li>よって I₂ 1mol ⇔ Na₂S₂O₃ <strong>2mol</strong>（2:1 の関係）</li>
+        </ul>
+      </div>
+
+      <h4>▶ 指示薬：デンプン</h4>
+      <p>ヨウ素（I₂）はデンプンと反応して<strong>青紫色</strong>になります。チオ硫酸ナトリウムを加えていくと I₂ が消費されて脱色されます。</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>状態</th><th>色</th></tr>
+          <tr><td>I₂ が残っている（滴定途中）</td><td style="color:#4338ca;font-weight:700;">青紫色</td></tr>
+          <tr><td>I₂ が全部消費された（終点）</td><td>無色</td></tr>
+        </table>
+      </div>
+      <p>→ <strong>青紫色から無色への変化が終点のサイン</strong></p>
+    </div>
+    <div class="point-box">
+      <span class="label">★ 最重要の mol 関係</span>
+      <ul>
+        <li>I₂ 1mol ＝ e⁻ 2mol（I₂ は酸化剤）</li>
+        <li>Na₂S₂O₃ 1mol ＝ e⁻ 1mol（チオ硫酸Naは還元剤）</li>
+        <li>∴ <strong>I₂ 1mol ⇔ Na₂S₂O₃ 2mol</strong></li>
+        <li>SO₂ 1mol ＝ e⁻ 2mol → SO₂ 1mol ⇔ I₂ 1mol</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ミニテスト1 -->
+  <div class="stage">
+    <div class="minitest-block">
+      <div class="mt-block-title">✏️ ミニテスト（全3問）</div>
+
+      <div class="q4" data-correct="b">
+        <div class="q4-stem"><span class="q4-num">問1</span>チオ硫酸ナトリウム（Na₂S₂O₃）1mol が反応で授受する電子は何 mol か。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：2mol</button>
+          <button class="q4-c" data-v="b">イ：1mol</button>
+          <button class="q4-c" data-v="c">ウ：3mol</button>
+          <button class="q4-c" data-v="d">エ：0.5mol</button>
+        </div>
+        <div class="q4-exp">正解は<strong>イ：1mol</strong>。半反応式 2S₂O₃²⁻ → S₄O₆²⁻ + 2e⁻ より、S₂O₃²⁻（＝Na₂S₂O₃）1mol につき e⁻ 1mol を渡します。I₂ は 1mol で e⁻ 2mol を受け取るので、I₂ 1mol ⇔ Na₂S₂O₃ 2mol。</div>
+      </div>
+
+      <div class="minitest" data-correct="o">
+        <div class="mt-stem"><span class="mt-num">問2</span>ヨウ素滴定でデンプンを指示薬に使うとき、終点は「青紫色から無色」への変化である。</div>
+        <div class="mt-choices">
+          <button class="mt-c" data-v="o">○</button>
+          <button class="mt-c" data-v="x">×</button>
+        </div>
+        <div class="mt-exp">○ 正解。I₂ が存在するとデンプンと反応して青紫色になります。チオ硫酸 Na で I₂ が消費されると脱色されて無色になります。この変化が終点です。</div>
+      </div>
+
+      <div class="q4" data-correct="c">
+        <div class="q4-stem"><span class="q4-num">問3</span>I₂ 1mol と過不足なく反応する Na₂S₂O₃ は何 mol か。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：0.5mol</button>
+          <button class="q4-c" data-v="b">イ：1mol</button>
+          <button class="q4-c" data-v="c">ウ：2mol</button>
+          <button class="q4-c" data-v="d">エ：5mol</button>
+        </div>
+        <div class="q4-exp">正解は<strong>ウ：2mol</strong>。I₂ 1mol は e⁻ 2mol を受け取る。Na₂S₂O₃ は 1mol で e⁻ 1mol を渡す。受け取る e⁻ = 渡す e⁻ より 1×2 = 2×1 → Na₂S₂O₃ は 2mol 必要。</div>
+      </div>
+
+      <div class="mt-block-result"></div>
+      <div style="text-align:center;"><button class="mt-block-reset">↻ もう一度</button></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 単元2：ヨウ素滴定の計算手順（バックタイトレーション）         -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">2</span>ヨウ素滴定の計算手順（バックタイトレーション）</div>
+  <div class="stage">
+    <div class="stage-head"><span class="stage-label">📖 説明</span></div>
+    <div class="read-box">
+      <p>ヨウ素滴定では「<strong>直接滴定できない量</strong>を、過剰の I₂ と反応させてから残った I₂ を Na₂S₂O₃ で逆滴定」します。これを<strong>バックタイトレーション（逆滴定）</strong>といいます。</p>
+
+      <h4>▶ 【例題1】の解き方：SO₂ の定量</h4>
+      <p>0.20 mol/L ヨウ素溶液 25 mL に SO₂ を完全反応させ、残った I₂ を 0.050 mol/L Na₂S₂O₃ 溶液で滴定したところ 20 mL を要した。SO₂ の物質量を求めよ。</p>
+    </div>
+
+    <!-- 流れ図 -->
+    <div style="padding:0 0 12px;">
+      <div class="flow-diagram">
+        <div class="flow-box highlight">
+          <div class="flow-title">I₂（全量）</div>
+          <div class="flow-sub">0.20×0.025<br>= 5.0×10⁻³ mol</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="flow-arrow">→</div>
+          <div class="flow-label">SO₂ と反応</div>
+        </div>
+        <div class="flow-box">
+          <div class="flow-title">SO₂ に使われた I₂</div>
+          <div class="flow-sub">= SO₂ の mol と同じ<br>（1:1 の関係）</div>
+        </div>
+        <div class="flow-arrow">＋</div>
+        <div class="flow-box">
+          <div class="flow-title">残った I₂</div>
+          <div class="flow-sub">Na₂S₂O₃ で逆滴定<br>0.050×0.020÷2<br>= 5.0×10⁻⁴ mol</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-stepper">
+      <div class="calc-step">
+        <div class="calc-step-num">①</div>
+        <div class="calc-step-body">
+          <strong>I₂ の全物質量</strong>を計算する<br>
+          <span class="eq">0.20 mol/L × 25/1000 L = 5.0×10⁻³ mol</span>
+        </div>
+      </div>
+      <div class="calc-step">
+        <div class="calc-step-num">②</div>
+        <div class="calc-step-body">
+          <strong>残った I₂</strong>（Na₂S₂O₃ と反応した I₂）を計算する<br>
+          I₂ 1mol ⇔ Na₂S₂O₃ 2mol より<br>
+          <span class="eq">0.050 × 20/1000 × 1/2 = 5.0×10⁻⁴ mol</span>
+        </div>
+      </div>
+      <div class="calc-step">
+        <div class="calc-step-num">③</div>
+        <div class="calc-step-body">
+          <strong>SO₂ と反応した I₂</strong> = 全量 − 残量<br>
+          <span class="eq">5.0×10⁻³ − 5.0×10⁻⁴ = 4.5×10⁻³ mol</span>
+        </div>
+      </div>
+      <div class="calc-step">
+        <div class="calc-step-num">④</div>
+        <div class="calc-step-body">
+          SO₂ 1mol ⇔ I₂ 1mol（どちらも e⁻ 2mol の授受）<br>
+          <span class="eq">∴ SO₂ の物質量 = <span class="result">4.5×10⁻³ mol</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="point-box">
+      <span class="label">★ バックタイトレーションの鉄則</span>
+      <ul>
+        <li>SO₂ に使われた I₂ の mol ＝ <strong>全 I₂ の mol − 残った I₂ の mol</strong></li>
+        <li>残った I₂ の mol ＝ Na₂S₂O₃ の mol ÷ 2（I₂ : Na₂S₂O₃ = 1 : 2）</li>
+        <li>SO₂ と I₂ は 1 : 1 で反応（どちらも e⁻ 2mol の授受）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ミニテスト2 -->
+  <div class="stage">
+    <div class="minitest-block">
+      <div class="mt-block-title">✏️ ミニテスト（全3問）</div>
+
+      <div class="q4" data-correct="a">
+        <div class="q4-stem"><span class="q4-num">問1</span>ヨウ素滴定で「残った I₂ の mol」を求めるとき、Na₂S₂O₃ の mol をいくつで割るか。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：2</button>
+          <button class="q4-c" data-v="b">イ：1</button>
+          <button class="q4-c" data-v="c">ウ：5</button>
+          <button class="q4-c" data-v="d">エ：0.5</button>
+        </div>
+        <div class="q4-exp">正解は<strong>ア：2</strong>。I₂ 1mol に Na₂S₂O₃ 2mol が対応するので、Na₂S₂O₃ の mol を 2 で割れば I₂ の mol が求まります。</div>
+      </div>
+
+      <div class="q4" data-correct="b">
+        <div class="q4-stem"><span class="q4-num">問2</span>SO₂ 1mol と反応する I₂ は何 mol か。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：2mol</button>
+          <button class="q4-c" data-v="b">イ：1mol</button>
+          <button class="q4-c" data-v="c">ウ：0.5mol</button>
+          <button class="q4-c" data-v="d">エ：3mol</button>
+        </div>
+        <div class="q4-exp">正解は<strong>イ：1mol</strong>。SO₂ は e⁻ 2mol を渡す還元剤、I₂ は e⁻ 2mol を受け取る酸化剤。よって SO₂ : I₂ = 1 : 1 で反応します。</div>
+      </div>
+
+      <div class="q4" data-correct="d">
+        <div class="q4-stem"><span class="q4-num">問3</span>例題1（上記）で、全 I₂ の mol はいくらか。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：2.0×10⁻³ mol</button>
+          <button class="q4-c" data-v="b">イ：1.0×10⁻³ mol</button>
+          <button class="q4-c" data-v="c">ウ：2.5×10⁻³ mol</button>
+          <button class="q4-c" data-v="d">エ：5.0×10⁻³ mol</button>
+        </div>
+        <div class="q4-exp">正解は<strong>エ：5.0×10⁻³ mol</strong>。0.20 mol/L × 25/1000 L = <strong>5.0×10⁻³ mol</strong>。</div>
+      </div>
+
+      <div class="mt-block-result"></div>
+      <div style="text-align:center;"><button class="mt-block-reset">↻ もう一度</button></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 単元3：H₂O₂ のヨウ素滴定（間接法）                           -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">3</span>H₂O₂ のヨウ素滴定（間接法）</div>
+  <div class="stage">
+    <div class="stage-head"><span class="stage-label">📖 説明</span></div>
+    <div class="read-box">
+      <p>過酸化水素（H₂O₂）はそのままでは I₂ で直接滴定できません。そこで <strong>KI を加えて I₂ を遊離させ</strong>、その I₂ を Na₂S₂O₃ で滴定する「間接法」を使います。</p>
+
+      <h4>▶ 反応の流れ</h4>
+    </div>
+
+    <div class="flow-diagram" style="padding:0 16px 12px;">
+      <div class="flow-box highlight">
+        <div class="flow-title">H₂O₂</div>
+        <div class="flow-sub">酸化剤としてはたらく<br>e⁻ 2mol 受け取る</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="flow-arrow">→</div>
+        <div class="flow-label">KI を加える</div>
+      </div>
+      <div class="flow-box">
+        <div class="flow-title">I₂ が遊離</div>
+        <div class="flow-sub">H₂O₂ 1mol<br>⇔ I₂ 1mol</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="flow-arrow">→</div>
+        <div class="flow-label">Na₂S₂O₃ で滴定</div>
+      </div>
+      <div class="flow-box">
+        <div class="flow-title">I₂ を定量</div>
+        <div class="flow-sub">I₂ 1mol<br>⇔ Na₂S₂O₃ 2mol</div>
+      </div>
+    </div>
+
+    <div class="read-box">
+      <h4>▶ 半反応式</h4>
+      <div class="formula-box">
+        <div class="formula">（酸化剤）H₂O₂ + 2H⁺ + 2e⁻ → 2H₂O</div>
+        <div class="formula">（還元剤）2I⁻ → I₂ + 2e⁻</div>
+        <div class="caption">→ H₂O₂ 1mol が I₂ 1mol を生じる（1 : 1 の関係）</div>
+      </div>
+
+      <h4>▶ mol の橋渡し（計算の核心）</h4>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>物質</th><th>→</th><th>物質</th><th>mol の関係</th></tr>
+          <tr><td><strong>H₂O₂</strong></td><td>⇔</td><td>I₂</td><td>1 : 1</td></tr>
+          <tr><td><strong>I₂</strong></td><td>⇔</td><td>Na₂S₂O₃</td><td>1 : 2</td></tr>
+          <tr><td style="background:#dcfce7;"><strong>H₂O₂</strong></td><td style="background:#dcfce7;">⇔</td><td style="background:#dcfce7;"><strong>Na₂S₂O₃</strong></td><td style="background:#dcfce7;font-weight:700;">1 : 2</td></tr>
+        </table>
+      </div>
+      <p>→ <strong>H₂O₂ 1mol ⇔ Na₂S₂O₃ 2mol</strong> が計算のキー！</p>
+
+      <h4>▶ 計算式</h4>
+      <p>H₂O₂ の濃度を x mol/L、サンプル体積を V L とすると：</p>
+      <div class="formula-box">
+        <div class="formula">x × V × 2 = Na₂S₂O₃ の mol × 1</div>
+        <div class="caption">（左辺：H₂O₂ が渡せる電子の mol ／ 右辺：Na₂S₂O₃ が渡した電子の mol）</div>
+      </div>
+    </div>
+
+    <div class="point-box">
+      <span class="label">★ 覚えよう！</span>
+      <ul>
+        <li>H₂O₂ に KI を加える → I₂ が遊離（H₂O₂ が酸化剤、I⁻ が還元剤）</li>
+        <li>H₂O₂ : I₂ = 1 : 1</li>
+        <li>I₂ : Na₂S₂O₃ = 1 : 2</li>
+        <li>∴ <strong>H₂O₂ : Na₂S₂O₃ = 1 : 2</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ミニテスト3 -->
+  <div class="stage">
+    <div class="minitest-block">
+      <div class="mt-block-title">✏️ ミニテスト（全3問）</div>
+
+      <div class="q4" data-correct="b">
+        <div class="q4-stem"><span class="q4-num">問1</span>H₂O₂ のヨウ素滴定（間接法）で、KI を加えると何が遊離するか。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：O₂</button>
+          <button class="q4-c" data-v="b">イ：I₂</button>
+          <button class="q4-c" data-v="c">ウ：H₂</button>
+          <button class="q4-c" data-v="d">エ：KOH</button>
+        </div>
+        <div class="q4-exp">正解は<strong>イ：I₂</strong>。H₂O₂ が酸化剤として KI の I⁻ を酸化し、I₂ が遊離します。この I₂ をデンプンを指示薬として Na₂S₂O₃ で滴定します。</div>
+      </div>
+
+      <div class="q4" data-correct="c">
+        <div class="q4-stem"><span class="q4-num">問2</span>H₂O₂ 1mol に対して反応する Na₂S₂O₃ は何 mol か。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：1mol</button>
+          <button class="q4-c" data-v="b">イ：4mol</button>
+          <button class="q4-c" data-v="c">ウ：2mol</button>
+          <button class="q4-c" data-v="d">エ：0.5mol</button>
+        </div>
+        <div class="q4-exp">正解は<strong>ウ：2mol</strong>。H₂O₂ 1mol → I₂ 1mol → Na₂S₂O₃ 2mol。2段階の mol 変換をつなぐと H₂O₂ : Na₂S₂O₃ = 1 : 2。</div>
+      </div>
+
+      <div class="minitest" data-correct="x">
+        <div class="mt-stem"><span class="mt-num">問3</span>H₂O₂ のヨウ素滴定（間接法）では、H₂O₂ は還元剤としてはたらく。</div>
+        <div class="mt-choices">
+          <button class="mt-c" data-v="o">○</button>
+          <button class="mt-c" data-v="x">×</button>
+        </div>
+        <div class="mt-exp">× 誤り。この反応では H₂O₂ は<strong>酸化剤</strong>としてはたらき、KI の I⁻ を I₂ に酸化します。（KMnO₄ との反応のように強力な酸化剤と反応するときは還元剤になります。）</div>
+      </div>
+
+      <div class="mt-block-result"></div>
+      <div style="text-align:center;"><button class="mt-block-reset">↻ もう一度</button></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 単元4：COD（化学的酸素要求量）                                -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">4</span>COD（化学的酸素要求量）</div>
+  <div class="stage">
+    <div class="stage-head"><span class="stage-label">📖 説明</span></div>
+    <div class="read-box">
+      <p><strong>COD（Chemical Oxygen Demand）</strong>とは、試料水 1L 中の有機物を酸化分解するのに必要な酸化剤の量を、<strong>酸素（O₂）の質量（mg）に換算</strong>したものです。水質汚染の指標として使われます。</p>
+
+      <h4>▶ 測定の手順（KMnO₄ を使う方法）</h4>
+    </div>
+
+    <div class="flow-diagram" style="padding:0 16px 12px;flex-wrap:wrap;">
+      <div class="flow-box">
+        <div class="flow-title">操作Ⅰ</div>
+        <div class="flow-sub">試料水に<br>過剰の KMnO₄ を加え<br>有機物を酸化</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">
+        <div class="flow-title">操作Ⅱ</div>
+        <div class="flow-sub">残った KMnO₄ に<br>シュウ酸 Na を加えて<br>過不足なく反応</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box highlight">
+        <div class="flow-title">計算</div>
+        <div class="flow-sub">有機物に使われた<br>KMnO₄ の mol を求め<br>O₂ の質量に換算</div>
+      </div>
+    </div>
+
+    <div class="read-box">
+      <h4>▶ KMnO₄ とシュウ酸の mol 関係</h4>
+      <div class="formula-box">
+        <div class="formula">MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O　（KMnO₄：e⁻ 5mol 受け取る）</div>
+        <div class="formula">C₂O₄²⁻ → 2CO₂ + 2e⁻　（シュウ酸：e⁻ 2mol 渡す）</div>
+        <div class="caption">KMnO₄ : シュウ酸 Na = 2 : 5（e⁻ を 10mol で揃える）</div>
+      </div>
+
+      <h4>▶ KMnO₄ から O₂ への換算</h4>
+      <p>有機物と反応した KMnO₄ の mol を O₂ の mol に換算します。</p>
+      <div class="formula-box">
+        <div class="formula">O₂ + 4H⁺ + 4e⁻ → 2H₂O　（O₂：e⁻ 4mol 受け取る）</div>
+        <div class="caption">KMnO₄ は e⁻ 5mol 受け取る、O₂ は e⁻ 4mol 受け取る<br>∴ KMnO₄ 1mol ⇔ O₂ <strong>5/4 mol</strong></div>
+      </div>
+
+      <h4>▶ 計算のまとめ</h4>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>計算ステップ</th><th>計算式</th></tr>
+          <tr><td>①有機物に使われた KMnO₄ の mol</td><td>全 KMnO₄ mol − シュウ酸 Na と反応した KMnO₄ mol</td></tr>
+          <tr><td>②対応する O₂ の mol</td><td>KMnO₄ の mol × 5/4</td></tr>
+          <tr><td>③O₂ の質量（mg）→ COD</td><td>O₂ の mol × 32 × 1000 × (1000 mL / 試料 mL)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="point-box warn">
+      <span class="label">⚠️ シュウ酸 Na の扱いに注意</span>
+      <ul>
+        <li>シュウ酸（(COOH)₂）とシュウ酸ナトリウム（Na₂C₂O₄）は<strong>同じ e⁻ 2mol</strong> を渡す</li>
+        <li>KMnO₄ : シュウ酸 = 2 : 5（mol 比）</li>
+        <li>シュウ酸 1mol ⇔ KMnO₄ <strong>2/5 mol</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ミニテスト4 -->
+  <div class="stage">
+    <div class="minitest-block">
+      <div class="mt-block-title">✏️ ミニテスト（全3問）</div>
+
+      <div class="q4" data-correct="a">
+        <div class="q4-stem"><span class="q4-num">問1</span>COD とは何を表す指標か。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：試料水 1L 中の有機物を酸化するのに必要な O₂ の質量（mg）</button>
+          <button class="q4-c" data-v="b">イ：試料水 1L 中の溶存酸素の質量（mg）</button>
+          <button class="q4-c" data-v="c">ウ：水中の KMnO₄ の濃度</button>
+          <button class="q4-c" data-v="d">エ：水中のシュウ酸の濃度</button>
+        </div>
+        <div class="q4-exp">正解は<strong>ア</strong>。COD は Chemical Oxygen Demand（化学的酸素要求量）。試料水 1L 中の有機物を酸化分解するのに必要な酸化剤の量を、O₂ の質量（mg）に換算したものです。値が大きいほど汚染が進んでいます。</div>
+      </div>
+
+      <div class="q4" data-correct="c">
+        <div class="q4-stem"><span class="q4-num">問2</span>KMnO₄ 1mol が受け取る e⁻ の mol と、O₂ 1mol が受け取る e⁻ の mol はそれぞれいくらか。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：KMnO₄ = 2mol、O₂ = 4mol</button>
+          <button class="q4-c" data-v="b">イ：KMnO₄ = 4mol、O₂ = 5mol</button>
+          <button class="q4-c" data-v="c">ウ：KMnO₄ = 5mol、O₂ = 4mol</button>
+          <button class="q4-c" data-v="d">エ：KMnO₄ = 2mol、O₂ = 2mol</button>
+        </div>
+        <div class="q4-exp">正解は<strong>ウ</strong>。KMnO₄：MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O（e⁻ 5mol）。O₂：O₂ + 4H⁺ + 4e⁻ → 2H₂O（e⁻ 4mol）。よって KMnO₄ 1mol ⇔ O₂ 5/4 mol。</div>
+      </div>
+
+      <div class="q4" data-correct="b">
+        <div class="q4-stem"><span class="q4-num">問3</span>KMnO₄ とシュウ酸 Na（Na₂C₂O₄）の mol 比（KMnO₄ : シュウ酸 Na）はいくらか。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：1 : 1</button>
+          <button class="q4-c" data-v="b">イ：2 : 5</button>
+          <button class="q4-c" data-v="c">ウ：5 : 2</button>
+          <button class="q4-c" data-v="d">エ：1 : 2</button>
+        </div>
+        <div class="q4-exp">正解は<strong>イ：2 : 5</strong>。KMnO₄ は e⁻ 5mol 受け取り、シュウ酸 Na は e⁻ 2mol 渡す。e⁻ 10mol で揃えると KMnO₄ 2mol : シュウ酸 Na 5mol。</div>
+      </div>
+
+      <div class="mt-block-result"></div>
+      <div style="text-align:center;"><button class="mt-block-reset">↻ もう一度</button></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 単元5：DO（溶存酸素）                                         -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">5</span>DO（溶存酸素）</div>
+  <div class="stage">
+    <div class="stage-head"><span class="stage-label">📖 説明</span></div>
+    <div class="read-box">
+      <p><strong>DO（Dissolved Oxygen：溶存酸素）</strong>とは、水中に溶け込んでいる O₂ の量を mg/L で表したものです。</p>
+      <p>COD が「有機物の量」を表すのに対し、DO は「水中の酸素の量」を表します。DO が低い＝水が汚染されている（有機物が多く、酸素が消費されている）。</p>
+
+      <h4>▶ DO の測定手順（ウィンクラー法）</h4>
+    </div>
+
+    <div class="flow-diagram" style="padding:0 16px 12px;flex-wrap:wrap;">
+      <div class="flow-box">
+        <div class="flow-title">① Mn(OH)₂ を生成</div>
+        <div class="flow-sub">MnSO₄ + 2NaOH<br>→ Mn(OH)₂ + Na₂SO₄</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box highlight">
+        <div class="flow-title">② O₂ と反応</div>
+        <div class="flow-sub">2Mn(OH)₂ + O₂<br>→ 2H₂MnO₃<br>（O₂ 1mol → H₂MnO₃ 2mol）</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">
+        <div class="flow-title">③ KI でヨウ素を遊離</div>
+        <div class="flow-sub">H₂MnO₃ + 2KI + 2H₂SO₄<br>→ … + I₂<br>（H₂MnO₃ 1mol → I₂ 1mol）</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">
+        <div class="flow-title">④ Na₂S₂O₃ で滴定</div>
+        <div class="flow-sub">I₂ + 2Na₂S₂O₃<br>→ 2NaI + Na₂S₄O₆<br>（I₂ 1mol ⇔ Na₂S₂O₃ 2mol）</div>
+      </div>
+    </div>
+
+    <div class="read-box">
+      <h4>▶ mol の連鎖（DO 計算の核心）</h4>
+      <p>各ステップの mol 関係をつなぐと：</p>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>物質</th><th>mol 関係</th></tr>
+          <tr><td>O₂ 1mol</td><td>→ H₂MnO₃ <strong>2mol</strong>（②式）</td></tr>
+          <tr><td>H₂MnO₃ 2mol</td><td>→ I₂ <strong>2mol</strong>（③式：1:1）</td></tr>
+          <tr><td>I₂ 2mol</td><td>→ Na₂S₂O₃ <strong>4mol</strong>（④式：1:2）</td></tr>
+          <tr style="background:#dcfce7;"><td><strong>O₂ 1mol</strong></td><td><strong>→ Na₂S₂O₃ 4mol</strong>（まとめ）</td></tr>
+        </table>
+      </div>
+      <p>→ <strong>O₂ : Na₂S₂O₃ = 1 : 4</strong> が DO 計算のキー！</p>
+
+      <h4>▶ DO の計算式</h4>
+      <div class="formula-box">
+        <div class="formula">O₂ の mol ＝ Na₂S₂O₃ の mol ÷ 4</div>
+        <div class="formula">DO（mg/L）＝ O₂ の mol × 32 × 1000 ÷ 試料量（L）</div>
+        <div class="caption">O₂ の分子量 = 32、1000 は g → mg への換算</div>
+      </div>
+    </div>
+
+    <div class="point-box">
+      <span class="label">★ COD と DO の違いを整理</span>
+      <ul>
+        <li><strong>COD</strong>：有機物を酸化するのに必要な O₂ の量（汚染の大きさ）→ 大きいほど汚染が進んでいる</li>
+        <li><strong>DO</strong>：水中に実際に溶けている O₂ の量 → 小さいほど汚染が進んでいる</li>
+        <li>どちらも最終的に <strong>O₂ の mg/L</strong> で表す</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ミニテスト5 -->
+  <div class="stage">
+    <div class="minitest-block">
+      <div class="mt-block-title">✏️ ミニテスト（全4問）</div>
+
+      <div class="q4" data-correct="d">
+        <div class="q4-stem"><span class="q4-num">問1</span>DO の測定（ウィンクラー法）で O₂ 1mol に対応する Na₂S₂O₃ は何 mol か。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：1mol</button>
+          <button class="q4-c" data-v="b">イ：2mol</button>
+          <button class="q4-c" data-v="c">ウ：3mol</button>
+          <button class="q4-c" data-v="d">エ：4mol</button>
+        </div>
+        <div class="q4-exp">正解は<strong>エ：4mol</strong>。O₂ 1mol → H₂MnO₃ 2mol → I₂ 2mol → Na₂S₂O₃ 4mol と連鎖します。O₂ : Na₂S₂O₃ = 1 : 4。</div>
+      </div>
+
+      <div class="q4" data-correct="b">
+        <div class="q4-stem"><span class="q4-num">問2</span>DO が低い水は、一般的にどのような状態か。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：きれいな水</button>
+          <button class="q4-c" data-v="b">イ：有機物が多く汚染されている水</button>
+          <button class="q4-c" data-v="c">ウ：酸性が強い水</button>
+          <button class="q4-c" data-v="d">エ：塩分が多い水</button>
+        </div>
+        <div class="q4-exp">正解は<strong>イ</strong>。有機物が多いと、それを分解する微生物が O₂ を消費するため DO が低下します。DO が低いほど水質が悪いことを示します。</div>
+      </div>
+
+      <div class="minitest" data-correct="x">
+        <div class="mt-stem"><span class="mt-num">問3</span>COD が大きい水ほど、きれいな水である。</div>
+        <div class="mt-choices">
+          <button class="mt-c" data-v="o">○</button>
+          <button class="mt-c" data-v="x">×</button>
+        </div>
+        <div class="mt-exp">× 誤り。COD が大きいほど有機物が多く、<strong>汚染が進んでいる</strong>水です。COD は小さいほど水質がよいことを示します。</div>
+      </div>
+
+      <div class="q4" data-correct="c">
+        <div class="q4-stem"><span class="q4-num">問4</span>DO の測定で最終的に Na₂S₂O₃ で滴定する際の指示薬と終点の変化は何か。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：フェノールフタレイン：無色 → 赤</button>
+          <button class="q4-c" data-v="b">イ：メチルオレンジ：赤 → 黄</button>
+          <button class="q4-c" data-v="c">ウ：デンプン：青紫色 → 無色</button>
+          <button class="q4-c" data-v="d">エ：BTB：黄 → 青</button>
+        </div>
+        <div class="q4-exp">正解は<strong>ウ</strong>。Na₂S₂O₃ で I₂ を滴定するときはデンプンを指示薬として使います。I₂ が残っている間は青紫色、全て消費されると無色になります。</div>
+      </div>
+
+      <div class="mt-block-result"></div>
+      <div style="text-align:center;"><button class="mt-block-reset">↻ もう一度</button></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 次のアクション -->
+<div class="next-actions">
+  <h3>🎉 レッスン完了！</h3>
+  <p>mol の橋渡しをマスターしたら、練習問題・確認問題に進みましょう！</p>
+  <div class="links">
+    <a href="chem_oxred2_practice.html">📝 練習問題へ</a>
+    <a href="chem_oxred2_check.html" class="sub">📋 確認問題へ</a>
+    <a href="chem_oxred2_test.html" class="sub">🏆 単元末テストへ</a>
+  </div>
+</div>
+
+<nav class="pagenav">
+  <a href="chem_oxred.html">
+    <span class="label">◀ BACK</span>
+    <span class="title">酸化還元(1)</span>
+  </a>
+  <a href="chem_oxred2_practice.html" class="next">
+    <span class="label">NEXT ▶</span>
+    <span class="title">練習問題へ</span>
+  </a>
+</nav>
+
+</main>
+</div>
+
+<script>
+function launchConfetti() {
+  const C = ['#f472b6','#facc15','#34d399','#60a5fa','#f87171','#a78bfa','#fb923c','#2dd4bf'];
+  for(let i=0;i<80;i++){
+    const el=document.createElement('div');
+    const size=Math.random()*10+6, left=Math.random()*100;
+    const delay=Math.random()*.6, dur=Math.random()*1.2+1.2;
+    const color=C[Math.floor(Math.random()*C.length)];
+    const shape=Math.random()>.5?'50%':'2px';
+    el.style.cssText=`position:fixed;top:-20px;left:${left}vw;width:${size}px;height:${size}px;background:${color};border-radius:${shape};opacity:1;pointer-events:none;z-index:9999;animation:confettiFall ${dur}s ${delay}s ease-in forwards;`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),(dur+delay)*1000+200);
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.minitest').forEach(q=>{
+    const correct=q.dataset.correct;
+    const exp=q.querySelector('.mt-exp');
+    q.querySelectorAll('.mt-c').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        if(btn.classList.contains('disabled')) return;
+        q.querySelectorAll('.mt-c').forEach(b=>b.classList.add('disabled'));
+        if(btn.dataset.v===correct){btn.classList.add('correct');launchConfetti();}
+        else{btn.classList.add('wrong');q.querySelectorAll('.mt-c').forEach(b=>{if(b.dataset.v===correct)b.classList.add('correct');});}
+        exp.classList.add('show');
+        updateResult(q.closest('.minitest-block'));
+      });
+    });
+  });
+  document.querySelectorAll('.q4').forEach(q=>{
+    const correct=q.dataset.correct;
+    const exp=q.querySelector('.q4-exp');
+    q.querySelectorAll('.q4-c').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        if(btn.classList.contains('disabled')) return;
+        q.querySelectorAll('.q4-c').forEach(b=>b.classList.add('disabled'));
+        if(btn.dataset.v===correct){btn.classList.add('correct');launchConfetti();}
+        else{btn.classList.add('wrong');q.querySelectorAll('.q4-c').forEach(b=>{if(b.dataset.v===correct)b.classList.add('correct');});}
+        exp.classList.add('show');
+        updateResult(q.closest('.minitest-block'));
+      });
+    });
+  });
+  function updateResult(block){
+    if(!block) return;
+    const qs=[...block.querySelectorAll('.minitest,.q4')];
+    const done=qs.filter(q=>q.querySelector('.correct,.wrong'));
+    if(done.length<qs.length) return;
+    const correct=qs.filter(q=>{
+      const hasWrong=[...q.querySelectorAll('.q4-c,.mt-c')].some(b=>b.classList.contains('wrong'));
+      return !hasWrong;
+    }).length;
+    const res=block.querySelector('.mt-block-result');
+    if(res) res.textContent=`結果：${correct} / ${qs.length} 正解`;
+  }
+  document.querySelectorAll('.mt-block-reset').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const block=btn.closest('.minitest-block');
+      block.querySelectorAll('.mt-c,.q4-c').forEach(b=>b.classList.remove('correct','wrong','disabled'));
+      block.querySelectorAll('.mt-exp,.q4-exp').forEach(e=>e.classList.remove('show'));
+      const res=block.querySelector('.mt-block-result');
+      if(res) res.textContent='';
+    });
+  });
+});
+</script>
+
+</body>
+</html>

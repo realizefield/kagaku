@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>練習問題 酸化還元(1) | GAMBA化学</title>
+<style>
+:root{
+  --bg:#f0f4ff;--card:#fff;--primary:#2563eb;--primary-light:#dbeafe;
+  --primary-dark:#1e40af;--accent:#dc2626;--accent-light:#fee2e2;
+  --success:#16a34a;--success-light:#dcfce7;
+  --warn:#d97706;--warn-light:#fffbeb;
+  --text:#1e293b;--text-sub:#64748b;--border:#bfdbfe;--radius:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'BIZ UDPGothic','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+.topnav{display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;flex-wrap:wrap;}
+.topnav .brand{font-weight:700;font-size:.9em;}
+.topnav .sep{opacity:.4;}
+.topnav a{color:#bfdbfe;text-decoration:none;font-size:.82em;}
+.topnav a:hover{color:#fff;}
+.hero{background:linear-gradient(135deg,#1e40af 0%,#3730a3 100%);color:#fff;padding:24px 20px 22px;}
+.hero .crumb{font-size:.75em;opacity:.7;margin-bottom:6px;}
+.hero h1{font-size:clamp(1.3em,4vw,1.9em);font-weight:800;margin-bottom:6px;}
+.hero .stars{font-size:.7em;opacity:.8;}
+.hero .sub{font-size:.85em;opacity:.88;line-height:1.7;}
+.wrap{max-width:860px;margin:0 auto;}
+main{padding:20px 14px 0;}
+
+.minitest-block{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:20px;}
+.mt-block-title{font-weight:700;font-size:.9em;color:var(--primary-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.minitest,.q4{margin-bottom:16px;}
+.mt-stem,.q4-stem{font-size:.93em;font-weight:600;margin-bottom:8px;line-height:1.6;}
+.mt-num,.q4-num{display:inline-flex;align-items:center;justify-content:center;background:var(--primary);color:#fff;font-size:.75em;padding:2px 8px;border-radius:5px;margin-right:6px;font-weight:700;}
+.mt-choices{display:flex;gap:8px;margin-bottom:6px;}
+.mt-c{font-family:inherit;flex:1;padding:10px;border-radius:8px;border:2px solid #cbd5e1;background:#fff;font-size:.95em;font-weight:700;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;}
+.mt-c:hover{border-color:var(--primary);background:var(--primary-light);}
+.mt-c.correct{background:var(--success);border-color:var(--success);color:#fff;}
+.mt-c.wrong{background:var(--accent);border-color:var(--accent);color:#fff;}
+.mt-c.disabled{cursor:default;}
+.q4-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
+.q4-c{font-family:inherit;padding:10px 12px;border-radius:8px;border:2px solid #cbd5e1;background:#fff;font-size:.85em;font-weight:600;cursor:pointer;text-align:left;transition:all .15s;-webkit-tap-highlight-color:transparent;line-height:1.4;}
+.q4-c:hover{border-color:var(--primary);background:var(--primary-light);}
+.q4-c.correct{background:var(--success);border-color:var(--success);color:#fff;}
+.q4-c.wrong{background:var(--accent);border-color:var(--accent);color:#fff;}
+.q4-c.disabled{cursor:default;}
+.mt-exp,.q4-exp{display:none;font-size:.85em;background:#f0fdf4;border-left:4px solid var(--success);padding:10px 14px;border-radius:0 8px 8px 0;line-height:1.7;margin-top:4px;}
+.mt-exp.show,.q4-exp.show{display:block;}
+.mt-block-result{font-weight:700;text-align:center;margin:10px 0 6px;font-size:.95em;color:var(--primary);}
+.mt-block-reset{font-family:inherit;background:var(--primary-light);color:var(--primary-dark);border:1.5px solid var(--border);padding:8px 20px;border-radius:50px;cursor:pointer;font-size:.82em;font-weight:700;transition:.2s;}
+.mt-block-reset:hover{background:var(--border);}
+.next-actions{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:2px solid var(--border);border-radius:var(--radius);padding:20px;margin:24px 0 0;text-align:center;}
+.next-actions h3{color:var(--primary-dark);margin-bottom:8px;font-size:1.1em;}
+.next-actions p{font-size:.88em;color:var(--text-sub);margin-bottom:14px;}
+.next-actions .links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.next-actions a{text-decoration:none;padding:10px 18px;border-radius:8px;font-size:.88em;font-weight:700;background:var(--primary);color:#fff;transition:.15s;}
+.next-actions a:hover{background:var(--primary-dark);}
+.next-actions a.sub{background:#fff;color:var(--primary);border:1.5px solid var(--border);}
+.pagenav{display:flex;gap:0;margin:20px 0 0;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.pagenav a{flex:1;display:flex;flex-direction:column;padding:12px 14px;text-decoration:none;background:#fff;border-right:1.5px solid var(--border);transition:.15s;}
+.pagenav a:last-child{border-right:none;}
+.pagenav a:hover{background:var(--primary-light);}
+.pagenav a.next{text-align:right;}
+.pagenav .label{font-size:.72em;color:var(--text-sub);font-weight:600;}
+.pagenav .title{font-size:.88em;font-weight:700;color:var(--primary-dark);margin-top:2px;}
+@media(max-width:520px){.q4-choices{grid-template-columns:1fr;}}
+
+/* ── 花吹雪 ── */
+@keyframes confettiFall{
+  0%  {transform:translateY(0) rotate(0deg);   opacity:1;}
+  80% {opacity:1;}
+  100%{transform:translateY(105vh) rotate(720deg); opacity:0;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">⚗️ GAMBA 化学</span>
+  <span class="sep">|</span>
+  <a href="chem_oxred_index.html">📊 単元表</a>
+  <a href="chem_oxred.html">レッスンへ戻る</a>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="crumb">化学基礎 酸化還元(1) / 練習問題</div>
+  <h1>練習問題：酸化還元(1) <span class="stars">★★☆</span></h1>
+  <p class="sub">酸化数・酸化還元の定義・酸化剤と還元剤の基礎を確認します。全10問。すぐに答え合わせできます。</p>
+</header>
+
+<main>
+
+<div class="minitest-block">
+  <div class="mt-block-title">✏️ 練習問題（全10問）</div>
+
+  <!-- 問1 -->
+  <div class="q4" data-correct="b">
+    <div class="q4-stem"><span class="q4-num">問1</span>Fe₂O₃ 中の Fe の酸化数として正しいものはどれか。O = −2 とする。</div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：+2</button>
+      <button class="q4-c" data-v="b">イ：+3</button>
+      <button class="q4-c" data-v="c">ウ：0</button>
+      <button class="q4-c" data-v="d">エ：−3</button>
+    </div>
+    <div class="q4-exp">正解は<strong>イ：+3</strong>。Fe の酸化数を x とすると、x×2 + (−2)×3 = 0 → 2x = 6 → x = <strong>+3</strong>。</div>
+  </div>
+
+  <!-- 問2 -->
+  <div class="q4" data-correct="c">
+    <div class="q4-stem"><span class="q4-num">問2</span>MnO₄⁻（過マンガン酸イオン）中の Mn の酸化数はいくらか。</div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：+4</button>
+      <button class="q4-c" data-v="b">イ：+5</button>
+      <button class="q4-c" data-v="c">ウ：+7</button>
+      <button class="q4-c" data-v="d">エ：+6</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ウ：+7</strong>。多原子イオンなので x + (−2)×4 = −1 → x = <strong>+7</strong>。</div>
+  </div>
+
+  <!-- 問3 -->
+  <div class="q4" data-correct="d">
+    <div class="q4-stem"><span class="q4-num">問3</span>H₂O₂ 中の O の酸化数はいくらか。H = +1 とする。</div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：−2</button>
+      <button class="q4-c" data-v="b">イ：0</button>
+      <button class="q4-c" data-v="c">ウ：+1</button>
+      <button class="q4-c" data-v="d">エ：−1</button>
+    </div>
+    <div class="q4-exp">正解は<strong>エ：−1</strong>。(+1)×2 + x×2 = 0 → x = <strong>−1</strong>。H₂O₂ の O は例外で −1（通常は −2）。</div>
+  </div>
+
+  <!-- 問4 -->
+  <div class="q4" data-correct="a">
+    <div class="q4-stem"><span class="q4-num">問4</span>次の反応のうち、酸化還元反応はどれか。</div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：2Mg + O₂ → 2MgO</button>
+      <button class="q4-c" data-v="b">イ：H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O</button>
+      <button class="q4-c" data-v="c">ウ：NaCl + AgNO₃ → AgCl + NaNO₃</button>
+      <button class="q4-c" data-v="d">エ：CO₂ + H₂O → H₂CO₃</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ア</strong>。Mg：0→+2（酸化）、O：0→−2（還元）と酸化数が変化しているので酸化還元反応。イは酸塩基中和反応、ウは沈殿生成反応、エは化合反応で、いずれも酸化数の変化なし。</div>
+  </div>
+
+  <!-- 問5 -->
+  <div class="minitest" data-correct="o">
+    <div class="mt-stem"><span class="mt-num">問5</span>酸化還元反応において、一方の物質が酸化されると、必ず別の物質が還元される。</div>
+    <div class="mt-choices">
+      <button class="mt-c" data-v="o">○</button>
+      <button class="mt-c" data-v="x">×</button>
+    </div>
+    <div class="mt-exp">○ 正解。電子は「渡す→受け取る」が必ずセット。単独では酸化も還元も起こりません。</div>
+  </div>
+
+  <!-- 問6 -->
+  <div class="q4" data-correct="b">
+    <div class="q4-stem"><span class="q4-num">問6</span>酸化剤についての記述として正しいものはどれか。</div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：酸化剤は自身が酸化される物質である</button>
+      <button class="q4-c" data-v="b">イ：酸化剤は電子を受け取る物質である</button>
+      <button class="q4-c" data-v="c">ウ：酸化剤は酸化数が増える物質である</button>
+      <button class="q4-c" data-v="d">エ：酸化剤は水素を失う物質である</button>
+    </div>
+    <div class="q4-exp">正解は<strong>イ</strong>。酸化剤は相手から電子を受け取り（自身は還元され）、相手を酸化する物質です。酸化数は<strong>減ります</strong>。</div>
+  </div>
+
+  <!-- 問7 -->
+  <div class="q4" data-correct="c">
+    <div class="q4-stem"><span class="q4-num">問7</span>反応 Cl₂ + H₂O₂ → 2HCl + O₂ において、還元剤はどれか。</div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：Cl₂</button>
+      <button class="q4-c" data-v="b">イ：HCl</button>
+      <button class="q4-c" data-v="c">ウ：H₂O₂</button>
+      <button class="q4-c" data-v="d">エ：O₂</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ウ：H₂O₂</strong>。H₂O₂ の O：−1 → O₂ の O：0（酸化数が増えた = 酸化された = <strong>還元剤</strong>）。Cl₂ の Cl：0 → HCl の Cl：−1（減った = 還元された = <strong>酸化剤</strong>）。このときの H₂O₂ は還元剤として機能しています。</div>
+  </div>
+
+  <!-- 問8 -->
+  <div class="q4" data-correct="b">
+    <div class="q4-stem"><span class="q4-num">問8</span>K₂Cr₂O₇ 中の Cr の酸化数はいくらか。K=+1, O=−2 とする。</div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：+3</button>
+      <button class="q4-c" data-v="b">イ：+6</button>
+      <button class="q4-c" data-v="c">ウ：+7</button>
+      <button class="q4-c" data-v="d">エ：+4</button>
+    </div>
+    <div class="q4-exp">正解は<strong>イ：+6</strong>。x を Cr の酸化数とすると、(+1)×2 + x×2 + (−2)×7 = 0 → 2 + 2x − 14 = 0 → x = <strong>+6</strong>。</div>
+  </div>
+
+  <!-- 問9 -->
+  <div class="q4" data-correct="d">
+    <div class="q4-stem"><span class="q4-num">問9</span>KMnO₄ の半反応式（酸性条件）で、Mn の酸化数はいくつ変化するか。</div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：2</button>
+      <button class="q4-c" data-v="b">イ：3</button>
+      <button class="q4-c" data-v="c">ウ：4</button>
+      <button class="q4-c" data-v="d">エ：5</button>
+    </div>
+    <div class="q4-exp">正解は<strong>エ：5</strong>。KMnO₄ の Mn：+7 → Mn²⁺ の Mn：+2。変化量 = 7 − 2 = <strong>5</strong>。よって電子を5個受け取ります（MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O）。</div>
+  </div>
+
+  <!-- 問10 -->
+  <div class="minitest" data-correct="x">
+    <div class="mt-stem"><span class="mt-num">問10</span>全ての物質は酸化剤か還元剤のどちらか一方としてしか機能しない。</div>
+    <div class="mt-choices">
+      <button class="mt-c" data-v="o">○</button>
+      <button class="mt-c" data-v="x">×</button>
+    </div>
+    <div class="mt-exp">× 誤り。H₂O₂ のように<strong>二面性</strong>を持つ物質があります。KMnO₄ との反応では還元剤、KI との反応では酸化剤として機能します。</div>
+  </div>
+
+  <div class="mt-block-result"></div>
+  <div style="text-align:center;"><button class="mt-block-reset">↻ もう一度</button></div>
+</div>
+
+<div class="next-actions">
+  <h3>🎉 練習問題、おつかれさま！</h3>
+  <p>続いて確認問題（テキストの問題）に挑戦しましょう！</p>
+  <div class="links">
+    <a href="chem_oxred_check.html">📋 確認問題へ</a>
+    <a href="chem_oxred_test.html" class="sub">🏆 単元末テストへ</a>
+    <a href="chem_oxred.html" class="sub">📖 レッスンへ戻る</a>
+  </div>
+</div>
+
+<nav class="pagenav">
+  <a href="chem_oxred.html">
+    <span class="label">◀ BACK</span>
+    <span class="title">レッスン</span>
+  </a>
+  <a href="chem_oxred_check.html" class="next">
+    <span class="label">NEXT ▶</span>
+    <span class="title">確認問題</span>
+  </a>
+</nav>
+
+</main>
+</div>
+
+<script>
+
+/* ── 花吹雪 ── */
+function launchConfetti() {
+  const COLORS = ['#f472b6','#facc15','#34d399','#60a5fa','#f87171','#a78bfa','#fb923c','#2dd4bf'];
+  for (let i = 0; i < 80; i++) {
+    const el = document.createElement('div');
+    const size = Math.random() * 10 + 6;
+    const left = Math.random() * 100;
+    const delay = Math.random() * 0.6;
+    const dur = Math.random() * 1.2 + 1.2;
+    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    const shape = Math.random() > 0.5 ? '50%' : '2px';
+    el.style.cssText = `position:fixed;top:-20px;left:${left}vw;width:${size}px;height:${size}px;background:${color};border-radius:${shape};opacity:1;pointer-events:none;z-index:9999;animation:confettiFall ${dur}s ${delay}s ease-in forwards;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), (dur + delay) * 1000 + 200);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.minitest').forEach(q => {
+    const correct = q.dataset.correct;
+    const exp = q.querySelector('.mt-exp');
+    q.querySelectorAll('.mt-c').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(btn.classList.contains('disabled')) return;
+        q.querySelectorAll('.mt-c').forEach(b => b.classList.add('disabled'));
+        if(btn.dataset.v === correct){ btn.classList.add('correct'); launchConfetti(); }
+        else { btn.classList.add('wrong'); q.querySelectorAll('.mt-c').forEach(b => { if(b.dataset.v === correct) b.classList.add('correct'); }); }
+        exp.classList.add('show');
+        updateResult(q.closest('.minitest-block'));
+      });
+    });
+  });
+  document.querySelectorAll('.q4').forEach(q => {
+    const correct = q.dataset.correct;
+    const exp = q.querySelector('.q4-exp');
+    q.querySelectorAll('.q4-c').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(btn.classList.contains('disabled')) return;
+        q.querySelectorAll('.q4-c').forEach(b => b.classList.add('disabled'));
+        if(btn.dataset.v === correct){ btn.classList.add('correct'); launchConfetti(); }
+        else { btn.classList.add('wrong'); q.querySelectorAll('.q4-c').forEach(b => { if(b.dataset.v === correct) b.classList.add('correct'); }); }
+        exp.classList.add('show');
+        updateResult(q.closest('.minitest-block'));
+      });
+    });
+  });
+  function updateResult(block) {
+    if(!block) return;
+    const qs = [...block.querySelectorAll('.minitest,.q4')];
+    const done = qs.filter(q => q.querySelector('.correct, .wrong'));
+    if(done.length < qs.length) return;
+    const correct = qs.filter(q => {
+      const hasWrong = [...q.querySelectorAll('.q4-c,.mt-c')].some(b => b.classList.contains('wrong'));
+      return !hasWrong;
+    }).length;
+    const res = block.querySelector('.mt-block-result');
+    if(res) res.textContent = `結果：${correct} / ${qs.length} 正解`;
+  }
+  document.querySelectorAll('.mt-block-reset').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const block = btn.closest('.minitest-block');
+      block.querySelectorAll('.mt-c,.q4-c').forEach(b => b.classList.remove('correct','wrong','disabled'));
+      block.querySelectorAll('.mt-exp,.q4-exp').forEach(e => e.classList.remove('show'));
+      const res = block.querySelector('.mt-block-result');
+      if(res) res.textContent = '';
+    });
+  });
+});
+</script>
+</body>
+</html>

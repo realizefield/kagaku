@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>語群穴埋め練習 酸化剤・還元剤 | GAMBA化学</title>
+<style>
+:root{
+  --bg:#f0f4ff;--card:#fff;
+  --primary:#2563eb;--primary-light:#dbeafe;--primary-dark:#1e40af;
+  --accent:#dc2626;--accent-light:#fee2e2;
+  --success:#16a34a;--success-light:#dcfce7;
+  --warn:#d97706;--warn-light:#fffbeb;
+  --text:#1e293b;--text-sub:#64748b;
+  --border:#bfdbfe;--radius:14px;
+  --ox:#dc2626;--rd:#16a34a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'BIZ UDPGothic','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+
+.topnav{display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;flex-wrap:wrap;}
+.topnav .brand{font-weight:700;font-size:.9em;}
+.topnav .sep{opacity:.4;}
+.topnav a{color:#bfdbfe;text-decoration:none;font-size:.82em;}
+.topnav a:hover{color:#fff;}
+
+.hero{background:linear-gradient(135deg,#1e40af 0%,#7c3aed 100%);color:#fff;padding:24px 20px 22px;}
+.hero .crumb{font-size:.75em;opacity:.7;margin-bottom:6px;}
+.hero h1{font-size:clamp(1.3em,4vw,1.9em);font-weight:800;margin-bottom:6px;}
+.hero .sub{font-size:.86em;opacity:.9;line-height:1.8;}
+.hero .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:4px 12px;font-size:.78em;font-weight:700;}
+
+.wrap{max-width:860px;margin:0 auto;}
+main{padding:20px 14px 0;}
+
+/* ── タブ ── */
+.sec-tabs{display:flex;gap:0;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;}
+.sec-tab{flex:1;padding:12px 6px;font-family:inherit;font-size:.86em;font-weight:700;border:none;background:transparent;cursor:pointer;color:var(--text-sub);border-right:1px solid var(--border);transition:.15s;line-height:1.3;text-align:center;}
+.sec-tab:last-child{border-right:none;}
+.sec-tab.active-ox{background:var(--accent);color:#fff;}
+.sec-tab.active-rd{background:var(--success);color:#fff;}
+.sec-tab:hover:not(.active-ox):not(.active-rd){background:var(--primary-light);}
+
+.section{display:none;}
+.section.active{display:block;}
+
+/* ── 説明ボックス ── */
+.how-box{background:var(--warn-light);border:1.5px solid #fde68a;border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:.87em;line-height:1.8;color:#78350f;}
+.how-box .label{display:inline-block;background:var(--warn);color:#fff;font-size:.75em;font-weight:700;padding:2px 10px;border-radius:20px;margin-bottom:6px;}
+.how-box ol{margin:0 0 0 18px;}
+.how-box li{margin-bottom:4px;}
+
+/* ── チャレンジボタン ── */
+.challenge-area{text-align:center;margin-bottom:16px;}
+.challenge-btn{font-family:inherit;font-size:1em;font-weight:700;padding:12px 32px;border-radius:50px;border:none;cursor:pointer;transition:.15s;color:#fff;}
+.challenge-btn.ox{background:var(--ox);}
+.challenge-btn.rd{background:var(--rd);}
+.challenge-btn:hover{opacity:.9;transform:translateY(-1px);}
+.challenge-btn:disabled{opacity:.5;cursor:default;transform:none;}
+
+/* ── 語群 ── */
+.word-pool-wrap{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:16px;}
+.wp-label{font-size:.8em;font-weight:700;color:var(--text-sub);margin-bottom:8px;}
+.word-pool{display:flex;flex-wrap:wrap;gap:8px;min-height:44px;}
+.word-chip{font-family:inherit;font-size:.88em;font-weight:700;padding:6px 14px;border-radius:20px;border:2px solid var(--primary);background:#fff;color:var(--primary-dark);cursor:pointer;transition:.15s;user-select:none;-webkit-tap-highlight-color:transparent;}
+.word-chip:hover{background:var(--primary-light);}
+.word-chip.selected{background:var(--primary);color:#fff;}
+.word-chip.used{opacity:.3;cursor:default;pointer-events:none;text-decoration:line-through;}
+.word-chip.ox-chip{border-color:var(--ox);color:var(--ox);}
+.word-chip.ox-chip.selected{background:var(--ox);color:#fff;}
+.word-chip.rd-chip{border-color:var(--rd);color:var(--rd);}
+.word-chip.rd-chip.selected{background:var(--rd);color:#fff;}
+
+/* ── 問題テーブル ── */
+.fill-block{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:16px;overflow:hidden;}
+.fill-block-title{padding:11px 14px;font-weight:700;font-size:.88em;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:8px;}
+.fill-block-title.ox{background:#fff0f0;color:var(--ox);}
+.fill-block-title.rd{background:#f0fff4;color:var(--rd);}
+.fill-tbl-wrap{overflow-x:auto;}
+.fill-tbl{border-collapse:collapse;width:100%;font-size:.88em;min-width:460px;}
+.fill-tbl th{padding:9px 12px;border:1.5px solid #e2e8f0;text-align:center;font-weight:700;background:#f8faff;color:var(--primary-dark);font-size:.85em;}
+.fill-tbl td{padding:9px 12px;border:1px solid #e2e8f0;text-align:center;vertical-align:middle;line-height:1.6;}
+.fill-tbl .reagent-cell{text-align:left;font-weight:700;min-width:140px;}
+.fill-tbl .cond-cell{font-size:.8em;color:var(--text-sub);}
+
+/* ── 空欄 ── */
+.blank{display:inline-flex;align-items:center;justify-content:center;min-width:80px;padding:5px 10px;border-radius:8px;border:2px dashed #94a3b8;background:#f8faff;color:var(--text-sub);cursor:pointer;font-size:.88em;font-weight:600;transition:.15s;vertical-align:middle;gap:4px;}
+.blank:hover{border-color:var(--primary);background:var(--primary-light);}
+.blank.filled{border-style:solid;border-color:var(--primary);background:var(--primary-light);color:var(--primary-dark);}
+.blank.correct{border-color:var(--rd);background:var(--success-light);color:var(--rd);cursor:default;}
+.blank.wrong{border-color:var(--ox);background:var(--accent-light);color:var(--ox);cursor:default;}
+.blank .b-dot{width:9px;height:9px;border-radius:50%;border:1px solid rgba(0,0,0,.15);flex-shrink:0;display:none;}
+.blank.filled .b-dot{display:block;}
+
+/* ── アクションバー ── */
+.action-bar{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin:14px 0;}
+.check-btn{font-family:inherit;background:var(--primary);color:#fff;border:none;padding:10px 24px;border-radius:50px;cursor:pointer;font-size:.88em;font-weight:700;transition:.15s;}
+.check-btn:hover{background:var(--primary-dark);}
+.check-btn.ox{background:var(--ox);}
+.check-btn.ox:hover{background:#b91c1c;}
+.check-btn.rd{background:var(--rd);}
+.check-btn.rd:hover{background:#15803d;}
+.reset-btn{font-family:inherit;background:var(--primary-light);color:var(--primary-dark);border:1.5px solid var(--border);padding:10px 22px;border-radius:50px;cursor:pointer;font-size:.88em;font-weight:700;transition:.15s;}
+.reset-btn:hover{background:var(--border);}
+
+/* ── スコアボード ── */
+.score-banner{display:none;background:linear-gradient(135deg,#f0fdf4,#dbeafe);border:2px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;margin-top:14px;}
+.score-banner.show{display:block;}
+.score-banner .big{font-size:2em;font-weight:800;color:var(--primary);margin:6px 0;}
+.score-banner .stars{font-size:1.4em;}
+.score-banner .msg{font-size:.9em;color:var(--text-sub);margin-top:4px;}
+
+/* ── 次のアクション ── */
+.next-actions{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:2px solid var(--border);border-radius:var(--radius);padding:22px;margin:24px 0 0;text-align:center;}
+.next-actions h3{color:var(--primary-dark);margin-bottom:8px;font-size:1.1em;}
+.next-actions p{font-size:.87em;color:var(--text-sub);margin-bottom:14px;}
+.next-actions .links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.next-actions a{text-decoration:none;padding:11px 20px;border-radius:8px;font-size:.88em;font-weight:700;background:var(--primary);color:#fff;transition:.15s;}
+.next-actions a:hover{background:var(--primary-dark);}
+.next-actions a.sub{background:#fff;color:var(--primary);border:1.5px solid var(--border);}
+
+/* 色付き化学式 */
+.c-purple{color:#9333ea;font-weight:700;}
+.c-orange{color:#f97316;font-weight:700;}
+.c-green{color:#16a34a;font-weight:700;}
+.c-brown{color:#b45309;font-weight:700;}
+.c-lime{color:#65a30d;font-weight:700;}
+.c-yellow{color:#ca8a04;font-weight:700;}
+.c-red{color:#dc2626;font-weight:700;}
+.c-pink{color:#db2777;font-weight:700;}
+
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}80%{opacity:1;}100%{transform:translateY(105vh) rotate(720deg);opacity:0;}}
+@media(max-width:520px){.fill-tbl{min-width:320px;font-size:.82em;}.blank{min-width:64px;font-size:.82em;}}
+
+/* ── 縦型分数 ── */
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;font-size:.9em;line-height:1.1;}
+.frac .fn{padding:0 3px;border-bottom:1.5px solid currentColor;}
+.frac .fd{padding:0 3px;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">⚗️ GAMBA 化学</span>
+  <span class="sep">|</span>
+  <a href="oxred_index.html">📊 単元表</a>
+  <a href="oxred_agent_lesson.html">📖 レッスンへ</a>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="crumb">化学基礎 / 酸化還元 / 第3章 / 語群穴埋め練習</div>
+  <h1>語群穴埋め練習</h1>
+  <p class="sub">酸化剤・還元剤の「反応前」「生成物」を語群からタップして埋めましょう。<br>
+  チャレンジボタンを押すと語群が現れます。</p>
+  <div class="badges">
+    <span class="badge">🔴 酸化剤 8種</span>
+    <span class="badge">🟢 還元剤 6種</span>
+    <span class="badge">💡 語群タップ式</span>
+  </div>
+</header>
+
+<main>
+
+<!-- ── タブ ── -->
+<div class="sec-tabs">
+  <button class="sec-tab" id="tab-ox" onclick="showTab('ox')">🔴 酸化剤（8種）</button>
+  <button class="sec-tab" id="tab-rd" onclick="showTab('rd')">🟢 還元剤（6種）</button>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 酸化剤タブ                                                     -->
+<!-- ============================================================ -->
+<div class="section" id="sec-ox">
+
+  <div class="how-box">
+    <div class="label">📖 使い方</div>
+    <ol>
+      <li>「チャレンジ開始」ボタンを押すと語群が現れます</li>
+      <li>語群から語句をタップして選択（選択中は色が変わります）</li>
+      <li>表の空欄（＿＿）をタップすると埋まります</li>
+      <li>空欄をもう一度タップすると取り消しできます</li>
+      <li>全部埋めたら「答え合わせ」ボタンを押しましょう</li>
+    </ol>
+  </div>
+
+  <div class="challenge-area">
+    <button class="challenge-btn ox" id="ch-btn-ox" onclick="startChallenge('ox')">
+      🔴 チャレンジ開始
+    </button>
+  </div>
+
+  <!-- 語群（酸化剤） -->
+  <div class="word-pool-wrap" id="pool-ox-wrap" style="display:none;">
+    <div class="wp-label">📦 語群（タップして選択）</div>
+    <div class="word-pool" id="pool-ox"></div>
+  </div>
+
+  <!-- 問題テーブル（酸化剤） -->
+  <div class="fill-block" id="table-ox-wrap" style="display:none;">
+    <div class="fill-block-title ox">🔴 酸化剤 ─ 反応前と生成物を埋めよう</div>
+    <div class="fill-tbl-wrap">
+      <table class="fill-tbl" id="fill-tbl-ox">
+        <thead>
+          <tr>
+            <th>酸化剤（名称）</th>
+            <th>条件</th>
+            <th>反応前（入力）</th>
+            <th>→</th>
+            <th>生成物（入力）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="reagent-cell"><span class="c-purple">過マンガン酸カリウム</span></td>
+            <td class="cond-cell">硫酸酸性</td>
+            <td><span class="blank ox-blank" data-ans="MnO₄⁻" data-color="#9333ea" data-id="ox1a" onclick="fillBlank(this,'ox')">＿＿</span></td>
+            <td>→</td>
+            <td><span class="blank ox-blank" data-ans="Mn²⁺" data-color="#fce7f3" data-id="ox1b" onclick="fillBlank(this,'ox')">＿＿</span></td>
+          </tr>
+          <tr>
+            <td class="reagent-cell"><span class="c-orange">ニクロム酸カリウム</span></td>
+            <td class="cond-cell">硫酸酸性</td>
+            <td><span class="blank ox-blank" data-ans="Cr₂O₇²⁻" data-color="#f97316" data-id="ox2a" onclick="fillBlank(this,'ox')">＿＿</span></td>
+            <td>→</td>
+            <td><span class="blank ox-blank" data-ans="Cr³⁺" data-color="#16a34a" data-id="ox2b" onclick="fillBlank(this,'ox')">＿＿</span></td>
+          </tr>
+          <tr>
+            <td class="reagent-cell">過酸化水素</td>
+            <td class="cond-cell">酸性</td>
+            <td><span class="blank ox-blank" data-ans="H₂O₂" data-id="ox3a" onclick="fillBlank(this,'ox')">＿＿</span></td>
+            <td>→</td>
+            <td><span class="blank ox-blank" data-ans="H₂O" data-id="ox3b" onclick="fillBlank(this,'ox')">＿＿</span></td>
+          </tr>
+          <tr>
+            <td class="reagent-cell">過酸化水素</td>
+            <td class="cond-cell">中性・塩基性</td>
+            <td><span class="blank ox-blank" data-ans="H₂O₂" data-id="ox4a" onclick="fillBlank(this,'ox')">＿＿</span></td>
+            <td>→</td>
+            <td><span class="blank ox-blank" data-ans="OH⁻" data-id="ox4b" onclick="fillBlank(this,'ox')">＿＿</span></td>
+          </tr>
+          <tr>
+            <td class="reagent-cell">希硝酸</td>
+            <td class="cond-cell"></td>
+            <td><span class="blank ox-blank" data-ans="HNO₃" data-id="ox5a" onclick="fillBlank(this,'ox')">＿＿</span></td>
+            <td>→</td>
+            <td><span class="blank ox-blank" data-ans="NO" data-id="ox5b" onclick="fillBlank(this,'ox')">＿＿</span></td>
+          </tr>
+          <tr>
+            <td class="reagent-cell">濃硝酸</td>
+            <td class="cond-cell"></td>
+            <td><span class="blank ox-blank" data-ans="HNO₃" data-id="ox6a" onclick="fillBlank(this,'ox')">＿＿</span></td>
+            <td>→</td>
+            <td><span class="blank ox-blank" data-ans="NO₂" data-color="#b45309" data-id="ox6b" onclick="fillBlank(this,'ox')">＿＿</span></td>
+          </tr>
+          <tr>
+            <td class="reagent-cell">熱濃硫酸</td>
+            <td class="cond-cell">加熱</td>
+            <td><span class="blank ox-blank" data-ans="H₂SO₄" data-id="ox7a" onclick="fillBlank(this,'ox')">＿＿</span></td>
+            <td>→</td>
+            <td><span class="blank ox-blank" data-ans="SO₂" data-id="ox7b" onclick="fillBlank(this,'ox')">＿＿</span></td>
+          </tr>
+          <tr>
+            <td class="reagent-cell"><span class="c-lime">塩素</span></td>
+            <td class="cond-cell"></td>
+            <td><span class="blank ox-blank" data-ans="Cl₂" data-color="#65a30d" data-id="ox8a" onclick="fillBlank(this,'ox')">＿＿</span></td>
+            <td>→</td>
+            <td><span class="blank ox-blank" data-ans="2Cl⁻" data-id="ox8b" onclick="fillBlank(this,'ox')">＿＿</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="action-bar" id="action-ox" style="display:none;">
+    <button class="check-btn ox" onclick="checkFill('ox')">✅ 答え合わせ</button>
+    <button class="reset-btn" onclick="resetFill('ox')">↻ やり直す</button>
+  </div>
+
+  <div class="score-banner" id="score-ox">
+    <div class="stars" id="score-ox-stars"></div>
+    <div class="big" id="score-ox-num"></div>
+    <div class="msg" id="score-ox-msg"></div>
+  </div>
+
+</div><!-- /sec-ox -->
+
+
+<!-- ============================================================ -->
+<!-- 還元剤タブ                                                     -->
+<!-- ============================================================ -->
+<div class="section" id="sec-rd">
+
+  <div class="how-box" style="background:var(--success-light);border-color:#86efac;color:#14532d;">
+    <div class="label" style="background:var(--rd);">📖 使い方</div>
+    <ol>
+      <li>「チャレンジ開始」ボタンを押すと語群が現れます</li>
+      <li>語群から語句をタップして選択</li>
+      <li>表の空欄をタップすると埋まります</li>
+      <li>全部埋めたら「答え合わせ」を押しましょう</li>
+    </ol>
+  </div>
+
+  <div class="challenge-area">
+    <button class="challenge-btn rd" id="ch-btn-rd" onclick="startChallenge('rd')">
+      🟢 チャレンジ開始
+    </button>
+  </div>
+
+  <!-- 語群（還元剤） -->
+  <div class="word-pool-wrap" id="pool-rd-wrap" style="display:none;">
+    <div class="wp-label">📦 語群（タップして選択）</div>
+    <div class="word-pool" id="pool-rd"></div>
+  </div>
+
+  <!-- 問題テーブル（還元剤） -->
+  <div class="fill-block" id="table-rd-wrap" style="display:none;">
+    <div class="fill-block-title rd">🟢 還元剤 ─ 反応前と生成物を埋めよう</div>
+    <div class="fill-tbl-wrap">
+      <table class="fill-tbl" id="fill-tbl-rd">
+        <thead>
+          <tr>
+            <th>還元剤（名称）</th>
+            <th>条件</th>
+            <th>反応前（入力）</th>
+            <th>→</th>
+            <th>生成物（入力）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="reagent-cell">過酸化水素</td>
+            <td class="cond-cell">KMnO₄ など強酸化剤と</td>
+            <td><span class="blank rd-blank" data-ans="H₂O₂" data-id="rd1a" onclick="fillBlank(this,'rd')">＿＿</span></td>
+            <td>→</td>
+            <td><span class="blank rd-blank" data-ans="O₂" data-id="rd1b" onclick="fillBlank(this,'rd')">＿＿</span></td>
+          </tr>
+          <tr>
+            <td class="reagent-cell">二酸化硫黄</td>
+            <td class="cond-cell">通常（KMnO₄・I₂ など）</td>
+            <td><span class="blank rd-blank" data-ans="SO₂" data-id="rd2a" onclick="fillBlank(this,'rd')">＿＿</span></td>
+            <td>→</td>
+            <td><span class="blank rd-blank" data-ans="SO₄²⁻" data-id="rd2b" onclick="fillBlank(this,'rd')">＿＿</span></td>
+          </tr>
+          <tr>
+            <td class="reagent-cell">硫化水素</td>
+            <td class="cond-cell"></td>
+            <td><span class="blank rd-blank" data-ans="H₂S" data-id="rd3a" onclick="fillBlank(this,'rd')">＿＿</span></td>
+            <td>→</td>
+            <td><span class="blank rd-blank" data-ans="S" data-color="#eab308" data-id="rd3b" onclick="fillBlank(this,'rd')">＿＿</span></td>
+          </tr>
+          <tr>
+            <td class="reagent-cell">シュウ酸</td>
+            <td class="cond-cell"></td>
+            <td><span class="blank rd-blank" data-ans="C₂O₄²⁻" data-id="rd4a" onclick="fillBlank(this,'rd')">＿＿</span></td>
+            <td>→</td>
+            <td><span class="blank rd-blank" data-ans="2CO₂" data-id="rd4b" onclick="fillBlank(this,'rd')">＿＿</span></td>
+          </tr>
+          <tr>
+            <td class="reagent-cell">ヨウ化カリウム</td>
+            <td class="cond-cell"></td>
+            <td><span class="blank rd-blank" data-ans="2I⁻" data-id="rd5a" onclick="fillBlank(this,'rd')">＿＿</span></td>
+            <td>→</td>
+            <td><span class="blank rd-blank" data-ans="I₂" data-color="#78350f" data-id="rd5b" onclick="fillBlank(this,'rd')">＿＿</span></td>
+          </tr>
+          <tr>
+            <td class="reagent-cell">硫酸鉄(Ⅱ)</td>
+            <td class="cond-cell"></td>
+            <td><span class="blank rd-blank" data-ans="Fe²⁺" data-id="rd6a" onclick="fillBlank(this,'rd')">＿＿</span></td>
+            <td>→</td>
+            <td><span class="blank rd-blank" data-ans="Fe³⁺" data-id="rd6b" onclick="fillBlank(this,'rd')">＿＿</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="action-bar" id="action-rd" style="display:none;">
+    <button class="check-btn rd" onclick="checkFill('rd')">✅ 答え合わせ</button>
+    <button class="reset-btn" onclick="resetFill('rd')">↻ やり直す</button>
+  </div>
+
+  <div class="score-banner" id="score-rd">
+    <div class="stars" id="score-rd-stars"></div>
+    <div class="big" id="score-rd-num"></div>
+    <div class="msg" id="score-rd-msg"></div>
+  </div>
+
+</div><!-- /sec-rd -->
+
+
+<div class="next-actions">
+  <h3>🎉 穴埋め練習お疲れさま！</h3>
+  <p>次は半反応式をステップごとに作る練習へ進みましょう！</p>
+  <div class="links">
+    <a href="oxred_agent_half.html">⚗️ 半反応式ステッパーへ</a>
+    <a href="oxred_agent_lesson.html" class="sub">📖 レッスンへ戻る</a>
+    <a href="oxred_index.html" class="sub">📊 単元表へ</a>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+/* ============================================================
+   データ定義
+============================================================ */
+const OX_WORDS = [
+  {w:'MnO₄⁻', color:'#9333ea'},
+  {w:'Mn²⁺',  color:'#fce7f3'},
+  {w:'Cr₂O₇²⁻', color:'#f97316'},
+  {w:'Cr³⁺',  color:'#16a34a'},
+  {w:'H₂O₂'},
+  {w:'H₂O₂'},  // 酸性・中性塩基性の2行分
+  {w:'H₂O'},
+  {w:'OH⁻'},
+  {w:'HNO₃'},
+  {w:'HNO₃'},  // 希・濃の2行分
+  {w:'NO'},
+  {w:'NO₂',   color:'#b45309'},
+  {w:'H₂SO₄'},
+  {w:'SO₂'},
+  {w:'Cl₂',   color:'#65a30d'},
+  {w:'2Cl⁻'},
+];
+
+const RD_WORDS = [
+  {w:'H₂O₂'},
+  {w:'O₂'},
+  {w:'SO₂'},
+  {w:'SO₄²⁻'},
+  {w:'H₂S'},
+  {w:'S',     color:'#eab308'},
+  {w:'C₂O₄²⁻'},
+  {w:'2CO₂'},
+  {w:'2I⁻'},
+  {w:'I₂',    color:'#78350f'},
+  {w:'Fe²⁺'},
+  {w:'Fe³⁺'},
+];
+
+/* ============================================================
+   状態
+============================================================ */
+const state = {
+  ox: { selected: null, answers: {}, started: false },
+  rd: { selected: null, answers: {}, started: false },
+};
+
+/* ============================================================
+   タブ切り替え
+============================================================ */
+function showTab(t) {
+  document.getElementById('sec-ox').classList.toggle('active', t==='ox');
+  document.getElementById('sec-rd').classList.toggle('active', t==='rd');
+  document.getElementById('tab-ox').className = 'sec-tab' + (t==='ox' ? ' active-ox' : '');
+  document.getElementById('tab-rd').className = 'sec-tab' + (t==='rd' ? ' active-rd' : '');
+}
+
+/* ============================================================
+   チャレンジ開始
+============================================================ */
+function startChallenge(type) {
+  const words = type === 'ox' ? OX_WORDS : RD_WORDS;
+  state[type].started = true;
+  state[type].answers = {};
+  state[type].selected = null;
+
+  // 語群を表示
+  const pool = document.getElementById('pool-' + type);
+  pool.innerHTML = '';
+  // シャッフル
+  const shuffled = [...words].sort(() => Math.random() - .5);
+  shuffled.forEach(item => {
+    const chip = document.createElement('button');
+    chip.className = 'word-chip ' + type + '-chip';
+    chip.textContent = item.w;
+    chip.dataset.word = item.w;
+    if (item.color) {
+      chip.style.borderColor = item.color;
+      chip.style.color = item.color;
+    }
+    chip.onclick = () => selectWord(chip, type);
+    pool.appendChild(chip);
+  });
+
+  document.getElementById('pool-' + type + '-wrap').style.display = 'block';
+  document.getElementById('table-' + type + '-wrap').style.display = 'block';
+  document.getElementById('action-' + type).style.display = 'flex';
+  document.getElementById('ch-btn-' + type).disabled = true;
+
+  // 空欄をリセット
+  document.querySelectorAll('.' + type + '-blank').forEach(b => {
+    b.textContent = '＿＿';
+    b.className = 'blank ' + type + '-blank';
+    b.style.borderColor = '';
+    b.style.color = '';
+    b.style.background = '';
+    b.onclick = () => fillBlank(b, type);
+  });
+  document.getElementById('score-' + type).classList.remove('show');
+}
+
+/* ============================================================
+   語群の選択
+============================================================ */
+function selectWord(chip, type) {
+  if (chip.classList.contains('used')) return;
+  const pool = document.getElementById('pool-' + type);
+  pool.querySelectorAll('.word-chip').forEach(c => c.classList.remove('selected'));
+  if (state[type].selected === chip.dataset.word) {
+    state[type].selected = null;
+  } else {
+    state[type].selected = chip.dataset.word;
+    chip.classList.add('selected');
+  }
+}
+
+/* ============================================================
+   空欄を埋める
+============================================================ */
+function fillBlank(blank, type) {
+  if (blank.classList.contains('correct') || blank.classList.contains('wrong')) return;
+  const id = blank.dataset.id;
+
+  // 語句が選択されていない場合 → 取り消し
+  if (!state[type].selected) {
+    if (state[type].answers[id]) {
+      const removed = state[type].answers[id];
+      delete state[type].answers[id];
+      blank.textContent = '＿＿';
+      blank.className = 'blank ' + type + '-blank';
+      blank.style.borderColor = '';
+      blank.style.color = '';
+      blank.style.background = '';
+      blank.onclick = () => fillBlank(blank, type);
+      // 語群に戻す（used の1つだけを解除する）
+      const pool = document.getElementById('pool-' + type);
+      let restoredOne = false;
+      pool.querySelectorAll('.word-chip').forEach(c => {
+        if (!restoredOne && c.dataset.word === removed && c.classList.contains('used')) {
+          c.classList.remove('used');
+          restoredOne = true;
+        }
+      });
+    }
+    return;
+  }
+
+  // すでに埋まっていたら前の語を戻す
+  if (state[type].answers[id]) {
+    const old = state[type].answers[id];
+    const pool = document.getElementById('pool-' + type);
+    let restoredOld = false;
+    pool.querySelectorAll('.word-chip').forEach(c => {
+      if (!restoredOld && c.dataset.word === old && c.classList.contains('used')) {
+        c.classList.remove('used');
+        restoredOld = true;
+      }
+    });
+  }
+
+  // 埋める
+  const word = state[type].selected;
+  state[type].answers[id] = word;
+  blank.textContent = word;
+  blank.className = 'blank ' + type + '-blank filled';
+  // 色付き
+  const color = blank.dataset.color;
+  if (color) {
+    blank.style.borderColor = color;
+    blank.style.color = color;
+    blank.style.background = color + '18';
+  }
+
+  // 語群をused に（同じ語が複数あるとき、まだ使われていない1つだけをused にする）
+  const pool = document.getElementById('pool-' + type);
+  let markedOne = false;
+  pool.querySelectorAll('.word-chip').forEach(c => {
+    if (!markedOne && c.dataset.word === word && !c.classList.contains('used')) {
+      c.classList.remove('selected');
+      c.classList.add('used');
+      markedOne = true;
+    }
+  });
+  state[type].selected = null;
+}
+
+/* ============================================================
+   答え合わせ
+============================================================ */
+function checkFill(type) {
+  let total = 0, correct = 0;
+  document.querySelectorAll('.' + type + '-blank').forEach(b => {
+    total++;
+    b.onclick = null; // ロック
+    const ans = b.dataset.ans;
+    const filled = state[type].answers[b.dataset.id];
+    if (filled === ans) {
+      b.className = 'blank correct';
+      b.style.borderColor = '';
+      b.style.color = '';
+      b.style.background = '';
+      // 正解色で表示
+      const color = b.dataset.color;
+      if (color) {
+        b.style.color = color;
+        b.style.background = color + '18';
+        b.style.border = '2px solid ' + color;
+      }
+      correct++;
+    } else {
+      b.className = 'blank wrong';
+      b.style.borderColor = '';
+      b.style.color = '';
+      b.style.background = '';
+      if (!filled) {
+        b.textContent = '→ ' + ans;
+      } else {
+        b.textContent = filled + ' → ' + ans;
+      }
+    }
+  });
+  // 語群ロック
+  document.querySelectorAll('#pool-' + type + ' .word-chip').forEach(c => c.onclick = null);
+
+  const pct = correct / total;
+  const banner = document.getElementById('score-' + type);
+  let stars = '', msg = '';
+  if (pct === 1) {
+    stars = '🌟🌟🌟'; msg = '完璧です！全問正解おめでとう！';
+    launchConfetti(); setTimeout(launchConfetti, 700);
+  } else if (pct >= .8) {
+    stars = '⭐⭐🌟'; msg = 'よくできました！赤い欄を確認してもう一度！';
+  } else if (pct >= .5) {
+    stars = '⭐⭐'; msg = 'まだ半分以上あります。レッスンに戻って確認しよう。';
+  } else {
+    stars = '⭐'; msg = 'レッスンの一覧表をもう一度見てから再挑戦しよう！';
+  }
+  document.getElementById('score-' + type + '-stars').textContent = stars;
+  document.getElementById('score-' + type + '-num').textContent = correct + ' / ' + total + ' 正解';
+  document.getElementById('score-' + type + '-msg').textContent = msg;
+  banner.classList.add('show');
+  banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+/* ============================================================
+   リセット
+============================================================ */
+function resetFill(type) {
+  state[type].selected = null;
+  state[type].answers = {};
+  state[type].started = false;
+
+  // 語群を非表示
+  document.getElementById('pool-' + type + '-wrap').style.display = 'none';
+  document.getElementById('table-' + type + '-wrap').style.display = 'none';
+  document.getElementById('action-' + type).style.display = 'none';
+  document.getElementById('score-' + type).classList.remove('show');
+  document.getElementById('ch-btn-' + type).disabled = false;
+
+  // 空欄リセット
+  document.querySelectorAll('.' + type + '-blank').forEach(b => {
+    b.textContent = '＿＿';
+    b.className = 'blank ' + type + '-blank';
+    b.style.cssText = '';
+    b.onclick = () => fillBlank(b, type);
+  });
+}
+
+/* ============================================================
+   花吹雪
+============================================================ */
+function launchConfetti() {
+  const C = ['#f472b6','#facc15','#34d399','#60a5fa','#f87171','#a78bfa','#fb923c','#2dd4bf'];
+  for (let i = 0; i < 80; i++) {
+    const el = document.createElement('div');
+    const s = Math.random()*10+6, l = Math.random()*100;
+    const d = Math.random()*.6, r = Math.random()*1.2+1.2;
+    const c = C[Math.floor(Math.random()*C.length)];
+    const sh = Math.random()>.5 ? '50%' : '2px';
+    el.style.cssText = `position:fixed;top:-20px;left:${l}vw;width:${s}px;height:${s}px;background:${c};border-radius:${sh};opacity:1;pointer-events:none;z-index:9999;animation:confettiFall ${r}s ${d}s ease-in forwards;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), (r+d)*1000+200);
+  }
+}
+
+/* ============================================================
+   初期化
+============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  showTab('ox');
+});
+</script>
+</body>
+</html>

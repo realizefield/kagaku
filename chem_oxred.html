@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>化学基礎 酸化還元(1) | GAMBA化学</title>
+<style>
+:root{
+  --bg:#f0f4ff;--card:#fff;--primary:#2563eb;--primary-light:#dbeafe;
+  --primary-dark:#1e40af;--accent:#dc2626;--accent-light:#fee2e2;
+  --success:#16a34a;--success-light:#dcfce7;
+  --warn:#d97706;--warn-light:#fffbeb;
+  --text:#1e293b;--text-sub:#64748b;--border:#bfdbfe;--radius:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'BIZ UDPGothic','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+
+/* ── NAV ── */
+.topnav{display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;flex-wrap:wrap;}
+.topnav .brand{font-weight:700;font-size:.9em;}
+.topnav .sep{opacity:.4;}
+.topnav a{color:#bfdbfe;text-decoration:none;font-size:.82em;}
+.topnav a:hover{color:#fff;}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,#1e40af 0%,#2563eb 60%,#7c3aed 100%);color:#fff;padding:24px 20px 22px;text-shadow:0 1px 3px rgba(0,0,0,.3);}
+.hero .crumb{font-size:.75em;opacity:.7;margin-bottom:6px;letter-spacing:.05em;}
+.hero h1{font-size:clamp(1.4em,4vw,2em);font-weight:800;margin-bottom:6px;}
+.hero .stars{font-size:.7em;opacity:.8;}
+.hero .sub{font-size:.85em;opacity:.88;line-height:1.7;max-width:680px;}
+
+/* ── WRAP ── */
+.wrap{max-width:860px;margin:0 auto;padding:0;}
+main{padding:20px 14px 0;}
+
+/* ── UNIT BLOCK ── */
+.unit{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:24px;overflow:hidden;}
+.unit-title{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,var(--primary-light),#eff6ff);padding:12px 16px;font-weight:700;font-size:1.05em;border-bottom:1.5px solid var(--border);}
+.unit-title .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--primary);color:#fff;border-radius:8px;font-size:.88em;flex-shrink:0;}
+
+/* ── STAGE (read box) ── */
+.stage{padding:16px;}
+.stage-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.stage-label{font-size:.8em;font-weight:700;padding:4px 10px;border-radius:20px;background:var(--primary);color:#fff;}
+.read-box{background:#f8faff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;line-height:1.85;font-size:.95em;}
+.read-box p{margin-bottom:10px;}
+.read-box p:last-child{margin-bottom:0;}
+.read-box h4{color:var(--primary-dark);margin:16px 0 8px;border-left:4px solid var(--primary);padding-left:10px;font-size:.95em;}
+.read-box ul{margin:6px 0 6px 20px;line-height:1.9;}
+.read-box .kw-blank{font-weight:700;color:var(--primary);border-bottom:2px solid var(--primary);padding:0 2px;}
+
+/* ── FORMULA BOX ── */
+.formula-box{background:#fffbeb;border:2px solid var(--warn);border-radius:10px;padding:12px 16px;margin:12px 0;text-align:center;}
+.formula-box .formula{font-size:1.2em;font-weight:700;margin:6px 0;letter-spacing:.05em;}
+.formula-box .caption{font-size:.8em;color:var(--text-sub);}
+
+/* ── TABLE BOX ── */
+.tbl-wrap{overflow-x:auto;margin:12px 0;}
+table{border-collapse:collapse;width:100%;font-size:.88em;}
+th,td{border:1.5px solid #cbd5e1;padding:8px 12px;text-align:center;}
+th{background:var(--primary-light);font-weight:700;color:var(--primary-dark);}
+tr:nth-child(even) td{background:#f8faff;}
+
+/* ── POINT BOX ── */
+.point-box{background:#f0f9ff;border:2px solid #38bdf8;border-radius:10px;padding:12px 16px;margin:12px 0;}
+.point-box .label{display:inline-block;background:#0ea5e9;color:#fff;font-size:.78em;font-weight:700;padding:2px 10px;border-radius:20px;margin-bottom:8px;}
+.point-box ul{margin:0 0 0 18px;line-height:1.9;font-size:.9em;}
+.point-box.warn{background:var(--warn-light);border-color:var(--warn);}
+.point-box.warn .label{background:var(--warn);}
+.point-box.success{background:var(--success-light);border-color:var(--success);}
+.point-box.success .label{background:var(--success);}
+
+/* ── MINITEST ── */
+.minitest-block{background:#fafafa;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;margin:14px 0;}
+.mt-block-title{font-weight:700;font-size:.9em;color:var(--primary-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.minitest,.q4{margin-bottom:16px;}
+.mt-stem,.q4-stem{font-size:.93em;font-weight:600;margin-bottom:8px;line-height:1.6;}
+.mt-num,.q4-num{display:inline-flex;align-items:center;justify-content:center;background:var(--primary);color:#fff;font-size:.75em;padding:2px 8px;border-radius:5px;margin-right:6px;font-weight:700;}
+.mt-choices{display:flex;gap:8px;margin-bottom:6px;}
+.mt-c{font-family:inherit;flex:1;padding:10px;border-radius:8px;border:2px solid #cbd5e1;background:#fff;font-size:.95em;font-weight:700;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;}
+.mt-c:hover{border-color:var(--primary);background:var(--primary-light);}
+.mt-c.correct{background:var(--success);border-color:var(--success);color:#fff;}
+.mt-c.wrong{background:var(--accent);border-color:var(--accent);color:#fff;}
+.mt-c.disabled{cursor:default;}
+.q4-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
+.q4-c{font-family:inherit;padding:10px 12px;border-radius:8px;border:2px solid #cbd5e1;background:#fff;font-size:.85em;font-weight:600;cursor:pointer;text-align:left;transition:all .15s;-webkit-tap-highlight-color:transparent;line-height:1.4;}
+.q4-c:hover{border-color:var(--primary);background:var(--primary-light);}
+.q4-c.correct{background:var(--success);border-color:var(--success);color:#fff;}
+.q4-c.wrong{background:var(--accent);border-color:var(--accent);color:#fff;}
+.q4-c.disabled{cursor:default;}
+.mt-exp,.q4-exp{display:none;font-size:.85em;background:#f0fdf4;border-left:4px solid var(--success);padding:10px 14px;border-radius:0 8px 8px 0;line-height:1.7;margin-top:4px;}
+.mt-exp.show,.q4-exp.show{display:block;}
+.mt-block-result{font-weight:700;text-align:center;margin:10px 0 6px;font-size:.95em;color:var(--primary);}
+.mt-block-reset{font-family:inherit;background:var(--primary-light);color:var(--primary-dark);border:1.5px solid var(--border);padding:8px 20px;border-radius:50px;cursor:pointer;font-size:.82em;font-weight:700;transition:.2s;}
+.mt-block-reset:hover{background:var(--border);}
+
+/* ── NEXT ACTIONS ── */
+.next-actions{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:2px solid var(--border);border-radius:var(--radius);padding:20px;margin:24px 14px 0;text-align:center;}
+.next-actions h3{color:var(--primary-dark);margin-bottom:8px;font-size:1.1em;}
+.next-actions p{font-size:.88em;color:var(--text-sub);margin-bottom:14px;}
+.next-actions .links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.next-actions a{text-decoration:none;padding:10px 18px;border-radius:8px;font-size:.88em;font-weight:700;background:var(--primary);color:#fff;transition:.15s;}
+.next-actions a:hover{background:var(--primary-dark);}
+.next-actions a.sub{background:#fff;color:var(--primary);border:1.5px solid var(--border);}
+.next-actions a.sub:hover{background:var(--primary-light);}
+
+/* ── PAGENAV ── */
+.pagenav{display:flex;gap:0;margin:20px 14px 0;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.pagenav a{flex:1;display:flex;flex-direction:column;padding:12px 14px;text-decoration:none;background:#fff;border-right:1.5px solid var(--border);transition:.15s;}
+.pagenav a:last-child{border-right:none;}
+.pagenav a:hover{background:var(--primary-light);}
+.pagenav a.next{text-align:right;}
+.pagenav .label{font-size:.72em;color:var(--text-sub);font-weight:600;}
+.pagenav .title{font-size:.88em;font-weight:700;color:var(--primary-dark);margin-top:2px;}
+
+/* ── OXIDATION NUMBER VISUAL ── */
+.oxnum-visual{display:flex;align-items:center;justify-content:center;gap:16px;padding:14px;background:#f8faff;border-radius:10px;margin:12px 0;flex-wrap:wrap;}
+.oxnum-atom{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.atom-circle{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1em;border:3px solid;}
+.atom-circle.ox{background:#fee2e2;border-color:#dc2626;color:#dc2626;}
+.atom-circle.red{background:#dcfce7;border-color:#16a34a;color:#16a34a;}
+.atom-circle.neutral{background:#f1f5f9;border-color:#94a3b8;color:#1e293b;}
+.atom-num{font-size:.75em;font-weight:700;padding:2px 8px;border-radius:10px;}
+.atom-num.ox{background:#fee2e2;color:#dc2626;}
+.atom-num.red{background:#dcfce7;color:#16a34a;}
+.atom-label{font-size:.72em;color:var(--text-sub);}
+.arrow-big{font-size:1.6em;color:#94a3b8;}
+
+/* ── RULES TABLE ── */
+.rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
+.rule-card{background:#fff;border:2px solid var(--border);border-radius:10px;padding:12px;}
+.rule-card .rule-num{font-size:.72em;font-weight:700;color:var(--primary);margin-bottom:4px;}
+.rule-card .rule-body{font-size:.88em;line-height:1.6;}
+.rule-card .rule-ex{font-size:.8em;color:var(--text-sub);margin-top:4px;border-top:1px dashed #e2e8f0;padding-top:4px;}
+
+@media(max-width:520px){
+  .q4-choices{grid-template-columns:1fr;}
+  .rules-grid{grid-template-columns:1fr;}
+  .oxnum-atom .atom-circle{width:44px;height:44px;font-size:.95em;}
+}
+
+/* ── 花吹雪 ── */
+@keyframes confettiFall{
+  0%  {transform:translateY(0) rotate(0deg);   opacity:1;}
+  80% {opacity:1;}
+  100%{transform:translateY(105vh) rotate(720deg); opacity:0;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">⚗️ GAMBA 化学</span>
+  <span class="sep">|</span>
+  <a href="chem_oxred_index.html">📊 単元表</a>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="crumb">化学基礎 / 酸化還元(1)</div>
+  <h1>酸化還元(1) <span class="stars">★★☆</span></h1>
+  <p class="sub">酸化数の定義と計算・酸化還元の定義・酸化剤と還元剤の見分け方を学びます。高校化学で最も重要な単元のひとつです。</p>
+</header>
+
+<main>
+
+<!-- ====================================================== -->
+<!--  単元1：酸化数の決め方                                  -->
+<!-- ====================================================== -->
+<div class="unit">
+  <div class="unit-title"><span class="num">1</span>酸化数の決め方</div>
+
+  <div class="stage">
+    <div class="stage-head">
+      <span class="stage-label">📖 説明</span>
+    </div>
+
+    <div class="read-box">
+      <p><strong>酸化数</strong>とは、原子がどれだけ「酸化されているか」を数値で表したものです。<br>以下の5つのルールで決まります。</p>
+
+      <div class="rules-grid">
+        <div class="rule-card">
+          <div class="rule-num">ルール①</div>
+          <div class="rule-body"><strong>単体</strong>中の原子の酸化数は <strong>0</strong></div>
+          <div class="rule-ex">例：Cl₂, O₂, Fe → すべて <strong>0</strong></div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">ルール②</div>
+          <div class="rule-body"><strong>単原子イオン</strong>の酸化数はイオンの電荷と同じ</div>
+          <div class="rule-ex">例：Cu²⁺ → <strong>+2</strong>、Cl⁻ → <strong>−1</strong></div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">ルール③</div>
+          <div class="rule-body">化合物中の <strong>H は +1</strong>、<strong>O は −2</strong><br>（例外：NaH の H は −1、H₂O₂ の O は −1）</div>
+          <div class="rule-ex">原則としてH=+1, O=−2 を使う</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">ルール④</div>
+          <div class="rule-body"><strong>化合物</strong>中の原子の酸化数の <strong>総和 = 0</strong></div>
+          <div class="rule-ex">例：CuO → Cu(+2) + O(−2) = 0 ✓</div>
+        </div>
+        <div class="rule-card" style="grid-column:1/-1;">
+          <div class="rule-num">ルール⑤</div>
+          <div class="rule-body"><strong>多原子イオン</strong>中の原子の酸化数の合計 = <strong>イオンの電荷</strong></div>
+          <div class="rule-ex">例：SO₄²⁻ → S(+6) + O(−2)×4 = −2 ✓　 → Sの酸化数 = <strong>+6</strong></div>
+        </div>
+      </div>
+
+      <h4>▶ 例題：KMnO₄ の Mn の酸化数</h4>
+      <p>Kの酸化数 = +1（ルール②より）、O = −2 なので</p>
+      <p style="text-align:center;font-size:1.05em;font-weight:600;margin:8px 0;">(+1) + x + (−2)×4 = 0 　→　 x = <span style="color:#dc2626;">+7</span></p>
+    </div>
+
+    <div class="point-box">
+      <span class="label">★ 覚えよう！</span>
+      <ul>
+        <li>単体の酸化数 = 0（H₂, O₂, Fe, Cu など）</li>
+        <li>化合物中：H = +1（例外あり）、O = −2（例外あり）</li>
+        <li>化合物の酸化数の総和 = 0、イオンなら = 電荷</li>
+        <li>求める元素の酸化数を x とおいて計算する</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ミニテスト1 -->
+  <div class="stage">
+    <div class="minitest-block">
+      <div class="mt-block-title">✏️ ミニテスト（全4問）</div>
+
+      <div class="q4" data-correct="b">
+        <div class="q4-stem"><span class="q4-num">問1</span>単体の Cl₂ 中の Cl の酸化数はいくらか。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：−1</button>
+          <button class="q4-c" data-v="b">イ：0</button>
+          <button class="q4-c" data-v="c">ウ：+1</button>
+          <button class="q4-c" data-v="d">エ：+7</button>
+        </div>
+        <div class="q4-exp">正解は<strong>イ：0</strong>。単体の酸化数はルール①より必ず <strong>0</strong> です。Cl₂ は単体(同じ原子が結合)なので Cl の酸化数 = 0。</div>
+      </div>
+
+      <div class="q4" data-correct="c">
+        <div class="q4-stem"><span class="q4-num">問2</span>NH₃ 中の N の酸化数はいくらか。H = +1 とする。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：+3</button>
+          <button class="q4-c" data-v="b">イ：0</button>
+          <button class="q4-c" data-v="c">ウ：−3</button>
+          <button class="q4-c" data-v="d">エ：−1</button>
+        </div>
+        <div class="q4-exp">正解は<strong>ウ：−3</strong>。N の酸化数を x とすると、x + (+1)×3 = 0 → x = <strong>−3</strong>。</div>
+      </div>
+
+      <div class="q4" data-correct="d">
+        <div class="q4-stem"><span class="q4-num">問3</span>HNO₃ 中の N の酸化数はいくらか。H = +1, O = −2 とする。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：−3</button>
+          <button class="q4-c" data-v="b">イ：+3</button>
+          <button class="q4-c" data-v="c">ウ：+4</button>
+          <button class="q4-c" data-v="d">エ：+5</button>
+        </div>
+        <div class="q4-exp">正解は<strong>エ：+5</strong>。x を N の酸化数とすると、(+1) + x + (−2)×3 = 0 → x = <strong>+5</strong>。</div>
+      </div>
+
+      <div class="q4" data-correct="a">
+        <div class="q4-stem"><span class="q4-num">問4</span>SO₄²⁻ 中の S の酸化数はいくらか。O = −2 とする。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：+6</button>
+          <button class="q4-c" data-v="b">イ：+4</button>
+          <button class="q4-c" data-v="c">ウ：−2</button>
+          <button class="q4-c" data-v="d">エ：+2</button>
+        </div>
+        <div class="q4-exp">正解は<strong>ア：+6</strong>。多原子イオンなので x + (−2)×4 = −2 → x = <strong>+6</strong>。</div>
+      </div>
+
+      <div class="mt-block-result"></div>
+      <div style="text-align:center;"><button class="mt-block-reset">↻ もう一度</button></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ====================================================== -->
+<!--  単元2：酸化還元の定義                                  -->
+<!-- ====================================================== -->
+<div class="unit">
+  <div class="unit-title"><span class="num">2</span>酸化還元の定義</div>
+
+  <div class="stage">
+    <div class="stage-head">
+      <span class="stage-label">📖 説明</span>
+    </div>
+
+    <div class="read-box">
+      <p>「酸化」と「還元」は4つの観点から定義できます。<strong>酸化数の変化</strong>が最も重要です。</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <tr><th></th><th>酸化数</th><th>電子を</th><th>水素を</th><th>酸素を</th></tr>
+          <tr><td style="font-weight:700;color:#dc2626;">酸化</td><td><strong>増える</strong></td><td>はなす</td><td>はなす</td><td>もらう</td></tr>
+          <tr><td style="font-weight:700;color:#16a34a;">還元</td><td><strong>減る</strong></td><td>もらう</td><td>もらう</td><td>はなす</td></tr>
+        </table>
+      </div>
+
+      <div class="oxnum-visual">
+        <div class="oxnum-atom">
+          <div class="atom-circle ox">Zn</div>
+          <div class="atom-num ox">0 → +2</div>
+          <div class="atom-label">酸化された</div>
+        </div>
+        <div class="arrow-big">⇄</div>
+        <div class="oxnum-atom">
+          <div class="atom-circle red">Cu²⁺</div>
+          <div class="atom-num red">+2 → 0</div>
+          <div class="atom-label">還元された</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:.85em;color:var(--text-sub);">▲ CuSO₄ 水溶液に亜鉛板を浸す例（Zn＋Cu²⁺→Zn²⁺＋Cu）</p>
+
+      <h4>▶ 重要ポイント</h4>
+      <p>酸化と還元は<strong>必ず同時に起こります</strong>。ある物質が酸化されるとき、別の物質が必ず還元されています（電子の授受が起こるから）。</p>
+
+      <h4>▶ 例題：H₂S ＋ O₂ → S ＋ H₂O</h4>
+      <p>H₂S 中の S：−2 → 単体 S：0 ＝ <span style="color:#dc2626;font-weight:700;">酸化数が増えた → 酸化</span></p>
+      <p>O₂ 中の O：0 → H₂O 中の O：−2 ＝ <span style="color:#16a34a;font-weight:700;">酸化数が減った → 還元</span></p>
+    </div>
+
+    <div class="point-box">
+      <span class="label">★ 覚えよう！</span>
+      <ul>
+        <li>酸化数が<strong>増える</strong> → 酸化された</li>
+        <li>酸化数が<strong>減る</strong> → 還元された</li>
+        <li>酸化と還元は<strong>同時に</strong>起こる（酸化還元反応）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ミニテスト2 -->
+  <div class="stage">
+    <div class="minitest-block">
+      <div class="mt-block-title">✏️ ミニテスト（全3問）</div>
+
+      <div class="minitest" data-correct="o">
+        <div class="mt-stem"><span class="mt-num">問1</span>酸化とは、酸化数が増える変化のことである。</div>
+        <div class="mt-choices">
+          <button class="mt-c" data-v="o">○</button>
+          <button class="mt-c" data-v="x">×</button>
+        </div>
+        <div class="mt-exp">○ 正解です。酸化数が増える = 酸化、酸化数が減る = 還元。これが最も基本的な定義です。</div>
+      </div>
+
+      <div class="minitest" data-correct="o">
+        <div class="mt-stem"><span class="mt-num">問2</span>酸化と還元は、常に同時に起こる。</div>
+        <div class="mt-choices">
+          <button class="mt-c" data-v="o">○</button>
+          <button class="mt-c" data-v="x">×</button>
+        </div>
+        <div class="mt-exp">○ 正解。電子は「渡す側」と「受け取る側」が必ずセットで存在します。片方だけの酸化・還元はありません。</div>
+      </div>
+
+      <div class="q4" data-correct="c">
+        <div class="q4-stem"><span class="q4-num">問3</span>次の反応 2Mg + O₂ → 2MgO で、酸化された物質はどれか。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：O₂</button>
+          <button class="q4-c" data-v="b">イ：MgO</button>
+          <button class="q4-c" data-v="c">ウ：Mg</button>
+          <button class="q4-c" data-v="d">エ：酸化還元反応ではない</button>
+        </div>
+        <div class="q4-exp">正解は<strong>ウ：Mg</strong>。Mg は単体(酸化数0)→ MgO 中(酸化数+2)と酸化数が<strong>増えた</strong>ので「酸化された」。O₂ は 0 → −2 と<strong>減った</strong>ので「還元された」。</div>
+      </div>
+
+      <div class="mt-block-result"></div>
+      <div style="text-align:center;"><button class="mt-block-reset">↻ もう一度</button></div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- ====================================================== -->
+<!--  ❓ なぜ？図解コーナー：水素と酸化・還元                  -->
+<!-- ====================================================== -->
+<div class="unit" id="why-hydrogen">
+  <div class="unit-title" style="background:linear-gradient(90deg,#fef9c3,#fff);">
+    <span class="num" style="background:#d97706;">?</span>
+    なぜ「水素を離すと酸化」なのか？ ― 図解で納得
+  </div>
+  <div class="stage" style="padding:0;">
+    <style>
+    .why-wrap{padding:1rem 0.75rem 1.25rem;font-family:'BIZ UDPGothic','Meiryo',sans-serif;}
+    .why-step-nav{display:flex;gap:8px;justify-content:center;margin-bottom:1.25rem;}
+    .why-dot{width:10px;height:10px;border-radius:50%;border:2px solid #cbd5e1;background:transparent;cursor:pointer;transition:all .2s;padding:0;}
+    .why-dot.active{background:#d97706;border-color:#d97706;}
+    .why-panel{display:none;}
+    .why-panel.active{display:block;}
+    .why-nav-btns{display:flex;justify-content:center;gap:12px;margin-top:1.25rem;}
+    .why-nav-btns button{font-family:inherit;font-size:.82em;padding:6px 18px;border-radius:50px;border:1.5px solid #cbd5e1;background:#fff;cursor:pointer;color:#1e293b;transition:.15s;}
+    .why-nav-btns button:hover{background:#f1f5f9;}
+    .why-nav-btns button:disabled{opacity:.35;cursor:default;}
+    .why-step-lbl{font-size:.8em;color:#64748b;align-self:center;min-width:60px;text-align:center;}
+    .why-eq{background:#fffbeb;border:1.5px solid #fcd34d;border-radius:10px;padding:10px 14px;margin:10px 0;}
+    .why-eq .big{font-size:1.05em;font-weight:700;text-align:center;margin:4px 0;}
+    .why-eq .sm{font-size:.82em;color:#92400e;text-align:center;margin-top:4px;}
+    .why-key{font-size:.9em;line-height:1.8;margin:8px 0;}
+    .why-key .ox{color:#dc2626;font-weight:700;}
+    .why-key .rd{color:#16a34a;font-weight:700;}
+    .why-summary{background:#f8faff;border:1.5px solid #bfdbfe;border-radius:10px;overflow:hidden;margin:8px 0;}
+    .why-summary table{width:100%;border-collapse:collapse;font-size:.86em;}
+    .why-summary th{background:#dbeafe;padding:7px 10px;font-weight:700;color:#1e40af;text-align:left;border-bottom:1.5px solid #bfdbfe;}
+    .why-summary td{padding:7px 10px;vertical-align:middle;border-bottom:1px solid #e2e8f0;}
+    .why-summary tr:last-child td{border-bottom:none;}
+    .pill-ox{display:inline-block;background:#fee2e2;color:#991b1b;font-size:.78em;font-weight:700;padding:2px 10px;border-radius:20px;}
+    .pill-rd{display:inline-block;background:#dcfce7;color:#14532d;font-size:.78em;font-weight:700;padding:2px 10px;border-radius:20px;}
+    .why-tip{background:#f0fdf4;border-left:4px solid #16a34a;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:.88em;line-height:1.7;}
+    </style>
+    <div class="why-wrap">
+      <div class="why-step-nav" id="wdots"></div>
+      <div id="wpanels">
+
+        <!-- Step 0: H₂Sの結合 -->
+        <div class="why-panel active" id="wp0">
+          <svg width="100%" viewBox="0 0 680 255" role="img">
+            <title>H₂Sの結合と電気陰性度</title>
+            <desc>硫黄と水素の電気陰性度の差で電子がS側に偏る</desc>
+            <defs><marker id="warr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="15" font-weight="700" fill="#1e293b" x="340" y="30" text-anchor="middle">H₂S の結合の中を見てみよう</text>
+            <circle cx="340" cy="145" r="46" fill="#ccfbf1" stroke="#0f766e" stroke-width="1.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="18" font-weight="700" fill="#0f766e" x="340" y="141" text-anchor="middle" dominant-baseline="central">S</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="12" fill="#0f766e" x="340" y="160" text-anchor="middle">酸化数 −2</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="11" fill="#64748b" x="340" y="205" text-anchor="middle">電気陰性度 2.6（大きい）</text>
+            <circle cx="152" cy="145" r="33" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="15" font-weight="700" fill="#1e293b" x="152" y="141" text-anchor="middle" dominant-baseline="central">H</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="12" fill="#64748b" x="152" y="159" text-anchor="middle">+1</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="11" fill="#64748b" x="152" y="192" text-anchor="middle">電気陰性度 2.2（小さい）</text>
+            <circle cx="528" cy="145" r="33" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="15" font-weight="700" fill="#1e293b" x="528" y="141" text-anchor="middle" dominant-baseline="central">H</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="12" fill="#64748b" x="528" y="159" text-anchor="middle">+1</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="11" fill="#64748b" x="528" y="192" text-anchor="middle">電気陰性度 2.2（小さい）</text>
+            <line x1="187" y1="145" x2="292" y2="145" stroke="#94a3b8" stroke-width="2.5"/>
+            <line x1="388" y1="145" x2="493" y2="145" stroke="#94a3b8" stroke-width="2.5"/>
+            <path d="M215 120 Q274 103 305 123" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#warr)"/>
+            <path d="M465 120 Q406 103 375 123" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#warr)"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="11" fill="#d97706" x="340" y="103" text-anchor="middle">電子が S 側に引き寄せられる</text>
+          </svg>
+          <p class="why-key">H は電気陰性度が <span class="ox">小さい（2.2）</span>、S は <span class="rd">2.6 と大きい</span>。<br>→ 結合中の電子は常に <strong>S 側に偏っており</strong>、H は「+1 の状態」で S にくっついています。</p>
+        </div>
+
+        <!-- Step 1: H が離れる → 酸化 -->
+        <div class="why-panel" id="wp1">
+          <svg width="100%" viewBox="0 0 680 270" role="img">
+            <title>Hが離れるときの酸化の仕組み</title>
+            <desc>水素が電子を道連れにして去り硫黄の酸化数が増える</desc>
+            <defs><marker id="warr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="15" font-weight="700" fill="#1e293b" x="340" y="28" text-anchor="middle">H が離れるとき ―「電子を道連れにする」</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="13" font-weight="700" fill="#1e293b" x="340" y="56" text-anchor="middle">H₂S → S + 2H⁺ + 2e⁻</text>
+            <line x1="60" y1="72" x2="620" y2="72" stroke="#e2e8f0" stroke-width="0.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="11" fill="#64748b" x="165" y="93" text-anchor="middle">反応前</text>
+            <circle cx="165" cy="155" r="38" fill="#ccfbf1" stroke="#0f766e" stroke-width="1.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="16" font-weight="700" fill="#0f766e" x="165" y="151" text-anchor="middle" dominant-baseline="central">S</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="12" fill="#0f766e" x="165" y="168" text-anchor="middle">−2</text>
+            <circle cx="74" cy="155" r="26" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="14" font-weight="700" fill="#1e293b" x="74" y="155" text-anchor="middle" dominant-baseline="central">H</text>
+            <line x1="102" y1="155" x2="125" y2="155" stroke="#94a3b8" stroke-width="2"/>
+            <circle cx="256" cy="155" r="26" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="14" font-weight="700" fill="#1e293b" x="256" y="155" text-anchor="middle" dominant-baseline="central">H</text>
+            <line x1="205" y1="155" x2="228" y2="155" stroke="#94a3b8" stroke-width="2"/>
+            <line x1="310" y1="155" x2="356" y2="155" stroke="#1e293b" stroke-width="1.5" marker-end="url(#warr2)"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="11" fill="#64748b" x="505" y="93" text-anchor="middle">反応後</text>
+            <circle cx="405" cy="155" r="38" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="16" font-weight="700" fill="#dc2626" x="405" y="151" text-anchor="middle" dominant-baseline="central">S</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="12" fill="#dc2626" x="405" y="168" text-anchor="middle">0</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="11" fill="#dc2626" x="405" y="205" text-anchor="middle">酸化数 +2 増加 → 酸化！</text>
+            <circle cx="522" cy="132" r="24" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="13" font-weight="700" fill="#92400e" x="522" y="132" text-anchor="middle" dominant-baseline="central">H⁺</text>
+            <circle cx="588" cy="132" r="24" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="13" font-weight="700" fill="#92400e" x="588" y="132" text-anchor="middle" dominant-baseline="central">e⁻</text>
+            <circle cx="522" cy="185" r="24" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="13" font-weight="700" fill="#92400e" x="522" y="185" text-anchor="middle" dominant-baseline="central">H⁺</text>
+            <circle cx="588" cy="185" r="24" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="13" font-weight="700" fill="#92400e" x="588" y="185" text-anchor="middle" dominant-baseline="central">e⁻</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="11" fill="#d97706" x="555" y="223" text-anchor="middle">電子を連れて去る</text>
+            <path d="M445 144 Q482 132 496 132" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#warr2)"/>
+            <path d="M445 167 Q482 178 496 179" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#warr2)"/>
+          </svg>
+          <div class="why-eq">
+            <div class="big">水素は電子を道連れにする</div>
+            <div class="sm">→ 残った S から電子が奪われる → S の酸化数が増える（−2 → 0）→ <strong>酸化！</strong></div>
+          </div>
+        </div>
+
+        <!-- Step 2: H を受け取る → 還元 -->
+        <div class="why-panel" id="wp2">
+          <svg width="100%" viewBox="0 0 680 260" role="img">
+            <title>Hを受け取るときの還元の仕組み</title>
+            <desc>窒素が水素を受け取り酸化数が0から−3に減少して還元される</desc>
+            <defs><marker id="warr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="15" font-weight="700" fill="#1e293b" x="340" y="28" text-anchor="middle">H を受け取ると ―「+1 を押しつけられる」</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="13" font-weight="700" fill="#1e293b" x="340" y="56" text-anchor="middle">N₂ + 3H₂ → 2NH₃</text>
+            <line x1="60" y1="72" x2="620" y2="72" stroke="#e2e8f0" stroke-width="0.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="11" fill="#64748b" x="136" y="93" text-anchor="middle">反応前</text>
+            <circle cx="136" cy="158" r="38" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="16" font-weight="700" fill="#7c3aed" x="136" y="154" text-anchor="middle" dominant-baseline="central">N</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="12" fill="#7c3aed" x="136" y="171" text-anchor="middle">0</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="11" fill="#64748b" x="136" y="210" text-anchor="middle">単体：酸化数 0</text>
+            <circle cx="238" cy="135" r="22" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="12" font-weight="700" fill="#92400e" x="238" y="135" text-anchor="middle" dominant-baseline="central">H⁺</text>
+            <circle cx="278" cy="160" r="22" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="12" font-weight="700" fill="#92400e" x="278" y="160" text-anchor="middle" dominant-baseline="central">H⁺</text>
+            <circle cx="238" cy="187" r="22" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="12" font-weight="700" fill="#92400e" x="238" y="187" text-anchor="middle" dominant-baseline="central">H⁺</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="11" fill="#d97706" x="258" y="222" text-anchor="middle">+1 が押しよせてくる</text>
+            <path d="M224 147 Q194 152 178 156" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#warr3)"/>
+            <path d="M256 160 Q214 160 178 160" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#warr3)"/>
+            <path d="M224 177 Q194 170 178 164" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#warr3)"/>
+            <line x1="320" y1="158" x2="368" y2="158" stroke="#1e293b" stroke-width="1.5" marker-end="url(#warr3)"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="11" fill="#64748b" x="508" y="93" text-anchor="middle">反応後</text>
+            <circle cx="508" cy="158" r="38" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="16" font-weight="700" fill="#16a34a" x="508" y="154" text-anchor="middle" dominant-baseline="central">N</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="12" fill="#16a34a" x="508" y="171" text-anchor="middle">−3</text>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="11" fill="#16a34a" x="508" y="210" text-anchor="middle">酸化数 −3 → 還元！</text>
+            <circle cx="452" cy="130" r="19" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="12" fill="#1e293b" x="452" y="130" text-anchor="middle" dominant-baseline="central">H</text>
+            <circle cx="564" cy="130" r="19" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="12" fill="#1e293b" x="564" y="130" text-anchor="middle" dominant-baseline="central">H</text>
+            <circle cx="508" cy="206" r="19" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+            <text font-family="'BIZ UDPGothic',sans-serif" font-size="12" fill="#1e293b" x="508" y="206" text-anchor="middle" dominant-baseline="central">H</text>
+            <line x1="473" y1="141" x2="487" y2="147" stroke="#94a3b8" stroke-width="1.5"/>
+            <line x1="547" y1="141" x2="533" y2="147" stroke="#94a3b8" stroke-width="1.5"/>
+          </svg>
+          <div class="why-eq">
+            <div class="big">H（+1）が来ると相手は相対的にマイナスに引っ張られる</div>
+            <div class="sm">→ N の酸化数が減る（0 → −3）→ <strong>還元！</strong></div>
+          </div>
+        </div>
+
+        <!-- Step 3: まとめ -->
+        <div class="why-panel" id="wp3">
+          <div class="why-summary">
+            <table>
+              <tr>
+                <th>水素（H）の動き</th>
+                <th>何が起きるか</th>
+                <th>酸化数</th>
+                <th>結果</th>
+              </tr>
+              <tr>
+                <td><strong>H を離す</strong><br><span style="font-size:.8em;color:#64748b;">H₂S → S + 2H⁺ + 2e⁻</span></td>
+                <td><span class="ox">電子を道連れに H が去る</span><br>→ 相手の電子が減る</td>
+                <td><span class="ox">増える</span></td>
+                <td><span class="pill-ox">酸化</span></td>
+              </tr>
+              <tr>
+                <td><strong>H を受け取る</strong><br><span style="font-size:.8em;color:#64748b;">N₂ + 3H₂ → 2NH₃</span></td>
+                <td><span class="rd">+1 の H がくっついてくる</span><br>→ 相対的にマイナスに</td>
+                <td><span class="rd">減る</span></td>
+                <td><span class="pill-rd">還元</span></td>
+              </tr>
+            </table>
+          </div>
+          <div class="why-eq" style="margin-top:12px;">
+            <div class="big">H の電気陰性度は小さい（2.2）</div>
+            <div class="sm">→ 離れるとき <strong>電子を道連れにする</strong> → 相手の酸化数が増える → 酸化</div>
+            <div class="sm">→ くっつくとき <strong>+1 を押しつける</strong> → 相手の酸化数が減る → 還元</div>
+          </div>
+          <div class="why-tip">
+            <strong>迷ったら：</strong>「H の酸化数は +1」という1行に戻ればOK。<br>
+            H が来れば +1 が増えて相手はマイナスに → 還元。H が去れば +1 が減って相手はプラスに → 酸化。
+          </div>
+        </div>
+
+      </div><!-- /wpanels -->
+      <div class="why-nav-btns">
+        <button id="wbtnP" onclick="wgo(-1)" disabled>← 前へ</button>
+        <span class="why-step-lbl" id="wlbl"></span>
+        <button id="wbtnN" onclick="wgo(1)">次へ →</button>
+      </div>
+    </div><!-- /why-wrap -->
+
+    <script>
+    (function(){
+      var WTITLES=["① H₂S の結合","② H が離れる（酸化）","③ H を受け取る（還元）","④ まとめ"];
+      var wc=0;
+      var wpanels=document.querySelectorAll('.why-panel');
+      var wdots=document.getElementById('wdots');
+      var wlbl=document.getElementById('wlbl');
+      var wbtnP=document.getElementById('wbtnP');
+      var wbtnN=document.getElementById('wbtnN');
+      WTITLES.forEach(function(_,i){
+        var d=document.createElement('button');
+        d.className='why-dot'+(i===0?' active':'');
+        d.setAttribute('aria-label',WTITLES[i]);
+        d.onclick=function(){wshow(i);};
+        wdots.appendChild(d);
+      });
+      function wshow(n){
+        wpanels[wc].classList.remove('active');
+        wdots.children[wc].classList.remove('active');
+        wc=n;
+        wpanels[wc].classList.add('active');
+        wdots.children[wc].classList.add('active');
+        wlbl.textContent=(wc+1)+' / '+WTITLES.length;
+        wbtnP.disabled=(wc===0);
+        wbtnP.style.opacity=wc===0?'0.35':'1';
+        wbtnN.disabled=(wc===WTITLES.length-1);
+        wbtnN.style.opacity=wc===WTITLES.length-1?'0.35':'1';
+        wbtnN.textContent=wc===WTITLES.length-2?'まとめへ →':wc===WTITLES.length-1?'完了':'次へ →';
+      }
+      window.wgo=function(d){if(wc+d>=0&&wc+d<WTITLES.length)wshow(wc+d);};
+      wshow(0);
+    })();
+    </script>
+  </div><!-- /stage -->
+</div><!-- /unit -->
+
+<!-- ====================================================== -->
+<!--  単元3：酸化剤・還元剤                                  -->
+<!-- ====================================================== -->
+<div class="unit">
+  <div class="unit-title"><span class="num">3</span>酸化剤と還元剤</div>
+
+  <div class="stage">
+    <div class="stage-head">
+      <span class="stage-label">📖 説明</span>
+    </div>
+
+    <div class="read-box">
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>名称</th><th>はたらき</th><th>自身はどうなる</th><th>酸化数</th></tr>
+          <tr>
+            <td style="font-weight:700;color:#dc2626;">酸化剤</td>
+            <td>相手を<strong>酸化</strong>する</td>
+            <td>自身は<strong>還元</strong>される</td>
+            <td>減る</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:#16a34a;">還元剤</td>
+            <td>相手を<strong>還元</strong>する</td>
+            <td>自身は<strong>酸化</strong>される</td>
+            <td>増える</td>
+          </tr>
+        </table>
+      </div>
+
+      <h4>▶ 重要な酸化剤・還元剤の一覧</h4>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>代表的な酸化剤</th><th>代表的な還元剤</th></tr>
+          <tr><td>KMnO₄（過マンガン酸カリウム）</td><td>H₂（水素）</td></tr>
+          <tr><td>K₂Cr₂O₇（ニクロム酸カリウム）</td><td>H₂S（硫化水素）</td></tr>
+          <tr><td>H₂O₂（過酸化水素）</td><td>SO₂（二酸化硫黄）</td></tr>
+          <tr><td>Cl₂（塩素）</td><td>Na, Mg, Zn, Fe（金属単体）</td></tr>
+          <tr><td>HNO₃（硝酸）</td><td>シュウ酸 (COOH)₂</td></tr>
+          <tr><td>H₂SO₄（濃硫酸）</td><td>H₂O₂（二面性：還元剤にもなる）</td></tr>
+        </table>
+      </div>
+
+      <div class="point-box warn">
+        <span class="label">⚠️ 注意！ H₂O₂ の二面性</span>
+        <ul>
+          <li><strong>通常：酸化剤</strong>（過酸化水素が電子を受け取る）</li>
+          <li><strong>KMnO₄ と反応するとき：還元剤</strong>（KMnO₄ の方が強力な酸化剤のため）</li>
+        </ul>
+      </div>
+
+      <h4>▶ 例題：H₂O₂ ＋ 2KI ＋ 2HCl → 2H₂O ＋ I₂ ＋ 2KCl</h4>
+      <p>H₂O₂ 中の O：−1 → H₂O 中の O：−2（<span style="color:#16a34a;font-weight:700;">減った → 還元された</span>）<br>
+      → H₂O₂ は相手（KI）を酸化している → <span style="color:#dc2626;font-weight:700;">酸化剤</span></p>
+      <p>KI 中の I：−1 → I₂ 中の I：0（<span style="color:#dc2626;font-weight:700;">増えた → 酸化された</span>）<br>
+      → KI は相手（H₂O₂）を還元している → <span style="color:#16a34a;font-weight:700;">還元剤</span></p>
+    </div>
+
+    <div class="point-box">
+      <span class="label">★ 覚え方のコツ</span>
+      <ul>
+        <li>酸化剤 → 自身が「還元される」（酸化数が減る）→ 電子を<strong>もらう</strong>側</li>
+        <li>還元剤 → 自身が「酸化される」（酸化数が増える）→ 電子を<strong>渡す</strong>側</li>
+        <li>名前と逆の変化をすると覚える！「酸化剤」→ 自身は「還元」される</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ミニテスト3 -->
+  <div class="stage">
+    <div class="minitest-block">
+      <div class="mt-block-title">✏️ ミニテスト（全4問）</div>
+
+      <div class="q4" data-correct="b">
+        <div class="q4-stem"><span class="q4-num">問1</span>酸化剤とはどのような物質か。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：相手を還元し、自身は酸化される物質</button>
+          <button class="q4-c" data-v="b">イ：相手を酸化し、自身は還元される物質</button>
+          <button class="q4-c" data-v="c">ウ：どちらにもなれる物質</button>
+          <button class="q4-c" data-v="d">エ：酸化数が増える物質</button>
+        </div>
+        <div class="q4-exp">正解は<strong>イ</strong>。酸化剤 = 相手を酸化する → 自身は還元される（酸化数が減る）。</div>
+      </div>
+
+      <div class="q4" data-correct="c">
+        <div class="q4-stem"><span class="q4-num">問2</span>2Al + 6HCl → 2AlCl₃ + 3H₂ の反応で、酸化剤はどれか。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：Al</button>
+          <button class="q4-c" data-v="b">イ：AlCl₃</button>
+          <button class="q4-c" data-v="c">ウ：HCl</button>
+          <button class="q4-c" data-v="d">エ：H₂</button>
+        </div>
+        <div class="q4-exp">正解は<strong>ウ：HCl</strong>。HCl 中の H：+1 → H₂ 中の H：0（酸化数が<strong>減った</strong>→還元された）。相手（Al）を酸化しているので HCl が酸化剤。Alは +0→+3 と酸化された（還元剤）。</div>
+      </div>
+
+      <div class="minitest" data-correct="x">
+        <div class="mt-stem"><span class="mt-num">問3</span>H₂O₂（過酸化水素）は常に酸化剤としてはたらく。</div>
+        <div class="mt-choices">
+          <button class="mt-c" data-v="o">○</button>
+          <button class="mt-c" data-v="x">×</button>
+        </div>
+        <div class="mt-exp">× 不正解。H₂O₂ は<strong>主に酸化剤</strong>ですが、KMnO₄（過マンガン酸カリウム）と反応するときは<strong>還元剤</strong>になります。このような物質を「二面性を持つ」といいます。</div>
+      </div>
+
+      <div class="q4" data-correct="d">
+        <div class="q4-stem"><span class="q4-num">問4</span>Pb + PbO₂ + 2H₂SO₄ → 2PbSO₄ + 2H₂O の反応で、還元剤はどれか。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：PbO₂</button>
+          <button class="q4-c" data-v="b">イ：H₂SO₄</button>
+          <button class="q4-c" data-v="c">ウ：PbSO₄</button>
+          <button class="q4-c" data-v="d">エ：Pb</button>
+        </div>
+        <div class="q4-exp">正解は<strong>エ：Pb</strong>。Pb（単体）：0 → PbSO₄ 中の Pb：+2（酸化数が増えた → 酸化された = <strong>還元剤</strong>）。PbO₂ 中の Pb：+4 → +2（減った = 酸化剤）。鉛蓄電池の反応です。</div>
+      </div>
+
+      <div class="mt-block-result"></div>
+      <div style="text-align:center;"><button class="mt-block-reset">↻ もう一度</button></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ====================================================== -->
+<!--  単元4：半反応式の作り方                                 -->
+<!-- ====================================================== -->
+<div class="unit">
+  <div class="unit-title"><span class="num">4</span>半反応式の作り方（イオン反応式の基礎）</div>
+
+  <div class="stage">
+    <div class="stage-head">
+      <span class="stage-label">📖 説明</span>
+    </div>
+
+    <div class="read-box">
+      <p>酸化剤・還元剤の反応は「<strong>半反応式</strong>」で表します。これを組み合わせてイオン反応式を作ります。</p>
+
+      <h4>▶ 半反応式の作り方（手順）</h4>
+      <p><strong>① 主な変化を書く：</strong>反応物と生成物を書く</p>
+      <p><strong>② O の数を合わせる：</strong>H₂O を加えて酸素を補う</p>
+      <p><strong>③ H の数を合わせる：</strong>H⁺ を加えて水素を補う</p>
+      <p><strong>④ 電荷を合わせる：</strong>e⁻（電子）を加えて電荷を合わせる</p>
+
+      <h4>▶ 例：KMnO₄（酸化剤）の半反応式（酸性条件）</h4>
+      <div class="formula-box">
+        <div class="formula">MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</div>
+        <div class="caption">Mn：+7 → +2（酸化数が5減る → 電子5個を受け取る）</div>
+      </div>
+
+      <h4>▶ 例：H₂O₂（還元剤）の半反応式</h4>
+      <div class="formula-box">
+        <div class="formula">H₂O₂ → O₂ + 2H⁺ + 2e⁻</div>
+        <div class="caption">O：−1 → 0（酸化数が増える → 電子2個を渡す）</div>
+      </div>
+
+      <h4>▶ イオン反応式の作り方</h4>
+      <p>酸化剤の半反応式と還元剤の半反応式を <strong>e⁻ の数が合うよう整数倍</strong>してから足し合わせます。</p>
+      <p style="margin:8px 0;font-size:.88em;color:var(--text-sub);">（例）MnO₄⁻ の e⁻ 5個 と H₂O₂ の e⁻ 2個 → 最小公倍数 10 に合わせる → 上式×2 + 下式×5</p>
+    </div>
+
+    <div class="point-box">
+      <span class="label">★ 覚えよう！</span>
+      <ul>
+        <li>O が足りない → H₂O を加える（右辺に）</li>
+        <li>H が足りない → H⁺ を加える（左辺に、酸性条件）</li>
+        <li>電荷を合わせる → e⁻ を加える</li>
+        <li>組み合わせるときは <strong>e⁻ の数を最小公倍数に揃える</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ミニテスト4 -->
+  <div class="stage">
+    <div class="minitest-block">
+      <div class="mt-block-title">✏️ ミニテスト（全3問）</div>
+
+      <div class="q4" data-correct="b">
+        <div class="q4-stem"><span class="q4-num">問1</span>KMnO₄（酸性条件）の半反応式として正しいものはどれか。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：MnO₄⁻ + 5e⁻ → Mn²⁺</button>
+          <button class="q4-c" data-v="b">イ：MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</button>
+          <button class="q4-c" data-v="c">ウ：MnO₄⁻ + 5H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</button>
+          <button class="q4-c" data-v="d">エ：MnO₄⁻ → Mn²⁺ + 4O²⁻</button>
+        </div>
+        <div class="q4-exp">正解は<strong>イ</strong>。手順通りに：①MnO₄⁻→Mn²⁺ ②右辺に4H₂O ③左辺に8H⁺ ④左辺に5e⁻（電荷を揃える）。</div>
+      </div>
+
+      <div class="q4" data-correct="c">
+        <div class="q4-stem"><span class="q4-num">問2</span>SO₂（還元剤）の半反応式として正しいものはどれか。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：SO₂ + 2e⁻ → SO₄²⁻</button>
+          <button class="q4-c" data-v="b">イ：SO₂ → SO₄²⁻ + 4H⁺ + 2e⁻</button>
+          <button class="q4-c" data-v="c">ウ：SO₂ + 2H₂O → SO₄²⁻ + 4H⁺ + 2e⁻</button>
+          <button class="q4-c" data-v="d">エ：SO₂ → S + O₂ + 2e⁻</button>
+        </div>
+        <div class="q4-exp">正解は<strong>ウ</strong>。SO₂ の S：+4 → SO₄²⁻ の S：+6（酸化数+2増）。O を補うために左辺に 2H₂O。H を揃えるために右辺に 4H⁺。電荷合わせで右辺に 2e⁻。</div>
+      </div>
+
+      <div class="q4" data-correct="a">
+        <div class="q4-stem"><span class="q4-num">問3</span>酸化剤の半反応式と還元剤の半反応式を組み合わせるとき、何を合わせてから足すか。</div>
+        <div class="q4-choices">
+          <button class="q4-c" data-v="a">ア：e⁻（電子）の数</button>
+          <button class="q4-c" data-v="b">イ：H⁺ の数</button>
+          <button class="q4-c" data-v="c">ウ：H₂O の数</button>
+          <button class="q4-c" data-v="d">エ：物質量（mol）</button>
+        </div>
+        <div class="q4-exp">正解は<strong>ア：e⁻ の数</strong>。酸化剤が受け取る電子数 = 還元剤が渡す電子数 になるよう整数倍して合わせます。</div>
+      </div>
+
+      <div class="mt-block-result"></div>
+      <div style="text-align:center;"><button class="mt-block-reset">↻ もう一度</button></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ====================================================== -->
+<!--  次のアクション                                          -->
+<!-- ====================================================== -->
+<div class="next-actions">
+  <h3>🎉 レッスン完了！</h3>
+  <p>次は問題を解いて理解を確認しましょう！</p>
+  <div class="links">
+    <a href="chem_oxred_practice.html">📝 練習問題へ</a>
+    <a href="chem_oxred_check.html" class="sub">📋 確認問題へ</a>
+    <a href="chem_oxred_test.html" class="sub">🏆 単元末テストへ</a>
+  </div>
+</div>
+
+<nav class="pagenav">
+  <a href="chem_oxred_index.html">
+    <span class="label">◀ 単元表</span>
+    <span class="title">全単元一覧へ</span>
+  </a>
+  <a href="chem_oxred_practice.html" class="next">
+    <span class="label">NEXT ▶</span>
+    <span class="title">練習問題へ</span>
+  </a>
+</nav>
+
+</main>
+</div>
+
+<script>
+/* ── 花吹雪 ── */
+function launchConfetti() {
+  const COLORS = ['#f472b6','#facc15','#34d399','#60a5fa','#f87171','#a78bfa','#fb923c','#2dd4bf'];
+  for (let i = 0; i < 80; i++) {
+    const el = document.createElement('div');
+    const size = Math.random() * 10 + 6;
+    const left = Math.random() * 100;
+    const delay = Math.random() * 0.6;
+    const dur = Math.random() * 1.2 + 1.2;
+    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    const shape = Math.random() > 0.5 ? '50%' : '2px';
+    el.style.cssText = `position:fixed;top:-20px;left:${left}vw;width:${size}px;height:${size}px;background:${color};border-radius:${shape};opacity:1;pointer-events:none;z-index:9999;animation:confettiFall ${dur}s ${delay}s ease-in forwards;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), (dur + delay) * 1000 + 200);
+  }
+}
+
+/* ── ミニテスト共通ロジック ── */
+document.addEventListener('DOMContentLoaded', () => {
+
+  function handleAnswer(q, chosen, correct, exp) {
+    if(chosen === correct) {
+      launchConfetti();
+    }
+    exp.classList.add('show');
+    updateResult(q.closest('.minitest-block'));
+  }
+
+  /* ○× 問題 */
+  document.querySelectorAll('.minitest').forEach(q => {
+    const correct = q.dataset.correct;
+    const exp = q.querySelector('.mt-exp');
+    q.querySelectorAll('.mt-c').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(btn.classList.contains('disabled')) return;
+        q.querySelectorAll('.mt-c').forEach(b => b.classList.add('disabled'));
+        if(btn.dataset.v === correct){
+          btn.classList.add('correct');
+        } else {
+          btn.classList.add('wrong');
+          q.querySelectorAll('.mt-c').forEach(b => { if(b.dataset.v === correct) b.classList.add('correct'); });
+        }
+        handleAnswer(q, btn.dataset.v, correct, exp);
+      });
+    });
+  });
+
+  /* 4択問題 */
+  document.querySelectorAll('.q4').forEach(q => {
+    const correct = q.dataset.correct;
+    const exp = q.querySelector('.q4-exp');
+    q.querySelectorAll('.q4-c').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(btn.classList.contains('disabled')) return;
+        q.querySelectorAll('.q4-c').forEach(b => b.classList.add('disabled'));
+        if(btn.dataset.v === correct){
+          btn.classList.add('correct');
+        } else {
+          btn.classList.add('wrong');
+          q.querySelectorAll('.q4-c').forEach(b => { if(b.dataset.v === correct) b.classList.add('correct'); });
+        }
+        handleAnswer(q, btn.dataset.v, correct, exp);
+      });
+    });
+  });
+
+  /* 結果集計 */
+  function updateResult(block) {
+    if(!block) return;
+    const qs = [...block.querySelectorAll('.minitest,.q4')];
+    const done = qs.filter(q => q.querySelector('.correct, .wrong'));
+    if(done.length < qs.length) return;
+    const correct = qs.filter(q => q.querySelector('.correct') && !q.querySelector('.wrong:not(.correct)')).length;
+    const res = block.querySelector('.mt-block-result');
+    if(res) res.textContent = `結果：${correct} / ${qs.length} 正解`;
+  }
+
+  /* リセット */
+  document.querySelectorAll('.mt-block-reset').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const block = btn.closest('.minitest-block');
+      block.querySelectorAll('.mt-c,.q4-c').forEach(b => {
+        b.classList.remove('correct','wrong','disabled');
+      });
+      block.querySelectorAll('.mt-exp,.q4-exp').forEach(e => e.classList.remove('show'));
+      const res = block.querySelector('.mt-block-result');
+      if(res) res.textContent = '';
+    });
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>単元末テスト 酸化還元(1) | GAMBA化学</title>
+<style>
+:root{
+  --bg:#f0f4ff;--card:#fff;--primary:#2563eb;--primary-light:#dbeafe;
+  --primary-dark:#1e40af;--accent:#dc2626;--success:#16a34a;
+  --text:#1e293b;--text-sub:#64748b;--border:#bfdbfe;--radius:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'BIZ UDPGothic','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+.topnav{display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;flex-wrap:wrap;}
+.topnav .brand{font-weight:700;font-size:.9em;}
+.topnav .sep{opacity:.4;}
+.topnav a{color:#bfdbfe;text-decoration:none;font-size:.82em;}
+.hero{background:linear-gradient(135deg,#134e4a 0%,#065f46 60%,#0f766e 100%);color:#fff;padding:24px 20px 22px;}
+.hero .crumb{font-size:.75em;opacity:.7;margin-bottom:6px;}
+.hero h1{font-size:clamp(1.3em,4vw,1.9em);font-weight:800;margin-bottom:6px;}
+.hero .sub{font-size:.85em;opacity:.88;line-height:1.7;}
+.wrap{max-width:860px;margin:0 auto;}
+main{padding:20px 14px 0;}
+
+.unit{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:20px;overflow:hidden;}
+.unit-title{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,#dcfce7,#f0fdf4);padding:12px 16px;font-weight:700;font-size:1.05em;border-bottom:1.5px solid var(--border);}
+.unit-title .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:#16a34a;color:#fff;border-radius:8px;font-size:.88em;flex-shrink:0;}
+.exam-box{background:#f0fdf4;border-left:4px solid #16a34a;padding:10px 14px;margin:14px 16px 0;border-radius:0 8px 8px 0;font-size:.88em;color:#14532d;line-height:1.7;}
+
+.minitest-block{padding:14px 16px;}
+.mt-block-title{font-weight:700;font-size:.9em;color:#14532d;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #bbf7d0;}
+.minitest,.q4{margin-bottom:16px;}
+.mt-stem,.q4-stem{font-size:.93em;font-weight:600;margin-bottom:8px;line-height:1.6;}
+.mt-num,.q4-num{display:inline-flex;align-items:center;justify-content:center;background:#16a34a;color:#fff;font-size:.75em;padding:2px 8px;border-radius:5px;margin-right:6px;font-weight:700;}
+.mt-choices{display:flex;gap:8px;margin-bottom:6px;}
+.mt-c{font-family:inherit;flex:1;padding:10px;border-radius:8px;border:2px solid #cbd5e1;background:#fff;font-size:.95em;font-weight:700;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;}
+.mt-c:hover{border-color:#16a34a;background:#dcfce7;}
+.mt-c.correct{background:var(--success);border-color:var(--success);color:#fff;}
+.mt-c.wrong{background:var(--accent);border-color:var(--accent);color:#fff;}
+.mt-c.disabled{cursor:default;}
+.q4-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
+.q4-c{font-family:inherit;padding:10px 12px;border-radius:8px;border:2px solid #cbd5e1;background:#fff;font-size:.85em;font-weight:600;cursor:pointer;text-align:left;transition:all .15s;-webkit-tap-highlight-color:transparent;line-height:1.4;}
+.q4-c:hover{border-color:#16a34a;background:#dcfce7;}
+.q4-c.correct{background:var(--success);border-color:var(--success);color:#fff;}
+.q4-c.wrong{background:var(--accent);border-color:var(--accent);color:#fff;}
+.q4-c.disabled{cursor:default;}
+.mt-exp,.q4-exp{display:none;font-size:.85em;background:#f0fdf4;border-left:4px solid var(--success);padding:10px 14px;border-radius:0 8px 8px 0;line-height:1.7;margin-top:4px;}
+.mt-exp.show,.q4-exp.show{display:block;}
+.mt-block-result{font-weight:700;text-align:center;margin:10px 0 6px;font-size:.95em;color:#16a34a;}
+.mt-block-reset{font-family:inherit;background:#dcfce7;color:#14532d;border:1.5px solid #bbf7d0;padding:8px 20px;border-radius:50px;cursor:pointer;font-size:.82em;font-weight:700;transition:.2s;}
+.mt-block-reset:hover{background:#bbf7d0;}
+
+.calc-box{background:#fefce8;border:2px solid #fbbf24;border-radius:10px;padding:12px 16px;margin:10px 0;font-size:.88em;line-height:1.8;}
+.calc-box strong{color:#92400e;}
+
+.next-actions{background:linear-gradient(135deg,#f0fdf4,#eff6ff);border:2px solid #bbf7d0;border-radius:var(--radius);padding:20px;margin:0;text-align:center;}
+.next-actions h3{color:#14532d;margin-bottom:8px;font-size:1.1em;}
+.next-actions p{font-size:.88em;color:var(--text-sub);margin-bottom:14px;}
+.next-actions .links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.next-actions a{text-decoration:none;padding:10px 18px;border-radius:8px;font-size:.88em;font-weight:700;background:#16a34a;color:#fff;transition:.15s;}
+.next-actions a.sub{background:#fff;color:#16a34a;border:1.5px solid #bbf7d0;}
+.pagenav{display:flex;gap:0;margin:20px 0 0;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.pagenav a{flex:1;display:flex;flex-direction:column;padding:12px 14px;text-decoration:none;background:#fff;border-right:1.5px solid var(--border);transition:.15s;}
+.pagenav a:last-child{border-right:none;}
+.pagenav a:hover{background:#dcfce7;}
+.pagenav a.next{text-align:right;}
+.pagenav .label{font-size:.72em;color:var(--text-sub);font-weight:600;}
+.pagenav .title{font-size:.88em;font-weight:700;color:#14532d;margin-top:2px;}
+@media(max-width:520px){.q4-choices{grid-template-columns:1fr;}}
+
+/* ── 花吹雪 ── */
+@keyframes confettiFall{
+  0%  {transform:translateY(0) rotate(0deg);   opacity:1;}
+  80% {opacity:1;}
+  100%{transform:translateY(105vh) rotate(720deg); opacity:0;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">⚗️ GAMBA 化学</span>
+  <span class="sep">|</span>
+  <a href="chem_oxred_index.html">📊 単元表</a>
+  <a href="chem_oxred.html">レッスンへ戻る</a>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="crumb">化学基礎 酸化還元(1) / 単元末テスト</div>
+  <h1>単元末テスト：酸化還元(1) <span style="font-size:.7em;opacity:.8;">★★★</span></h1>
+  <p class="sub">大学入試問題から構成した本番レベルの問題です。酸化数・酸化還元の識別・酸化剤・還元剤・滴定計算を総合的に確認します。</p>
+</header>
+
+<main>
+
+<!-- ====== 大問1：酸化数計算 ====== -->
+<div class="unit">
+  <div class="unit-title"><span class="num">1</span>大問1：酸化数の総合問題 〈大阪工業大・改〉</div>
+  <div class="exam-box">
+    🏆 <strong>大阪工業大学 入試問題（改題）</strong><br>
+    ア〜ケに当てはまる語句・数値を答えよ。<br>
+    一般に、酸化とは【ア】と化合する反応、または【イ】を失う反応を意味し、還元とは【イ】と化合する反応、または【ア】を失う反応を意味する。<br>
+    原子やイオンが電子を失い【ウ】が増加すれば酸化された、電子を受け取り【ウ】が減少すれば還元されたという。<br>
+    酸化還元反応において、【ク】は電子を受け取り還元される物質であり、【ケ】は電子を相手に与えて酸化される物質である。
+  </div>
+  <div class="minitest-block">
+    <div class="mt-block-title">✏️ 大問1（全4問）</div>
+
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問1</span>文中の【ア】（酸化と化合するもの）として正しいものはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：水素</button>
+        <button class="q4-c" data-v="b">イ：酸素</button>
+        <button class="q4-c" data-v="c">ウ：窒素</button>
+        <button class="q4-c" data-v="d">エ：炭素</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ：酸素</strong>。酸化の定義①：酸素と化合する。例：2Mg + O₂ → 2MgO。</div>
+    </div>
+
+    <div class="q4" data-correct="a">
+      <div class="q4-stem"><span class="q4-num">問2</span>文中の【ウ】（酸化で増え、還元で減るもの）として正しいものはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：酸化数</button>
+        <button class="q4-c" data-v="b">イ：電子数</button>
+        <button class="q4-c" data-v="c">ウ：物質量</button>
+        <button class="q4-c" data-v="d">エ：陽子数</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ア：酸化数</strong>。酸化 = 酸化数が増える、還元 = 酸化数が減る。これが最も基本的かつ広い定義です。</div>
+    </div>
+
+    <div class="q4" data-correct="c">
+      <div class="q4-stem"><span class="q4-num">問3</span>文中の【ク】（電子を受け取り還元される物質）として正しいものはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：還元剤</button>
+        <button class="q4-c" data-v="b">イ：触媒</button>
+        <button class="q4-c" data-v="c">ウ：酸化剤</button>
+        <button class="q4-c" data-v="d">エ：塩基</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ウ：酸化剤</strong>。酸化剤は「電子を受け取る（自身は還元される）」物質です。覚え方：「酸化剤」は相手を「酸化」させるが、自身は「還元」される。</div>
+    </div>
+
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問4</span>CuSO₄ 水溶液に亜鉛板を浸すと Cu²⁺ が析出する。Cu²⁺ の酸化数の変化として正しいものはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：0 → +2</button>
+        <button class="q4-c" data-v="b">イ：+2 → 0</button>
+        <button class="q4-c" data-v="c">ウ：+2 → +1</button>
+        <button class="q4-c" data-v="d">エ：0 → −2</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ：+2 → 0</strong>。Cu²⁺（+2）は電子を 2個受け取り Cu（単体、0）になります。酸化数が減少 = 還元されました。Zn は 0 → +2 と酸化されます。</div>
+    </div>
+
+    <div class="mt-block-result"></div>
+    <div style="text-align:center;"><button class="mt-block-reset">↻ もう一度</button></div>
+  </div>
+</div>
+
+
+<!-- ====== 大問2：酸化還元反応の識別 ====== -->
+<div class="unit">
+  <div class="unit-title"><span class="num">2</span>大問2：酸化還元反応の識別と酸化剤・還元剤 〈岩手大・防衛大改〉</div>
+  <div class="exam-box">
+    🏆 <strong>岩手大・防衛大 入試問題（改題）</strong><br>
+    次の反応(ア)〜(カ)のうち、酸化還元反応を選べ。また酸化剤・還元剤を答えよ。<br>
+    (ア) SiO₂ + 2NaOH → Na₂SiO₃ + H₂O<br>
+    (イ) H₂O₂ + 2KI + 2HCl → 2H₂O + I₂ + 2KCl<br>
+    (ウ) NH₃ + NaCl + CO₂ + H₂O → NaHCO₃ + NH₄Cl<br>
+    (エ) 2AgNO₃ + 2NaOH → Ag₂O + H₂O + 2NaNO₃<br>
+    (オ) 2Al + 6HCl → 2AlCl₃ + 3H₂<br>
+    (カ) Pb + PbO₂ + 2H₂SO₄ → 2PbSO₄ + 2H₂O
+  </div>
+  <div class="minitest-block">
+    <div class="mt-block-title">✏️ 大問2（全4問）</div>
+
+    <div class="q4" data-correct="d">
+      <div class="q4-stem"><span class="q4-num">問1</span>酸化還元反応でない反応はどれとどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：(ア)(イ)</button>
+        <button class="q4-c" data-v="b">イ：(イ)(オ)</button>
+        <button class="q4-c" data-v="c">ウ：(ウ)(エ)(カ)</button>
+        <button class="q4-c" data-v="d">エ：(ア)(ウ)(エ)</button>
+      </div>
+      <div class="q4-exp">正解は<strong>エ：(ア)(ウ)(エ)</strong>。<br>
+      (ア)：すべての元素の酸化数が変化なし。<br>
+      (ウ)：N:−3, H:+1, Na:+1, Cl:−1, C:+4, O:−2 とも変化なし。<br>
+      (エ)：Ag:+1, N:+5, O:−2, Na:+1 とも変化なし。<br>
+      (イ)(オ)(カ)は酸化還元反応です。</div>
+    </div>
+
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問2</span>反応(イ)の酸化剤と還元剤の正しい組み合わせはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：酸化剤=KI / 還元剤=H₂O₂</button>
+        <button class="q4-c" data-v="b">イ：酸化剤=H₂O₂ / 還元剤=KI</button>
+        <button class="q4-c" data-v="c">ウ：酸化剤=HCl / 還元剤=KI</button>
+        <button class="q4-c" data-v="d">エ：酸化剤=HCl / 還元剤=H₂O₂</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ</strong>。H₂O₂ の O：−1 → −2（減 = 還元された = 酸化剤）、KI の I：−1 → 0（増 = 酸化された = 還元剤）。</div>
+    </div>
+
+    <div class="q4" data-correct="c">
+      <div class="q4-stem"><span class="q4-num">問3</span>反応(オ) 2Al + 6HCl → 2AlCl₃ + 3H₂ で、Al の酸化数の変化として正しいものはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：+3 → 0</button>
+        <button class="q4-c" data-v="b">イ：+1 → +3</button>
+        <button class="q4-c" data-v="c">ウ：0 → +3</button>
+        <button class="q4-c" data-v="d">エ：+2 → +3</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ウ：0 → +3</strong>。Al は単体（酸化数 0）→ AlCl₃ 中（Cl が −1 なので Al は +3）。酸化されているので Al が<strong>還元剤</strong>。</div>
+    </div>
+
+    <div class="q4" data-correct="a">
+      <div class="q4-stem"><span class="q4-num">問4</span>反応(カ) Pb + PbO₂ + 2H₂SO₄ → 2PbSO₄ + 2H₂O で、酸化剤はどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：PbO₂</button>
+        <button class="q4-c" data-v="b">イ：Pb</button>
+        <button class="q4-c" data-v="c">ウ：H₂SO₄</button>
+        <button class="q4-c" data-v="d">エ：PbSO₄</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ア：PbO₂</strong>。PbO₂ の Pb：+4 → PbSO₄ の Pb：+2（減 = 還元された = <strong>酸化剤</strong>）。Pb（単体）の Pb：0 → +2（増 = 酸化された = <strong>還元剤</strong>）。これは鉛蓄電池の放電反応です。</div>
+    </div>
+
+    <div class="mt-block-result"></div>
+    <div style="text-align:center;"><button class="mt-block-reset">↻ もう一度</button></div>
+  </div>
+</div>
+
+
+<!-- ====== 大問3：酸化還元滴定 ====== -->
+<div class="unit">
+  <div class="unit-title"><span class="num">3</span>大問3：KMnO₄ 滴定計算 〈大学入試・標準〉</div>
+  <div class="exam-box">
+    🏆 <strong>大学入試 標準問題</strong><br>
+    0.252g のシュウ酸結晶 (COOH)₂・2H₂O（分子量 126）を水に溶かして 100 mL の溶液にし、その中から 25.0 mL を取り、希硫酸で酸性にした。これを温めながら濃度不明の過マンガン酸カリウム水溶液を少量ずつ加えていくと、20.0 mL 加えたところで反応が完了した。<br>
+    MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O …①<br>
+    (COOH)₂ → 2CO₂ + 2H⁺ + 2e⁻ …②
+  </div>
+  <div class="minitest-block">
+    <div class="mt-block-title">✏️ 大問3（全4問）</div>
+
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問1</span>100 mL 溶液を作るときに使う器具として正しいものはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：ビーカー</button>
+        <button class="q4-c" data-v="b">イ：メスフラスコ</button>
+        <button class="q4-c" data-v="c">ウ：ビュレット</button>
+        <button class="q4-c" data-v="d">エ：コニカルビーカー</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ：メスフラスコ</strong>。正確に決まった体積（ここでは 100 mL）の溶液を調製するときは<strong>メスフラスコ</strong>を使います。25.0 mL を正確に取る器具は<strong>ホールピペット</strong>です。</div>
+    </div>
+
+    <div class="q4" data-correct="c">
+      <div class="q4-stem"><span class="q4-num">問2</span>100 mL 中に含まれるシュウ酸 (COOH)₂ の物質量はいくらか。（(COOH)₂・2H₂O の分子量 = 126）</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：1.26×10⁻³ mol</button>
+        <button class="q4-c" data-v="b">イ：2.52×10⁻³ mol</button>
+        <button class="q4-c" data-v="c">ウ：2.00×10⁻³ mol</button>
+        <button class="q4-c" data-v="d">エ：5.00×10⁻³ mol</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ウ：2.00×10⁻³ mol</strong>。<br>
+      シュウ酸の物質量 = 0.252 g ÷ 126 g/mol = <strong>2.00×10⁻³ mol</strong></div>
+    </div>
+
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問3</span>25.0 mL 中のシュウ酸から得られる電子の物質量はいくらか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：1.00×10⁻⁴ mol</button>
+        <button class="q4-c" data-v="b">イ：1.00×10⁻³ mol</button>
+        <button class="q4-c" data-v="c">ウ：2.00×10⁻³ mol</button>
+        <button class="q4-c" data-v="d">エ：5.00×10⁻⁴ mol</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ：1.00×10⁻³ mol</strong>。<br>
+      25.0 mL 中の (COOH)₂ = 2.00×10⁻³ mol × (25.0/100) = 5.00×10⁻⁴ mol<br>
+      電子の物質量 = 5.00×10⁻⁴ × 2 = <strong>1.00×10⁻³ mol</strong></div>
+    </div>
+
+    <div class="q4" data-correct="a">
+      <div class="q4-stem"><span class="q4-num">問4</span>この過マンガン酸カリウム水溶液のモル濃度はいくらか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：1.00×10⁻² mol/L</button>
+        <button class="q4-c" data-v="b">イ：2.00×10⁻² mol/L</button>
+        <button class="q4-c" data-v="c">ウ：5.00×10⁻³ mol/L</button>
+        <button class="q4-c" data-v="d">エ：2.50×10⁻² mol/L</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ア：1.00×10⁻² mol/L</strong>。<br>
+      <div style="margin-top:6px;background:#fff;border-radius:6px;padding:8px 10px;font-size:.88em;">
+        受け取る e⁻ = 与えた e⁻ より<br>
+        KMnO₄ の濃度を x mol/L とすると：<br>
+        x × (20.0/1000) × 5 = 1.00×10⁻³<br>
+        x × 0.020 × 5 = 1.00×10⁻³<br>
+        x = 1.00×10⁻³ ÷ 0.100 = <strong>1.00×10⁻² mol/L</strong>
+      </div></div>
+    </div>
+
+    <div class="mt-block-result"></div>
+    <div style="text-align:center;"><button class="mt-block-reset">↻ もう一度</button></div>
+  </div>
+</div>
+
+
+<!-- ====== 大問4：過酸化水素の滴定 ====== -->
+<div class="unit">
+  <div class="unit-title"><span class="num">4</span>大問4：過酸化水素水の濃度決定 〈甲南大・改〉</div>
+  <div class="exam-box">
+    🏆 <strong>甲南大学 入試問題（改題）</strong><br>
+    濃度未知の過酸化水素水 10.0 mL をコニカルビーカーに入れ、硫酸で酸性にした。<br>
+    2.00×10⁻² mol/L の KMnO₄ 水溶液をビュレットで滴下したところ、終点まで 12.0 mL を要した。<br>
+    MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O<br>
+    H₂O₂ → O₂ + 2H⁺ + 2e⁻
+  </div>
+  <div class="minitest-block">
+    <div class="mt-block-title">✏️ 大問4（全3問）</div>
+
+    <div class="q4" data-correct="c">
+      <div class="q4-stem"><span class="q4-num">問1</span>この反応で H₂O₂ は何としてはたらいているか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：酸化剤</button>
+        <button class="q4-c" data-v="b">イ：触媒</button>
+        <button class="q4-c" data-v="c">ウ：還元剤</button>
+        <button class="q4-c" data-v="d">エ：酸</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ウ：還元剤</strong>。H₂O₂ の O：−1 → O₂ の O：0（増 = 酸化された = <strong>還元剤</strong>）。KMnO₄ が酸化剤として H₂O₂ を酸化します。H₂O₂ は通常は酸化剤ですが、より強力な酸化剤（KMnO₄）と反応するときは還元剤になります。</div>
+    </div>
+
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問2</span>KMnO₄ が受け取った e⁻ の物質量はいくらか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：2.40×10⁻³ mol</button>
+        <button class="q4-c" data-v="b">イ：1.20×10⁻³ mol</button>
+        <button class="q4-c" data-v="c">ウ：6.00×10⁻⁴ mol</button>
+        <button class="q4-c" data-v="d">エ：4.80×10⁻³ mol</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ：1.20×10⁻³ mol</strong>。<br>
+      KMnO₄ の物質量 = 2.00×10⁻² × 12.0/1000 = 2.40×10⁻⁴ mol<br>
+      受け取る e⁻ = 2.40×10⁻⁴ × 5 = <strong>1.20×10⁻³ mol</strong></div>
+    </div>
+
+    <div class="q4" data-correct="d">
+      <div class="q4-stem"><span class="q4-num">問3</span>過酸化水素水のモル濃度はいくらか。（H₂O₂ 1 mol が e⁻ 2 mol を与える）</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：1.20×10⁻² mol/L</button>
+        <button class="q4-c" data-v="b">イ：2.40×10⁻² mol/L</button>
+        <button class="q4-c" data-v="c">ウ：3.00×10⁻² mol/L</button>
+        <button class="q4-c" data-v="d">エ：6.00×10⁻² mol/L</button>
+      </div>
+      <div class="q4-exp">正解は<strong>エ：6.00×10⁻² mol/L</strong>。<br>
+      <div style="margin-top:6px;background:#fff;border-radius:6px;padding:8px 10px;font-size:.88em;">
+        受け取る e⁻ = 与えた e⁻<br>
+        H₂O₂ の濃度を x mol/L とすると：<br>
+        x × (10.0/1000) × 2 = 1.20×10⁻³<br>
+        x × 0.010 × 2 = 1.20×10⁻³<br>
+        x = 1.20×10⁻³ ÷ 0.020 = <strong>6.00×10⁻² mol/L</strong>
+      </div></div>
+    </div>
+
+    <div class="mt-block-result"></div>
+    <div style="text-align:center;"><button class="mt-block-reset">↻ もう一度</button></div>
+  </div>
+</div>
+
+<div class="next-actions">
+  <h3>🎉 単元末テスト完了！</h3>
+  <p>酸化還元(2) ヨウ素滴定・COD・DO の学習に進みましょう！</p>
+  <div class="links">
+    <a href="chem_oxred2.html">次の単元へ（酸化還元2）</a>
+    <a href="chem_oxred.html" class="sub">📖 レッスンへ戻る</a>
+    <a href="chem_oxred_index.html" class="sub">📊 単元表へ</a>
+  </div>
+</div>
+
+<nav class="pagenav">
+  <a href="chem_oxred_check.html">
+    <span class="label">◀ BACK</span>
+    <span class="title">確認問題</span>
+  </a>
+  <a href="chem_oxred_index.html" class="next">
+    <span class="label">◀ 単元表</span>
+    <span class="title">全単元一覧へ</span>
+  </a>
+</nav>
+
+</main>
+</div>
+
+<script>
+
+/* ── 花吹雪 ── */
+function launchConfetti() {
+  const COLORS = ['#f472b6','#facc15','#34d399','#60a5fa','#f87171','#a78bfa','#fb923c','#2dd4bf'];
+  for (let i = 0; i < 80; i++) {
+    const el = document.createElement('div');
+    const size = Math.random() * 10 + 6;
+    const left = Math.random() * 100;
+    const delay = Math.random() * 0.6;
+    const dur = Math.random() * 1.2 + 1.2;
+    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    const shape = Math.random() > 0.5 ? '50%' : '2px';
+    el.style.cssText = `position:fixed;top:-20px;left:${left}vw;width:${size}px;height:${size}px;background:${color};border-radius:${shape};opacity:1;pointer-events:none;z-index:9999;animation:confettiFall ${dur}s ${delay}s ease-in forwards;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), (dur + delay) * 1000 + 200);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.minitest').forEach(q => {
+    const correct = q.dataset.correct;
+    const exp = q.querySelector('.mt-exp');
+    q.querySelectorAll('.mt-c').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(btn.classList.contains('disabled')) return;
+        q.querySelectorAll('.mt-c').forEach(b => b.classList.add('disabled'));
+        if(btn.dataset.v === correct){ btn.classList.add('correct'); launchConfetti(); }
+        else { btn.classList.add('wrong'); q.querySelectorAll('.mt-c').forEach(b => { if(b.dataset.v === correct) b.classList.add('correct'); }); }
+        exp.classList.add('show');
+        updateResult(q.closest('.minitest-block'));
+      });
+    });
+  });
+  document.querySelectorAll('.q4').forEach(q => {
+    const correct = q.dataset.correct;
+    const exp = q.querySelector('.q4-exp');
+    q.querySelectorAll('.q4-c').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(btn.classList.contains('disabled')) return;
+        q.querySelectorAll('.q4-c').forEach(b => b.classList.add('disabled'));
+        if(btn.dataset.v === correct){ btn.classList.add('correct'); launchConfetti(); }
+        else { btn.classList.add('wrong'); q.querySelectorAll('.q4-c').forEach(b => { if(b.dataset.v === correct) b.classList.add('correct'); }); }
+        exp.classList.add('show');
+        updateResult(q.closest('.minitest-block'));
+      });
+    });
+  });
+  function updateResult(block) {
+    if(!block) return;
+    const qs = [...block.querySelectorAll('.minitest,.q4')];
+    const done = qs.filter(q => q.querySelector('.correct, .wrong'));
+    if(done.length < qs.length) return;
+    const correct = qs.filter(q => {
+      const hasWrong = [...q.querySelectorAll('.q4-c,.mt-c')].some(b => b.classList.contains('wrong'));
+      return !hasWrong;
+    }).length;
+    const res = block.querySelector('.mt-block-result');
+    if(res) res.textContent = `結果：${correct} / ${qs.length} 正解`;
+  }
+  document.querySelectorAll('.mt-block-reset').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const block = btn.closest('.minitest-block');
+      block.querySelectorAll('.mt-c,.q4-c').forEach(b => b.classList.remove('correct','wrong','disabled'));
+      block.querySelectorAll('.mt-exp,.q4-exp').forEach(e => e.classList.remove('show'));
+      const res = block.querySelector('.mt-block-result');
+      if(res) res.textContent = '';
+    });
+  });
+});
+</script>
+</body>
+</html>

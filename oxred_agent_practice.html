@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>練習問題 酸化剤・還元剤 | GAMBA化学</title>
+<style>
+:root{
+  --bg:#f0f4ff;--card:#fff;
+  --primary:#2563eb;--primary-light:#dbeafe;--primary-dark:#1e40af;
+  --accent:#dc2626;--accent-light:#fee2e2;
+  --success:#16a34a;--success-light:#dcfce7;
+  --warn:#d97706;--warn-light:#fffbeb;
+  --purple:#7c3aed;--purple-light:#ede9fe;
+  --text:#1e293b;--text-sub:#64748b;
+  --border:#bfdbfe;--radius:14px;
+  --ox:#dc2626;--rd:#16a34a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'BIZ UDPGothic','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+
+.topnav{display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;flex-wrap:wrap;}
+.topnav .brand{font-weight:700;font-size:.9em;}
+.topnav .sep{opacity:.4;}
+.topnav a{color:#bfdbfe;text-decoration:none;font-size:.82em;}
+.topnav a:hover{color:#fff;}
+
+.hero{background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);color:#fff;padding:24px 20px 22px;}
+.hero .crumb{font-size:.75em;opacity:.7;margin-bottom:6px;}
+.hero h1{font-size:clamp(1.3em,4vw,1.9em);font-weight:800;margin-bottom:6px;}
+.hero .sub{font-size:.86em;opacity:.9;line-height:1.8;}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:4px 12px;font-size:.78em;font-weight:700;}
+
+.wrap{max-width:860px;margin:0 auto;}
+main{padding:20px 14px 0;}
+
+.sec-block{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:20px;overflow:hidden;}
+.sec-title{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,var(--primary-light),#f8faff);padding:12px 16px;font-weight:700;font-size:1em;border-bottom:1.5px solid var(--border);}
+.sec-title .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--primary);color:#fff;border-radius:8px;font-size:.85em;flex-shrink:0;}
+.sec-title .sec-tag{margin-left:auto;font-size:.74em;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--primary-light);color:var(--primary-dark);}
+
+.q-block{padding:14px 16px;border-bottom:1px solid #e2e8f0;}
+.q-block:last-of-type{border-bottom:none;}
+.q-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.q-num{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;background:var(--primary);color:#fff;border-radius:8px;font-size:.82em;font-weight:700;flex-shrink:0;margin-top:1px;}
+.q-num.warn{background:var(--warn);}
+.q-num.hard{background:var(--accent);}
+.q-stem{font-size:.92em;font-weight:600;line-height:1.65;flex:1;}
+.q-sub{font-size:.8em;color:var(--text-sub);margin-top:3px;font-weight:400;}
+
+.rxn-box{background:#f8faff;border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:.92em;font-weight:700;text-align:center;letter-spacing:.04em;margin:8px 0;line-height:1.8;}
+
+.q4-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
+.q4-c{font-family:inherit;padding:10px 12px;border-radius:8px;border:2px solid #cbd5e1;background:#fff;font-size:.85em;font-weight:600;cursor:pointer;text-align:left;transition:.15s;line-height:1.4;-webkit-tap-highlight-color:transparent;}
+.q4-c:hover{border-color:var(--primary);background:var(--primary-light);}
+.q4-c.correct{background:var(--success);border-color:var(--success);color:#fff;}
+.q4-c.wrong{background:var(--accent);border-color:var(--accent);color:#fff;}
+.q4-c.disabled{cursor:default;}
+.q4-exp{display:none;font-size:.84em;background:#f0fdf4;border-left:4px solid var(--success);padding:10px 14px;border-radius:0 8px 8px 0;line-height:1.8;margin-top:5px;}
+.q4-exp.show{display:block;}
+
+.hint-toggle{font-family:inherit;font-size:.78em;font-weight:700;padding:4px 12px;border-radius:20px;border:1.5px solid #7dd3fc;background:#f0f9ff;color:#0369a1;cursor:pointer;margin-bottom:8px;transition:.15s;}
+.hint-toggle:hover{background:#e0f2fe;}
+.hint-box{display:none;background:#f0f9ff;border:1.5px solid #7dd3fc;border-radius:8px;padding:10px 14px;font-size:.85em;line-height:1.8;margin-bottom:8px;color:#0c4a6e;}
+.hint-box.open{display:block;}
+.hint-box .eq{display:block;font-weight:700;background:#fff;border-radius:6px;padding:4px 12px;border:1px solid #7dd3fc;text-align:center;margin:5px 0;}
+
+/* 色付き */
+.c-ox{color:var(--ox);font-weight:700;}
+.c-rd{color:var(--rd);font-weight:700;}
+.c-purple{color:#9333ea;font-weight:700;}
+.c-orange{color:#f97316;font-weight:700;}
+.c-green{color:#16a34a;font-weight:700;}
+.c-lime{color:#65a30d;font-weight:700;}
+.c-yellow{color:#ca8a04;font-weight:700;}
+.c-brown{color:#b45309;font-weight:700;}
+.c-pink{color:#db2777;font-weight:700;}
+
+.action-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;}
+.progress-wrap{display:flex;align-items:center;gap:10px;flex:1;}
+.prog-bar{flex:1;height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;min-width:80px;}
+.prog-fill{height:100%;background:var(--primary);border-radius:4px;transition:width .3s;width:0%;}
+.prog-text{font-size:.82em;color:var(--text-sub);white-space:nowrap;}
+.reset-btn{font-family:inherit;background:var(--primary-light);color:var(--primary-dark);border:1.5px solid var(--border);padding:8px 18px;border-radius:50px;cursor:pointer;font-size:.82em;font-weight:700;}
+
+.score-board{display:none;background:linear-gradient(135deg,var(--purple-light),var(--primary-light));border:2px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:16px;}
+.score-board.show{display:block;}
+.score-board .stars{font-size:1.5em;margin-bottom:6px;}
+.score-board .big{font-size:2em;font-weight:800;color:var(--purple);}
+.score-board .msg{font-size:.9em;color:var(--text-sub);margin-top:6px;}
+
+.next-actions{background:linear-gradient(135deg,var(--purple-light),#eff6ff);border:2px solid var(--border);border-radius:var(--radius);padding:22px;text-align:center;}
+.next-actions h3{color:var(--primary-dark);margin-bottom:8px;font-size:1.1em;}
+.next-actions p{font-size:.87em;color:var(--text-sub);margin-bottom:14px;}
+.next-actions .links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.next-actions a{text-decoration:none;padding:11px 20px;border-radius:8px;font-size:.88em;font-weight:700;background:var(--purple);color:#fff;transition:.15s;}
+.next-actions a:hover{background:#6d28d9;}
+.next-actions a.sub{background:#fff;color:var(--purple);border:1.5px solid #ddd6fe;}
+
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}80%{opacity:1;}100%{transform:translateY(105vh) rotate(720deg);opacity:0;}}
+@media(max-width:520px){.q4-choices{grid-template-columns:1fr;}.action-bar{flex-direction:column;}}
+
+/* ── 縦型分数 ── */
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;font-size:.9em;line-height:1.1;}
+.frac .fn{padding:0 3px;border-bottom:1.5px solid currentColor;}
+.frac .fd{padding:0 3px;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">⚗️ GAMBA 化学</span>
+  <span class="sep">|</span>
+  <a href="oxred_index.html">📊 単元表</a>
+  <a href="oxred_agent_lesson.html">📖 レッスンへ</a>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="crumb">化学基礎 / 酸化還元 / 第3章 / 練習問題</div>
+  <h1>練習問題：酸化剤・還元剤</h1>
+  <p class="sub">酸化剤8種・還元剤6種の反応前後・生成物・色・二面性を確認します。<br>
+  レッスンの一覧表を見ながら解いてもOK！少しずつ覚えましょう。</p>
+  <div class="meta">
+    <span class="badge">📝 全20問</span>
+    <span class="badge">🎨 色の変化も出題</span>
+    <span class="badge">💡 ヒント付き</span>
+  </div>
+</header>
+
+<main>
+
+<div class="action-bar">
+  <div class="progress-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+    <div class="prog-text" id="prog-text">0 / 20 回答済み</div>
+  </div>
+  <button class="reset-btn" onclick="resetAll()">↻ 全問リセット</button>
+</div>
+<div class="score-board" id="score-board">
+  <div class="stars" id="sb-stars"></div>
+  <div class="big" id="sb-score"></div>
+  <div class="msg" id="sb-msg"></div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- セクション1：酸化剤（8種）の反応前後・生成物                  -->
+<!-- ============================================================ -->
+<div class="sec-block">
+  <div class="sec-title">
+    <span class="num">1</span>酸化剤の反応前後・生成物
+    <span class="sec-tag">基本〜標準</span>
+  </div>
+
+  <div class="q-block" data-correct="b">
+    <div class="q-header"><span class="q-num">1</span>
+      <div><div class="q-stem"><span class="c-purple">KMnO₄</span> が硫酸酸性下で酸化剤としてはたらくとき、MnO₄⁻ の色と生成物の色の変化として正しいのはどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：無色 → 緑色（Cr³⁺）</button>
+      <button class="q4-c" data-v="b">イ：赤紫色 → 淡桃〜ほぼ無色（Mn²⁺）</button>
+      <button class="q4-c" data-v="c">ウ：橙赤色 → 緑色</button>
+      <button class="q4-c" data-v="d">エ：黄緑色 → 無色</button>
+    </div>
+    <div class="q4-exp">正解は<strong>イ</strong>。<br>
+    <span class="c-purple">MnO₄⁻（赤紫色）</span> + e⁻ → <span class="c-pink">Mn²⁺（淡桃〜ほぼ無色）</span><br>
+    Mn の酸化数：+7 → +2（5減る → e⁻ 5個受け取る）。<br>
+    この色変化（赤紫色が消える）が滴定の終点の目印です。</div>
+  </div>
+
+  <div class="q-block" data-correct="c">
+    <div class="q-header"><span class="q-num">2</span>
+      <div><div class="q-stem"><span class="c-orange">K₂Cr₂O₇</span> が酸化剤としてはたらいた後の生成物と色はどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：Cr²⁺（無色）</button>
+      <button class="q4-c" data-v="b">イ：CrO₄²⁻（黄色）</button>
+      <button class="q4-c" data-v="c">ウ：Cr³⁺（緑色）</button>
+      <button class="q4-c" data-v="d">エ：Cr（銀白色）</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ウ：Cr³⁺（緑色）</strong>。<br>
+    <span class="c-orange">Cr₂O₇²⁻（橙赤色）</span> → <span class="c-green">Cr³⁺（緑色）</span><br>
+    Cr の酸化数：+6 → +3（1個あたり3減る × 2個 = e⁻ 6個）。<br>
+    ※CrO₄²⁻（黄色）は塩基性条件で安定なイオンです（酸化剤の生成物ではない）。</div>
+  </div>
+
+  <div class="q-block" data-correct="a">
+    <div class="q-header"><span class="q-num">3</span>
+      <div><div class="q-stem">H₂O₂ が酸性条件で酸化剤としてはたらくとき、生成するのは何か。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：H₂O</button>
+      <button class="q4-c" data-v="b">イ：OH⁻</button>
+      <button class="q4-c" data-v="c">ウ：O₂</button>
+      <button class="q4-c" data-v="d">エ：H₂O₂ のまま変化しない</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ア：H₂O</strong>。<br>
+    酸性条件：H₂O₂ + 2H⁺ + 2e⁻ → <strong>2H₂O</strong><br>
+    H⁺ が豊富にあるので OH⁻ が H⁺ と結合して H₂O まで進めます。<br>
+    中性・塩基性では H⁺ が不足するため OH⁻ が生成します。</div>
+  </div>
+
+  <div class="q-block" data-correct="d">
+    <div class="q-header"><span class="q-num">4</span>
+      <div><div class="q-stem">希硝酸と濃硝酸が酸化剤としてはたらくとき、それぞれ生成する気体の色はどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：希→赤褐色、濃→無色</button>
+      <button class="q4-c" data-v="b">イ：希→無色、濃→無色</button>
+      <button class="q4-c" data-v="c">ウ：希→赤褐色、濃→赤褐色</button>
+      <button class="q4-c" data-v="d">エ：希→無色（NO）、濃→赤褐色（NO₂）</button>
+    </div>
+    <div class="q4-exp">正解は<strong>エ</strong>。<br>
+    希 HNO₃ → <strong>NO（無色）</strong>（N：+5→+2、e⁻ 3個）<br>
+    濃 HNO₃ → <span class="c-brown"><strong>NO₂（赤褐色）</strong></span>（N：+5→+4、e⁻ 1個）<br>
+    「希→NO、濃→NO₂」のセットは入試頻出です。</div>
+  </div>
+
+  <div class="q-block" data-correct="b">
+    <div class="q-header"><span class="q-num">5</span>
+      <div><div class="q-stem">熱濃硫酸が酸化剤としてはたらくとき生成する気体はどれか。また、その S の酸化数変化は？</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：SO₃（S：+6→+6 変化なし）</button>
+      <button class="q4-c" data-v="b">イ：SO₂（S：+6→+4、e⁻ 2個）</button>
+      <button class="q4-c" data-v="c">ウ：H₂S（S：+6→−2）</button>
+      <button class="q4-c" data-v="d">エ：O₂（S は変化しない）</button>
+    </div>
+    <div class="q4-exp">正解は<strong>イ：SO₂（S：+6→+4）</strong>。<br>
+    熱濃 H₂SO₄ + 2H⁺ + 2e⁻ → <strong>SO₂</strong> + 2H₂O<br>
+    S の酸化数：+6 → +4（2減る → e⁻ 2個受け取る）。<br>
+    ⚠️ 希硫酸は酸化剤になりません（酸として H⁺ を放出するだけ）。</div>
+  </div>
+
+  <div class="q-block" data-correct="c">
+    <div class="q-header"><span class="q-num">6</span>
+      <div><div class="q-stem"><span class="c-lime">Cl₂</span> が酸化剤としてはたらくとき、1mol の Cl₂ が受け取る e⁻ の mol 数と生成物はどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：e⁻ 1mol、Cl⁻</button>
+      <button class="q4-c" data-v="b">イ：e⁻ 1mol、2Cl⁻</button>
+      <button class="q4-c" data-v="c">ウ：e⁻ 2mol、2Cl⁻</button>
+      <button class="q4-c" data-v="d">エ：e⁻ 2mol、Cl⁻</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ウ</strong>。<br>
+    Cl₂ + 2e⁻ → <strong>2Cl⁻</strong><br>
+    Cl が 2個あるので e⁻ を合計 2mol 受け取ります（1個あたり1減る × 2個）。<br>
+    色変化：<span class="c-lime">黄緑色（Cl₂）</span> → 無色（Cl⁻）</div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- セクション2：還元剤（6種）の反応前後・生成物                  -->
+<!-- ============================================================ -->
+<div class="sec-block">
+  <div class="sec-title">
+    <span class="num">2</span>還元剤の反応前後・生成物
+    <span class="sec-tag">基本〜標準</span>
+  </div>
+
+  <div class="q-block" data-correct="b">
+    <div class="q-header"><span class="q-num">7</span>
+      <div><div class="q-stem">H₂S が還元剤としてはたらくとき、生成する物質と色はどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：SO₂（無色の刺激臭気体）</button>
+      <button class="q4-c" data-v="b">イ：S（黄色の固体）</button>
+      <button class="q4-c" data-v="c">ウ：SO₄²⁻（無色）</button>
+      <button class="q4-c" data-v="d">エ：H₂SO₄（無色）</button>
+    </div>
+    <div class="q4-exp">正解は<strong>イ：S（黄色の固体）</strong>。<br>
+    H₂S → <span class="c-yellow">S</span> + 2H⁺ + 2e⁻<br>
+    S の酸化数：−2 → 0（2増える → e⁻ 2個渡す）。<br>
+    <span class="c-yellow">硫黄（S）は黄色の固体</span>として析出します。反応後に溶液が白濁する。</div>
+  </div>
+
+  <div class="q-block" data-correct="d">
+    <div class="q-header"><span class="q-num">8</span>
+      <div><div class="q-stem">SO₂ が還元剤としてはたらくとき、生成するイオンはどれか。また S の酸化数変化は？</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：S（単体）、S：+4→0</button>
+      <button class="q4-c" data-v="b">イ：SO₃²⁻、S：+4→+3</button>
+      <button class="q4-c" data-v="c">ウ：H₂SO₃、S：+4→+4（変化なし）</button>
+      <button class="q4-c" data-v="d">エ：SO₄²⁻、S：+4→+6</button>
+    </div>
+    <div class="q4-exp">正解は<strong>エ：SO₄²⁻、S：+4→+6</strong>。<br>
+    SO₂ + 2H₂O → SO₄²⁻ + 4H⁺ + 2e⁻<br>
+    S の酸化数：+4 → +6（2増える → e⁻ 2個渡す → 還元剤）。<br>
+    ⚠️ SO₂ が酸化剤のとき（H₂S との反応）は → S（単体）が生成します（区別！）。</div>
+  </div>
+
+  <div class="q-block" data-correct="a">
+    <div class="q-header"><span class="q-num">9</span>
+      <div><div class="q-stem">シュウ酸 (COOH)₂ が還元剤としてはたらくとき、生成するのは何か。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：2CO₂（C：+3→+4）</button>
+      <button class="q4-c" data-v="b">イ：CO（C：+3→+2）</button>
+      <button class="q4-c" data-v="c">ウ：CH₄（C：+3→−4）</button>
+      <button class="q4-c" data-v="d">エ：C（単体）（C：+3→0）</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ア：2CO₂（C：+3→+4）</strong>。<br>
+    C₂O₄²⁻ → 2CO₂ + 2e⁻<br>
+    C の酸化数：+3 → +4（1増える × 2個 = e⁻ 2個渡す）。<br>
+    KMnO₄ 滴定の標定（濃度決定）に使われます。</div>
+  </div>
+
+  <div class="q-block" data-correct="c">
+    <div class="q-header"><span class="q-num">10</span>
+      <div><div class="q-stem">KI（ヨウ化カリウム）が還元剤としてはたらくとき、生成する物質と色、デンプンとの反応はどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：I₂（無色）、デンプンと反応しない</button>
+      <button class="q4-c" data-v="b">イ：I⁻（黄色）、デンプンと反応して赤くなる</button>
+      <button class="q4-c" data-v="c">ウ：I₂（褐色）、デンプンと反応して青紫色になる</button>
+      <button class="q4-c" data-v="d">エ：I₂（紫色）、デンプンと反応して無色になる</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ウ</strong>。<br>
+    2I⁻ → <span class="c-brown">I₂（褐色）</span> + 2e⁻<br>
+    生成した I₂ はデンプンと反応すると<span style="color:#4338ca;font-weight:700;">青紫色</span>になります。<br>
+    この反応がヨウ素滴定の終点判定に利用されます。</div>
+  </div>
+
+  <div class="q-block" data-correct="b">
+    <div class="q-header"><span class="q-num">11</span>
+      <div><div class="q-stem">FeSO₄（Fe²⁺）が還元剤としてはたらくとき、1mol あたり渡す e⁻ の mol 数と生成物はどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：e⁻ 2mol、Fe⁰（鉄単体）</button>
+      <button class="q4-c" data-v="b">イ：e⁻ 1mol、Fe³⁺</button>
+      <button class="q4-c" data-v="c">ウ：e⁻ 2mol、Fe³⁺</button>
+      <button class="q4-c" data-v="d">エ：e⁻ 1mol、Fe⁰（鉄単体）</button>
+    </div>
+    <div class="q4-exp">正解は<strong>イ：e⁻ 1mol、Fe³⁺</strong>。<br>
+    Fe²⁺ → Fe³⁺ + e⁻<br>
+    Fe の酸化数：+2 → +3（1増える → e⁻ 1個渡す）。<br>
+    多くの還元剤が e⁻ 2mol を渡す中、FeSO₄ は e⁻ <strong>1mol</strong> という点が特徴です。</div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- セクション3：二面性・条件による違い                            -->
+<!-- ============================================================ -->
+<div class="sec-block">
+  <div class="sec-title">
+    <span class="num">3</span>二面性と条件による違い
+    <span class="sec-tag">標準〜発展</span>
+  </div>
+
+  <div class="q-block" data-correct="d">
+    <div class="q-header"><span class="q-num warn">12</span>
+      <div><div class="q-stem">H₂O₂ が還元剤としてはたらくとき、正しい記述はどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：常に還元剤としてはたらく</button>
+      <button class="q4-c" data-v="b">イ：酸性条件のときだけ還元剤になる</button>
+      <button class="q4-c" data-v="c">ウ：KI と反応するときに還元剤になる</button>
+      <button class="q4-c" data-v="d">エ：KMnO₄ などの強い酸化剤と反応するときのみ還元剤になる</button>
+    </div>
+    <div class="q4-exp">正解は<strong>エ</strong>。<br>
+    H₂O₂ は通常<strong>酸化剤</strong>（→ H₂O または OH⁻）ですが、<br>
+    KMnO₄ のような超強力な酸化剤と出会うときだけ<strong>還元剤</strong>（→ O₂）になります。<br>
+    KI との反応では H₂O₂ が酸化剤として I⁻ を I₂ に酸化します。</div>
+  </div>
+
+  <div class="q-block" data-correct="a">
+    <div class="q-header"><span class="q-num warn">13</span>
+      <div><div class="q-stem">SO₂ が酸化剤としてはたらくとき、反応の相手と生成物の正しい組み合わせはどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：H₂S（強い還元剤）と反応 → S（硫黄単体）</button>
+      <button class="q4-c" data-v="b">イ：I₂ と反応 → SO₄²⁻</button>
+      <button class="q4-c" data-v="c">ウ：KMnO₄ と反応 → S（硫黄単体）</button>
+      <button class="q4-c" data-v="d">エ：HNO₃ と反応 → S（硫黄単体）</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ア</strong>。<br>
+    SO₂ が酸化剤になるのは H₂S のような<strong>強い還元剤</strong>と反応するときだけ。<br>
+    2H₂S + SO₂ → 3S + 2H₂O（S の酸化数：+4 → 0）<br>
+    イ・ウ・エは SO₂ が還元剤としてはたらく反応（SO₂ → SO₄²⁻）です。</div>
+  </div>
+
+  <div class="q-block" data-correct="c">
+    <div class="q-header"><span class="q-num warn">14</span>
+      <div><div class="q-stem">H₂O₂ が中性・塩基性条件で酸化剤としてはたらくとき、生成するのはどれか。またその理由は？</div></div>
+    </div>
+    <button class="hint-toggle" onclick="toggleHint(this)">💡 ヒントを見る</button>
+    <div class="hint-box">
+      中性・塩基性 = H⁺ がほとんどない<br>
+      O が e⁻ を受け取って −2 になっても、H⁺ が来ないと…？
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：H₂O（H⁺ があるので進める）</button>
+      <button class="q4-c" data-v="b">イ：O₂（酸化されたから）</button>
+      <button class="q4-c" data-v="c">ウ：OH⁻（H⁺ がないので止まる）</button>
+      <button class="q4-c" data-v="d">エ：H₂O₂ のまま変化しない</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ウ：OH⁻</strong>。<br>
+    H₂O₂ + 2e⁻ → 2OH⁻<br>
+    中性・塩基性では H⁺ が不足するため、O²⁻ が H⁺ を拾えず<strong>OH⁻ のまま止まる</strong>。<br>
+    酸性なら H⁺ が豊富なので OH⁻ + H⁺ → H₂O まで進めます。</div>
+  </div>
+
+  <div class="q-block" data-correct="b">
+    <div class="q-header"><span class="q-num warn">15</span>
+      <div><div class="q-stem">SO₂ と H₂O₂ の二面性の理由として正しいものはどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：どちらも酸性条件でのみ二面性が現れる</button>
+      <button class="q4-c" data-v="b">イ：SO₂ の S（+4）と H₂O₂ の O（−1）が中間の酸化数だから</button>
+      <button class="q4-c" data-v="c">ウ：分子量が小さいから</button>
+      <button class="q4-c" data-v="d">エ：水に溶けやすいから</button>
+    </div>
+    <div class="q4-exp">正解は<strong>イ</strong>。<br>
+    SO₂ の S：+4（−2〜+6 の中間）→ 上にも下にも動ける<br>
+    H₂O₂ の O：−1（−2〜0 の中間）→ 上にも下にも動ける<br>
+    <strong>中間値の酸化数</strong>を持つから、相手次第で酸化剤にも還元剤にもなれます。</div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- セクション4：総合問題・半反応式の確認                          -->
+<!-- ============================================================ -->
+<div class="sec-block">
+  <div class="sec-title">
+    <span class="num">4</span>総合問題・半反応式の確認
+    <span class="sec-tag" style="background:var(--accent-light);color:var(--accent);">発展</span>
+  </div>
+
+  <div class="q-block" data-correct="d">
+    <div class="q-header"><span class="q-num hard">16</span>
+      <div><div class="q-stem">次の反応で酸化剤と還元剤を正しく示したのはどれか。<br>
+        <span class="rxn-box">H₂O₂ + 2KI + 2HCl → 2H₂O + I₂ + 2KCl</span></div></div>
+    </div>
+    <button class="hint-toggle" onclick="toggleHint(this)">💡 ヒントを見る</button>
+    <div class="hint-box">
+      H₂O₂ の O と KI の I の酸化数変化を確認しよう<br>
+      <span class="eq">H₂O₂ の O：−1 → H₂O の O：?　　KI の I：−1 → I₂ の I：?</span>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：酸化剤 KI、還元剤 H₂O₂</button>
+      <button class="q4-c" data-v="b">イ：酸化剤 HCl、還元剤 KI</button>
+      <button class="q4-c" data-v="c">ウ：酸化剤 H₂O₂、還元剤 HCl</button>
+      <button class="q4-c" data-v="d">エ：酸化剤 H₂O₂、還元剤 KI</button>
+    </div>
+    <div class="q4-exp">正解は<strong>エ</strong>。<br>
+    H₂O₂ の O：−1 → H₂O の O：−2（<span class="c-rd">減った → 還元された = 酸化剤</span>）<br>
+    KI の I：−1 → I₂ の I：0（<span class="c-ox">増えた → 酸化された = 還元剤</span>）<br>
+    HCl は H⁺ と Cl⁻ を供給するだけで酸化数変化なし。</div>
+  </div>
+
+  <div class="q-block" data-correct="a">
+    <div class="q-header"><span class="q-num hard">17</span>
+      <div><div class="q-stem">KMnO₄（酸性）の半反応式で正しいものはどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</button>
+      <button class="q4-c" data-v="b">イ：MnO₄⁻ + 5e⁻ → Mn²⁺ + 4O²⁻</button>
+      <button class="q4-c" data-v="c">ウ：MnO₄⁻ + 4H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</button>
+      <button class="q4-c" data-v="d">エ：MnO₄⁻ + 8H⁺ + 7e⁻ → Mn²⁺ + 4H₂O</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ア</strong>。<br>
+    MnO₄⁻ + <strong>8H⁺</strong> + <strong>5e⁻</strong> → Mn²⁺ + <strong>4H₂O</strong><br>
+    O が 4個 → H₂O が 4個 → H が 8個 → H⁺ が 8個。<br>
+    Mn：+7→+2（5減る → e⁻ 5個）。手順通りに確認しましょう。</div>
+  </div>
+
+  <div class="q-block" data-correct="c">
+    <div class="q-header"><span class="q-num hard">18</span>
+      <div><div class="q-stem">H₂S の半反応式で正しいものはどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：H₂S + 2e⁻ → S + 2H⁺</button>
+      <button class="q4-c" data-v="b">イ：H₂S → S + H₂ + 2e⁻</button>
+      <button class="q4-c" data-v="c">ウ：H₂S → S + 2H⁺ + 2e⁻</button>
+      <button class="q4-c" data-v="d">エ：H₂S → SO₄²⁻ + 4H⁺ + 6e⁻</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ウ</strong>。<br>
+    H₂S → <span class="c-yellow">S</span> + 2H⁺ + 2e⁻<br>
+    S の酸化数：−2 → 0（2増える → 還元剤、e⁻ を右辺に）。<br>
+    O がないので H₂O 追加不要。H⁺ を右辺に 2個追加して完成。</div>
+  </div>
+
+  <div class="q-block" data-correct="b">
+    <div class="q-header"><span class="q-num hard">19</span>
+      <div><div class="q-stem">次の酸化還元反応で、酸化剤が受け取った e⁻ の mol 数と還元剤が渡した e⁻ の mol 数について正しいのはどれか。<br>
+        <span class="rxn-box">MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O　（酸化剤の半反応式）<br>
+        Fe²⁺ → Fe³⁺ + e⁻　（還元剤の半反応式）</span></div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：受け取った e⁻（5mol）≠ 渡した e⁻（1mol）</button>
+      <button class="q4-c" data-v="b">イ：MnO₄⁻ を 1mol、Fe²⁺ を 5mol 使うと e⁻ が揃う</button>
+      <button class="q4-c" data-v="c">ウ：MnO₄⁻ を 5mol、Fe²⁺ を 1mol 使うと e⁻ が揃う</button>
+      <button class="q4-c" data-v="d">エ：e⁻ の mol 数は揃えなくてよい</button>
+    </div>
+    <div class="q4-exp">正解は<strong>イ</strong>。<br>
+    MnO₄⁻ 1mol が受け取る e⁻ = 5mol<br>
+    Fe²⁺ 1mol が渡す e⁻ = 1mol<br>
+    受け取る = 渡す にするには Fe²⁺ を <strong>5mol</strong> 使う。<br>
+    → イオン反応式：MnO₄⁻ + 8H⁺ + 5Fe²⁺ → Mn²⁺ + 5Fe³⁺ + 4H₂O</div>
+  </div>
+
+  <div class="q-block" data-correct="d">
+    <div class="q-header"><span class="q-num hard">20</span>
+      <div><div class="q-stem">次の反応の下線部の物質について正しい記述はどれか。<br>
+        <span class="rxn-box">2<u>SO₂</u> + O₂ → 2SO₃</span>
+        <div class="q-sub">（接触法による SO₃ の製造）</div></div></div>
+    </div>
+    <button class="hint-toggle" onclick="toggleHint(this)">💡 ヒントを見る</button>
+    <div class="hint-box">
+      SO₂ の S の酸化数と SO₃ の S の酸化数を比べよう<br>
+      <span class="eq">SO₂：S = ?（O=−2）　SO₃：S = ?（O=−2）</span>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：SO₂ は酸化剤（S の酸化数が減った）</button>
+      <button class="q4-c" data-v="b">イ：SO₂ は触媒としてはたらいている</button>
+      <button class="q4-c" data-v="c">ウ：酸化還元反応ではない</button>
+      <button class="q4-c" data-v="d">エ：SO₂ は還元剤（S の酸化数が +4→+6 に増えた）</button>
+    </div>
+    <div class="q4-exp">正解は<strong>エ</strong>。<br>
+    SO₂ の S：+4（x + (−2)×2 = 0 → x = +4）<br>
+    SO₃ の S：+6（x + (−2)×3 = 0 → x = +6）<br>
+    S の酸化数が +4 → +6 に<span class="c-ox">増えた → 酸化された = 還元剤</span>。<br>
+    O₂（0 → −2）が<span class="c-rd">還元された = 酸化剤</span>。接触法は工業的な硫酸製造の重要反応。</div>
+  </div>
+</div>
+
+
+<!-- 進捗バー下部 -->
+<div class="action-bar" style="margin-top:4px;">
+  <div class="progress-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill2"></div></div>
+    <div class="prog-text" id="prog-text2">0 / 20 回答済み</div>
+  </div>
+  <button class="reset-btn" onclick="resetAll()">↻ 全問リセット</button>
+</div>
+
+<div class="next-actions">
+  <h3>🎉 練習問題お疲れさま！</h3>
+  <p>半反応式の作り方もステッパーで練習しましょう！</p>
+  <div class="links">
+    <a href="oxred_agent_half.html">⚗️ 半反応式ステッパーへ</a>
+    <a href="oxred_agent_lesson.html" class="sub">📖 レッスンへ戻る</a>
+    <a href="oxred_index.html" class="sub">📊 単元表へ</a>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+let answered = 0;
+const TOTAL = 20;
+
+function launchConfetti(){
+  const C=['#f472b6','#facc15','#34d399','#60a5fa','#f87171','#a78bfa','#fb923c','#2dd4bf'];
+  for(let i=0;i<80;i++){
+    const el=document.createElement('div');
+    const s=Math.random()*10+6,l=Math.random()*100;
+    const d=Math.random()*.6,r=Math.random()*1.2+1.2;
+    const c=C[Math.floor(Math.random()*C.length)];
+    const sh=Math.random()>.5?'50%':'2px';
+    el.style.cssText=`position:fixed;top:-20px;left:${l}vw;width:${s}px;height:${s}px;background:${c};border-radius:${sh};opacity:1;pointer-events:none;z-index:9999;animation:confettiFall ${r}s ${d}s ease-in forwards;`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),(r+d)*1000+200);
+  }
+}
+
+function toggleHint(btn){
+  const box = btn.nextElementSibling;
+  const open = box.classList.toggle('open');
+  btn.textContent = open ? '💡 ヒントを隠す' : '💡 ヒントを見る';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.q-block').forEach(q => {
+    const correct = q.dataset.correct;
+    const exp = q.querySelector('.q4-exp');
+    q.querySelectorAll('.q4-c').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(btn.classList.contains('disabled')) return;
+        q.querySelectorAll('.q4-c').forEach(b => b.classList.add('disabled'));
+        if(btn.dataset.v === correct){
+          btn.classList.add('correct');
+          launchConfetti();
+        } else {
+          btn.classList.add('wrong');
+          q.querySelectorAll('.q4-c').forEach(b => {
+            if(b.dataset.v === correct) b.classList.add('correct');
+          });
+        }
+        const hint = q.querySelector('.hint-box');
+        if(hint) hint.classList.remove('open');
+        const htBtn = q.querySelector('.hint-toggle');
+        if(htBtn) htBtn.textContent = '💡 ヒントを見る';
+        exp.classList.add('show');
+        answered++;
+        updateProgress();
+        if(answered === TOTAL) setTimeout(showScore, 600);
+      });
+    });
+  });
+  updateProgress();
+});
+
+function updateProgress(){
+  const pct = Math.round(answered / TOTAL * 100);
+  ['prog-fill','prog-fill2'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.style.width = pct + '%';
+  });
+  ['prog-text','prog-text2'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.textContent = `${answered} / ${TOTAL} 回答済み`;
+  });
+}
+
+function showScore(){
+  const correct = document.querySelectorAll('.q4-c.correct').length;
+  const pct = correct / TOTAL;
+  let stars = '', msg = '';
+  if(pct === 1){ stars='🌟🌟🌟'; msg='完璧！全問正解おめでとう！'; launchConfetti(); setTimeout(launchConfetti, 800); }
+  else if(pct >= .8){ stars='⭐⭐🌟'; msg='よくできました！惜しかった問題を確認しよう。'; }
+  else if(pct >= .6){ stars='⭐⭐'; msg='もう少し！穴埋め練習に戻って反応前後を確認しよう。'; }
+  else { stars='⭐'; msg='レッスンの一覧表をもう一度見てから再挑戦しよう！'; }
+  document.getElementById('sb-stars').textContent = stars;
+  document.getElementById('sb-score').textContent = `${correct} / ${TOTAL} 正解`;
+  document.getElementById('sb-msg').textContent = msg;
+  const board = document.getElementById('score-board');
+  board.classList.add('show');
+  board.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+function resetAll(){
+  answered = 0;
+  document.querySelectorAll('.q4-c').forEach(b => b.classList.remove('correct','wrong','disabled'));
+  document.querySelectorAll('.q4-exp').forEach(e => e.classList.remove('show'));
+  document.querySelectorAll('.hint-box').forEach(h => h.classList.remove('open'));
+  document.querySelectorAll('.hint-toggle').forEach(b => b.textContent = '💡 ヒントを見る');
+  document.getElementById('score-board').classList.remove('show');
+  updateProgress();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>半反応式ステッパー | GAMBA化学</title>
+<style>
+:root{
+  --bg:#f0f4ff;--card:#fff;
+  --primary:#2563eb;--primary-light:#dbeafe;--primary-dark:#1e40af;
+  --accent:#dc2626;--accent-light:#fee2e2;
+  --success:#16a34a;--success-light:#dcfce7;
+  --warn:#d97706;--warn-light:#fffbeb;
+  --purple:#7c3aed;--purple-light:#ede9fe;
+  --text:#1e293b;--text-sub:#64748b;
+  --border:#bfdbfe;--radius:14px;
+  --ox:#dc2626;--rd:#16a34a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'BIZ UDPGothic','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+
+.topnav{display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;flex-wrap:wrap;}
+.topnav .brand{font-weight:700;font-size:.9em;}
+.topnav .sep{opacity:.4;}
+.topnav a{color:#bfdbfe;text-decoration:none;font-size:.82em;}
+.topnav a:hover{color:#fff;}
+
+.hero{background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);color:#fff;padding:24px 20px 22px;}
+.hero .crumb{font-size:.75em;opacity:.7;margin-bottom:6px;}
+.hero h1{font-size:clamp(1.3em,4vw,1.9em);font-weight:800;margin-bottom:6px;}
+.hero .sub{font-size:.86em;opacity:.9;line-height:1.8;}
+.hero .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:4px 12px;font-size:.78em;font-weight:700;}
+
+.wrap{max-width:860px;margin:0 auto;}
+main{padding:20px 14px 0;}
+
+/* ── 試薬選択グリッド ── */
+.select-block{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:18px;}
+.sb-title{font-weight:700;font-size:.95em;color:var(--primary-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.sb-subtitle{font-size:.82em;color:var(--text-sub);margin-bottom:8px;font-weight:600;}
+.reagent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px;margin-bottom:14px;}
+.reagent-btn{
+  font-family:inherit;padding:9px 12px;border-radius:8px;
+  border:2px solid var(--border);background:#fff;
+  font-size:.84em;font-weight:600;cursor:pointer;
+  text-align:left;transition:.15s;line-height:1.4;
+  -webkit-tap-highlight-color:transparent;
+}
+.reagent-btn:hover{border-color:var(--primary);background:var(--primary-light);}
+.reagent-btn.sel-ox{border-color:var(--ox);background:var(--accent-light);color:var(--ox);}
+.reagent-btn.sel-rd{border-color:var(--rd);background:var(--success-light);color:var(--rd);}
+.reagent-btn .rb-tag{display:block;font-size:.7em;margin-top:2px;opacity:.75;}
+
+/* ── ステッパー本体 ── */
+.stepper-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;display:none;}
+.stepper-card.active{display:block;}
+
+.sc-header{
+  background:linear-gradient(90deg,var(--primary-light),#f0f4ff);
+  padding:13px 16px;border-bottom:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+}
+.sc-name{font-weight:800;font-size:1em;color:var(--primary-dark);}
+.sc-role{font-size:.76em;font-weight:700;padding:3px 10px;border-radius:20px;}
+.sc-role.ox{background:var(--accent-light);color:var(--ox);}
+.sc-role.rd{background:var(--success-light);color:var(--rd);}
+
+/* ドット進捗 */
+.sc-dots{display:flex;gap:6px;align-items:center;padding:0 16px;}
+.sc-dot{width:10px;height:10px;border-radius:50%;border:2px solid #cbd5e1;background:transparent;transition:.2s;cursor:pointer;}
+.sc-dot.active{background:var(--primary);border-color:var(--primary);}
+.sc-dot.done{background:#93c5fd;border-color:#93c5fd;}
+
+/* ステップパネル */
+.sc-panels{padding:0;}
+.sc-panel{display:none;padding:16px;}
+.sc-panel.active{display:block;}
+
+/* ステップタグ */
+.step-tag{
+  display:inline-block;font-size:.75em;font-weight:700;
+  padding:3px 12px;border-radius:20px;margin-bottom:12px;
+}
+.tag-s0{background:#ede9fe;color:#4c1d95;}
+.tag-s1{background:#fff7ed;color:#92400e;}
+.tag-s2{background:#f0fdf4;color:#14532d;}
+.tag-s3{background:#fee2e2;color:#991b1b;}
+.tag-s4{background:var(--primary-light);color:var(--primary-dark);}
+
+/* ルールボックス */
+.rule-box{
+  background:#f8faff;border:1.5px solid var(--border);
+  border-radius:8px;padding:10px 14px;margin-bottom:10px;
+  font-size:.87em;line-height:1.8;
+}
+.rule-box .rule-label{
+  display:inline-block;background:var(--primary);color:#fff;
+  font-size:.74em;font-weight:700;padding:2px 8px;border-radius:5px;
+  margin-bottom:5px;
+}
+
+/* 式の組み立て表示 */
+.eq-build{
+  background:#fffbeb;border:2px solid #fcd34d;
+  border-radius:10px;padding:12px 16px;margin:10px 0;
+  text-align:center;
+}
+.eq-build .eq-line{
+  font-size:1.1em;font-weight:700;letter-spacing:.04em;
+  line-height:1.8;
+}
+.eq-build .eq-caption{font-size:.8em;color:#92400e;margin-top:4px;}
+.added{color:var(--accent);font-weight:800;}
+.electron{color:var(--purple);font-weight:800;}
+.balanced{color:var(--rd);font-weight:800;}
+.oxnum{
+  display:inline-block;background:#e0e7ff;color:#4338ca;
+  font-size:.75em;font-weight:700;padding:1px 6px;border-radius:5px;margin:0 2px;
+}
+
+/* 解説テキスト */
+.explain-box{font-size:.88em;line-height:1.85;color:var(--text);}
+.explain-box ul{margin:6px 0 6px 18px;}
+.explain-box li{margin-bottom:4px;}
+.hl{font-weight:700;color:var(--primary-dark);}
+.hl-ox{font-weight:700;color:var(--ox);}
+.hl-rd{font-weight:700;color:var(--rd);}
+.hl-e{font-weight:700;color:var(--purple);}
+.check-row{
+  display:flex;align-items:center;gap:8px;
+  background:var(--success-light);border-radius:6px;
+  padding:6px 12px;margin-top:8px;font-size:.86em;font-weight:600;color:#14532d;
+}
+
+/* まとめパネル */
+.summary-panel{padding:16px;}
+.summary-eq{
+  background:linear-gradient(135deg,var(--success-light),#dbeafe);
+  border:2px solid #86efac;border-radius:10px;
+  padding:14px 16px;text-align:center;margin-bottom:12px;
+}
+.summary-eq .big-eq{font-size:1.15em;font-weight:800;color:var(--primary-dark);line-height:1.8;}
+.summary-eq .caption{font-size:.8em;color:var(--text-sub);margin-top:6px;}
+.summary-points ul{margin:0 0 0 18px;font-size:.88em;line-height:1.9;}
+.summary-points li{margin-bottom:3px;}
+.point-box{background:var(--success-light);border:2px solid #86efac;border-radius:10px;padding:11px 14px;margin-top:10px;}
+.point-box .label{display:inline-block;background:var(--success);color:#fff;font-size:.75em;font-weight:700;padding:2px 10px;border-radius:20px;margin-bottom:7px;}
+
+/* ナビゲーションボタン */
+.sc-nav{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 16px;border-top:1px solid #e2e8f0;
+  background:#fafafa;
+}
+.nav-btn{
+  font-family:inherit;font-size:.84em;padding:9px 22px;
+  border-radius:50px;border:1.5px solid var(--border);
+  background:#fff;cursor:pointer;font-weight:700;transition:.15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.nav-btn:hover{background:var(--primary-light);}
+.nav-btn:disabled{opacity:.35;cursor:default;}
+.nav-btn.next{background:var(--primary);color:#fff;border-color:var(--primary);}
+.nav-btn.next:hover{background:var(--primary-dark);}
+.nav-step-lbl{font-size:.8em;color:var(--text-sub);}
+
+/* 次のアクション */
+.next-actions{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:2px solid var(--border);border-radius:var(--radius);padding:22px;margin:24px 0 0;text-align:center;}
+.next-actions h3{color:var(--primary-dark);margin-bottom:8px;font-size:1.1em;}
+.next-actions p{font-size:.87em;color:var(--text-sub);margin-bottom:14px;}
+.next-actions .links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.next-actions a{text-decoration:none;padding:11px 20px;border-radius:8px;font-size:.88em;font-weight:700;background:var(--primary);color:#fff;transition:.15s;}
+.next-actions a:hover{background:var(--primary-dark);}
+.next-actions a.sub{background:#fff;color:var(--primary);border:1.5px solid var(--border);}
+
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}80%{opacity:1;}100%{transform:translateY(105vh) rotate(720deg);opacity:0;}}
+.sc-dots-wrap{display:flex;align-items:center;gap:6px;padding:10px 16px;border-bottom:1px solid #e2e8f0;background:#fafafa;}
+@media(max-width:520px){.reagent-grid{grid-template-columns:1fr 1fr;}}
+
+/* ── 縦型分数 ── */
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;font-size:.9em;line-height:1.1;}
+.frac .fn{padding:0 3px;border-bottom:1.5px solid currentColor;}
+.frac .fd{padding:0 3px;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">⚗️ GAMBA 化学</span>
+  <span class="sep">|</span>
+  <a href="oxred_index.html">📊 単元表</a>
+  <a href="oxred_agent_lesson.html">📖 レッスン</a>
+  <a href="oxred_agent_fill.html">✏️ 穴埋め</a>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="crumb">化学基礎 / 酸化還元 / 第3章 / 半反応式ステッパー</div>
+  <h1>⚗️ 半反応式ステッパー</h1>
+  <p class="sub">試薬を選んで「次へ」ボタンを押すたびに1ステップずつ解説します。<br>
+  O を合わせる → H を合わせる → 電荷を合わせる の手順を丁寧に確認できます。</p>
+  <div class="badges">
+    <span class="badge">🔴 酸化剤 8種</span>
+    <span class="badge">🟢 還元剤 6種</span>
+    <span class="badge">📋 Step 0〜4 の5段階</span>
+  </div>
+</header>
+
+<main>
+
+<!-- ── 試薬選択 ── -->
+<div class="select-block">
+  <div class="sb-title">📌 試薬を選んで半反応式を作ろう</div>
+  <div class="sb-subtitle">🔴 酸化剤</div>
+  <div class="reagent-grid" id="grid-ox"></div>
+  <div class="sb-subtitle">🟢 還元剤</div>
+  <div class="reagent-grid" id="grid-rd"></div>
+</div>
+
+<!-- ── ステッパー本体 ── -->
+<div class="stepper-card" id="stepper-card">
+  <div class="sc-header">
+    <div>
+      <div class="sc-name" id="sc-name"></div>
+    </div>
+    <span class="sc-role" id="sc-role"></span>
+  </div>
+  <div class="sc-dots-wrap">
+    <span style="font-size:.8em;color:var(--text-sub);margin-right:4px;">進行：</span>
+    <div id="sc-dots" style="display:flex;gap:6px;"></div>
+  </div>
+  <div id="sc-panels"></div>
+  <div class="sc-nav">
+    <button class="nav-btn" id="nav-prev" onclick="stepMove(-1)" disabled>← 前へ</button>
+    <span class="nav-step-lbl" id="nav-lbl"></span>
+    <button class="nav-btn next" id="nav-next" onclick="stepMove(1)">次へ →</button>
+  </div>
+</div>
+
+<div class="next-actions">
+  <h3>💡 半反応式の作り方 ─ 4ステップ</h3>
+  <p>Step 0：反応前後を書く　→　Step 1：O を H₂O で合わせる　→　Step 2：H を H⁺ で合わせる　→　Step 3：e⁻ で電荷を合わせる</p>
+  <div class="links">
+    <a href="oxred_agent_fill.html" class="sub">✏️ 穴埋め練習へ</a>
+    <a href="oxred_agent_lesson.html" class="sub">📖 レッスンへ戻る</a>
+    <a href="oxred_index.html" class="sub">📊 単元表へ</a>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+/* ============================================================
+   試薬データ
+============================================================ */
+const REAGENTS = [
+
+  /* ── 酸化剤 ── */
+  {
+    id:'kmno4', name:'KMnO₄（過マンガン酸カリウム）', type:'ox',
+    condition:'硫酸酸性',
+    steps:[
+      {
+        tag:'Step 0', tagClass:'tag-s0', title:'反応前後を書く',
+        rule:'酸化剤の反応前後を書く。KMnO₄（酸性）は MnO₄⁻ → Mn²⁺。',
+        eq:'<span class="c-purple">MnO₄⁻</span>　→　<span class="c-pink">Mn²⁺</span>',
+        caption:'',
+        explain:`Mn の酸化数：<span class="oxnum">+7</span> → <span class="oxnum">+2</span>（<span class="hl-ox">5 減る</span> → e⁻ を 5個受け取る酸化剤）<br>
+        <span style="color:#9333ea;font-weight:700;">MnO₄⁻（赤紫色）</span> が <span style="color:#db2777;font-weight:700;">Mn²⁺（淡桃〜ほぼ無色）</span>になります。`
+      },
+      {
+        tag:'Step 1', tagClass:'tag-s1', title:'O の数を合わせる（右辺に H₂O）',
+        rule:'左辺の O が 4個 → 右辺に H₂O を 4個加えて O の数を揃える。',
+        eq:'<span class="c-purple">MnO₄⁻</span>　→　<span class="c-pink">Mn²⁺</span> + <span class="added">4H₂O</span>',
+        caption:'O の数：左辺 4個 ＝ 右辺 4個 ✓',
+        explain:`左辺 MnO₄⁻ に O が <span class="hl">4個</span>。<br>
+        右辺に <span class="hl-ox">4H₂O</span> を加えて O の数を揃えます。<br>
+        <span style="font-size:.85em;color:var(--text-sub);">💡 酸化剤の場合：O が余る → 右辺に H₂O を加える</span>`
+      },
+      {
+        tag:'Step 2', tagClass:'tag-s2', title:'H の数を合わせる（左辺に H⁺）',
+        rule:'右辺の H が 8個（4H₂O = 8H）→ 左辺に H⁺ を 8個加える。',
+        eq:'<span class="c-purple">MnO₄⁻</span> + <span class="added">8H⁺</span>　→　<span class="c-pink">Mn²⁺</span> + 4H₂O',
+        caption:'H の数：左辺 8個 ＝ 右辺 8個 ✓',
+        explain:`右辺に H₂O が 4個 → H は <span class="hl">8個</span>。<br>
+        左辺に <span class="hl-ox">8H⁺</span> を加えて H の数を揃えます。<br>
+        <span style="font-size:.85em;color:var(--text-sub);">💡 H⁺ を左辺に加えるのは「酸性条件下」だから H⁺ が豊富にある</span>`
+      },
+      {
+        tag:'Step 3', tagClass:'tag-s3', title:'電荷を合わせる（左辺に e⁻）',
+        rule:'左辺の電荷合計 vs 右辺の電荷合計を計算して e⁻ で補う。',
+        eq:'<span class="c-purple">MnO₄⁻</span> + 8H⁺ + <span class="electron">5e⁻</span>　→　<span class="c-pink">Mn²⁺</span> + 4H₂O',
+        caption:'電荷：左辺 −1+8−5=+2　＝　右辺 +2 ✓',
+        explain:`左辺の電荷：MnO₄⁻(−1) + 8H⁺(+8) = <span class="hl">+7</span><br>
+        右辺の電荷：Mn²⁺(+2) + 4H₂O(0) = <span class="hl">+2</span><br>
+        差 7 − 2 = 5 → 左辺に <span class="hl-e">5e⁻</span> を加えて電荷を揃えます。<br>
+        <span style="font-size:.85em;color:var(--text-sub);">💡 酸化剤は e⁻ を受け取る → e⁻ を左辺に書く</span>`
+      },
+      {
+        tag:'完成！', tagClass:'tag-s4', title:'半反応式の完成',
+        eq:'<span class="balanced">MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</span>',
+        caption:'',
+        explain:`<ul>
+          <li>Mn の酸化数：<span class="oxnum">+7</span> → <span class="oxnum">+2</span>（<span class="hl-ox">5 減る</span> → 酸化剤）</li>
+          <li>e⁻ を <span class="hl-e">5個</span> 受け取る</li>
+          <li>H⁺ が <strong>8個</strong>、H₂O が <strong>4個</strong> 必要（酸性条件）</li>
+          <li>色変化：<span style="color:#9333ea;">赤紫色</span> → <span style="color:#db2777;">淡桃〜ほぼ無色</span></li>
+        </ul>`
+      }
+    ]
+  },
+
+  {
+    id:'k2cr2o7', name:'K₂Cr₂O₇（ニクロム酸カリウム）', type:'ox',
+    condition:'硫酸酸性',
+    steps:[
+      {tag:'Step 0',tagClass:'tag-s0',title:'反応前後を書く（Cr が 2個！）',
+       rule:'K₂Cr₂O₇ は Cr が 2個 → 生成物も 2Cr³⁺ と書く。',
+       eq:'<span class="c-orange">Cr₂O₇²⁻</span>　→　<span class="c-green">2Cr³⁺</span>',caption:'',
+       explain:`Cr の酸化数：<span class="oxnum">+6</span> → <span class="oxnum">+3</span>（1個あたり <span class="hl-ox">3 減る</span> × 2個 = <span class="hl-e">e⁻ 6個</span>受け取る）<br>
+       <span style="color:#f97316;font-weight:700;">Cr₂O₇²⁻（橙赤色）</span> → <span style="color:#16a34a;font-weight:700;">Cr³⁺（緑色）</span><br>
+       <span class="hl-ox">Cr が 2個あるので 2x として計算することに注意！</span>`},
+      {tag:'Step 1',tagClass:'tag-s1',title:'O の数を合わせる（右辺に 7H₂O）',
+       rule:'左辺の O が 7個 → 右辺に 7H₂O を加える。',
+       eq:'<span class="c-orange">Cr₂O₇²⁻</span>　→　<span class="c-green">2Cr³⁺</span> + <span class="added">7H₂O</span>',
+       caption:'O の数：左辺 7個 ＝ 右辺 7個 ✓',
+       explain:`Cr₂O₇²⁻ の O は <span class="hl">7個</span> → 右辺に <span class="hl-ox">7H₂O</span> を追加。`},
+      {tag:'Step 2',tagClass:'tag-s2',title:'H の数を合わせる（左辺に 14H⁺）',
+       rule:'右辺の H は 14個（7H₂O）→ 左辺に 14H⁺。',
+       eq:'<span class="c-orange">Cr₂O₇²⁻</span> + <span class="added">14H⁺</span>　→　<span class="c-green">2Cr³⁺</span> + 7H₂O',
+       caption:'H の数：左辺 14個 ＝ 右辺 14個 ✓',
+       explain:`右辺 7H₂O の H が <span class="hl">14個</span> → 左辺に <span class="hl-ox">14H⁺</span> を追加。`},
+      {tag:'Step 3',tagClass:'tag-s3',title:'電荷を合わせる（左辺に 6e⁻）',
+       rule:'左辺：−2+14=+12。右辺：+6。差 6 → 左辺に 6e⁻。',
+       eq:'<span class="c-orange">Cr₂O₇²⁻</span> + 14H⁺ + <span class="electron">6e⁻</span>　→　<span class="c-green">2Cr³⁺</span> + 7H₂O',
+       caption:'電荷：左辺 −2+14−6=+6 ＝ 右辺 +6 ✓',
+       explain:`左辺：Cr₂O₇²⁻(−2)+14H⁺(+14)=<span class="hl">+12</span><br>
+       右辺：2Cr³⁺(+6)=<span class="hl">+6</span><br>
+       差 12−6=6 → <span class="hl-e">6e⁻</span> を左辺に追加。`},
+      {tag:'完成！',tagClass:'tag-s4',title:'半反応式の完成',
+       eq:'<span class="balanced">Cr₂O₇²⁻ + 14H⁺ + 6e⁻ → 2Cr³⁺ + 7H₂O</span>',caption:'',
+       explain:`<ul>
+         <li>Cr の酸化数：<span class="oxnum">+6</span> → <span class="oxnum">+3</span>（<span class="hl-ox">6 減る</span>合計 → 酸化剤）</li>
+         <li>e⁻ を <span class="hl-e">6個</span> 受け取る</li>
+         <li>色変化：<span style="color:#f97316;">橙赤色</span> → <span style="color:#16a34a;">緑色</span></li>
+       </ul>`}
+    ]
+  },
+
+  {
+    id:'h2o2_ox_a', name:'H₂O₂（酸化剤・酸性）', type:'ox',
+    condition:'酸性条件',
+    steps:[
+      {tag:'Step 0',tagClass:'tag-s0',title:'反応前後を書く',
+       rule:'H₂O₂（酸性条件）は H₂O₂ → 2H₂O。O の酸化数 −1 → −2（2減る → e⁻ 2個受け取る）。',
+       eq:'H₂O₂　→　<span class="c-blue">2H₂O</span>',caption:'',
+       explain:`O の酸化数：<span class="oxnum">−1</span> → <span class="oxnum">−2</span>（<span class="hl-ox">2 減る</span> → e⁻ 2個受け取る酸化剤）<br>
+       H₂O₂ の O は例外で −1（通常の −2 ではない）。`},
+      {tag:'Step 1',tagClass:'tag-s1',title:'O の数を確認（すでに合っている）',
+       rule:'左辺 H₂O₂ の O = 2個、右辺 2H₂O の O = 2個 → H₂O の追加不要。',
+       eq:'H₂O₂　→　<span class="c-blue">2H₂O</span>',caption:'O の数：左辺 2個 ＝ 右辺 2個 ✓（H₂O 追加不要）',
+       explain:`O の数がすでに揃っています。H₂O を追加する必要はありません。`},
+      {tag:'Step 2',tagClass:'tag-s2',title:'H の数を合わせる（左辺に 2H⁺）',
+       rule:'左辺 H = 2個（H₂O₂）、右辺 H = 4個（2H₂O）→ 左辺に 2H⁺ を加える。',
+       eq:'H₂O₂ + <span class="added">2H⁺</span>　→　<span class="c-blue">2H₂O</span>',
+       caption:'H の数：左辺 4個 ＝ 右辺 4個 ✓',
+       explain:`左辺 H = 2個（H₂O₂）、右辺 H = 4個（2H₂O）<br>
+       左辺に <span class="hl-ox">2H⁺</span> を追加 → H = 4個 ✓`},
+      {tag:'Step 3',tagClass:'tag-s3',title:'電荷を合わせる（左辺に 2e⁻）',
+       rule:'左辺：0+2=+2。右辺：0。差 2 → 左辺に 2e⁻。',
+       eq:'H₂O₂ + 2H⁺ + <span class="electron">2e⁻</span>　→　<span class="c-blue">2H₂O</span>',
+       caption:'電荷：左辺 0+2−2=0 ＝ 右辺 0 ✓',
+       explain:`左辺：H₂O₂(0)+2H⁺(+2)=<span class="hl">+2</span><br>
+       右辺：2H₂O(0)=<span class="hl">0</span><br>
+       差 2 → <span class="hl-e">2e⁻</span> を左辺に追加。`},
+      {tag:'完成！',tagClass:'tag-s4',title:'半反応式の完成',
+       eq:'<span class="balanced">H₂O₂ + 2H⁺ + 2e⁻ → 2H₂O</span>',caption:'',
+       explain:`<ul>
+         <li>O の酸化数：<span class="oxnum">−1</span> → <span class="oxnum">−2</span>（<span class="hl-ox">2 減る</span> → 酸化剤）</li>
+         <li>e⁻ を <span class="hl-e">2個</span> 受け取る</li>
+         <li>酸性条件で H⁺ が豊富にある → <strong>H₂O</strong> が生成</li>
+       </ul>`}
+    ]
+  },
+
+  {
+    id:'h2o2_ox_b', name:'H₂O₂（酸化剤・中性塩基性）', type:'ox',
+    condition:'中性・塩基性',
+    steps:[
+      {tag:'Step 0',tagClass:'tag-s0',title:'反応前後を書く',
+       rule:'中性・塩基性では H₂O₂ → 2OH⁻。H⁺ が使えないので OH⁻ のまま止まる。',
+       eq:'H₂O₂　→　<span class="c-green">2OH⁻</span>',caption:'',
+       explain:`O の酸化数：<span class="oxnum">−1</span> → <span class="oxnum">−2</span>（<span class="hl-ox">2 減る</span> → e⁻ 2個受け取る酸化剤）<br>
+       中性・塩基性では H⁺ が不足するため <strong>OH⁻</strong> のままで止まります。`},
+      {tag:'Step 1',tagClass:'tag-s1',title:'O の数を確認（すでに合っている）',
+       rule:'左辺 O = 2個（H₂O₂）、右辺 O = 2個（2OH⁻）→ H₂O 追加不要。',
+       eq:'H₂O₂　→　<span class="c-green">2OH⁻</span>',caption:'O の数：左辺 2個 ＝ 右辺 2個 ✓',
+       explain:`O がすでに揃っています。H₂O の追加は不要です。`},
+      {tag:'Step 2',tagClass:'tag-s2',title:'H の数を確認（すでに合っている）',
+       rule:'左辺 H = 2個（H₂O₂）、右辺 H = 2個（2OH⁻）→ H⁺ 追加不要。',
+       eq:'H₂O₂　→　<span class="c-green">2OH⁻</span>',caption:'H の数：左辺 2個 ＝ 右辺 2個 ✓',
+       explain:`中性・塩基性では H⁺ を使えません。<br>
+       H₂O₂ の H が 2個、OH⁻ の H が 2個 → すでに揃っています。`},
+      {tag:'Step 3',tagClass:'tag-s3',title:'電荷を合わせる（左辺に 2e⁻）',
+       rule:'左辺：0。右辺：2OH⁻ = −2。差 2 → 左辺に 2e⁻。',
+       eq:'H₂O₂ + <span class="electron">2e⁻</span>　→　<span class="c-green">2OH⁻</span>',
+       caption:'電荷：左辺 0−2=−2 ＝ 右辺 −2 ✓',
+       explain:`左辺：H₂O₂(0)=<span class="hl">0</span><br>
+       右辺：2OH⁻(−2)=<span class="hl">−2</span><br>
+       差 2 → <span class="hl-e">2e⁻</span> を左辺に追加。`},
+      {tag:'完成！',tagClass:'tag-s4',title:'半反応式の完成',
+       eq:'<span class="balanced">H₂O₂ + 2e⁻ → 2OH⁻</span>',caption:'',
+       explain:`<ul>
+         <li>O の酸化数：<span class="oxnum">−1</span> → <span class="oxnum">−2</span>（酸化剤）</li>
+         <li>e⁻ を <span class="hl-e">2個</span> 受け取る</li>
+         <li>中性・塩基性 → H⁺ なし → <strong>OH⁻</strong> のまま止まる</li>
+         <li>H⁺ も H₂O も追加不要なシンプルな式</li>
+       </ul>`}
+    ]
+  },
+
+  {
+    id:'hno3_dil', name:'HNO₃（希硝酸）', type:'ox',
+    condition:'希薄',
+    steps:[
+      {tag:'Step 0',tagClass:'tag-s0',title:'反応前後を書く',
+       rule:'希 HNO₃ は NO（一酸化窒素）を生成。N の酸化数 +5 → +2（3減る → e⁻ 3個受け取る）。',
+       eq:'HNO₃　→　<span class="c-gray">NO</span>',caption:'',
+       explain:`N の酸化数：<span class="oxnum">+5</span> → <span class="oxnum">+2</span>（<span class="hl-ox">3 減る</span> → e⁻ 3個受け取る）<br>
+       ⚠️ <span class="hl-ox">希硝酸 → NO（無色）</span>、<span class="hl-ox">濃硝酸 → NO₂（赤褐色）</span> の違いを区別！`},
+      {tag:'Step 1',tagClass:'tag-s1',title:'O の数を合わせる（右辺に 2H₂O）',
+       rule:'左辺 O = 3個（HNO₃）、右辺 O = 1個（NO）→ 差 2個 → 右辺に 2H₂O。',
+       eq:'HNO₃　→　<span class="c-gray">NO</span> + <span class="added">2H₂O</span>',
+       caption:'O の数：左辺 3個 ＝ 右辺 3個 ✓',
+       explain:`左辺 O = 3個（HNO₃）、右辺 O = 1個（NO）<br>
+       差 2個 → 右辺に <span class="hl-ox">2H₂O</span> を追加。`},
+      {tag:'Step 2',tagClass:'tag-s2',title:'H の数を合わせる（左辺に 3H⁺）',
+       rule:'左辺 H = 1個（HNO₃）、右辺 H = 4個（2H₂O）→ 左辺に 3H⁺ を追加。',
+       eq:'HNO₃ + <span class="added">3H⁺</span>　→　<span class="c-gray">NO</span> + 2H₂O',
+       caption:'H の数：左辺 4個 ＝ 右辺 4個 ✓',
+       explain:`左辺 H = 1個（HNO₃）、右辺 H = 4個（2H₂O）<br>
+       差 3個 → 左辺に <span class="hl-ox">3H⁺</span> を追加。`},
+      {tag:'Step 3',tagClass:'tag-s3',title:'電荷を合わせる（左辺に 3e⁻）',
+       rule:'左辺：0+3=+3。右辺：0+0=0。差 3 → 左辺に 3e⁻。',
+       eq:'HNO₃ + 3H⁺ + <span class="electron">3e⁻</span>　→　<span class="c-gray">NO</span> + 2H₂O',
+       caption:'電荷：左辺 0+3−3=0 ＝ 右辺 0 ✓',
+       explain:`左辺：HNO₃(0)+3H⁺(+3)=<span class="hl">+3</span><br>
+       右辺：NO(0)+2H₂O(0)=<span class="hl">0</span><br>
+       差 3 → <span class="hl-e">3e⁻</span> を左辺に追加。`},
+      {tag:'完成！',tagClass:'tag-s4',title:'半反応式の完成',
+       eq:'<span class="balanced">HNO₃ + 3H⁺ + 3e⁻ → NO + 2H₂O</span>',caption:'',
+       explain:`<ul>
+         <li>N の酸化数：<span class="oxnum">+5</span> → <span class="oxnum">+2</span>（<span class="hl-ox">3 減る</span> → 酸化剤）</li>
+         <li>e⁻ を <span class="hl-e">3個</span> 受け取る</li>
+         <li>生成物 <strong>NO は無色の気体</strong>。空気中で酸化されて NO₂（赤褐色）に変化</li>
+       </ul>`}
+    ]
+  },
+
+  {
+    id:'hno3_conc', name:'HNO₃（濃硝酸）', type:'ox',
+    condition:'濃厚',
+    steps:[
+      {tag:'Step 0',tagClass:'tag-s0',title:'反応前後を書く',
+       rule:'濃 HNO₃ は NO₂（二酸化窒素）を生成。N の酸化数 +5 → +4（1減る → e⁻ 1個受け取る）。',
+       eq:'HNO₃　→　<span class="c-brown">NO₂</span>',caption:'',
+       explain:`N の酸化数：<span class="oxnum">+5</span> → <span class="oxnum">+4</span>（<span class="hl-ox">1 減る</span> → e⁻ 1個受け取る）<br>
+       <span class="c-brown">NO₂ は赤褐色の気体</span>。希硝酸（→ NO 無色）と混同しないこと！`},
+      {tag:'Step 1',tagClass:'tag-s1',title:'O の数を合わせる（右辺に H₂O）',
+       rule:'左辺 O = 3個（HNO₃）、右辺 O = 2個（NO₂）→ 差 1個 → 右辺に H₂O。',
+       eq:'HNO₃　→　<span class="c-brown">NO₂</span> + <span class="added">H₂O</span>',
+       caption:'O の数：左辺 3個 ＝ 右辺 3個 ✓',
+       explain:`左辺 O = 3個、右辺 O = 2個（NO₂）<br>差 1個 → 右辺に <span class="hl-ox">H₂O</span> を追加。`},
+      {tag:'Step 2',tagClass:'tag-s2',title:'H の数を合わせる（左辺に H⁺）',
+       rule:'左辺 H = 1個（HNO₃）、右辺 H = 2個（H₂O）→ 左辺に H⁺ を追加。',
+       eq:'HNO₃ + <span class="added">H⁺</span>　→　<span class="c-brown">NO₂</span> + H₂O',
+       caption:'H の数：左辺 2個 ＝ 右辺 2個 ✓',
+       explain:`左辺 H = 1個（HNO₃）、右辺 H = 2個（H₂O）<br>
+       差 1個 → 左辺に <span class="hl-ox">H⁺</span> を追加。`},
+      {tag:'Step 3',tagClass:'tag-s3',title:'電荷を合わせる（左辺に e⁻）',
+       rule:'左辺：0+1=+1。右辺：0+0=0。差 1 → 左辺に e⁻ を 1個。',
+       eq:'HNO₃ + H⁺ + <span class="electron">e⁻</span>　→　<span class="c-brown">NO₂</span> + H₂O',
+       caption:'電荷：左辺 0+1−1=0 ＝ 右辺 0 ✓',
+       explain:`左辺：HNO₃(0)+H⁺(+1)=<span class="hl">+1</span><br>
+       右辺：NO₂(0)+H₂O(0)=<span class="hl">0</span><br>
+       差 1 → <span class="hl-e">e⁻</span> を 1個左辺に追加。`},
+      {tag:'完成！',tagClass:'tag-s4',title:'半反応式の完成',
+       eq:'<span class="balanced">HNO₃ + H⁺ + e⁻ → NO₂ + H₂O</span>',caption:'',
+       explain:`<ul>
+         <li>N の酸化数：<span class="oxnum">+5</span> → <span class="oxnum">+4</span>（<span class="hl-ox">1 減る</span> → 酸化剤）</li>
+         <li>e⁻ を <span class="hl-e">1個</span> 受け取る</li>
+         <li>生成物 <span class="c-brown">NO₂ は赤褐色の気体</span></li>
+       </ul>`}
+    ]
+  },
+
+  {
+    id:'h2so4', name:'H₂SO₄（熱濃硫酸）', type:'ox',
+    condition:'加熱・濃厚',
+    steps:[
+      {tag:'Step 0',tagClass:'tag-s0',title:'反応前後を書く',
+       rule:'熱濃 H₂SO₄ は SO₂ を生成。S の酸化数 +6 → +4（2減る → e⁻ 2個受け取る）。',
+       eq:'H₂SO₄　→　SO₂',caption:'',
+       explain:`S の酸化数：<span class="oxnum">+6</span> → <span class="oxnum">+4</span>（<span class="hl-ox">2 減る</span> → e⁻ 2個受け取る）<br>
+       ⚠️ <strong>希硫酸は酸化剤にならない</strong>（酸として反応するのみ）。熱濃硫酸のみ酸化剤。`},
+      {tag:'Step 1',tagClass:'tag-s1',title:'O の数を合わせる（右辺に 2H₂O）',
+       rule:'左辺 O = 4個（H₂SO₄）、右辺 O = 2個（SO₂）→ 差 2個 → 右辺に 2H₂O。',
+       eq:'H₂SO₄　→　SO₂ + <span class="added">2H₂O</span>',
+       caption:'O の数：左辺 4個 ＝ 右辺 4個 ✓',
+       explain:`左辺 O = 4個（H₂SO₄）、右辺 O = 2個（SO₂）<br>差 2個 → 右辺に <span class="hl-ox">2H₂O</span> を追加。`},
+      {tag:'Step 2',tagClass:'tag-s2',title:'H の数を合わせる（左辺に 2H⁺）',
+       rule:'左辺 H = 2個（H₂SO₄）、右辺 H = 4個（2H₂O）→ 左辺に 2H⁺ を追加。',
+       eq:'H₂SO₄ + <span class="added">2H⁺</span>　→　SO₂ + 2H₂O',
+       caption:'H の数：左辺 4個 ＝ 右辺 4個 ✓',
+       explain:`左辺 H = 2個（H₂SO₄）、右辺 H = 4個（2H₂O）<br>
+       差 2個 → 左辺に <span class="hl-ox">2H⁺</span> を追加。`},
+      {tag:'Step 3',tagClass:'tag-s3',title:'電荷を合わせる（左辺に 2e⁻）',
+       rule:'左辺：0+2=+2。右辺：0+0=0。差 2 → 左辺に 2e⁻。',
+       eq:'H₂SO₄ + 2H⁺ + <span class="electron">2e⁻</span>　→　SO₂ + 2H₂O',
+       caption:'電荷：左辺 0+2−2=0 ＝ 右辺 0 ✓',
+       explain:`左辺：H₂SO₄(0)+2H⁺(+2)=<span class="hl">+2</span><br>
+       右辺：SO₂(0)+2H₂O(0)=<span class="hl">0</span><br>
+       差 2 → <span class="hl-e">2e⁻</span> を左辺に追加。`},
+      {tag:'完成！',tagClass:'tag-s4',title:'半反応式の完成',
+       eq:'<span class="balanced">H₂SO₄ + 2H⁺ + 2e⁻ → SO₂ + 2H₂O</span>',caption:'',
+       explain:`<ul>
+         <li>S の酸化数：<span class="oxnum">+6</span> → <span class="oxnum">+4</span>（<span class="hl-ox">2 減る</span> → 酸化剤）</li>
+         <li>e⁻ を <span class="hl-e">2個</span> 受け取る</li>
+         <li>Cu + 2H₂SO₄（濃熱）→ CuSO₄ + SO₂↑ + 2H₂O などで登場</li>
+       </ul>`}
+    ]
+  },
+
+  {
+    id:'cl2', name:'Cl₂（塩素）', type:'ox',
+    condition:'',
+    steps:[
+      {tag:'Step 0',tagClass:'tag-s0',title:'反応前後を書く',
+       rule:'Cl₂（単体）は 2Cl⁻ に変化。Cl の酸化数 0 → −1（2減る → e⁻ 2個受け取る）。',
+       eq:'<span class="c-lime">Cl₂</span>　→　2Cl⁻',caption:'',
+       explain:`Cl の酸化数：<span class="oxnum">0</span>（単体） → <span class="oxnum">−1</span>（<span class="hl-ox">2 減る</span> → e⁻ 2個受け取る）<br>
+       <span class="c-lime">Cl₂（黄緑色）</span> → 2Cl⁻（無色）`},
+      {tag:'Step 1',tagClass:'tag-s1',title:'O の確認（O なし・H₂O 不要）',
+       rule:'Cl₂ と Cl⁻ はどちらも O を含まない → H₂O の追加不要。',
+       eq:'<span class="c-lime">Cl₂</span>　→　2Cl⁻',caption:'O を含まない → H₂O 追加不要',
+       explain:`Cl₂ と Cl⁻ はどちらも O を含みません。<br>H₂O を追加する必要はありません。`},
+      {tag:'Step 2',tagClass:'tag-s2',title:'H の確認（H なし・H⁺ 不要）',
+       rule:'Cl₂ と Cl⁻ はどちらも H を含まない → H⁺ の追加不要。',
+       eq:'<span class="c-lime">Cl₂</span>　→　2Cl⁻',caption:'H を含まない → H⁺ 追加不要',
+       explain:`Cl₂ と Cl⁻ はどちらも H を含みません。<br>H⁺ の追加も不要。<br>
+       <span style="font-size:.85em;color:var(--text-sub);">💡 H₂O も H⁺ も現れないシンプルな式になります</span>`},
+      {tag:'Step 3',tagClass:'tag-s3',title:'電荷を合わせる（左辺に 2e⁻）',
+       rule:'左辺：0。右辺：2Cl⁻ = −2。差 2 → 左辺に 2e⁻。',
+       eq:'<span class="c-lime">Cl₂</span> + <span class="electron">2e⁻</span>　→　2Cl⁻',
+       caption:'電荷：左辺 0−2=−2 ＝ 右辺 −2 ✓',
+       explain:`左辺：Cl₂(0)=<span class="hl">0</span><br>
+       右辺：2Cl⁻(−2)=<span class="hl">−2</span><br>
+       差 2 → <span class="hl-e">2e⁻</span> を左辺に追加。`},
+      {tag:'完成！',tagClass:'tag-s4',title:'半反応式の完成',
+       eq:'<span class="balanced">Cl₂ + 2e⁻ → 2Cl⁻</span>',caption:'',
+       explain:`<ul>
+         <li>Cl の酸化数：<span class="oxnum">0</span> → <span class="oxnum">−1</span>（<span class="hl-ox">2 減る</span> → 酸化剤）</li>
+         <li>e⁻ を <span class="hl-e">2個</span> 受け取る</li>
+         <li>H₂O も H⁺ も不要なシンプルな式</li>
+         <li>色変化：<span class="c-lime">黄緑色</span> → 無色</li>
+       </ul>`}
+    ]
+  },
+
+  /* ── 還元剤 ── */
+  {
+    id:'h2o2_rd', name:'H₂O₂（還元剤）', type:'rd',
+    condition:'KMnO₄など強酸化剤と',
+    steps:[
+      {tag:'Step 0',tagClass:'tag-s0',title:'反応前後を書く',
+       rule:'還元剤の H₂O₂ は O₂ を生成。O の酸化数 −1 → 0（2増える → e⁻ 2個渡す）。',
+       eq:'H₂O₂　→　O₂',caption:'',
+       explain:`O の酸化数：<span class="oxnum">−1</span> → <span class="oxnum">0</span>（<span class="hl-rd">2 増える</span> → e⁻ 2個渡す還元剤）<br>
+       KMnO₄ のような超強力な酸化剤と反応するときだけ還元剤になります。`},
+      {tag:'Step 1',tagClass:'tag-s1',title:'O の数を確認（すでに合っている）',
+       rule:'左辺 O = 2個（H₂O₂）、右辺 O = 2個（O₂）→ H₂O 追加不要。',
+       eq:'H₂O₂　→　O₂',caption:'O の数：左辺 2個 ＝ 右辺 2個 ✓',
+       explain:`O がすでに揃っています。H₂O は不要です。`},
+      {tag:'Step 2',tagClass:'tag-s2',title:'H の数を合わせる（右辺に 2H⁺）',
+       rule:'左辺 H = 2個（H₂O₂）→ 右辺に 2H⁺ を加える。還元剤は H⁺ を右辺に。',
+       eq:'H₂O₂　→　O₂ + <span class="added">2H⁺</span>',
+       caption:'H の数：左辺 2個 ＝ 右辺 2個 ✓',
+       explain:`左辺 H = 2個（H₂O₂）→ 右辺に <span class="hl-rd">2H⁺</span> を追加。<br>
+       <span style="font-size:.85em;color:var(--text-sub);">💡 還元剤の場合：H⁺ は右辺に書く</span>`},
+      {tag:'Step 3',tagClass:'tag-s3',title:'電荷を合わせる（右辺に 2e⁻）',
+       rule:'左辺：0。右辺：0+2=+2。差 2 → 右辺に 2e⁻。還元剤は e⁻ を右辺に。',
+       eq:'H₂O₂　→　O₂ + 2H⁺ + <span class="electron">2e⁻</span>',
+       caption:'電荷：左辺 0 ＝ 右辺 +2−2=0 ✓',
+       explain:`左辺：H₂O₂(0)=<span class="hl">0</span><br>
+       右辺：O₂(0)+2H⁺(+2)=<span class="hl">+2</span><br>
+       差 2 → <span class="hl-e">2e⁻</span> を<strong>右辺</strong>に追加（還元剤は e⁻ を右辺へ）。`},
+      {tag:'完成！',tagClass:'tag-s4',title:'半反応式の完成',
+       eq:'<span class="balanced">H₂O₂ → O₂ + 2H⁺ + 2e⁻</span>',caption:'',
+       explain:`<ul>
+         <li>O の酸化数：<span class="oxnum">−1</span> → <span class="oxnum">0</span>（<span class="hl-rd">2 増える</span> → 還元剤）</li>
+         <li>e⁻ を <span class="hl-e">2個</span> 渡す</li>
+         <li>KMnO₄ との反応でのみ登場（H₂O₂ の二面性）</li>
+       </ul>`}
+    ]
+  },
+
+  {
+    id:'so2', name:'SO₂（二酸化硫黄・還元剤）', type:'rd',
+    condition:'KMnO₄・I₂など強酸化剤と',
+    steps:[
+      {tag:'Step 0',tagClass:'tag-s0',title:'反応前後を書く',
+       rule:'還元剤の SO₂ は SO₄²⁻ に変化。S の酸化数 +4 → +6（2増える → e⁻ 2個渡す）。',
+       eq:'SO₂　→　SO₄²⁻',caption:'',
+       explain:`S の酸化数：<span class="oxnum">+4</span> → <span class="oxnum">+6</span>（<span class="hl-rd">2 増える</span> → e⁻ 2個渡す還元剤）`},
+      {tag:'Step 1',tagClass:'tag-s1',title:'O の数を合わせる（左辺に 2H₂O）',
+       rule:'左辺 O = 2個（SO₂）、右辺 O = 4個（SO₄²⁻）→ 差 2個 → 左辺に 2H₂O。',
+       eq:'SO₂ + <span class="added">2H₂O</span>　→　SO₄²⁻',
+       caption:'O の数：左辺 4個 ＝ 右辺 4個 ✓',
+       explain:`左辺 O = 2個（SO₂）、右辺 O = 4個（SO₄²⁻）<br>
+       差 2個 → <span class="hl-rd">左辺に</span> <span class="hl-ox">2H₂O</span> を追加。<br>
+       <span style="font-size:.85em;color:var(--text-sub);">💡 還元剤の場合：O が足りない → 左辺に H₂O を加える</span>`},
+      {tag:'Step 2',tagClass:'tag-s2',title:'H の数を合わせる（右辺に 4H⁺）',
+       rule:'左辺 H = 4個（2H₂O）→ 右辺に 4H⁺ を加える。還元剤は H⁺ を右辺に。',
+       eq:'SO₂ + 2H₂O　→　SO₄²⁻ + <span class="added">4H⁺</span>',
+       caption:'H の数：左辺 4個 ＝ 右辺 4個 ✓',
+       explain:`左辺 H = 4個（2H₂O）→ 右辺に <span class="hl-rd">4H⁺</span> を追加。<br>
+       <span style="font-size:.85em;color:var(--text-sub);">💡 還元剤の場合：H⁺ は右辺に書く（酸化剤と逆）</span>`},
+      {tag:'Step 3',tagClass:'tag-s3',title:'電荷を合わせる（右辺に 2e⁻）',
+       rule:'左辺：0。右辺：−2+4=+2。差 2 → 右辺に 2e⁻。',
+       eq:'SO₂ + 2H₂O　→　SO₄²⁻ + 4H⁺ + <span class="electron">2e⁻</span>',
+       caption:'電荷：左辺 0 ＝ 右辺 −2+4−2=0 ✓',
+       explain:`左辺：SO₂(0)+2H₂O(0)=<span class="hl">0</span><br>
+       右辺：SO₄²⁻(−2)+4H⁺(+4)=<span class="hl">+2</span><br>
+       差 2 → <span class="hl-e">2e⁻</span> を<strong>右辺</strong>に追加。`},
+      {tag:'完成！',tagClass:'tag-s4',title:'半反応式の完成',
+       eq:'<span class="balanced">SO₂ + 2H₂O → SO₄²⁻ + 4H⁺ + 2e⁻</span>',caption:'',
+       explain:`<ul>
+         <li>S の酸化数：<span class="oxnum">+4</span> → <span class="oxnum">+6</span>（<span class="hl-rd">2 増える</span> → 還元剤）</li>
+         <li>e⁻ を <span class="hl-e">2個</span> 渡す</li>
+         <li>I₂ との反応（ヨウ素滴定）でも登場</li>
+       </ul>`}
+    ]
+  },
+
+  {
+    id:'h2s', name:'H₂S（硫化水素）', type:'rd',
+    condition:'',
+    steps:[
+      {tag:'Step 0',tagClass:'tag-s0',title:'反応前後を書く',
+       rule:'H₂S は S（硫黄単体）に変化。S の酸化数 −2 → 0（2増える → e⁻ 2個渡す）。',
+       eq:'H₂S　→　<span class="c-yellow">S</span>',caption:'',
+       explain:`S の酸化数：<span class="oxnum">−2</span> → <span class="oxnum">0</span>（<span class="hl-rd">2 増える</span> → e⁻ 2個渡す）<br>
+       生成物の <span class="c-yellow">S は黄色の固体</span>として析出。H₂S の S（−2）は最小値 → 強力な還元剤。`},
+      {tag:'Step 1',tagClass:'tag-s1',title:'O の確認（O なし・H₂O 不要）',
+       rule:'H₂S と S はどちらも O を含まない → H₂O 追加不要。',
+       eq:'H₂S　→　<span class="c-yellow">S</span>',caption:'O を含まない → H₂O 追加不要',
+       explain:`H₂S と S はどちらも O を含みません。H₂O の追加は不要です。`},
+      {tag:'Step 2',tagClass:'tag-s2',title:'H の数を合わせる（右辺に 2H⁺）',
+       rule:'左辺 H = 2個（H₂S）→ 右辺に 2H⁺ を加える。',
+       eq:'H₂S　→　<span class="c-yellow">S</span> + <span class="added">2H⁺</span>',
+       caption:'H の数：左辺 2個 ＝ 右辺 2個 ✓',
+       explain:`左辺 H = 2個（H₂S）→ 右辺に <span class="hl-rd">2H⁺</span> を追加。`},
+      {tag:'Step 3',tagClass:'tag-s3',title:'電荷を合わせる（右辺に 2e⁻）',
+       rule:'左辺：0。右辺：0+2=+2。差 2 → 右辺に 2e⁻。',
+       eq:'H₂S　→　<span class="c-yellow">S</span> + 2H⁺ + <span class="electron">2e⁻</span>',
+       caption:'電荷：左辺 0 ＝ 右辺 +2−2=0 ✓',
+       explain:`左辺：H₂S(0)=<span class="hl">0</span><br>
+       右辺：S(0)+2H⁺(+2)=<span class="hl">+2</span><br>
+       差 2 → <span class="hl-e">2e⁻</span> を右辺に追加。`},
+      {tag:'完成！',tagClass:'tag-s4',title:'半反応式の完成',
+       eq:'<span class="balanced">H₂S → S + 2H⁺ + 2e⁻</span>',caption:'',
+       explain:`<ul>
+         <li>S の酸化数：<span class="oxnum">−2</span> → <span class="oxnum">0</span>（<span class="hl-rd">2 増える</span> → 還元剤）</li>
+         <li>e⁻ を <span class="hl-e">2個</span> 渡す</li>
+         <li>生成物 <span class="c-yellow">S（硫黄）は黄色の固体</span></li>
+       </ul>`}
+    ]
+  },
+
+  {
+    id:'cooh2', name:'(COOH)₂（シュウ酸）', type:'rd',
+    condition:'',
+    steps:[
+      {tag:'Step 0',tagClass:'tag-s0',title:'反応前後を書く（C が 2個！）',
+       rule:'シュウ酸は 2CO₂ に変化。C の酸化数 +3 → +4（2個合計で 2増える → e⁻ 2個渡す）。',
+       eq:'C₂O₄²⁻　→　<span class="c-gray">2CO₂</span>',caption:'',
+       explain:`C の酸化数：<span class="oxnum">+3</span> → <span class="oxnum">+4</span>（1個あたり <span class="hl-rd">1 増える</span> × 2個 = <span class="hl-e">e⁻ 2個</span>渡す）<br>
+       KMnO₄ 滴定の標定に使用。1mol で e⁻ 2mol を渡します。`},
+      {tag:'Step 1',tagClass:'tag-s1',title:'O の数を確認（すでに合っている）',
+       rule:'左辺 O = 4個（C₂O₄²⁻）、右辺 O = 4個（2CO₂）→ H₂O 追加不要。',
+       eq:'C₂O₄²⁻　→　<span class="c-gray">2CO₂</span>',caption:'O の数：左辺 4個 ＝ 右辺 4個 ✓',
+       explain:`O がすでに揃っています。H₂O の追加は不要です。`},
+      {tag:'Step 2',tagClass:'tag-s2',title:'H の確認（H なし・H⁺ 不要）',
+       rule:'C₂O₄²⁻ と CO₂ はどちらも H を含まない → H⁺ 追加不要。',
+       eq:'C₂O₄²⁻　→　<span class="c-gray">2CO₂</span>',caption:'H を含まない → H⁺ 追加不要',
+       explain:`C₂O₄²⁻ と CO₂ はどちらも H を含みません。H⁺ の追加は不要です。<br>
+       <span style="font-size:.85em;color:var(--text-sub);">💡 H₂O も H⁺ も現れないシンプルな式になります</span>`},
+      {tag:'Step 3',tagClass:'tag-s3',title:'電荷を合わせる（右辺に 2e⁻）',
+       rule:'左辺：C₂O₄²⁻ = −2。右辺：2CO₂ = 0。差 2 → 右辺に 2e⁻。',
+       eq:'C₂O₄²⁻　→　<span class="c-gray">2CO₂</span> + <span class="electron">2e⁻</span>',
+       caption:'電荷：左辺 −2 ＝ 右辺 0−2=−2 ✓',
+       explain:`左辺：C₂O₄²⁻(−2)=<span class="hl">−2</span><br>
+       右辺：2CO₂(0)=<span class="hl">0</span><br>
+       差 2 → <span class="hl-e">2e⁻</span> を右辺に追加。`},
+      {tag:'完成！',tagClass:'tag-s4',title:'半反応式の完成',
+       eq:'<span class="balanced">C₂O₄²⁻ → 2CO₂ + 2e⁻</span>',caption:'',
+       explain:`<ul>
+         <li>C の酸化数：<span class="oxnum">+3</span> → <span class="oxnum">+4</span>（<span class="hl-rd">2 増える</span>合計 → 還元剤）</li>
+         <li>e⁻ を <span class="hl-e">2個</span> 渡す</li>
+         <li>H₂O も H⁺ も不要なシンプルな式</li>
+       </ul>`}
+    ]
+  },
+
+  {
+    id:'ki', name:'KI（ヨウ化カリウム・2I⁻）', type:'rd',
+    condition:'',
+    steps:[
+      {tag:'Step 0',tagClass:'tag-s0',title:'反応前後を書く（I が 2個）',
+       rule:'2I⁻ → I₂。I の酸化数 −1 → 0（2個合計で 2増える → e⁻ 2個渡す）。',
+       eq:'<span class="c-gray">2I⁻</span>　→　<span class="c-brown">I₂</span>',caption:'',
+       explain:`I の酸化数：<span class="oxnum">−1</span> → <span class="oxnum">0</span>（1個あたり <span class="hl-rd">1 増える</span> × 2個 = <span class="hl-e">e⁻ 2個</span>渡す）<br>
+       生成物の <span class="c-brown">I₂ は褐色</span>。デンプンと反応すると<span style="color:#4338ca;font-weight:700;">青紫色</span>になります。`},
+      {tag:'Step 1',tagClass:'tag-s1',title:'O の確認（O なし・H₂O 不要）',
+       rule:'I⁻ と I₂ はどちらも O を含まない → H₂O 追加不要。',
+       eq:'<span class="c-gray">2I⁻</span>　→　<span class="c-brown">I₂</span>',caption:'O を含まない → H₂O 追加不要',
+       explain:`I⁻ と I₂ は O を含みません。H₂O の追加は不要です。`},
+      {tag:'Step 2',tagClass:'tag-s2',title:'H の確認（H なし・H⁺ 不要）',
+       rule:'I⁻ と I₂ はどちらも H を含まない → H⁺ 追加不要。',
+       eq:'<span class="c-gray">2I⁻</span>　→　<span class="c-brown">I₂</span>',caption:'H を含まない → H⁺ 追加不要',
+       explain:`I⁻ と I₂ は H を含みません。H⁺ の追加も不要です。`},
+      {tag:'Step 3',tagClass:'tag-s3',title:'電荷を合わせる（右辺に 2e⁻）',
+       rule:'左辺：2×(−1) = −2。右辺：I₂ = 0。差 2 → 右辺に 2e⁻。',
+       eq:'<span class="c-gray">2I⁻</span>　→　<span class="c-brown">I₂</span> + <span class="electron">2e⁻</span>',
+       caption:'電荷：左辺 −2 ＝ 右辺 0−2=−2 ✓',
+       explain:`左辺：2I⁻(−2)=<span class="hl">−2</span><br>
+       右辺：I₂(0)=<span class="hl">0</span><br>
+       差 2 → <span class="hl-e">2e⁻</span> を右辺に追加。`},
+      {tag:'完成！',tagClass:'tag-s4',title:'半反応式の完成',
+       eq:'<span class="balanced">2I⁻ → I₂ + 2e⁻</span>',caption:'',
+       explain:`<ul>
+         <li>I の酸化数：<span class="oxnum">−1</span> → <span class="oxnum">0</span>（<span class="hl-rd">2 増える</span>合計 → 還元剤）</li>
+         <li>e⁻ を <span class="hl-e">2個</span> 渡す</li>
+         <li>H₂O も H⁺ も不要なシンプルな式</li>
+         <li>生成 <span class="c-brown">I₂（褐色）</span>＋デンプン →<span style="color:#4338ca;font-weight:700;"> 青紫色</span>（ヨウ素滴定の終点）</li>
+       </ul>`}
+    ]
+  },
+
+  {
+    id:'feso4', name:'FeSO₄（Fe²⁺）', type:'rd',
+    condition:'',
+    steps:[
+      {tag:'Step 0',tagClass:'tag-s0',title:'反応前後を書く',
+       rule:'Fe²⁺ → Fe³⁺。Fe の酸化数 +2 → +3（1増える → e⁻ 1個渡す）。',
+       eq:'<span class="c-green">Fe²⁺</span>　→　<span class="c-orange">Fe³⁺</span>',caption:'',
+       explain:`Fe の酸化数：<span class="oxnum">+2</span> → <span class="oxnum">+3</span>（<span class="hl-rd">1 増える</span> → e⁻ 1個渡す）<br>
+       1mol で e⁻ 1mol を渡す（他の多くの還元剤が 2mol なのと異なる）。`},
+      {tag:'Step 1',tagClass:'tag-s1',title:'O の確認（O なし・H₂O 不要）',
+       rule:'Fe²⁺ と Fe³⁺ はどちらも O を含まない → H₂O 追加不要。',
+       eq:'<span class="c-green">Fe²⁺</span>　→　<span class="c-orange">Fe³⁺</span>',caption:'O を含まない → H₂O 追加不要',
+       explain:`Fe²⁺ と Fe³⁺ は O を含みません。H₂O の追加は不要です。`},
+      {tag:'Step 2',tagClass:'tag-s2',title:'H の確認（H なし・H⁺ 不要）',
+       rule:'Fe²⁺ と Fe³⁺ はどちらも H を含まない → H⁺ 追加不要。',
+       eq:'<span class="c-green">Fe²⁺</span>　→　<span class="c-orange">Fe³⁺</span>',caption:'H を含まない → H⁺ 追加不要',
+       explain:`Fe²⁺ と Fe³⁺ は H を含みません。H⁺ の追加も不要です。`},
+      {tag:'Step 3',tagClass:'tag-s3',title:'電荷を合わせる（右辺に e⁻）',
+       rule:'左辺：+2。右辺：+3。差 1 → 右辺に e⁻ を 1個。',
+       eq:'<span class="c-green">Fe²⁺</span>　→　<span class="c-orange">Fe³⁺</span> + <span class="electron">e⁻</span>',
+       caption:'電荷：左辺 +2 ＝ 右辺 +3−1=+2 ✓',
+       explain:`左辺：Fe²⁺(+2)=<span class="hl">+2</span><br>
+       右辺：Fe³⁺(+3)=<span class="hl">+3</span><br>
+       差 1 → <span class="hl-e">e⁻</span> を 1個右辺に追加。`},
+      {tag:'完成！',tagClass:'tag-s4',title:'半反応式の完成',
+       eq:'<span class="balanced">Fe²⁺ → Fe³⁺ + e⁻</span>',caption:'',
+       explain:`<ul>
+         <li>Fe の酸化数：<span class="oxnum">+2</span> → <span class="oxnum">+3</span>（<span class="hl-rd">1 増える</span> → 還元剤）</li>
+         <li>e⁻ を <span class="hl-e">1個</span> 渡す（最もシンプルな半反応式）</li>
+         <li>H₂O も H⁺ も不要</li>
+       </ul>`}
+    ]
+  },
+];
+
+/* ============================================================
+   CSS ヘルパー
+============================================================ */
+const CSS_EXTRA = `
+.c-purple{color:#9333ea;font-weight:700;}
+.c-pink{color:#db2777;font-weight:700;}
+.c-orange{color:#f97316;font-weight:700;}
+.c-green{color:#16a34a;font-weight:700;}
+.c-brown{color:#b45309;font-weight:700;}
+.c-lime{color:#65a30d;font-weight:700;}
+.c-yellow{color:#ca8a04;font-weight:700;}
+.c-blue{color:#2563eb;font-weight:700;}
+.c-red{color:#dc2626;font-weight:700;}
+.c-gray{color:#475569;font-weight:700;}
+.c-teal{color:#0f766e;font-weight:700;}
+`;
+const styleEl = document.createElement('style');
+styleEl.textContent = CSS_EXTRA;
+document.head.appendChild(styleEl);
+
+/* ============================================================
+   ステッパー状態
+============================================================ */
+let curReagent = null;
+let curStep = 0;
+let totalSteps = 0;
+
+/* ============================================================
+   グリッド初期化
+============================================================ */
+function initGrids() {
+  const gridOx = document.getElementById('grid-ox');
+  const gridRd = document.getElementById('grid-rd');
+  REAGENTS.forEach(r => {
+    const btn = document.createElement('button');
+    btn.className = 'reagent-btn';
+    btn.innerHTML = r.name + (r.condition ? `<span class="rb-tag">${r.condition}</span>` : '');
+    btn.dataset.id = r.id;
+    btn.onclick = () => selectReagent(r, btn);
+    (r.type === 'ox' ? gridOx : gridRd).appendChild(btn);
+  });
+}
+
+/* ============================================================
+   試薬選択
+============================================================ */
+function selectReagent(r, btn) {
+  // ボタン選択状態
+  document.querySelectorAll('.reagent-btn').forEach(b => b.classList.remove('sel-ox','sel-rd'));
+  btn.classList.add(r.type === 'ox' ? 'sel-ox' : 'sel-rd');
+
+  curReagent = r;
+  curStep = 0;
+  totalSteps = r.steps.length;
+
+  // ヘッダー
+  document.getElementById('sc-name').textContent = r.name;
+  const roleEl = document.getElementById('sc-role');
+  roleEl.textContent = r.type === 'ox' ? '酸化剤' : '還元剤';
+  roleEl.className = 'sc-role ' + r.type;
+
+  // ドット
+  const dotsEl = document.getElementById('sc-dots');
+  dotsEl.innerHTML = '';
+  r.steps.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'sc-dot';
+    d.onclick = () => goToStep(i);
+    dotsEl.appendChild(d);
+  });
+
+  // パネル
+  const panelsEl = document.getElementById('sc-panels');
+  panelsEl.innerHTML = '';
+  r.steps.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'sc-panel';
+    div.id = 'panel-' + i;
+    div.innerHTML = `
+      <span class="step-tag ${s.tagClass}">${s.tag}：${s.title}</span>
+      ${s.rule ? `<div class="rule-box"><span class="rule-label">📌 ルール</span> ${s.rule}</div>` : ''}
+      <div class="eq-build">
+        <div class="eq-line">${s.eq}</div>
+        ${s.caption ? `<div class="eq-caption">${s.caption}</div>` : ''}
+      </div>
+      <div class="explain-box">${s.explain}</div>
+    `;
+    panelsEl.appendChild(div);
+  });
+
+  const card = document.getElementById('stepper-card');
+  card.classList.add('active');
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  showStep(0);
+}
+
+/* ============================================================
+   ステップ表示
+============================================================ */
+function showStep(n) {
+  curStep = Math.max(0, Math.min(n, totalSteps - 1));
+  const panels = document.querySelectorAll('#sc-panels .sc-panel');
+  const dots = document.querySelectorAll('#sc-dots .sc-dot');
+
+  panels.forEach((p, i) => p.classList.toggle('active', i === curStep));
+  dots.forEach((d, i) => {
+    d.classList.remove('active', 'done');
+    if (i === curStep) d.classList.add('active');
+    else if (i < curStep) d.classList.add('done');
+  });
+
+  // ナビボタン
+  const prevBtn = document.getElementById('nav-prev');
+  const nextBtn = document.getElementById('nav-next');
+  const lbl = document.getElementById('nav-lbl');
+
+  prevBtn.disabled = curStep === 0;
+  nextBtn.disabled = curStep === totalSteps - 1;
+  nextBtn.textContent = curStep === totalSteps - 2 ? '完成へ →' : curStep === totalSteps - 1 ? '完了' : '次へ →';
+  lbl.textContent = (curStep + 1) + ' / ' + totalSteps;
+}
+
+function goToStep(n) { showStep(n); }
+function stepMove(d) { showStep(curStep + d); }
+
+/* ============================================================
+   花吹雪（完成ステップで自動発動）
+============================================================ */
+function launchConfetti() {
+  const C = ['#f472b6','#facc15','#34d399','#60a5fa','#f87171','#a78bfa','#fb923c','#2dd4bf'];
+  for (let i = 0; i < 80; i++) {
+    const el = document.createElement('div');
+    const s = Math.random()*10+6, l = Math.random()*100;
+    const d = Math.random()*.6, r = Math.random()*1.2+1.2;
+    const c = C[Math.floor(Math.random()*C.length)];
+    const sh = Math.random()>.5 ? '50%' : '2px';
+    el.style.cssText = `position:fixed;top:-20px;left:${l}vw;width:${s}px;height:${s}px;background:${c};border-radius:${sh};opacity:1;pointer-events:none;z-index:9999;animation:confettiFall ${r}s ${d}s ease-in forwards;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), (r+d)*1000+200);
+  }
+}
+
+// 完成ステップに到達したら花吹雪
+const origShowStep = showStep;
+window.stepMove = function(d) {
+  const next = curStep + d;
+  showStep(next);
+  if (curReagent && next === curReagent.steps.length - 1) {
+    setTimeout(launchConfetti, 300);
+  }
+};
+
+/* ============================================================
+   初期化
+============================================================ */
+document.addEventListener('DOMContentLoaded', initGrids);
+</script>
+</body>
+</html>

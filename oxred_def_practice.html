@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>練習問題 酸化・還元の定義 | GAMBA化学</title>
+<style>
+:root{
+  --bg:#f0f4ff;--card:#fff;
+  --primary:#2563eb;--primary-light:#dbeafe;--primary-dark:#1e40af;
+  --accent:#dc2626;--accent-light:#fee2e2;
+  --success:#16a34a;--success-light:#dcfce7;
+  --warn:#d97706;--warn-light:#fffbeb;
+  --text:#1e293b;--text-sub:#64748b;
+  --border:#bfdbfe;--radius:14px;
+  --ox:#dc2626;--rd:#16a34a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'BIZ UDPGothic','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+
+.topnav{display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;flex-wrap:wrap;}
+.topnav .brand{font-weight:700;font-size:.9em;}
+.topnav .sep{opacity:.4;}
+.topnav a{color:#bfdbfe;text-decoration:none;font-size:.82em;}
+.topnav a:hover{color:#fff;}
+
+.hero{background:linear-gradient(135deg,#1e40af 0%,#0f766e 100%);color:#fff;padding:24px 20px 22px;}
+.hero .crumb{font-size:.75em;opacity:.7;margin-bottom:6px;}
+.hero h1{font-size:clamp(1.3em,4vw,1.9em);font-weight:800;margin-bottom:6px;}
+.hero .sub{font-size:.86em;opacity:.9;line-height:1.8;}
+.hero .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:4px 12px;font-size:.78em;font-weight:700;}
+
+.wrap{max-width:860px;margin:0 auto;}
+main{padding:20px 14px 0;}
+
+/* セクション */
+.sec-block{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:20px;overflow:hidden;}
+.sec-title{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,var(--primary-light),#f8faff);padding:12px 16px;font-weight:700;font-size:1em;border-bottom:1.5px solid var(--border);}
+.sec-title .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--primary);color:#fff;border-radius:8px;font-size:.85em;flex-shrink:0;}
+.sec-title .sec-tag{margin-left:auto;font-size:.74em;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--primary-light);color:var(--primary-dark);}
+
+/* 問題ブロック */
+.q-block{padding:14px 16px;border-bottom:1px solid #e2e8f0;}
+.q-block:last-of-type{border-bottom:none;}
+.q-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.q-num{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;background:var(--primary);color:#fff;border-radius:8px;font-size:.82em;font-weight:700;flex-shrink:0;margin-top:1px;}
+.q-num.warn{background:var(--warn);}
+.q-num.hard{background:var(--accent);}
+.q-stem{font-size:.92em;font-weight:600;line-height:1.65;flex:1;}
+.q-sub{font-size:.8em;color:var(--text-sub);margin-top:3px;font-weight:400;line-height:1.5;}
+
+/* 反応式表示 */
+.rxn-box{background:#f8faff;border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:.92em;font-weight:700;text-align:center;letter-spacing:.04em;margin:8px 0;line-height:1.8;}
+
+/* 選択肢 */
+.q4-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
+.q4-c{font-family:inherit;padding:10px 12px;border-radius:8px;border:2px solid #cbd5e1;background:#fff;font-size:.85em;font-weight:600;cursor:pointer;text-align:left;transition:.15s;line-height:1.4;-webkit-tap-highlight-color:transparent;}
+.q4-c:hover{border-color:var(--primary);background:var(--primary-light);}
+.q4-c.correct{background:var(--success);border-color:var(--success);color:#fff;}
+.q4-c.wrong{background:var(--accent);border-color:var(--accent);color:#fff;}
+.q4-c.disabled{cursor:default;}
+.q4-exp{display:none;font-size:.84em;background:#f0fdf4;border-left:4px solid var(--success);padding:10px 14px;border-radius:0 8px 8px 0;line-height:1.8;margin-top:5px;}
+.q4-exp.show{display:block;}
+
+/* ヒント */
+.hint-toggle{font-family:inherit;font-size:.78em;font-weight:700;padding:4px 12px;border-radius:20px;border:1.5px solid #7dd3fc;background:#f0f9ff;color:#0369a1;cursor:pointer;margin-bottom:8px;transition:.15s;}
+.hint-toggle:hover{background:#e0f2fe;}
+.hint-box{display:none;background:#f0f9ff;border:1.5px solid #7dd3fc;border-radius:8px;padding:10px 14px;font-size:.85em;line-height:1.8;margin-bottom:8px;color:#0c4a6e;}
+.hint-box.open{display:block;}
+.hint-box .eq{display:block;font-weight:700;background:#fff;border-radius:6px;padding:4px 12px;border:1px solid #7dd3fc;text-align:center;margin:5px 0;}
+
+/* 色付き化学式 */
+.c-ox{color:var(--ox);font-weight:700;}
+.c-rd{color:var(--rd);font-weight:700;}
+.c-purple{color:#9333ea;font-weight:700;}
+.c-orange{color:#f97316;font-weight:700;}
+.c-lime{color:#65a30d;font-weight:700;}
+.c-yellow{color:#ca8a04;font-weight:700;}
+.c-brown{color:#b45309;font-weight:700;}
+
+/* 進捗・リセット */
+.action-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;}
+.progress-wrap{display:flex;align-items:center;gap:10px;flex:1;}
+.prog-bar{flex:1;height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;min-width:80px;}
+.prog-fill{height:100%;background:var(--primary);border-radius:4px;transition:width .3s;width:0%;}
+.prog-text{font-size:.82em;color:var(--text-sub);white-space:nowrap;}
+.reset-btn{font-family:inherit;background:var(--primary-light);color:var(--primary-dark);border:1.5px solid var(--border);padding:8px 18px;border-radius:50px;cursor:pointer;font-size:.82em;font-weight:700;}
+.reset-btn:hover{background:var(--border);}
+
+/* スコアボード */
+.score-board{display:none;background:linear-gradient(135deg,var(--primary-light),#f0fdf4);border:2px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:16px;}
+.score-board.show{display:block;}
+.score-board .stars{font-size:1.5em;margin-bottom:6px;}
+.score-board .big{font-size:2em;font-weight:800;color:var(--primary);}
+.score-board .msg{font-size:.9em;color:var(--text-sub);margin-top:6px;}
+
+/* 次のアクション */
+.next-actions{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:2px solid var(--border);border-radius:var(--radius);padding:22px;margin:0;text-align:center;}
+.next-actions h3{color:var(--primary-dark);margin-bottom:8px;font-size:1.1em;}
+.next-actions p{font-size:.87em;color:var(--text-sub);margin-bottom:14px;}
+.next-actions .links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.next-actions a{text-decoration:none;padding:11px 20px;border-radius:8px;font-size:.88em;font-weight:700;background:var(--primary);color:#fff;transition:.15s;}
+.next-actions a:hover{background:var(--primary-dark);}
+.next-actions a.sub{background:#fff;color:var(--primary);border:1.5px solid var(--border);}
+
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}80%{opacity:1;}100%{transform:translateY(105vh) rotate(720deg);opacity:0;}}
+@media(max-width:520px){.q4-choices{grid-template-columns:1fr;}.action-bar{flex-direction:column;}}
+
+/* ── 縦型分数 ── */
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;font-size:.9em;line-height:1.1;}
+.frac .fn{padding:0 3px;border-bottom:1.5px solid currentColor;}
+.frac .fd{padding:0 3px;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">⚗️ GAMBA 化学</span>
+  <span class="sep">|</span>
+  <a href="oxred_index.html">📊 単元表</a>
+  <a href="oxred_def_lesson.html">📖 レッスンへ</a>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="crumb">化学基礎 / 酸化還元 / 第2章 / 練習問題</div>
+  <h1>練習問題：酸化・還元の定義</h1>
+  <p class="sub">4つの視点（酸素・水素・電子・酸化数）をしっかり確認します。<br>
+  わからないときは「ヒント」ボタンで手がかりを確認できます。</p>
+  <div class="meta">
+    <span class="badge">📝 全20問</span>
+    <span class="badge">💡 ヒント付き</span>
+    <span class="badge">⚗️ 4つの視点を総合</span>
+  </div>
+</header>
+
+<main>
+
+<div class="action-bar">
+  <div class="progress-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+    <div class="prog-text" id="prog-text">0 / 20 回答済み</div>
+  </div>
+  <button class="reset-btn" onclick="resetAll()">↻ 全問リセット</button>
+</div>
+<div class="score-board" id="score-board">
+  <div class="stars" id="sb-stars"></div>
+  <div class="big" id="sb-score"></div>
+  <div class="msg" id="sb-msg"></div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- セクション1：酸素・水素による定義（視点①②）                  -->
+<!-- ============================================================ -->
+<div class="sec-block">
+  <div class="sec-title">
+    <span class="num">1</span>酸素・水素による定義（視点①②）
+    <span class="sec-tag">基本</span>
+  </div>
+
+  <div class="q-block" data-correct="b">
+    <div class="q-header"><span class="q-num">1</span>
+      <div><div class="q-stem">次の反応で「酸化された」物質はどれか。<br>
+        <span class="rxn-box">2Fe + <span class="frac"><span class="fn">3</span><span class="fd">2</span></span> O₂ → Fe₂O₃</span></div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：O₂</button>
+      <button class="q4-c" data-v="b">イ：Fe</button>
+      <button class="q4-c" data-v="c">ウ：Fe₂O₃</button>
+      <button class="q4-c" data-v="d">エ：酸化還元反応ではない</button>
+    </div>
+    <div class="q4-exp">正解は<strong>イ：Fe</strong>。<br>
+    Fe は O₂ と<strong>結びついた</strong>（酸素を得た） → <span class="c-ox">酸化された</span>。<br>
+    O₂ は Fe に酸素を与えた側（Fe を酸化させた酸化剤）。鉄が錆びる反応です。</div>
+  </div>
+
+  <div class="q-block" data-correct="c">
+    <div class="q-header"><span class="q-num">2</span>
+      <div><div class="q-stem">次の反応で「還元された」物質はどれか。<br>
+        <span class="rxn-box">CuO + H₂ → Cu + H₂O</span></div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：H₂</button>
+      <button class="q4-c" data-v="b">イ：H₂O</button>
+      <button class="q4-c" data-v="c">ウ：CuO</button>
+      <button class="q4-c" data-v="d">エ：Cu</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ウ：CuO</strong>。<br>
+    CuO は O を<strong>失って</strong> Cu になった（酸素を失った） → <span class="c-rd">還元された</span>。<br>
+    H₂ は O を得て H₂O になった → <span class="c-ox">酸化された</span>。</div>
+  </div>
+
+  <div class="q-block" data-correct="a">
+    <div class="q-header"><span class="q-num">3</span>
+      <div><div class="q-stem">水素による定義で「酸化された」のはどれか。<br>
+        <span class="rxn-box">2HI → H₂ + I₂</span></div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：HI（I の部分）</button>
+      <button class="q4-c" data-v="b">イ：H₂</button>
+      <button class="q4-c" data-v="c">ウ：I₂</button>
+      <button class="q4-c" data-v="d">エ：酸化還元反応ではない</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ア：HI（I の部分）</strong>。<br>
+    HI → I₂ で、I は H を<strong>失った</strong> → 水素を失った → <span class="c-ox">酸化された</span>（視点②）。<br>
+    H は HI から離れて H₂ になった → 水素を得た → <span class="c-rd">還元された</span>。</div>
+  </div>
+
+  <div class="q-block" data-correct="d">
+    <div class="q-header"><span class="q-num">4</span>
+      <div><div class="q-stem">酸素と水素の定義で「得る・失う」の対応が正しいものはどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：O を得る→還元、H を得る→酸化</button>
+      <button class="q4-c" data-v="b">イ：O を失う→酸化、H を失う→還元</button>
+      <button class="q4-c" data-v="c">ウ：O を得る→酸化、H を得る→酸化</button>
+      <button class="q4-c" data-v="d">エ：O を得る→酸化、H を得る→還元</button>
+    </div>
+    <div class="q4-exp">正解は<strong>エ</strong>。<br>
+    酸素（O の酸化数は −2）：<span class="c-ox">得ると酸化</span>、失うと還元<br>
+    水素（H の酸化数は +1）：得ると<span class="c-rd">還元</span>、<span class="c-ox">失うと酸化</span><br>
+    O と H では「得る」の対応が逆になります。</div>
+  </div>
+
+  <div class="q-block" data-correct="b">
+    <div class="q-header"><span class="q-num">5</span>
+      <div><div class="q-stem">次の反応のうち、酸素による定義で「還元」が起きているのはどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：2Mg + O₂ → 2MgO</button>
+      <button class="q4-c" data-v="b">イ：Fe₂O₃ + 3CO → 2Fe + 3CO₂</button>
+      <button class="q4-c" data-v="c">ウ：S + O₂ → SO₂</button>
+      <button class="q4-c" data-v="d">エ：4Al + 3O₂ → 2Al₂O₃</button>
+    </div>
+    <div class="q4-exp">正解は<strong>イ</strong>。<br>
+    Fe₂O₃ が O を<strong>失って</strong> Fe になった → <span class="c-rd">還元された</span>（製鉄の反応）。<br>
+    ア・ウ・エはすべて単体が O と結びついた（酸化）。</div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- セクション2：電子・酸化数による定義（視点③④）                -->
+<!-- ============================================================ -->
+<div class="sec-block">
+  <div class="sec-title">
+    <span class="num">2</span>電子・酸化数による定義（視点③④）
+    <span class="sec-tag">標準</span>
+  </div>
+
+  <div class="q-block" data-correct="c">
+    <div class="q-header"><span class="q-num">6</span>
+      <div><div class="q-stem">電子による定義で正しいのはどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：電子を得ると酸化される</button>
+      <button class="q4-c" data-v="b">イ：電子を失っても酸化されない場合がある</button>
+      <button class="q4-c" data-v="c">ウ：電子を失うと酸化、電子を得ると還元</button>
+      <button class="q4-c" data-v="d">エ：電子のやり取りは酸化還元に関係ない</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ウ</strong>。<br>
+    電子を<strong>失う</strong> → 酸化（酸化数が増える）<br>
+    電子を<strong>得る</strong> → 還元（酸化数が減る）<br>
+    電子のやり取りは酸化還元の「本質」です。</div>
+  </div>
+
+  <div class="q-block" data-correct="a">
+    <div class="q-header"><span class="q-num">7</span>
+      <div><div class="q-stem">次の反応で酸化数が増えた原子はどれか。<br>
+        <span class="rxn-box">Zn + 2HCl → ZnCl₂ + H₂</span></div></div>
+    </div>
+    <button class="hint-toggle" onclick="toggleHint(this)">💡 ヒントを見る</button>
+    <div class="hint-box">
+      各元素の酸化数を求めよう<br>
+      <span class="eq">Zn：単体→？　H（HCl中）：+1→？（H₂中）</span>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：Zn</button>
+      <button class="q4-c" data-v="b">イ：H</button>
+      <button class="q4-c" data-v="c">ウ：Cl</button>
+      <button class="q4-c" data-v="d">エ：変化した原子はない</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ア：Zn</strong>。<br>
+    Zn：0（単体）→ ZnCl₂ 中 +2（<span class="c-ox">増えた → 酸化された</span>）<br>
+    H：+1（HCl 中）→ 0（H₂ 単体）（減った → 還元された）<br>
+    Cl は −1 のまま変化なし。</div>
+  </div>
+
+  <div class="q-block" data-correct="d">
+    <div class="q-header"><span class="q-num">8</span>
+      <div><div class="q-stem">次の反応で「還元された」原子はどれか。<br>
+        <span class="rxn-box">2Na + 2H₂O → 2NaOH + H₂</span></div></div>
+    </div>
+    <button class="hint-toggle" onclick="toggleHint(this)">💡 ヒントを見る</button>
+    <div class="hint-box">
+      H₂O 中の H の酸化数は？　H₂（単体）の酸化数は？
+      <span class="eq">H₂O：H = +1　→　H₂：H = ?</span>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：Na</button>
+      <button class="q4-c" data-v="b">イ：O</button>
+      <button class="q4-c" data-v="c">ウ：OH の H</button>
+      <button class="q4-c" data-v="d">エ：H₂O の H → H₂ になった H</button>
+    </div>
+    <div class="q4-exp">正解は<strong>エ</strong>。<br>
+    H₂O の H：+1 → H₂（単体）の H：0（<span class="c-rd">減った → 還元された</span>）<br>
+    Na：0（単体）→ NaOH 中 +1（増えた → 酸化された）<br>
+    O は −2 のまま、NaOH の H（+1）も変化なし。</div>
+  </div>
+
+  <div class="q-block" data-correct="b">
+    <div class="q-header"><span class="q-num">9</span>
+      <div><div class="q-stem">次の反応のうち、酸化還元反応でないものはどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：Fe + 2HCl → FeCl₂ + H₂</button>
+      <button class="q4-c" data-v="b">イ：CaCO₃ + 2HCl → CaCl₂ + H₂O + CO₂</button>
+      <button class="q4-c" data-v="c">ウ：Cl₂ + 2NaI → 2NaCl + I₂</button>
+      <button class="q4-c" data-v="d">エ：MnO₂ + 4HCl → MnCl₂ + 2H₂O + Cl₂</button>
+    </div>
+    <div class="q4-exp">正解は<strong>イ</strong>。<br>
+    CaCO₃ + 2HCl → CaCl₂ + H₂O + CO₂ は<strong>塩酸との反応</strong>（酸との反応）。<br>
+    全元素（Ca、C、O、H、Cl）の酸化数が変化しない → 酸化還元反応ではない。<br>
+    ア：Fe(0→+2)酸化・H(+1→0)還元　ウ：I(−1→0)酸化・Cl(0→−1)還元　エ：Mn(+4→+2)還元・Cl(−1→0)酸化</div>
+  </div>
+
+  <div class="q-block" data-correct="c">
+    <div class="q-header"><span class="q-num">10</span>
+      <div><div class="q-stem">「酸化数が変化しない反応」の組み合わせはどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：中和反応・電気分解</button>
+      <button class="q4-c" data-v="b">イ：燃焼・沈殿生成反応</button>
+      <button class="q4-c" data-v="c">ウ：中和反応・沈殿生成反応</button>
+      <button class="q4-c" data-v="d">エ：酸化・錯体生成反応</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ウ</strong>。<br>
+    <strong>中和反応</strong>（HCl + NaOH → NaCl + H₂O）と<strong>沈殿生成反応</strong>（BaCl₂ + Na₂SO₄ → BaSO₄↓ + 2NaCl）は<br>
+    いずれも酸化数が変化しない → 酸化還元反応ではない。<br>
+    燃焼・電気分解はどちらも酸化数が変化する酸化還元反応。</div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- セクション3：酸化剤・還元剤の識別                              -->
+<!-- ============================================================ -->
+<div class="sec-block">
+  <div class="sec-title">
+    <span class="num">3</span>酸化剤・還元剤の識別
+    <span class="sec-tag">標準</span>
+  </div>
+
+  <div class="q-block" data-correct="b">
+    <div class="q-header"><span class="q-num">11</span>
+      <div><div class="q-stem">酸化剤についての記述で正しいものはどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：相手に電子を渡し、自分は酸化される</button>
+      <button class="q4-c" data-v="b">イ：相手から電子を受け取り、自分は還元される</button>
+      <button class="q4-c" data-v="c">ウ：酸素を失い、自分は還元される</button>
+      <button class="q4-c" data-v="d">エ：自分の酸化数が増える物質</button>
+    </div>
+    <div class="q4-exp">正解は<strong>イ</strong>。<br>
+    酸化剤 = 相手から電子を<strong>受け取る</strong> → 相手を酸化させる → 自分は<strong>還元される</strong>（酸化数が減る）。<br>
+    「酸化剤なのに自分は還元される」という逆の関係が重要です。</div>
+  </div>
+
+  <div class="q-block" data-correct="a">
+    <div class="q-header"><span class="q-num">12</span>
+      <div><div class="q-stem">次の反応で「還元剤」はどれか。<br>
+        <span class="rxn-box">2Na + Cl₂ → 2NaCl</span></div></div>
+    </div>
+    <button class="hint-toggle" onclick="toggleHint(this)">💡 ヒントを見る</button>
+    <div class="hint-box">
+      酸化数の変化を確認しよう<br>
+      <span class="eq">Na：0 → ?（NaCl中）　Cl：0 → ?（NaCl中）</span>
+      還元剤は「電子を渡して自分が酸化される物質」
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：Na</button>
+      <button class="q4-c" data-v="b">イ：Cl₂</button>
+      <button class="q4-c" data-v="c">ウ：NaCl</button>
+      <button class="q4-c" data-v="d">エ：どちらも還元剤</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ア：Na</strong>。<br>
+    Na：0 → +1（<span class="c-ox">増えた → 酸化された = 還元剤</span>）<br>
+    Cl：0 → −1（減った → 還元された = 酸化剤）<br>
+    「酸化された物質」が還元剤、「還元された物質」が酸化剤です。</div>
+  </div>
+
+  <div class="q-block" data-correct="d">
+    <div class="q-header"><span class="q-num">13</span>
+      <div><div class="q-stem">次の反応で酸化剤はどれか。<br>
+        <span class="rxn-box">H₂SO₄ + Zn → ZnSO₄ + H₂↑</span></div></div>
+    </div>
+    <button class="hint-toggle" onclick="toggleHint(this)">💡 ヒントを見る</button>
+    <div class="hint-box">
+      H の酸化数変化に注目しよう<br>
+      <span class="eq">H₂SO₄ 中の H：+1 → H₂（単体）の H：?</span>
+      酸化剤は「還元される（酸化数が減る）物質」
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：Zn</button>
+      <button class="q4-c" data-v="b">イ：ZnSO₄</button>
+      <button class="q4-c" data-v="c">ウ：SO₄²⁻ の S</button>
+      <button class="q4-c" data-v="d">エ：H₂SO₄ の H</button>
+    </div>
+    <div class="q4-exp">正解は<strong>エ：H₂SO₄ の H</strong>。<br>
+    H₂SO₄ の H：+1 → H₂ の H：0（<span class="c-rd">減った → 還元された = 酸化剤</span>）<br>
+    Zn：0 → +2（増えた → 酸化された = 還元剤）<br>
+    S は +6 のまま変化なし（希硫酸は酸として反応し、S の酸化数は変わらない）。</div>
+  </div>
+
+  <div class="q-block" data-correct="c">
+    <div class="q-header"><span class="q-num">14</span>
+      <div><div class="q-stem">次の反応で酸化剤と還元剤を正しく示したものはどれか。<br>
+        <span class="rxn-box">Cl₂ + 2KI → 2KCl + I₂</span></div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：酸化剤 KI、還元剤 Cl₂</button>
+      <button class="q4-c" data-v="b">イ：酸化剤 KCl、還元剤 I₂</button>
+      <button class="q4-c" data-v="c">ウ：酸化剤 Cl₂、還元剤 KI</button>
+      <button class="q4-c" data-v="d">エ：酸化剤も還元剤も KCl</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ウ</strong>。<br>
+    Cl：0（Cl₂）→ −1（KCl）（<span class="c-rd">減った → 還元された = 酸化剤</span>）<br>
+    I：−1（KI）→ 0（I₂）（<span class="c-ox">増えた → 酸化された = 還元剤</span>）<br>
+    生成した <span class="c-brown">I₂ は褐色</span>で、デンプンと反応すると青紫色になります。</div>
+  </div>
+
+  <div class="q-block" data-correct="a">
+    <div class="q-header"><span class="q-num">15</span>
+      <div><div class="q-stem">次の反応で自己酸化還元（不均化）が起きているのはどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：2H₂O₂ → 2H₂O + O₂</button>
+      <button class="q4-c" data-v="b">イ：2Mg + O₂ → 2MgO</button>
+      <button class="q4-c" data-v="c">ウ：Fe + 2HCl → FeCl₂ + H₂</button>
+      <button class="q4-c" data-v="d">エ：Cl₂ + H₂O → HCl + HClO</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ア</strong>（と <strong>エ</strong>も自己酸化還元ですが選択肢の中でア）。<br>
+    2H₂O₂ → 2H₂O + O₂ では、同じ H₂O₂ の O（−1）が<br>
+    → H₂O の O（−2）に還元された部分と → O₂（0）に酸化された部分に分かれる。<br>
+    同一物質が酸化剤にも還元剤にもなる反応を<strong>自己酸化還元（不均化）</strong>といいます。</div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- セクション4：総合問題                                          -->
+<!-- ============================================================ -->
+<div class="sec-block">
+  <div class="sec-title">
+    <span class="num">4</span>総合問題
+    <span class="sec-tag" style="background:var(--accent-light);color:var(--accent);">発展</span>
+  </div>
+
+  <div class="q-block" data-correct="d">
+    <div class="q-header"><span class="q-num hard">16</span>
+      <div><div class="q-stem">次の反応を酸化数の変化で分析した。正しいものはどれか。<br>
+        <span class="rxn-box">3NO₂ + H₂O → 2HNO₃ + NO</span></div></div>
+    </div>
+    <button class="hint-toggle" onclick="toggleHint(this)">💡 ヒントを見る</button>
+    <div class="hint-box">
+      NO₂ の N、HNO₃ の N、NO の N それぞれの酸化数を求めよう<br>
+      <span class="eq">NO₂：N = ?　HNO₃：N = ?　NO：N = ?</span>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：酸化還元反応ではない</button>
+      <button class="q4-c" data-v="b">イ：NO₂ の N が酸化、H₂O の H が還元</button>
+      <button class="q4-c" data-v="c">ウ：HNO₃ が酸化剤、NO が還元剤</button>
+      <button class="q4-c" data-v="d">エ：NO₂ が酸化剤にも還元剤にもなる自己酸化還元</button>
+    </div>
+    <div class="q4-exp">正解は<strong>エ</strong>。<br>
+    NO₂ の N：+4　→　HNO₃ の N：+5（<span class="c-ox">増加 → 酸化された</span>）<br>
+    NO₂ の N：+4　→　NO の N：+2（<span class="c-rd">減少 → 還元された</span>）<br>
+    同じ NO₂ が酸化剤にも還元剤にもなる<strong>自己酸化還元反応</strong>です。</div>
+  </div>
+
+  <div class="q-block" data-correct="b">
+    <div class="q-header"><span class="q-num hard">17</span>
+      <div><div class="q-stem">次の4つの反応のうち、酸化還元反応はいくつか。<br>
+        <div class="q-sub">
+          ① 2Na + 2H₂O → 2NaOH + H₂<br>
+          ② AgNO₃ + NaCl → AgCl↓ + NaNO₃<br>
+          ③ 2KMnO₄ → K₂MnO₄ + MnO₂ + O₂<br>
+          ④ NH₃ + HCl → NH₄Cl
+        </div></div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：1つ</button>
+      <button class="q4-c" data-v="b">イ：2つ（①と③）</button>
+      <button class="q4-c" data-v="c">ウ：3つ</button>
+      <button class="q4-c" data-v="d">エ：すべて</button>
+    </div>
+    <div class="q4-exp">正解は<strong>イ：2つ（①と③）</strong>。<br>
+    ①：Na(0→+1)酸化・H(+1→0)還元 ✓<br>
+    ②：沈殿生成。全酸化数変化なし ✗<br>
+    ③：Mn(+7→+6)と(+7→+4)自己酸化還元・O(−2→0)酸化 ✓<br>
+    ④：酸塩基反応（中和）。全酸化数変化なし ✗</div>
+  </div>
+
+  <div class="q-block" data-correct="c">
+    <div class="q-header"><span class="q-num hard">18</span>
+      <div><div class="q-stem">次の反応の下線部の変化として正しいものはどれか。<br>
+        <span class="rxn-box"><u>MnO₄⁻</u> + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</span></div></div>
+    </div>
+    <button class="hint-toggle" onclick="toggleHint(this)">💡 ヒントを見る</button>
+    <div class="hint-box">
+      MnO₄⁻ 中の Mn の酸化数と、Mn²⁺ の酸化数を比べよう<br>
+      <span class="eq">MnO₄⁻：Mn = ?（O=−2、イオンの電荷=−1）</span>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：Mn の酸化数が +7 → +4 に減った（還元）</button>
+      <button class="q4-c" data-v="b">イ：Mn の酸化数が +4 → +2 に減った（還元）</button>
+      <button class="q4-c" data-v="c">ウ：Mn の酸化数が +7 → +2 に減った（還元・酸化剤）</button>
+      <button class="q4-c" data-v="d">エ：Mn の酸化数が +7 → +2 に増えた（酸化）</button>
+    </div>
+    <div class="q4-exp">正解は<strong>ウ</strong>。<br>
+    MnO₄⁻：x + (−2)×4 = −1 → x = <strong>+7</strong><br>
+    Mn²⁺：+2<br>
+    +7 → +2（<span class="c-rd">5 減った → 還元された</span>）→ MnO₄⁻ は<span class="c-rd">酸化剤</span>（e⁻ を 5個受け取る）。</div>
+  </div>
+
+  <div class="q-block" data-correct="a">
+    <div class="q-header"><span class="q-num hard">19</span>
+      <div><div class="q-stem">次の記述のうち誤っているものはどれか。</div></div>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：酸化と還元は別々の物質に別々のタイミングで起こる</button>
+      <button class="q4-c" data-v="b">イ：酸化剤が受け取る e⁻ の mol ＝ 還元剤が渡す e⁻ の mol</button>
+      <button class="q4-c" data-v="c">ウ：酸化数の変化しない反応は酸化還元反応ではない</button>
+      <button class="q4-c" data-v="d">エ：電子を失うと酸化数が増える</button>
+    </div>
+    <div class="q4-exp">正解（誤り）は<strong>ア</strong>。<br>
+    酸化と還元は<strong>必ず同時・同一反応内</strong>で起こります。<br>
+    電子は「渡す側」と「受け取る側」が必ずセットで存在し、片方だけでは起こりません。<br>
+    イ・ウ・エはすべて正しい記述です。</div>
+  </div>
+
+  <div class="q-block" data-correct="d">
+    <div class="q-header"><span class="q-num hard">20</span>
+      <div><div class="q-stem">次の反応で下線部の酸化数変化と役割の組み合わせが正しいものはどれか。<br>
+        <span class="rxn-box">2<u>H₂O₂</u> + <u>SO₂</u> → H₂SO₄</span>
+        <div class="q-sub">（H₂SO₄ 中：H=+1、S=+6、O=−2）</div></div></div>
+    </div>
+    <button class="hint-toggle" onclick="toggleHint(this)">💡 ヒントを見る</button>
+    <div class="hint-box">
+      H₂O₂ の O 酸化数と H₂SO₄ の O 酸化数を比べよう<br>
+      SO₂ の S 酸化数と H₂SO₄ の S 酸化数を比べよう<br>
+      <span class="eq">H₂O₂ の O：−1　SO₂ の S：+4</span>
+    </div>
+    <div class="q4-choices">
+      <button class="q4-c" data-v="a">ア：H₂O₂ が還元剤、SO₂ が酸化剤</button>
+      <button class="q4-c" data-v="b">イ：H₂O₂ も SO₂ も酸化剤</button>
+      <button class="q4-c" data-v="c">ウ：H₂O₂ も SO₂ も還元剤</button>
+      <button class="q4-c" data-v="d">エ：H₂O₂ が酸化剤、SO₂ が還元剤</button>
+    </div>
+    <div class="q4-exp">正解は<strong>エ</strong>。<br>
+    H₂O₂ の O：−1 → H₂SO₄ の O：−2（<span class="c-rd">減った → 還元された = 酸化剤</span>）<br>
+    SO₂ の S：+4 → H₂SO₄ の S：+6（<span class="c-ox">増えた → 酸化された = 還元剤</span>）<br>
+    H₂O₂ が通常の役割（酸化剤）として SO₂（還元剤）を酸化しています。</div>
+  </div>
+</div>
+
+
+<!-- 進捗バー下部 -->
+<div class="action-bar" style="margin-top:4px;">
+  <div class="progress-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill2"></div></div>
+    <div class="prog-text" id="prog-text2">0 / 20 回答済み</div>
+  </div>
+  <button class="reset-btn" onclick="resetAll()">↻ 全問リセット</button>
+</div>
+
+<div class="next-actions">
+  <h3>🎉 練習問題お疲れさま！</h3>
+  <p>第3章の練習問題にも挑戦してみましょう！</p>
+  <div class="links">
+    <a href="oxred_agent_practice.html">📝 第3章練習問題へ</a>
+    <a href="oxred_def_lesson.html" class="sub">📖 レッスンへ戻る</a>
+    <a href="oxred_index.html" class="sub">📊 単元表へ</a>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+let answered = 0;
+const TOTAL = 20;
+
+function launchConfetti(){
+  const C=['#f472b6','#facc15','#34d399','#60a5fa','#f87171','#a78bfa','#fb923c','#2dd4bf'];
+  for(let i=0;i<80;i++){
+    const el=document.createElement('div');
+    const s=Math.random()*10+6,l=Math.random()*100;
+    const d=Math.random()*.6,r=Math.random()*1.2+1.2;
+    const c=C[Math.floor(Math.random()*C.length)];
+    const sh=Math.random()>.5?'50%':'2px';
+    el.style.cssText=`position:fixed;top:-20px;left:${l}vw;width:${s}px;height:${s}px;background:${c};border-radius:${sh};opacity:1;pointer-events:none;z-index:9999;animation:confettiFall ${r}s ${d}s ease-in forwards;`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),(r+d)*1000+200);
+  }
+}
+
+function toggleHint(btn){
+  const box = btn.nextElementSibling;
+  const open = box.classList.toggle('open');
+  btn.textContent = open ? '💡 ヒントを隠す' : '💡 ヒントを見る';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.q-block').forEach(q => {
+    const correct = q.dataset.correct;
+    const exp = q.querySelector('.q4-exp');
+    q.querySelectorAll('.q4-c').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(btn.classList.contains('disabled')) return;
+        q.querySelectorAll('.q4-c').forEach(b => b.classList.add('disabled'));
+        if(btn.dataset.v === correct){
+          btn.classList.add('correct');
+          launchConfetti();
+        } else {
+          btn.classList.add('wrong');
+          q.querySelectorAll('.q4-c').forEach(b => {
+            if(b.dataset.v === correct) b.classList.add('correct');
+          });
+        }
+        // ヒントを閉じる
+        const hint = q.querySelector('.hint-box');
+        if(hint){ hint.classList.remove('open'); }
+        const htBtn = q.querySelector('.hint-toggle');
+        if(htBtn){ htBtn.textContent = '💡 ヒントを見る'; }
+
+        exp.classList.add('show');
+        answered++;
+        updateProgress();
+        if(answered === TOTAL) setTimeout(showScore, 600);
+      });
+    });
+  });
+  updateProgress();
+});
+
+function updateProgress(){
+  const pct = Math.round(answered / TOTAL * 100);
+  ['prog-fill','prog-fill2'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.style.width = pct + '%';
+  });
+  ['prog-text','prog-text2'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.textContent = `${answered} / ${TOTAL} 回答済み`;
+  });
+}
+
+function showScore(){
+  const correct = document.querySelectorAll('.q4-c.correct').length;
+  const pct = correct / TOTAL;
+  let stars = '', msg = '';
+  if(pct === 1){ stars='🌟🌟🌟'; msg='完璧！全問正解おめでとう！'; launchConfetti(); setTimeout(launchConfetti, 800); }
+  else if(pct >= .8){ stars='⭐⭐🌟'; msg='よくできました！惜しかった問題をレッスンで確認しよう。'; }
+  else if(pct >= .6){ stars='⭐⭐'; msg='もう少し！4つの定義を整理してもう一度挑戦しよう。'; }
+  else { stars='⭐'; msg='レッスンに戻って4つの視点をしっかり確認してみよう。'; }
+  document.getElementById('sb-stars').textContent = stars;
+  document.getElementById('sb-score').textContent = `${correct} / ${TOTAL} 正解`;
+  document.getElementById('sb-msg').textContent = msg;
+  const board = document.getElementById('score-board');
+  board.classList.add('show');
+  board.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+function resetAll(){
+  answered = 0;
+  document.querySelectorAll('.q4-c').forEach(b => b.classList.remove('correct','wrong','disabled'));
+  document.querySelectorAll('.q4-exp').forEach(e => e.classList.remove('show'));
+  document.querySelectorAll('.hint-box').forEach(h => h.classList.remove('open'));
+  document.querySelectorAll('.hint-toggle').forEach(b => b.textContent = '💡 ヒントを見る');
+  document.getElementById('score-board').classList.remove('show');
+  updateProgress();
+}
+</script>
+</body>
+</html>

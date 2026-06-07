@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>半反応式の組み合わせ | GAMBA化学</title>
+<style>
+:root{
+  --bg:#f0f4ff;--card:#fff;
+  --primary:#2563eb;--primary-light:#dbeafe;--primary-dark:#1e40af;
+  --accent:#dc2626;--accent-light:#fee2e2;
+  --success:#16a34a;--success-light:#dcfce7;
+  --warn:#d97706;--warn-light:#fffbeb;
+  --purple:#7c3aed;--purple-light:#ede9fe;
+  --text:#1e293b;--text-sub:#64748b;
+  --border:#bfdbfe;--radius:14px;
+  --ox:#dc2626;--rd:#16a34a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'BIZ UDPGothic','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+
+.topnav{display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;flex-wrap:wrap;}
+.topnav .brand{font-weight:700;font-size:.9em;}
+.topnav .sep{opacity:.4;}
+.topnav a{color:#bfdbfe;text-decoration:none;font-size:.82em;}
+.topnav a:hover{color:#fff;}
+
+.hero{background:linear-gradient(135deg,#1e40af 0%,#4f46e5 60%,#7c3aed 100%);color:#fff;padding:26px 20px 24px;}
+.hero .crumb{font-size:.75em;opacity:.7;margin-bottom:6px;}
+.hero h1{font-size:clamp(1.4em,4vw,2em);font-weight:800;margin-bottom:8px;}
+.hero .sub{font-size:.87em;opacity:.9;line-height:1.8;max-width:680px;}
+.hero .level-badge{display:inline-block;margin-top:10px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:4px 14px;font-size:.78em;font-weight:700;}
+
+.wrap{max-width:860px;margin:0 auto;}
+main{padding:20px 14px 0;}
+
+/* ── UNIT ── */
+.unit{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:28px;overflow:hidden;}
+.unit-title{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,var(--primary-light),#f8faff);padding:13px 16px;font-weight:700;font-size:1.05em;border-bottom:1.5px solid var(--border);}
+.unit-title .num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;background:var(--primary);color:#fff;border-radius:8px;font-size:.88em;flex-shrink:0;}
+.stage{padding:16px;}
+
+/* ── READ BOX ── */
+.read-box{background:#f8faff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;line-height:1.9;font-size:.93em;margin-bottom:12px;}
+.read-box p{margin-bottom:10px;}
+.read-box p:last-child{margin-bottom:0;}
+
+/* ── 手順ボックス ── */
+.step-flow{background:#fff;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:12px 0;}
+.sf-title{background:linear-gradient(90deg,var(--primary-light),#f0f4ff);padding:9px 14px;font-weight:700;font-size:.88em;color:var(--primary-dark);border-bottom:1px solid var(--border);}
+.sf-step{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-bottom:1px dashed #e2e8f0;font-size:.9em;line-height:1.8;}
+.sf-step:last-child{border-bottom:none;}
+.sf-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:var(--primary);color:#fff;border-radius:50%;font-size:.8em;font-weight:700;flex-shrink:0;margin-top:2px;}
+.sf-body{flex:1;}
+.sf-body .hl{font-weight:700;color:var(--primary-dark);}
+.sf-body .hl-ox{font-weight:700;color:var(--ox);}
+.sf-body .hl-rd{font-weight:700;color:var(--rd);}
+.sf-body .hl-e{font-weight:700;color:var(--purple);}
+
+/* ── 反応ステッパー ── */
+.rxn-stepper{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:16px 0;}
+.rs-header{background:linear-gradient(90deg,#1e40af,#4f46e5);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.rs-title{font-weight:800;font-size:1em;}
+.rs-badges{display:flex;gap:6px;flex-wrap:wrap;}
+.rs-badge{font-size:.72em;font-weight:700;padding:2px 10px;border-radius:20px;background:rgba(255,255,255,.2);}
+
+/* ドット */
+.rs-dots{display:flex;gap:6px;align-items:center;padding:10px 16px;background:#f8faff;border-bottom:1px solid var(--border);}
+.rs-dot{width:11px;height:11px;border-radius:50%;border:2px solid #cbd5e1;background:transparent;transition:.2s;cursor:pointer;}
+.rs-dot.active{background:var(--primary);border-color:var(--primary);}
+.rs-dot.done{background:#93c5fd;border-color:#93c5fd;}
+
+/* パネル */
+.rs-panel{display:none;padding:16px;}
+.rs-panel.active{display:block;}
+.panel-tag{display:inline-block;font-size:.76em;font-weight:700;padding:3px 12px;border-radius:20px;margin-bottom:10px;}
+.tag-s0{background:#ede9fe;color:#4c1d95;}
+.tag-s1{background:#fffbeb;color:#92400e;}
+.tag-s2{background:#f0fdf4;color:#14532d;}
+.tag-s3{background:#fee2e2;color:#991b1b;}
+.tag-s4{background:var(--primary-light);color:var(--primary-dark);}
+
+/* 半反応式並列表示 */
+.half-rxn-pair{background:#f8faff;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;margin:10px 0;}
+.hrp-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px dashed #e2e8f0;font-size:.9em;font-weight:700;flex-wrap:wrap;}
+.hrp-row:last-child{border-bottom:none;}
+.hrp-label{font-size:.72em;font-weight:700;padding:2px 9px;border-radius:12px;flex-shrink:0;min-width:56px;text-align:center;}
+.hrp-label.ox{background:var(--accent-light);color:var(--ox);}
+.hrp-label.rd{background:var(--success-light);color:var(--rd);}
+.hrp-eq{font-family:'BIZ UDPGothic',monospace;letter-spacing:.03em;line-height:1.6;}
+.hrp-e{color:var(--purple);font-weight:800;}
+.hrp-coef{color:var(--ox);font-weight:800;font-size:1.05em;}
+.hrp-coef.rd{color:var(--rd);}
+
+/* 電子の揃え方 */
+.e-match{background:var(--purple-light);border:1.5px solid #c4b5fd;border-radius:10px;padding:11px 14px;margin:10px 0;font-size:.88em;}
+.e-match .em-title{font-weight:700;color:var(--purple);font-size:.9em;margin-bottom:6px;}
+.e-match .em-row{display:flex;align-items:center;gap:8px;font-size:.88em;margin-bottom:4px;}
+.e-match .em-row:last-child{margin-bottom:0;}
+.e-dot{width:9px;height:9px;border-radius:50%;background:var(--purple);flex-shrink:0;}
+
+/* 足し算の過程 */
+.addition-box{background:var(--warn-light);border:2px solid #fcd34d;border-radius:10px;padding:12px 16px;margin:10px 0;}
+.ab-title{font-size:.8em;font-weight:700;color:#92400e;margin-bottom:8px;}
+.ab-line{font-size:.9em;font-weight:700;letter-spacing:.03em;line-height:1.9;padding:4px 0;}
+.ab-line.ox-line{color:var(--ox);}
+.ab-line.rd-line{color:var(--rd);}
+.ab-divider{border:none;border-top:2px solid #fcd34d;margin:6px 0;}
+.ab-result{font-size:1em;font-weight:800;letter-spacing:.03em;line-height:1.8;color:var(--primary-dark);}
+
+/* 完成式 */
+.final-eq{background:linear-gradient(135deg,var(--success-light),#dbeafe);border:2px solid #86efac;border-radius:10px;padding:13px 16px;text-align:center;margin:10px 0;}
+.final-eq .big-eq{font-size:1.1em;font-weight:800;letter-spacing:.04em;line-height:1.8;color:var(--primary-dark);}
+.final-eq .caption{font-size:.78em;color:var(--text-sub);margin-top:6px;}
+
+/* 解説 */
+.explain-box{font-size:.88em;line-height:1.85;color:var(--text);}
+.explain-box ul{margin:6px 0 6px 18px;}
+.explain-box li{margin-bottom:4px;}
+
+/* ナビボタン */
+.rs-nav{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-top:1px solid #e2e8f0;background:#fafafa;}
+.nav-btn{font-family:inherit;font-size:.84em;padding:9px 22px;border-radius:50px;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-weight:700;transition:.15s;}
+.nav-btn:hover{background:var(--primary-light);}
+.nav-btn:disabled{opacity:.35;cursor:default;}
+.nav-btn.next{background:var(--primary);color:#fff;border-color:var(--primary);}
+.nav-btn.next:hover{background:var(--primary-dark);}
+.nav-step-lbl{font-size:.8em;color:var(--text-sub);}
+
+/* ポイント・警告 */
+.point-box{background:var(--success-light);border:2px solid #86efac;border-radius:10px;padding:12px 14px;margin:12px 0;}
+.point-box .label{display:inline-block;background:var(--success);color:#fff;font-size:.78em;font-weight:700;padding:2px 10px;border-radius:20px;margin-bottom:8px;}
+.point-box ul{margin:0 0 0 18px;font-size:.9em;line-height:1.9;}
+.warn-box{background:var(--warn-light);border:2px solid #fde68a;border-radius:10px;padding:12px 14px;margin:12px 0;font-size:.88em;line-height:1.8;color:#78350f;}
+.warn-box .label{display:inline-block;background:var(--warn);color:#fff;font-size:.78em;font-weight:700;padding:2px 10px;border-radius:20px;margin-bottom:6px;}
+
+/* 色付き */
+.c-purple{color:#9333ea;font-weight:700;}
+.c-orange{color:#f97316;font-weight:700;}
+.c-green{color:#16a34a;font-weight:700;}
+.c-brown{color:#b45309;font-weight:700;}
+.c-lime{color:#65a30d;font-weight:700;}
+.c-pink{color:#db2777;font-weight:700;}
+
+/* 縦型分数 */
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;font-size:.9em;line-height:1.1;}
+.frac .fn{padding:0 3px;border-bottom:1.5px solid currentColor;}
+.frac .fd{padding:0 3px;}
+
+/* ミニテスト */
+.minitest-wrap{padding:14px 16px;border-top:1.5px solid var(--border);background:#fafafa;}
+.mt-title{font-weight:700;font-size:.9em;color:var(--primary-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.q4{margin-bottom:18px;}
+.q4:last-of-type{margin-bottom:4px;}
+.q4-stem{font-size:.92em;font-weight:600;margin-bottom:9px;line-height:1.65;}
+.q4-num{display:inline-flex;align-items:center;justify-content:center;background:var(--primary);color:#fff;font-size:.74em;padding:2px 8px;border-radius:5px;margin-right:6px;font-weight:700;}
+.q4-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
+.q4-c{font-family:inherit;padding:10px 12px;border-radius:8px;border:2px solid #cbd5e1;background:#fff;font-size:.85em;font-weight:600;cursor:pointer;text-align:left;transition:.15s;line-height:1.4;-webkit-tap-highlight-color:transparent;}
+.q4-c:hover{border-color:var(--primary);background:var(--primary-light);}
+.q4-c.correct{background:var(--success);border-color:var(--success);color:#fff;}
+.q4-c.wrong{background:var(--accent);border-color:var(--accent);color:#fff;}
+.q4-c.disabled{cursor:default;}
+.q4-exp{display:none;font-size:.84em;background:#f0fdf4;border-left:4px solid var(--success);padding:10px 14px;border-radius:0 8px 8px 0;line-height:1.8;margin-top:5px;}
+.q4-exp.show{display:block;}
+.mt-result{font-weight:700;text-align:center;margin:12px 0 6px;font-size:.95em;color:var(--primary);}
+.mt-reset{display:block;margin:0 auto;font-family:inherit;background:var(--primary-light);color:var(--primary-dark);border:1.5px solid var(--border);padding:8px 22px;border-radius:50px;cursor:pointer;font-size:.82em;font-weight:700;}
+
+/* 次のアクション */
+.next-actions{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:2px solid var(--border);border-radius:var(--radius);padding:22px;margin:24px 0 0;text-align:center;}
+.next-actions h3{color:var(--primary-dark);margin-bottom:8px;font-size:1.1em;}
+.next-actions p{font-size:.87em;color:var(--text-sub);margin-bottom:14px;}
+.next-actions .links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.next-actions a{text-decoration:none;padding:11px 20px;border-radius:8px;font-size:.88em;font-weight:700;background:var(--primary);color:#fff;transition:.15s;}
+.next-actions a:hover{background:var(--primary-dark);}
+.next-actions a.sub{background:#fff;color:var(--primary);border:1.5px solid var(--border);}
+
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}80%{opacity:1;}100%{transform:translateY(105vh) rotate(720deg);opacity:0;}}
+@media(max-width:520px){.q4-choices{grid-template-columns:1fr;}.hrp-row{flex-direction:column;align-items:flex-start;}}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">⚗️ GAMBA 化学</span>
+  <span class="sep">|</span>
+  <a href="oxred_index.html">📊 単元表</a>
+  <a href="oxred_agent_half.html">← 第3章：半反応式</a>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="crumb">化学基礎 / 酸化還元 / 第4章</div>
+  <h1>半反応式の組み合わせ</h1>
+  <p class="sub">酸化剤と還元剤それぞれの半反応式を組み合わせて、<strong>イオン反応式</strong>を作る方法を学びます。<br>
+  電子（e⁻）の数を揃えることがポイントです。</p>
+  <span class="level-badge">⚗️ 第4章　入試頻出6例</span>
+</header>
+
+<main>
+
+<!-- ============================================================ -->
+<!-- 単元0：組み合わせの手順                                        -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">0</span>イオン反応式を作る4ステップ</div>
+  <div class="stage">
+    <div class="read-box">
+      <p>酸化剤と還元剤が反応するとき、<strong>酸化剤が受け取るe⁻の数</strong>と<strong>還元剤が渡すe⁻の数</strong>は必ず等しくなります。この関係を使って2つの半反応式を組み合わせ、イオン反応式を作ります。</p>
+    </div>
+
+    <div class="step-flow">
+      <div class="sf-title">📋 イオン反応式を作る4ステップ</div>
+      <div class="sf-step">
+        <div class="sf-num">①</div>
+        <div class="sf-body"><span class="hl">酸化剤の半反応式</span>を書く（e⁻ を左辺に）<br>
+        <span style="font-size:.84em;color:var(--text-sub);">例：MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</span></div>
+      </div>
+      <div class="sf-step">
+        <div class="sf-num">②</div>
+        <div class="sf-body"><span class="hl">還元剤の半反応式</span>を書く（e⁻ を右辺に）<br>
+        <span style="font-size:.84em;color:var(--text-sub);">例：Fe²⁺ → Fe³⁺ + e⁻</span></div>
+      </div>
+      <div class="sf-step">
+        <div class="sf-num">③</div>
+        <div class="sf-body"><span class="hl-e">e⁻ の係数を揃える</span>ように両辺を整数倍にする<br>
+        <span style="font-size:.84em;color:var(--text-sub);">例：酸化剤のe⁻ = 5mol、還元剤のe⁻ = 1mol → 還元剤の式を5倍にする</span></div>
+      </div>
+      <div class="sf-step">
+        <div class="sf-num">④</div>
+        <div class="sf-body"><span class="hl">2つの式を辺々加える</span>（e⁻ が消える）<br>
+        <span style="font-size:.84em;color:var(--text-sub);">→ イオン反応式の完成！</span></div>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      <div class="label">⚠️ 注意</div>
+      両辺に同じ物質が現れる場合は<strong>消去</strong>します（例：H⁺・H₂O・共通イオン）。<br>
+      また、イオン反応式から<strong>化学反応式</strong>に直すときはイオンを元の物質に戻します。
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 反応例1：KMnO₄ + H₂O₂（酸性）                               -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">1</span><span class="c-purple">KMnO₄</span>（酸化剤）＋ H₂O₂（還元剤）　酸性条件</div>
+  <div class="stage">
+    <div class="read-box">
+      <p>過マンガン酸カリウムと過酸化水素の反応。KMnO₄ が酸化剤、H₂O₂ が還元剤としてはたらきます。H₂O₂ は酸化剤にも還元剤にもなる<strong>二面性の試薬</strong>なので、相手によって役割が変わります。</p>
+    </div>
+  </div>
+
+  <!-- ステッパー -->
+  <div class="rxn-stepper" id="rs1">
+    <div class="rs-header">
+      <span class="rs-title">⚗️ KMnO₄ + H₂O₂ → イオン反応式を作ろう</span>
+      <div class="rs-badges">
+        <span class="rs-badge">酸化剤：KMnO₄（e⁻ 5個）</span>
+        <span class="rs-badge">還元剤：H₂O₂（e⁻ 2個）</span>
+      </div>
+    </div>
+    <div class="rs-dots" id="dots1"></div>
+    <div id="panels1">
+
+      <div class="rs-panel active">
+        <span class="panel-tag tag-s0">Step 0：半反応式を書く</span>
+        <div class="half-rxn-pair">
+          <div class="hrp-row">
+            <span class="hrp-label ox">酸化剤</span>
+            <span class="hrp-eq"><span class="c-purple">MnO₄⁻</span> + 8H⁺ + <span class="hrp-e">5e⁻</span> → <span class="c-pink">Mn²⁺</span> + 4H₂O</span>
+          </div>
+          <div class="hrp-row">
+            <span class="hrp-label rd">還元剤</span>
+            <span class="hrp-eq">H₂O₂ → O₂ + 2H⁺ + <span class="hrp-e">2e⁻</span></span>
+          </div>
+        </div>
+        <div class="explain-box">
+          酸化剤 MnO₄⁻ は <span class="hl-e" style="font-weight:700;color:var(--purple);">e⁻ 5個</span> を受け取ります。<br>
+          還元剤 H₂O₂ は <span class="hl-e" style="font-weight:700;color:var(--purple);">e⁻ 2個</span> を渡します。<br>
+          → このままでは e⁻ の数が合わない → <strong>係数を調整</strong>します。
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s1">Step 1：e⁻ の数を揃える</span>
+        <div class="e-match">
+          <div class="em-title">🔢 最小公倍数で揃える</div>
+          <div class="em-row"><span class="e-dot"></span>酸化剤のe⁻：5個　還元剤のe⁻：2個</div>
+          <div class="em-row"><span class="e-dot"></span>最小公倍数 = <strong>10</strong></div>
+          <div class="em-row"><span class="e-dot"></span>酸化剤の式 × <span class="hrp-coef">2</span>　（5e⁻ × 2 = 10e⁻）</div>
+          <div class="em-row"><span class="e-dot"></span>還元剤の式 × <span class="hrp-coef rd">5</span>　（2e⁻ × 5 = 10e⁻）</div>
+        </div>
+        <div class="half-rxn-pair">
+          <div class="hrp-row">
+            <span class="hrp-label ox">酸化剤×<span class="hrp-coef">2</span></span>
+            <span class="hrp-eq"><span class="hrp-coef">2</span><span class="c-purple">MnO₄⁻</span> + 16H⁺ + <span class="hrp-e">10e⁻</span> → <span class="hrp-coef">2</span><span class="c-pink">Mn²⁺</span> + 8H₂O</span>
+          </div>
+          <div class="hrp-row">
+            <span class="hrp-label rd">還元剤×<span class="hrp-coef rd">5</span></span>
+            <span class="hrp-eq"><span class="hrp-coef rd">5</span>H₂O₂ → <span class="hrp-coef rd">5</span>O₂ + 10H⁺ + <span class="hrp-e">10e⁻</span></span>
+          </div>
+        </div>
+        <div class="explain-box">両式とも e⁻ が <span style="color:var(--purple);font-weight:700;">10個</span> になりました。次に2つの式を足します。</div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s2">Step 2：辺々加える（e⁻ を消去）</span>
+        <div class="addition-box">
+          <div class="ab-title">＋ 辺々加える</div>
+          <div class="ab-line ox-line">2MnO₄⁻ + 16H⁺ + 10e⁻ → 2Mn²⁺ + 8H₂O</div>
+          <div class="ab-line rd-line">5H₂O₂ → 5O₂ + 10H⁺ + 10e⁻</div>
+          <hr class="ab-divider">
+          <div class="ab-result">2MnO₄⁻ + 16H⁺ + 5H₂O₂ + <s style="color:#94a3b8;">10e⁻</s> → 2Mn²⁺ + 8H₂O + 5O₂ + 10H⁺ + <s style="color:#94a3b8;">10e⁻</s></div>
+        </div>
+        <div class="explain-box">e⁻ が両辺に同数あるので消えます。次に H⁺ と H₂O も整理します。</div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s3">Step 3：共通項を整理（H⁺ を消去）</span>
+        <div class="addition-box">
+          <div class="ab-title">両辺の H⁺ を整理（左辺 16H⁺ − 右辺 10H⁺ = 6H⁺ が左辺に残る）</div>
+          <div class="ab-result">2MnO₄⁻ + <strong>6H⁺</strong> + 5H₂O₂ → 2Mn²⁺ + 8H₂O + 5O₂</div>
+        </div>
+        <div class="explain-box">
+          左辺の H⁺（16個）から右辺の H⁺（10個）を引いて <strong>6H⁺</strong> が左辺に残ります。<br>
+          H₂O はそのまま（左右で消えるものはない）。
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s4">完成！イオン反応式</span>
+        <div class="final-eq">
+          <div class="big-eq">2MnO₄⁻ + 6H⁺ + 5H₂O₂ → 2Mn²⁺ + 8H₂O + 5O₂</div>
+          <div class="caption">左辺：酸化剤 + 酸（H⁺）+ 還元剤　→　右辺：生成物</div>
+        </div>
+        <div class="explain-box">
+          <ul>
+            <li><span class="c-purple">MnO₄⁻（赤紫色）</span>→ <span class="c-pink">Mn²⁺（ほぼ無色）</span>：色変化が滴定の終点の目印</li>
+            <li>H₂O₂（KMnO₄と反応するとき）→ O₂（<strong>H₂O₂ は還元剤として機能</strong>）</li>
+            <li>この反応はH₂O₂の<strong>定量分析（過酸化水素の濃度決定）</strong>に使われる</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <div class="rs-nav">
+      <button class="nav-btn" id="prev1" onclick="stepMove('rs1',1,-1)" disabled>← 前へ</button>
+      <span class="nav-step-lbl" id="lbl1"></span>
+      <button class="nav-btn next" id="next1" onclick="stepMove('rs1',1,1)">次へ →</button>
+    </div>
+  </div>
+
+  <div class="minitest-wrap">
+    <div class="mt-title">✏️ 確認問題</div>
+    <div class="q4" data-correct="c">
+      <div class="q4-stem"><span class="q4-num">問1</span>KMnO₄ + H₂O₂ の反応で、イオン反応式の H⁺ の係数はいくつか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：16</button>
+        <button class="q4-c" data-v="b">イ：10</button>
+        <button class="q4-c" data-v="c">ウ：6</button>
+        <button class="q4-c" data-v="d">エ：8</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ウ：6</strong>。<br>
+      酸化剤×2 → 16H⁺、還元剤×5 → 10H⁺（右辺）。16 − 10 = <strong>6H⁺</strong> が左辺に残ります。</div>
+    </div>
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問2</span>この反応でH₂O₂がはたらく役割はどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：酸化剤（→ H₂O または OH⁻）</button>
+        <button class="q4-c" data-v="b">イ：還元剤（→ O₂）</button>
+        <button class="q4-c" data-v="c">ウ：触媒</button>
+        <button class="q4-c" data-v="d">エ：溶媒</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ：還元剤（→ O₂）</strong>。<br>
+      H₂O₂ は通常酸化剤ですが、KMnO₄ のような強い酸化剤と反応するときは<strong>還元剤</strong>になります（H₂O₂ の二面性）。</div>
+    </div>
+    <div class="mt-result" id="r1"></div>
+    <button class="mt-reset" onclick="resetMT(this)">↻ もう一度</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 反応例2：KMnO₄ + シュウ酸                                    -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">2</span><span class="c-purple">KMnO₄</span>（酸化剤）＋ (COOH)₂（還元剤）　酸性条件</div>
+  <div class="stage">
+    <div class="read-box">
+      <p>シュウ酸滴定（KMnO₄ の標定）に使われる重要な反応です。シュウ酸は<strong>基準試薬（一次標準物質）</strong>として KMnO₄ の正確な濃度を決定するのに用います。</p>
+    </div>
+  </div>
+
+  <div class="rxn-stepper" id="rs2">
+    <div class="rs-header">
+      <span class="rs-title">⚗️ KMnO₄ + (COOH)₂ → イオン反応式を作ろう</span>
+      <div class="rs-badges">
+        <span class="rs-badge">酸化剤：KMnO₄（e⁻ 5個）</span>
+        <span class="rs-badge">還元剤：(COOH)₂（e⁻ 2個）</span>
+      </div>
+    </div>
+    <div class="rs-dots" id="dots2"></div>
+    <div id="panels2">
+
+      <div class="rs-panel active">
+        <span class="panel-tag tag-s0">Step 0：半反応式を書く</span>
+        <div class="half-rxn-pair">
+          <div class="hrp-row">
+            <span class="hrp-label ox">酸化剤</span>
+            <span class="hrp-eq"><span class="c-purple">MnO₄⁻</span> + 8H⁺ + <span class="hrp-e">5e⁻</span> → <span class="c-pink">Mn²⁺</span> + 4H₂O</span>
+          </div>
+          <div class="hrp-row">
+            <span class="hrp-label rd">還元剤</span>
+            <span class="hrp-eq">C₂O₄²⁻ → 2CO₂ + <span class="hrp-e">2e⁻</span></span>
+          </div>
+        </div>
+        <div class="explain-box">
+          シュウ酸（シュウ酸イオン C₂O₄²⁻）は e⁻ 2個を渡す還元剤。<br>
+          KMnO₄ との比率：e⁻の最小公倍数 = 10 → 酸化剤×2、還元剤×5
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s1">Step 1：e⁻ の数を揃える（最小公倍数10）</span>
+        <div class="half-rxn-pair">
+          <div class="hrp-row">
+            <span class="hrp-label ox">酸化剤×<span class="hrp-coef">2</span></span>
+            <span class="hrp-eq"><span class="hrp-coef">2</span>MnO₄⁻ + 16H⁺ + <span class="hrp-e">10e⁻</span> → <span class="hrp-coef">2</span>Mn²⁺ + 8H₂O</span>
+          </div>
+          <div class="hrp-row">
+            <span class="hrp-label rd">還元剤×<span class="hrp-coef rd">5</span></span>
+            <span class="hrp-eq"><span class="hrp-coef rd">5</span>C₂O₄²⁻ → <span class="hrp-coef rd">10</span>CO₂ + <span class="hrp-e">10e⁻</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s2">Step 2：辺々加えて e⁻ を消去</span>
+        <div class="addition-box">
+          <div class="ab-title">＋ 辺々加える（e⁻ 消去）</div>
+          <div class="ab-line ox-line">2MnO₄⁻ + 16H⁺ + 10e⁻ → 2Mn²⁺ + 8H₂O</div>
+          <div class="ab-line rd-line">5C₂O₄²⁻ → 10CO₂ + 10e⁻</div>
+          <hr class="ab-divider">
+          <div class="ab-result">2MnO₄⁻ + 16H⁺ + 5C₂O₄²⁻ → 2Mn²⁺ + 8H₂O + 10CO₂</div>
+        </div>
+        <div class="explain-box">e⁻ が消え、H⁺ や H₂O の整理も不要。このままで完成です。</div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s4">完成！イオン反応式</span>
+        <div class="final-eq">
+          <div class="big-eq">2MnO₄⁻ + 16H⁺ + 5C₂O₄²⁻ → 2Mn²⁺ + 8H₂O + 10CO₂</div>
+          <div class="caption">シュウ酸滴定の基本式　KMnO₄ : (COOH)₂ = 2 : 5（mol比）</div>
+        </div>
+        <div class="explain-box">
+          <ul>
+            <li>KMnO₄ 2mol と (COOH)₂ 5mol が過不足なく反応（<strong>2:5 の mol 比</strong>）</li>
+            <li>この反応は<strong>加熱しながら行う</strong>（シュウ酸との反応は低温では遅い）</li>
+            <li>終点：<span class="c-purple">赤紫色（KMnO₄）</span>が消えて薄い桃色が残る</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <div class="rs-nav">
+      <button class="nav-btn" id="prev2" onclick="stepMove('rs2',2,-1)" disabled>← 前へ</button>
+      <span class="nav-step-lbl" id="lbl2"></span>
+      <button class="nav-btn next" id="next2" onclick="stepMove('rs2',2,1)">次へ →</button>
+    </div>
+  </div>
+
+  <div class="minitest-wrap">
+    <div class="mt-title">✏️ 確認問題</div>
+    <div class="q4" data-correct="d">
+      <div class="q4-stem"><span class="q4-num">問1</span>KMnO₄ と (COOH)₂ の mol 比（KMnO₄：(COOH)₂）はいくらか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：1：1</button>
+        <button class="q4-c" data-v="b">イ：1：2</button>
+        <button class="q4-c" data-v="c">ウ：5：2</button>
+        <button class="q4-c" data-v="d">エ：2：5</button>
+      </div>
+      <div class="q4-exp">正解は<strong>エ：2：5</strong>。<br>
+      イオン反応式より 2MnO₄⁻：5C₂O₄²⁻ → <strong>KMnO₄：(COOH)₂ = 2：5</strong>。<br>
+      e⁻ で確認：KMnO₄（e⁻ 5個）×2 = 10 ＝ (COOH)₂（e⁻ 2個）×5 = 10 ✓</div>
+    </div>
+    <div class="mt-result" id="r2"></div>
+    <button class="mt-reset" onclick="resetMT(this)">↻ もう一度</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 反応例3：KMnO₄ + FeSO₄                                      -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">3</span><span class="c-purple">KMnO₄</span>（酸化剤）＋ FeSO₄（還元剤）　酸性条件</div>
+  <div class="stage">
+    <div class="read-box">
+      <p>FeSO₄（硫酸鉄(II)）は1mol で e⁻ を1mol 渡す還元剤です。e⁻ の最小公倍数が5になるため、<strong>係数がシンプル</strong>な入試頻出の反応です。</p>
+    </div>
+  </div>
+
+  <div class="rxn-stepper" id="rs3">
+    <div class="rs-header">
+      <span class="rs-title">⚗️ KMnO₄ + FeSO₄ → イオン反応式を作ろう</span>
+      <div class="rs-badges">
+        <span class="rs-badge">酸化剤：KMnO₄（e⁻ 5個）</span>
+        <span class="rs-badge">還元剤：FeSO₄（e⁻ 1個）</span>
+      </div>
+    </div>
+    <div class="rs-dots" id="dots3"></div>
+    <div id="panels3">
+
+      <div class="rs-panel active">
+        <span class="panel-tag tag-s0">Step 0：半反応式を書く</span>
+        <div class="half-rxn-pair">
+          <div class="hrp-row">
+            <span class="hrp-label ox">酸化剤</span>
+            <span class="hrp-eq"><span class="c-purple">MnO₄⁻</span> + 8H⁺ + <span class="hrp-e">5e⁻</span> → <span class="c-pink">Mn²⁺</span> + 4H₂O</span>
+          </div>
+          <div class="hrp-row">
+            <span class="hrp-label rd">還元剤</span>
+            <span class="hrp-eq">Fe²⁺ → Fe³⁺ + <span class="hrp-e">e⁻</span></span>
+          </div>
+        </div>
+        <div class="explain-box">
+          FeSO₄ の Fe²⁺ は e⁻ <strong>1個</strong>を渡す。e⁻ の最小公倍数 = 5 → 還元剤を5倍。
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s1">Step 1：e⁻ の数を揃える（最小公倍数5）</span>
+        <div class="half-rxn-pair">
+          <div class="hrp-row">
+            <span class="hrp-label ox">酸化剤×<span class="hrp-coef">1</span></span>
+            <span class="hrp-eq"><span class="c-purple">MnO₄⁻</span> + 8H⁺ + <span class="hrp-e">5e⁻</span> → <span class="c-pink">Mn²⁺</span> + 4H₂O</span>
+          </div>
+          <div class="hrp-row">
+            <span class="hrp-label rd">還元剤×<span class="hrp-coef rd">5</span></span>
+            <span class="hrp-eq"><span class="hrp-coef rd">5</span>Fe²⁺ → <span class="hrp-coef rd">5</span>Fe³⁺ + <span class="hrp-e">5e⁻</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s2">Step 2：辺々加えて完成</span>
+        <div class="addition-box">
+          <div class="ab-title">＋ 辺々加える（e⁻ 消去）</div>
+          <div class="ab-line ox-line">MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</div>
+          <div class="ab-line rd-line">5Fe²⁺ → 5Fe³⁺ + 5e⁻</div>
+          <hr class="ab-divider">
+          <div class="ab-result">MnO₄⁻ + 8H⁺ + 5Fe²⁺ → Mn²⁺ + 4H₂O + 5Fe³⁺</div>
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s4">完成！イオン反応式</span>
+        <div class="final-eq">
+          <div class="big-eq">MnO₄⁻ + 8H⁺ + 5Fe²⁺ → Mn²⁺ + 4H₂O + 5Fe³⁺</div>
+          <div class="caption">KMnO₄ : FeSO₄ = 1 : 5（mol比）</div>
+        </div>
+        <div class="explain-box">
+          <ul>
+            <li>KMnO₄ 1mol と FeSO₄ 5mol が反応（<strong>1：5 の mol 比</strong>）</li>
+            <li>係数がシンプルで覚えやすい反応</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <div class="rs-nav">
+      <button class="nav-btn" id="prev3" onclick="stepMove('rs3',3,-1)" disabled>← 前へ</button>
+      <span class="nav-step-lbl" id="lbl3"></span>
+      <button class="nav-btn next" id="next3" onclick="stepMove('rs3',3,1)">次へ →</button>
+    </div>
+  </div>
+
+  <div class="minitest-wrap">
+    <div class="mt-title">✏️ 確認問題</div>
+    <div class="q4" data-correct="c">
+      <div class="q4-stem"><span class="q4-num">問1</span>KMnO₄ と FeSO₄ の mol 比（KMnO₄：FeSO₄）はいくらか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：2：5</button>
+        <button class="q4-c" data-v="b">イ：5：1</button>
+        <button class="q4-c" data-v="c">ウ：1：5</button>
+        <button class="q4-c" data-v="d">エ：1：2</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ウ：1：5</strong>。<br>
+      KMnO₄（e⁻ 5個）: FeSO₄（e⁻ 1個）→ 電子の数を揃えると 1×5 = 5×1 → <strong>1：5</strong>。</div>
+    </div>
+    <div class="mt-result" id="r3"></div>
+    <button class="mt-reset" onclick="resetMT(this)">↻ もう一度</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 反応例4：K₂Cr₂O₇ + FeSO₄                                   -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">4</span><span class="c-orange">K₂Cr₂O₇</span>（酸化剤）＋ FeSO₄（還元剤）　酸性条件</div>
+  <div class="stage">
+    <div class="read-box">
+      <p>ニクロム酸カリウムと硫酸鉄(II)の反応。Cr₂O₇²⁻ は e⁻ 6個を受け取る（Cr が2個で各3個）。FeSO₄ は e⁻ 1個を渡すため、<strong>還元剤を6倍</strong>します。</p>
+    </div>
+  </div>
+
+  <div class="rxn-stepper" id="rs4">
+    <div class="rs-header">
+      <span class="rs-title">⚗️ K₂Cr₂O₇ + FeSO₄ → イオン反応式を作ろう</span>
+      <div class="rs-badges">
+        <span class="rs-badge">酸化剤：K₂Cr₂O₇（e⁻ 6個）</span>
+        <span class="rs-badge">還元剤：FeSO₄（e⁻ 1個）</span>
+      </div>
+    </div>
+    <div class="rs-dots" id="dots4"></div>
+    <div id="panels4">
+
+      <div class="rs-panel active">
+        <span class="panel-tag tag-s0">Step 0：半反応式を書く</span>
+        <div class="half-rxn-pair">
+          <div class="hrp-row">
+            <span class="hrp-label ox">酸化剤</span>
+            <span class="hrp-eq"><span class="c-orange">Cr₂O₇²⁻</span> + 14H⁺ + <span class="hrp-e">6e⁻</span> → <span class="c-green">2Cr³⁺</span> + 7H₂O</span>
+          </div>
+          <div class="hrp-row">
+            <span class="hrp-label rd">還元剤</span>
+            <span class="hrp-eq">Fe²⁺ → Fe³⁺ + <span class="hrp-e">e⁻</span></span>
+          </div>
+        </div>
+        <div class="explain-box">
+          Cr₂O₇²⁻ は e⁻ <strong>6個</strong>を受け取る。e⁻ の最小公倍数 = 6 → 還元剤を6倍。
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s1">Step 1：e⁻ の数を揃える（最小公倍数6）</span>
+        <div class="half-rxn-pair">
+          <div class="hrp-row">
+            <span class="hrp-label ox">酸化剤×<span class="hrp-coef">1</span></span>
+            <span class="hrp-eq"><span class="c-orange">Cr₂O₇²⁻</span> + 14H⁺ + <span class="hrp-e">6e⁻</span> → <span class="c-green">2Cr³⁺</span> + 7H₂O</span>
+          </div>
+          <div class="hrp-row">
+            <span class="hrp-label rd">還元剤×<span class="hrp-coef rd">6</span></span>
+            <span class="hrp-eq"><span class="hrp-coef rd">6</span>Fe²⁺ → <span class="hrp-coef rd">6</span>Fe³⁺ + <span class="hrp-e">6e⁻</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s2">Step 2：辺々加えて完成</span>
+        <div class="addition-box">
+          <div class="ab-title">＋ 辺々加える（e⁻ 消去）</div>
+          <div class="ab-line ox-line">Cr₂O₇²⁻ + 14H⁺ + 6e⁻ → 2Cr³⁺ + 7H₂O</div>
+          <div class="ab-line rd-line">6Fe²⁺ → 6Fe³⁺ + 6e⁻</div>
+          <hr class="ab-divider">
+          <div class="ab-result">Cr₂O₇²⁻ + 14H⁺ + 6Fe²⁺ → 2Cr³⁺ + 7H₂O + 6Fe³⁺</div>
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s4">完成！イオン反応式</span>
+        <div class="final-eq">
+          <div class="big-eq">Cr₂O₇²⁻ + 14H⁺ + 6Fe²⁺ → 2Cr³⁺ + 7H₂O + 6Fe³⁺</div>
+          <div class="caption">K₂Cr₂O₇ : FeSO₄ = 1 : 6（mol比）</div>
+        </div>
+        <div class="explain-box">
+          <ul>
+            <li>K₂Cr₂O₇ 1mol と FeSO₄ 6mol が反応（<strong>1：6 の mol 比</strong>）</li>
+            <li>色変化：<span class="c-orange">橙赤色（Cr₂O₇²⁻）</span>→ <span class="c-green">緑色（Cr³⁺）</span></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <div class="rs-nav">
+      <button class="nav-btn" id="prev4" onclick="stepMove('rs4',4,-1)" disabled>← 前へ</button>
+      <span class="nav-step-lbl" id="lbl4"></span>
+      <button class="nav-btn next" id="next4" onclick="stepMove('rs4',4,1)">次へ →</button>
+    </div>
+  </div>
+
+  <div class="minitest-wrap">
+    <div class="mt-title">✏️ 確認問題</div>
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問1</span>K₂Cr₂O₇ と FeSO₄ の mol 比（K₂Cr₂O₇：FeSO₄）はいくらか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：1：5</button>
+        <button class="q4-c" data-v="b">イ：1：6</button>
+        <button class="q4-c" data-v="c">ウ：2：3</button>
+        <button class="q4-c" data-v="d">エ：3：1</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ：1：6</strong>。<br>
+      Cr₂O₇²⁻（e⁻ 6個）：Fe²⁺（e⁻ 1個）→ e⁻ を揃えると 1×6 = 6×1 → <strong>1：6</strong>。</div>
+    </div>
+    <div class="mt-result" id="r4"></div>
+    <button class="mt-reset" onclick="resetMT(this)">↻ もう一度</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 反応例5：Cl₂ + FeSO₄                                        -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">5</span><span class="c-lime">Cl₂</span>（酸化剤）＋ FeSO₄（還元剤）</div>
+  <div class="stage">
+    <div class="read-box">
+      <p>塩素は e⁻ 2個を受け取る酸化剤、FeSO₄ は e⁻ 1個を渡す還元剤。<strong>最小公倍数が2</strong>のシンプルな反応です。H₂O も H⁺ も関係しない点が特徴です。</p>
+    </div>
+  </div>
+
+  <div class="rxn-stepper" id="rs5">
+    <div class="rs-header">
+      <span class="rs-title">⚗️ Cl₂ + FeSO₄ → イオン反応式を作ろう</span>
+      <div class="rs-badges">
+        <span class="rs-badge">酸化剤：Cl₂（e⁻ 2個）</span>
+        <span class="rs-badge">還元剤：FeSO₄（e⁻ 1個）</span>
+      </div>
+    </div>
+    <div class="rs-dots" id="dots5"></div>
+    <div id="panels5">
+
+      <div class="rs-panel active">
+        <span class="panel-tag tag-s0">Step 0：半反応式を書く</span>
+        <div class="half-rxn-pair">
+          <div class="hrp-row">
+            <span class="hrp-label ox">酸化剤</span>
+            <span class="hrp-eq"><span class="c-lime">Cl₂</span> + <span class="hrp-e">2e⁻</span> → 2Cl⁻</span>
+          </div>
+          <div class="hrp-row">
+            <span class="hrp-label rd">還元剤</span>
+            <span class="hrp-eq">Fe²⁺ → Fe³⁺ + <span class="hrp-e">e⁻</span></span>
+          </div>
+        </div>
+        <div class="explain-box">
+          Cl₂ は H₂O も H⁺ も不要なシンプルな式。e⁻ の最小公倍数 = 2 → 還元剤を2倍。
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s1">Step 1：e⁻ の数を揃える（最小公倍数2）</span>
+        <div class="half-rxn-pair">
+          <div class="hrp-row">
+            <span class="hrp-label ox">酸化剤×<span class="hrp-coef">1</span></span>
+            <span class="hrp-eq"><span class="c-lime">Cl₂</span> + <span class="hrp-e">2e⁻</span> → 2Cl⁻</span>
+          </div>
+          <div class="hrp-row">
+            <span class="hrp-label rd">還元剤×<span class="hrp-coef rd">2</span></span>
+            <span class="hrp-eq"><span class="hrp-coef rd">2</span>Fe²⁺ → <span class="hrp-coef rd">2</span>Fe³⁺ + <span class="hrp-e">2e⁻</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s2">Step 2：辺々加えて完成</span>
+        <div class="addition-box">
+          <div class="ab-title">＋ 辺々加える（e⁻ 消去）</div>
+          <div class="ab-line ox-line">Cl₂ + 2e⁻ → 2Cl⁻</div>
+          <div class="ab-line rd-line">2Fe²⁺ → 2Fe³⁺ + 2e⁻</div>
+          <hr class="ab-divider">
+          <div class="ab-result">Cl₂ + 2Fe²⁺ → 2Cl⁻ + 2Fe³⁺</div>
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s4">完成！イオン反応式</span>
+        <div class="final-eq">
+          <div class="big-eq">Cl₂ + 2Fe²⁺ → 2Cl⁻ + 2Fe³⁺</div>
+          <div class="caption">Cl₂ : FeSO₄ = 1 : 2（mol比）　H₂O も H⁺ も不要</div>
+        </div>
+        <div class="explain-box">
+          <ul>
+            <li>Cl₂ 1mol と FeSO₄ 2mol が反応（<strong>1：2 の mol 比</strong>）</li>
+            <li>H₂O も H⁺ も登場しない非常にシンプルな式</li>
+            <li>色変化：<span class="c-lime">黄緑色（Cl₂）</span>→ 無色（Cl⁻）</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <div class="rs-nav">
+      <button class="nav-btn" id="prev5" onclick="stepMove('rs5',5,-1)" disabled>← 前へ</button>
+      <span class="nav-step-lbl" id="lbl5"></span>
+      <button class="nav-btn next" id="next5" onclick="stepMove('rs5',5,1)">次へ →</button>
+    </div>
+  </div>
+
+  <div class="minitest-wrap">
+    <div class="mt-title">✏️ 確認問題</div>
+    <div class="q4" data-correct="a">
+      <div class="q4-stem"><span class="q4-num">問1</span>Cl₂ + FeSO₄ のイオン反応式として正しいのはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：Cl₂ + 2Fe²⁺ → 2Cl⁻ + 2Fe³⁺</button>
+        <button class="q4-c" data-v="b">イ：Cl₂ + Fe²⁺ → 2Cl⁻ + Fe³⁺</button>
+        <button class="q4-c" data-v="c">ウ：Cl₂ + 2Fe²⁺ + 2H⁺ → 2Cl⁻ + 2Fe³⁺ + H₂</button>
+        <button class="q4-c" data-v="d">エ：2Cl₂ + Fe²⁺ → 4Cl⁻ + Fe³⁺</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ア</strong>。<br>
+      Cl₂（e⁻ 2個）+ 2Fe²⁺（e⁻ 各1個 × 2）→ H₂O も H⁺ も不要。係数は Cl₂：Fe²⁺ = 1：2。</div>
+    </div>
+    <div class="mt-result" id="r5"></div>
+    <button class="mt-reset" onclick="resetMT(this)">↻ もう一度</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 反応例6：HNO₃（希）+ Cu                                      -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">6</span>HNO₃（希）（酸化剤）＋ Cu（還元剤）</div>
+  <div class="stage">
+    <div class="read-box">
+      <p>希硝酸と銅の反応。銅は<strong>希塩酸・希硫酸には溶けない</strong>が、希硝酸には溶ける重要な反応です。銅の単体は e⁻ を2個渡す還元剤としてはたらきます。</p>
+    </div>
+  </div>
+
+  <div class="rxn-stepper" id="rs6">
+    <div class="rs-header">
+      <span class="rs-title">⚗️ HNO₃（希）+ Cu → イオン反応式を作ろう</span>
+      <div class="rs-badges">
+        <span class="rs-badge">酸化剤：希HNO₃（e⁻ 3個）</span>
+        <span class="rs-badge">還元剤：Cu（e⁻ 2個）</span>
+      </div>
+    </div>
+    <div class="rs-dots" id="dots6"></div>
+    <div id="panels6">
+
+      <div class="rs-panel active">
+        <span class="panel-tag tag-s0">Step 0：半反応式を書く</span>
+        <div class="half-rxn-pair">
+          <div class="hrp-row">
+            <span class="hrp-label ox">酸化剤</span>
+            <span class="hrp-eq">HNO₃ + 3H⁺ + <span class="hrp-e">3e⁻</span> → NO + 2H₂O</span>
+          </div>
+          <div class="hrp-row">
+            <span class="hrp-label rd">還元剤</span>
+            <span class="hrp-eq">Cu → Cu²⁺ + <span class="hrp-e">2e⁻</span></span>
+          </div>
+        </div>
+        <div class="explain-box">
+          Cu（単体）は Cu²⁺ になる還元剤（Cu：0→+2、e⁻ 2個渡す）。<br>
+          e⁻ の最小公倍数：3と2 → <strong>最小公倍数 = 6</strong>。酸化剤×2、還元剤×3。
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s1">Step 1：e⁻ の数を揃える（最小公倍数6）</span>
+        <div class="e-match">
+          <div class="em-title">🔢 最小公倍数で揃える</div>
+          <div class="em-row"><span class="e-dot"></span>酸化剤のe⁻：3個　還元剤のe⁻：2個</div>
+          <div class="em-row"><span class="e-dot"></span>最小公倍数 = <strong>6</strong></div>
+          <div class="em-row"><span class="e-dot"></span>酸化剤の式 × <span class="hrp-coef">2</span>　（3e⁻ × 2 = 6e⁻）</div>
+          <div class="em-row"><span class="e-dot"></span>還元剤の式 × <span class="hrp-coef rd">3</span>　（2e⁻ × 3 = 6e⁻）</div>
+        </div>
+        <div class="half-rxn-pair">
+          <div class="hrp-row">
+            <span class="hrp-label ox">酸化剤×<span class="hrp-coef">2</span></span>
+            <span class="hrp-eq"><span class="hrp-coef">2</span>HNO₃ + 6H⁺ + <span class="hrp-e">6e⁻</span> → <span class="hrp-coef">2</span>NO + 4H₂O</span>
+          </div>
+          <div class="hrp-row">
+            <span class="hrp-label rd">還元剤×<span class="hrp-coef rd">3</span></span>
+            <span class="hrp-eq"><span class="hrp-coef rd">3</span>Cu → <span class="hrp-coef rd">3</span>Cu²⁺ + <span class="hrp-e">6e⁻</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s2">Step 2：辺々加えて e⁻ を消去</span>
+        <div class="addition-box">
+          <div class="ab-title">＋ 辺々加える（e⁻ 消去）</div>
+          <div class="ab-line ox-line">2HNO₃ + 6H⁺ + 6e⁻ → 2NO + 4H₂O</div>
+          <div class="ab-line rd-line">3Cu → 3Cu²⁺ + 6e⁻</div>
+          <hr class="ab-divider">
+          <div class="ab-result">2HNO₃ + 6H⁺ + 3Cu → 2NO + 4H₂O + 3Cu²⁺</div>
+        </div>
+        <div class="explain-box">
+          HNO₃ は左辺に、H⁺（硫酸由来）も左辺に。整理不要でこのまま完成。
+        </div>
+      </div>
+
+      <div class="rs-panel">
+        <span class="panel-tag tag-s4">完成！イオン反応式</span>
+        <div class="final-eq">
+          <div class="big-eq">2HNO₃ + 6H⁺ + 3Cu → 3Cu²⁺ + 2NO↑ + 4H₂O</div>
+          <div class="caption">Cu : 希HNO₃ = 3 : 2（ただしH⁺は別途必要）</div>
+        </div>
+        <div class="explain-box">
+          <ul>
+            <li>NO は<strong>無色の気体</strong>。空気中で NO₂（赤褐色）に変化</li>
+            <li>銅は希塩酸・希硫酸には溶けないが<strong>希硝酸・濃硝酸・熱濃硫酸には溶ける</strong></li>
+            <li>化学反応式：8HNO₃（希）+ 3Cu → 3Cu(NO₃)₂ + 2NO↑ + 4H₂O</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <div class="rs-nav">
+      <button class="nav-btn" id="prev6" onclick="stepMove('rs6',6,-1)" disabled>← 前へ</button>
+      <span class="nav-step-lbl" id="lbl6"></span>
+      <button class="nav-btn next" id="next6" onclick="stepMove('rs6',6,1)">次へ →</button>
+    </div>
+  </div>
+
+  <div class="minitest-wrap">
+    <div class="mt-title">✏️ 確認問題</div>
+    <div class="q4" data-correct="d">
+      <div class="q4-stem"><span class="q4-num">問1</span>希 HNO₃ と Cu の反応の係数合わせで、酸化剤と還元剤の倍数として正しいのはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：酸化剤×3、還元剤×2</button>
+        <button class="q4-c" data-v="b">イ：酸化剤×1、還元剤×3</button>
+        <button class="q4-c" data-v="c">ウ：酸化剤×3、還元剤×3</button>
+        <button class="q4-c" data-v="d">エ：酸化剤×2、還元剤×3</button>
+      </div>
+      <div class="q4-exp">正解は<strong>エ：酸化剤×2、還元剤×3</strong>。<br>
+      HNO₃（e⁻ 3個）：Cu（e⁻ 2個）→ 最小公倍数 = 6<br>
+      酸化剤 × 2（3×2=6）、還元剤 × 3（2×3=6）。</div>
+    </div>
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問2</span>銅が溶けない酸はどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：希硝酸</button>
+        <button class="q4-c" data-v="b">イ：希塩酸</button>
+        <button class="q4-c" data-v="c">ウ：濃硝酸</button>
+        <button class="q4-c" data-v="d">エ：熱濃硫酸</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ：希塩酸</strong>。<br>
+      銅は<strong>希塩酸・希硫酸では溶けない</strong>（これらはイオン化傾向で Cu より H が大きいが、酸化剤としての力が弱い）。<br>
+      希硝酸・濃硝酸・熱濃硫酸には溶けます（これらは酸化力を持つ）。</div>
+    </div>
+    <div class="mt-result" id="r6"></div>
+    <button class="mt-reset" onclick="resetMT(this)">↻ もう一度</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- まとめ一覧                                                     -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title"><span class="num">★</span>入試頻出6反応のまとめ</div>
+  <div class="stage">
+    <div style="overflow-x:auto;margin:0 0 12px;">
+      <table style="border-collapse:collapse;width:100%;font-size:.84em;min-width:520px;">
+        <thead>
+          <tr>
+            <th style="background:var(--primary-light);color:var(--primary-dark);padding:9px 10px;border:1.5px solid var(--border);text-align:center;">酸化剤</th>
+            <th style="background:var(--primary-light);color:var(--primary-dark);padding:9px 10px;border:1.5px solid var(--border);text-align:center;">還元剤</th>
+            <th style="background:var(--primary-light);color:var(--primary-dark);padding:9px 10px;border:1.5px solid var(--border);text-align:center;">e⁻比</th>
+            <th style="background:var(--primary-light);color:var(--primary-dark);padding:9px 10px;border:1.5px solid var(--border);text-align:center;">mol比</th>
+            <th style="background:var(--primary-light);color:var(--primary-dark);padding:9px 10px;border:1.5px solid var(--border);text-align:center;">イオン反応式（簡略）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;"><span class="c-purple">KMnO₄</span></td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;">H₂O₂</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;color:var(--purple);font-weight:700;">5:2</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;font-weight:700;">2:5</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:.8em;">2MnO₄⁻ + 6H⁺ + 5H₂O₂ → 2Mn²⁺ + 8H₂O + 5O₂</td>
+          </tr>
+          <tr style="background:#f8faff;">
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;"><span class="c-purple">KMnO₄</span></td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;">(COOH)₂</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;color:var(--purple);font-weight:700;">5:2</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;font-weight:700;">2:5</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:.8em;">2MnO₄⁻ + 16H⁺ + 5C₂O₄²⁻ → 2Mn²⁺ + 8H₂O + 10CO₂</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;"><span class="c-purple">KMnO₄</span></td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;">FeSO₄</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;color:var(--purple);font-weight:700;">5:1</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;font-weight:700;">1:5</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:.8em;">MnO₄⁻ + 8H⁺ + 5Fe²⁺ → Mn²⁺ + 4H₂O + 5Fe³⁺</td>
+          </tr>
+          <tr style="background:#f8faff;">
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;"><span class="c-orange">K₂Cr₂O₇</span></td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;">FeSO₄</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;color:var(--orange);font-weight:700;">6:1</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;font-weight:700;">1:6</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:.8em;">Cr₂O₇²⁻ + 14H⁺ + 6Fe²⁺ → 2Cr³⁺ + 7H₂O + 6Fe³⁺</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;"><span class="c-lime">Cl₂</span></td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;">FeSO₄</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;color:var(--lime,#65a30d);font-weight:700;">2:1</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;font-weight:700;">1:2</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:.8em;">Cl₂ + 2Fe²⁺ → 2Cl⁻ + 2Fe³⁺</td>
+          </tr>
+          <tr style="background:#f8faff;">
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;">希HNO₃</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;">Cu</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;font-weight:700;">3:2</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;text-align:center;font-weight:700;">2:3</td>
+            <td style="padding:8px 10px;border:1px solid #e2e8f0;font-size:.8em;">2HNO₃ + 6H⁺ + 3Cu → 3Cu²⁺ + 2NO↑ + 4H₂O</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="point-box">
+      <span class="label">★ mol比の求め方</span>
+      <ul>
+        <li>酸化剤の e⁻ : 還元剤の e⁻ の<strong>逆比</strong>が mol 比</li>
+        <li>例：KMnO₄（e⁻ 5個）vs FeSO₄（e⁻ 1個） → mol比 = 1:5（逆比）</li>
+        <li>e⁻ の総数が等しくなるように揃える → 最小公倍数を使う</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="next-actions">
+  <h3>🎉 レッスン完了！</h3>
+  <p>練習問題で組み合わせの計算をさらに定着させましょう！</p>
+  <div class="links">
+    <a href="oxred_combine_practice.html">📝 練習問題へ</a>
+    <a href="oxred_index.html" class="sub">📊 単元表へ</a>
+    <a href="oxred_agent_half.html" class="sub">← 第3章へ戻る</a>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+/* ── ステッパー管理 ── */
+const steppers = {};
+
+function initStepper(id, n) {
+  const panelEls = document.querySelectorAll(`#panels${n} .rs-panel`);
+  const dotsEl   = document.getElementById(`dots${n}`);
+  const total    = panelEls.length;
+  steppers[id]   = { cur: 0, total };
+
+  // ドット生成
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'rs-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => { goToStep(id, n, i); };
+    dotsEl.appendChild(d);
+  }
+  updateNav(id, n);
+}
+
+function goToStep(id, n, step) {
+  const s       = steppers[id];
+  const panels  = document.querySelectorAll(`#panels${n} .rs-panel`);
+  const dots    = document.querySelectorAll(`#dots${n} .rs-dot`);
+  panels[s.cur].classList.remove('active');
+  dots[s.cur].classList.remove('active');
+  if (step > s.cur) dots[s.cur].classList.add('done');
+  else dots[s.cur].classList.remove('done');
+  s.cur = Math.max(0, Math.min(step, s.total - 1));
+  panels[s.cur].classList.add('active');
+  dots.forEach((d, i) => {
+    d.classList.remove('active', 'done');
+    if (i === s.cur) d.classList.add('active');
+    else if (i < s.cur) d.classList.add('done');
+  });
+  updateNav(id, n);
+}
+
+function stepMove(id, n, dir) {
+  const s = steppers[id];
+  const next = s.cur + dir;
+  goToStep(id, n, next);
+  if (next === s.total - 1) setTimeout(launchConfetti, 300);
+}
+
+function updateNav(id, n) {
+  const s = steppers[id];
+  const prev = document.getElementById(`prev${n}`);
+  const next = document.getElementById(`next${n}`);
+  const lbl  = document.getElementById(`lbl${n}`);
+  prev.disabled = s.cur === 0;
+  next.disabled = s.cur === s.total - 1;
+  next.textContent = s.cur === s.total - 2 ? '完成へ →' : '次へ →';
+  lbl.textContent  = `${s.cur + 1} / ${s.total}`;
+}
+
+/* ── 花吹雪 ── */
+function launchConfetti() {
+  const C = ['#f472b6','#facc15','#34d399','#60a5fa','#f87171','#a78bfa','#fb923c','#2dd4bf'];
+  for (let i = 0; i < 80; i++) {
+    const el = document.createElement('div');
+    const s = Math.random()*10+6, l = Math.random()*100;
+    const d = Math.random()*.6, r = Math.random()*1.2+1.2;
+    const c = C[Math.floor(Math.random()*C.length)];
+    const sh = Math.random()>.5 ? '50%' : '2px';
+    el.style.cssText = `position:fixed;top:-20px;left:${l}vw;width:${s}px;height:${s}px;background:${c};border-radius:${sh};opacity:1;pointer-events:none;z-index:9999;animation:confettiFall ${r}s ${d}s ease-in forwards;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), (r+d)*1000+200);
+  }
+}
+
+/* ── ミニテスト ── */
+document.addEventListener('DOMContentLoaded', () => {
+  // ステッパー初期化
+  [['rs1',1],['rs2',2],['rs3',3],['rs4',4],['rs5',5],['rs6',6]].forEach(([id,n]) => initStepper(id,n));
+
+  // 問題
+  document.querySelectorAll('.q4').forEach(q => {
+    const correct = q.dataset.correct;
+    const exp     = q.querySelector('.q4-exp');
+    q.querySelectorAll('.q4-c').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.classList.contains('disabled')) return;
+        q.querySelectorAll('.q4-c').forEach(b => b.classList.add('disabled'));
+        if (btn.dataset.v === correct) {
+          btn.classList.add('correct'); launchConfetti();
+        } else {
+          btn.classList.add('wrong');
+          q.querySelectorAll('.q4-c').forEach(b => { if (b.dataset.v === correct) b.classList.add('correct'); });
+        }
+        exp.classList.add('show');
+        updateResult(q.closest('.minitest-wrap'));
+      });
+    });
+  });
+
+  function updateResult(wrap) {
+    if (!wrap) return;
+    const qs = [...wrap.querySelectorAll('.q4')];
+    if (qs.some(q => !q.querySelector('.q4-c.correct,.q4-c.wrong'))) return;
+    const ok = qs.filter(q => ![...q.querySelectorAll('.q4-c')].some(b => b.classList.contains('wrong'))).length;
+    const res = wrap.querySelector('.mt-result');
+    if (res) res.textContent = `結果：${ok} / ${qs.length} 正解`;
+  }
+});
+
+function resetMT(btn) {
+  const wrap = btn.closest('.minitest-wrap');
+  wrap.querySelectorAll('.q4-c').forEach(b => b.classList.remove('correct','wrong','disabled'));
+  wrap.querySelectorAll('.q4-exp').forEach(e => e.classList.remove('show'));
+  const res = wrap.querySelector('.mt-result');
+  if (res) res.textContent = '';
+}
+</script>
+</body>
+</html>

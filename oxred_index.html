@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GAMBA 化学 酸化還元 単元表</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'BIZ UDPGothic','Hiragino Kaku Gothic ProN','Yu Gothic UI',Meiryo,sans-serif;background:#eff6ff;color:#1e293b;min-height:100vh;font-size:15px}
+.top-header{background:linear-gradient(135deg,#1e40af 0%,#2563eb 60%,#7c3aed 100%);color:#fff;padding:16px 16px 0;text-align:center}
+.top-header h1{font-size:1.15rem;font-weight:800;letter-spacing:.04em}
+.top-header p{font-size:.78rem;margin-top:3px;opacity:.85}
+.summary-bar{background:rgba(0,0,0,.22);margin-top:12px;padding:9px 14px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;font-size:.78rem;color:#fff}
+.sum-item{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.sum-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sum-dot-a{background:#4ade80}.sum-dot-b{background:#fbbf24}.sum-dot-c{background:#f87171}.sum-dot-n{background:#94a3b8}
+.sum-count{font-weight:800;font-size:1rem;min-width:18px;text-align:center}
+.tab-nav{background:rgba(255,255,255,.97);border-bottom:2px solid #bfdbfe;padding:8px 12px;display:flex;gap:6px;flex-wrap:wrap;position:sticky;top:0;z-index:300;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.tnav{font-family:inherit;font-size:.8em;font-weight:700;padding:7px 18px;border:2px solid #bfdbfe;border-radius:50px;background:#fff;color:#6b7a99;cursor:pointer;transition:.14s}
+.tnav:hover{border-color:#2563eb;color:#2563eb}
+.tnav.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.tab-sec{display:none}.tab-sec.on{display:block}
+.wrap{max-width:960px;margin:0 auto;padding:14px 12px 70px}
+.progress-wrap{background:#fff;border-radius:14px;border:1px solid #bfdbfe;padding:13px 16px;margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.progress-lbl{font-size:.8rem;font-weight:800;color:#2563eb;margin-bottom:8px}
+.progress-bar-bg{background:#dbeafe;border-radius:20px;height:12px;overflow:hidden}
+.progress-bar-fill{background:linear-gradient(90deg,#2563eb,#7c3aed);height:100%;border-radius:20px;transition:.6s}
+.progress-pct{font-size:.8rem;font-weight:700;color:#2563eb;margin-top:5px;text-align:right}
+.unit{background:#fff;border-radius:14px;border:1px solid #bfdbfe;margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.05);overflow:hidden}
+.unit-hd{padding:11px 16px;display:flex;align-items:center;gap:10px;color:#fff}
+.unit-hd.ch1{background:linear-gradient(90deg,#1e40af,#2563eb)}
+.unit-hd.ch2{background:linear-gradient(90deg,#0f766e,#14b8a6)}
+.unit-hd.ch3{background:linear-gradient(90deg,#6d28d9,#7c3aed)}
+.unit-hd.ch4{background:linear-gradient(90deg,#b91c1c,#dc2626)}
+.unit-num{background:rgba(255,255,255,.2);border-radius:7px;padding:3px 10px;font-size:.78rem;font-weight:800;white-space:nowrap}
+.unit-title{font-size:1rem;font-weight:800;flex:1}
+.unit-badge{font-size:.72rem;background:rgba(255,255,255,.25);border-radius:999px;padding:2px 9px;font-weight:700;white-space:nowrap}
+.unit-body{padding:12px 14px}
+.group-label{font-size:.75rem;font-weight:800;color:#64748b;margin:12px 0 8px;letter-spacing:.05em;padding-bottom:4px;border-bottom:1.5px dashed #bfdbfe;display:flex;align-items:center;gap:7px}
+.group-label:first-child{margin-top:0}
+.sec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:4px}
+.sec-card{border-radius:10px;border:1.5px solid #bfdbfe;overflow:hidden;transition:.18s;background:#fff;display:flex;flex-direction:column}
+.sec-card:hover{box-shadow:0 3px 14px rgba(37,99,235,.15);transform:translateY(-1px)}
+.sc-hd{background:#eff6ff;border-bottom:2px solid #2563eb;padding:9px 12px;display:flex;align-items:center;gap:8px}
+.sc-num{background:#2563eb;color:#fff;border-radius:7px;padding:3px 9px;font-size:.75rem;font-weight:800;flex-shrink:0}
+.sc-title{font-size:.88rem;font-weight:800;flex:1;color:#1e40af;line-height:1.3}
+.sc-status{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:50px;white-space:nowrap;flex-shrink:0;background:#e2e8f0;color:#64748b;border:1px solid #cbd5e1}
+.sc-status.done{background:#dcfce7;color:#16a34a;border-color:#16a34a}
+.sc-status.partial{background:#fef3c7;color:#92400e;border-color:#fbbf24}
+.sc-status.studying{background:#dbeafe;color:#1d4ed8;border-color:#3b82f6}
+.sc-body{padding:8px 12px;background:#fff;flex:1}
+.sc-topics{list-style:none;margin:0;padding:0}
+.sc-topics li{font-size:.78rem;color:#475569;padding:2px 0;border-bottom:1px solid #eff6ff;line-height:1.5}
+.sc-topics li:last-child{border-bottom:none}
+.sc-topics li::before{content:"・";color:#2563eb}
+.sc-meta{display:flex;align-items:center;gap:12px;padding:4px 12px 6px;font-size:.72rem;color:#64748b;background:#f8faff;border-top:1px dashed #bfdbfe}
+.sc-meta-item{display:flex;align-items:center;gap:3px}
+.sc-meta-val{font-weight:700;color:#1e40af}
+.sc-btn-row{display:flex;gap:5px;padding:8px 12px 0;flex-wrap:wrap}
+.sc-btn{flex:1;min-width:60px;text-align:center;padding:8px 4px;border-radius:8px;font-size:.78rem;font-weight:800;text-decoration:none;transition:.13s;border:none;cursor:pointer;display:block;color:#fff;font-family:inherit;background:#2563eb}
+.sc-btn:hover{background:#1e40af}
+.sc-btn-sub{background:#7c3aed}.sc-btn-sub:hover{background:#6d28d9}
+.sc-btn-fill{background:#0891b2}.sc-btn-fill:hover{background:#0e7490}
+.sc-btn-half{background:#6d28d9}.sc-btn-half:hover{background:#5b21b6}
+.abc-row{display:flex;gap:5px;padding:8px 12px 10px}
+.abc-lbl{font-size:.68rem;color:#64748b;font-weight:700;align-self:center;margin-right:2px;white-space:nowrap}
+.abc-btn{flex:1;padding:7px 2px;border-radius:20px;font-size:.75rem;font-weight:800;font-family:inherit;cursor:pointer;transition:.13s;border:2px solid;text-align:center;background:#fff}
+.abc-a{border-color:#16a34a;color:#16a34a}.abc-a.sel{background:#16a34a;color:#fff}
+.abc-b{border-color:#d97706;color:#d97706}.abc-b.sel{background:#d97706;color:#fff}
+.abc-c{border-color:#dc2626;color:#dc2626}.abc-c.sel{background:#dc2626;color:#fff}
+.abc-btn:hover{opacity:.8}
+.sec-card.s-a{border-color:#16a34a}.sec-card.s-a .sc-hd{background:#dcfce7!important;border-bottom-color:#16a34a!important}
+.sec-card.s-b{border-color:#d97706}.sec-card.s-b .sc-hd{background:#fef3c7!important;border-bottom-color:#d97706!important}
+.sec-card.s-c{border-color:#dc2626}.sec-card.s-c .sc-hd{background:#fee2e2!important;border-bottom-color:#dc2626!important}
+.record-wrap{background:#fff;border-radius:14px;border:1px solid #bfdbfe;padding:14px 16px;margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.record-title{font-size:.88rem;font-weight:800;color:#2563eb;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #dbeafe}
+.prog-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #eff6ff}
+.prog-row:last-child{border-bottom:none}
+.prog-num{width:26px;height:26px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700}
+.prog-title{flex:1;font-size:.85rem;font-weight:700}
+.prog-grade{font-size:.73em;font-weight:700;padding:3px 10px;border-radius:50px;background:#eff6ff;color:#64748b;border:1px solid #bfdbfe}
+.prog-grade.a{background:#16a34a;color:#fff;border-color:#16a34a}
+.prog-grade.b{background:#d97706;color:#fff;border-color:#d97706}
+.prog-grade.c{background:#dc2626;color:#fff;border-color:#dc2626}
+.prog-meta{font-size:.68em;color:#64748b;white-space:nowrap}
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:900;align-items:center;justify-content:center}
+.modal-ov.open{display:flex}
+.modal-box{background:#fff;border-radius:18px;padding:34px 38px;text-align:center;max-width:340px;width:90%;box-shadow:0 16px 56px rgba(0,0,0,.22);position:relative;overflow:hidden}
+.modal-box::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#2563eb,#7c3aed)}
+.modal-emoji{font-size:3em;margin-bottom:12px}
+.modal-title{font-size:1.2em;font-weight:900;margin-bottom:8px}
+.modal-sub{font-size:.87em;color:#64748b;margin-bottom:22px;line-height:1.6}
+.modal-close{font-family:inherit;font-size:.9em;font-weight:700;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;border:none;border-radius:50px;padding:11px 32px;cursor:pointer}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;font-size:.9em;line-height:1.1;}
+.frac .fn{padding:0 3px;border-bottom:1.5px solid currentColor;}
+.frac .fd{padding:0 3px;}
+canvas#cnf{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;display:none}
+@media(max-width:480px){.unit-title{font-size:.9rem}.sec-grid{grid-template-columns:1fr}.sc-btn{font-size:.73rem;padding:7px 2px}}
+</style>
+</head>
+<body>
+<canvas id="cnf"></canvas>
+<div class="top-header">
+  <h1>⚗️ GAMBA 化学 酸化還元 単元表</h1>
+  <p>高校化学 — 酸化数・酸化還元・酸化剤還元剤・半反応式・滴定</p>
+  <div class="summary-bar">
+    <div class="sum-item"><span class="sum-dot sum-dot-a"></span>A 完璧 <span class="sum-count" id="cnt-a">0</span></div>
+    <div class="sum-item"><span class="sum-dot sum-dot-b"></span>B 良好 <span class="sum-count" id="cnt-b">0</span></div>
+    <div class="sum-item"><span class="sum-dot sum-dot-c"></span>C 要復習 <span class="sum-count" id="cnt-c">0</span></div>
+    <div class="sum-item"><span class="sum-dot sum-dot-n"></span>未学習 <span class="sum-count" id="cnt-n">0</span></div>
+  </div>
+</div>
+<div class="tab-nav">
+  <button class="tnav on" onclick="switchTab('tab-units',this)">📋 単元表</button>
+  <button class="tnav"    onclick="switchTab('tab-record',this)">📊 学習記録</button>
+</div>
+<div class="wrap">
+<div class="tab-sec on" id="tab-units">
+  <div class="progress-wrap">
+    <div class="progress-lbl">📊 習熟度（公開済み単元）</div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill" style="width:0%"></div></div>
+    <div class="progress-pct" id="progPct">0%　A評価 <span id="progNote">0 / 14</span> 単元</div>
+  </div>
+  <div class="unit">
+    <div class="unit-hd ch1"><span class="unit-num">第1章</span><span class="unit-title">酸化数の定義と計算</span><span class="unit-badge">2ファイル</span></div>
+    <div class="unit-body">
+      <div class="group-label">🔢 酸化数</div>
+      <div class="sec-grid" id="grid-ch1"></div>
+    </div>
+  </div>
+  <div class="unit">
+    <div class="unit-hd ch2"><span class="unit-num">第2章</span><span class="unit-title">酸化・還元の定義（4つの視点）</span><span class="unit-badge">2ファイル</span></div>
+    <div class="unit-body">
+      <div class="group-label">⚡ 酸化・還元の本質</div>
+      <div class="sec-grid" id="grid-ch2"></div>
+    </div>
+  </div>
+  <div class="unit">
+    <div class="unit-hd ch3"><span class="unit-num">第3章</span><span class="unit-title">酸化剤・還元剤</span><span class="unit-badge">4ファイル</span></div>
+    <div class="unit-body">
+      <div class="group-label">🧪 酸化剤・還元剤・半反応式</div>
+      <div class="sec-grid" id="grid-ch3"></div>
+    </div>
+  </div>
+  <div class="unit">
+    <div class="unit-hd ch4"><span class="unit-num">第4章</span><span class="unit-title">酸化還元滴定・COD・DO　（旧シリーズ）</span><span class="unit-badge">6ファイル</span></div>
+    <div class="unit-body">
+      <div class="group-label">🧫 酸化還元(1)　レッスン・問題・テスト</div>
+      <div class="sec-grid" id="grid-ch4a"></div>
+      <div class="group-label">🧫 酸化還元(2)・ヨウ素滴定・旧半反応式</div>
+      <div class="sec-grid" id="grid-ch4b"></div>
+    </div>
+  </div>
+</div>
+<div class="tab-sec" id="tab-record">
+  <div class="record-wrap">
+    <div class="record-title">📊 単元別　理解度一覧</div>
+    <div id="record-list"></div>
+  </div>
+</div>
+</div>
+
+<div class="modal-ov" id="modal" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-emoji" id="modal-emoji"></div>
+    <div class="modal-title" id="modal-title"></div>
+    <div class="modal-sub"   id="modal-sub"></div>
+    <button class="modal-close" onclick="closeModal()">閉じる</button>
+  </div>
+</div>
+
+<script>
+'use strict';
+const UNITS=[
+  {id:'ox01',num:'①',title:'酸化数のルールと計算',sub:['5つのルール','x をおいた計算','例外（H₂O₂・NaH・OF₂）'],file:'oxnum_lesson.html',group:'ch1',btns:[{label:'📖 レッスン',href:'oxnum_lesson.html',cls:''}]},
+  {id:'ox02',num:'②',title:'酸化数　練習問題（20問）',sub:['単体・単原子イオン','多原子イオン・例外','KMnO₄・K₂Cr₂O₇・Fe₃O₄'],file:'oxnum_practice.html',group:'ch1',btns:[{label:'📝 練習問題',href:'oxnum_practice.html',cls:''}]},
+  {id:'ox03',num:'③',title:'酸化・還元の定義',sub:['①酸素 ②水素 ③電子 ④酸化数','SVG電子移動図','ポップアップ解説付き'],file:'oxred_def_lesson.html',group:'ch2',btns:[{label:'📖 レッスン',href:'oxred_def_lesson.html',cls:''}]},
+  {id:'ox04',num:'④',title:'酸化・還元の定義　練習問題（20問）',sub:['4視点の識別','酸化剤・還元剤の識別','酸化還元かどうかの判定'],file:'oxred_def_practice.html',group:'ch2',btns:[{label:'📝 練習問題',href:'oxred_def_practice.html',cls:''}]},
+  {id:'ox05',num:'⑤',title:'酸化剤・還元剤　レッスン',sub:['酸化剤8種・還元剤6種','色の変化・反応前後','H₂O₂・SO₂の二面性ポップアップ'],file:'oxred_agent_lesson.html',group:'ch3',btns:[{label:'📖 レッスン',href:'oxred_agent_lesson.html',cls:''}]},
+  {id:'ox06',num:'⑥',title:'語群穴埋め練習（28問）',sub:['酸化剤16問・還元剤12問','タップして空欄を埋める','色付き化学式で確認'],file:'oxred_agent_fill.html',group:'ch3',btns:[{label:'✏️ 穴埋め練習',href:'oxred_agent_fill.html',cls:'sc-btn-fill'}]},
+  {id:'ox07',num:'⑦',title:'半反応式ステッパー（14種）',sub:['O→H→電荷の手順','ステップごとに解説','完成ステップで花吹雪🎉'],file:'oxred_agent_half.html',group:'ch3',btns:[{label:'⚗️ ステッパー',href:'oxred_agent_half.html',cls:'sc-btn-half'}]},
+  {id:'ox08',num:'⑧',title:'酸化剤・還元剤　練習問題（20問）',sub:['反応前後・色・二面性','半反応式の正誤','接触法など応用問題'],file:'oxred_agent_practice.html',group:'ch3',btns:[{label:'📝 練習問題',href:'oxred_agent_practice.html',cls:''}]},
+  {id:'ox15',num:'⑮',title:'半反応式の組み合わせ　レッスン',sub:['入試頻出6反応を段階的に解説','e⁻の係数を揃えるステッパー','KMnO₄・K₂Cr₂O₇・Cl₂・HNO₃'],file:'oxred_combine_lesson.html',group:'ch4new',btns:[{label:'📖 レッスン',href:'oxred_combine_lesson.html',cls:''}]},
+  {id:'ox16',num:'⑯',title:'半反応式の組み合わせ　練習問題（20問）',sub:['e⁻の数・係数・mol比','濃度計算・滴定計算','イオン反応式の正誤問題'],file:'oxred_combine_practice.html',group:'ch4new',btns:[{label:'📝 練習問題',href:'oxred_combine_practice.html',cls:''}]},
+  {id:'ox09',num:'⑨',title:'旧レッスン：酸化還元(1)',sub:['酸化数・定義の概要','酸化剤・還元剤','半反応式の基礎'],file:'chem_oxred.html',group:'ch4a',btns:[{label:'📖 レッスン',href:'chem_oxred.html',cls:''}]},
+  {id:'ox10',num:'⑩',title:'旧練習問題：酸化還元(1)',sub:['酸化数・識別','酸化剤・還元剤','半反応式基礎'],file:'chem_oxred_practice.html',group:'ch4a',btns:[{label:'📝 練習問題',href:'chem_oxred_practice.html',cls:''}]},
+  {id:'ox11',num:'⑪',title:'旧確認問題：酸化還元(1)',sub:['4セクション構成','計算・識別・半反応式','基礎滴定'],file:'chem_oxred_check.html',group:'ch4a',btns:[{label:'📋 確認問題',href:'chem_oxred_check.html',cls:'sc-btn-sub'}]},
+  {id:'ox12',num:'⑫',title:'旧単元末テスト：酸化還元(1)',sub:['大学入試問題改題','KMnO₄滴定','過酸化水素滴定の計算'],file:'chem_oxred_test.html',group:'ch4a',btns:[{label:'🏆 テスト',href:'chem_oxred_test.html',cls:'sc-btn-sub'}]},
+  {id:'ox13',num:'⑬',title:'旧レッスン：酸化還元(2)',sub:['ヨウ素滴定・バックタイトレーション','COD・ウィンクラー法（DO）','mol の橋渡し図解'],file:'chem_oxred2.html',group:'ch4b',btns:[{label:'📖 レッスン',href:'chem_oxred2.html',cls:''}]},
+  {id:'ox14',num:'⑭',title:'旧：半反応式マスター（旧版）',sub:['フラッシュカード+クイズ','半反応式ステッパー（12種）','二面性マスター・語群穴埋め'],file:'chem_oxred_halfreaction.html',group:'ch4b',btns:[{label:'⚗️ 半反応式',href:'chem_oxred_halfreaction.html',cls:'sc-btn-half'}]},
+];
+
+const KEY_GRADE=id=>'chem_grade_'+id;
+const KEY_CNT  =id=>'chem_cnt_'  +id;
+const KEY_LAST =id=>'chem_last_' +id;
+const getGrade=id=>localStorage.getItem(KEY_GRADE(id))||'';
+const getCount=id=>parseInt(localStorage.getItem(KEY_CNT(id))||'0');
+const getLast =id=>localStorage.getItem(KEY_LAST(id))||'';
+
+function setGrade(id,g){
+  localStorage.setItem(KEY_GRADE(id),g);
+  const d=new Date().toLocaleDateString('ja-JP',{month:'numeric',day:'numeric'});
+  localStorage.setItem(KEY_CNT(id), getCount(id)+1);
+  localStorage.setItem(KEY_LAST(id),d);
+}
+
+function buildCards(){
+  const grids={ch1:'grid-ch1',ch2:'grid-ch2',ch3:'grid-ch3',ch4new:'grid-ch4new',ch4a:'grid-ch4a',ch4b:'grid-ch4b'};
+  UNITS.forEach(u=>{
+    const el=document.createElement('div');
+    el.className='sec-card'; el.dataset.id=u.id;
+    const btnHtml=u.btns.map(b=>`<a href="${b.href}" class="sc-btn ${b.cls}">${b.label}</a>`).join('');
+    el.innerHTML=`
+      <div class="sc-hd">
+        <span class="sc-num">${u.num}</span>
+        <span class="sc-title">${u.title}</span>
+        <span class="sc-status" id="st-${u.id}">未学習</span>
+      </div>
+      <div class="sc-body">
+        <ul class="sc-topics">${u.sub.map(s=>`<li>${s}</li>`).join('')}</ul>
+      </div>
+      <div class="sc-meta">
+        <div class="sc-meta-item">📖 学習回数 <span class="sc-meta-val" id="cnt-${u.id}">0</span></div>
+        <div class="sc-meta-item">📅 最終日 <span class="sc-meta-val" id="last-${u.id}">─</span></div>
+      </div>
+      <div class="sc-btn-row">${btnHtml}</div>
+      <div class="abc-row">
+        <span class="abc-lbl">理解度：</span>
+        <button class="abc-btn abc-a" onclick="rate('${u.id}','a',this)">A 完璧</button>
+        <button class="abc-btn abc-b" onclick="rate('${u.id}','b',this)">B 良好</button>
+        <button class="abc-btn abc-c" onclick="rate('${u.id}','c',this)">C 要復習</button>
+      </div>`;
+    document.getElementById(grids[u.group]).appendChild(el);
+  });
+}
+
+function rate(id,g,btn){
+  setGrade(id,g); render();
+  const msgs={a:['🌟','完璧！','この調子でどんどん進もう！'],b:['📘','良好！','もう一度復習するとさらに定着するよ。'],c:['📌','要復習','苦手部分をレッスンで確認してみよう。']};
+  const[em,title,sub]=msgs[g];
+  document.getElementById('modal-emoji').textContent=em;
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-sub').textContent=sub;
+  document.getElementById('modal').classList.add('open');
+  if(g==='a') launchConfetti();
+}
+
+function render(){
+  let ca=0,cb=0,cc=0,cn=0;
+  UNITS.forEach(u=>{
+    const g=getGrade(u.id); const cnt=getCount(u.id); const last=getLast(u.id);
+    const card=document.querySelector(`[data-id="${u.id}"]`);
+    if(card){
+      card.classList.remove('s-a','s-b','s-c');
+      if(g) card.classList.add('s-'+g);
+      card.querySelectorAll('.abc-btn').forEach(b=>{b.classList.remove('sel');if(b.classList.contains('abc-'+g))b.classList.add('sel');});
+    }
+    const ce=document.getElementById('cnt-'+u.id);  if(ce)ce.textContent=cnt;
+    const le=document.getElementById('last-'+u.id); if(le)le.textContent=last||'─';
+    const st=document.getElementById('st-'+u.id);
+    if(st){
+      if(g==='a'){st.className='sc-status done';st.textContent='✅ 完璧';}
+      else if(g==='b'){st.className='sc-status partial';st.textContent='📘 良好';}
+      else if(g==='c'){st.className='sc-status partial';st.textContent='📌 要復習';}
+      else if(cnt>0){st.className='sc-status studying';st.textContent='学習中';}
+      else{st.className='sc-status';st.textContent='未学習';}
+    }
+    if(g==='a')ca++; else if(g==='b')cb++; else if(g==='c')cc++; else cn++;
+  });
+  const total=UNITS.length;
+  document.getElementById('cnt-a').textContent=ca;
+  document.getElementById('cnt-b').textContent=cb;
+  document.getElementById('cnt-c').textContent=cc;
+  document.getElementById('cnt-n').textContent=cn;
+  const pct=total?Math.round(ca/total*100):0;
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progPct').innerHTML=`${pct}%　A評価 <span id="progNote">${ca} / ${total}</span> 単元`;
+  buildRecord();
+}
+
+function buildRecord(){
+  const el=document.getElementById('record-list'); el.innerHTML='';
+  UNITS.forEach(u=>{
+    const g=getGrade(u.id); const cnt=getCount(u.id); const last=getLast(u.id);
+    const row=document.createElement('div'); row.className='prog-row';
+    row.innerHTML=`<div class="prog-num">${u.num}</div><div class="prog-title">${u.title}</div><div class="prog-grade${g?' '+g:''}">${g?{a:'A 完璧',b:'B 良好',c:'C 要復習'}[g]:'未学習'}</div><div class="prog-meta">${cnt}回 / ${last||'─'}</div>`;
+    el.appendChild(row);
+  });
+}
+
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tnav').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on'); btn.classList.add('on');
+}
+
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+
+function launchConfetti(){
+  const cvs=document.getElementById('cnf');
+  cvs.width=innerWidth; cvs.height=innerHeight; cvs.style.display='block';
+  const ctx=cvs.getContext('2d');
+  const parts=Array.from({length:120},()=>({
+    x:Math.random()*innerWidth,y:-10,
+    vx:(Math.random()-.5)*4,vy:Math.random()*4+2,
+    r:Math.random()*6+3,
+    color:['#f472b6','#facc15','#34d399','#60a5fa','#f87171','#a78bfa'][Math.floor(Math.random()*6)],
+    rot:Math.random()*360,rv:(Math.random()-.5)*8,
+  }));
+  let frame;
+  function draw(){
+    ctx.clearRect(0,0,cvs.width,cvs.height);
+    parts.forEach(p=>{
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r);ctx.restore();
+      p.x+=p.vx;p.y+=p.vy;p.rot+=p.rv;
+    });
+    if(parts.some(p=>p.y<innerHeight)){frame=requestAnimationFrame(draw);}
+    else{cvs.style.display='none';cancelAnimationFrame(frame);}
+  }
+  draw();
+  setTimeout(()=>{cvs.style.display='none';cancelAnimationFrame(frame);},3500);
+}
+
+document.addEventListener('DOMContentLoaded',()=>{buildCards();render();});
+</script>
+</body>
+</html>

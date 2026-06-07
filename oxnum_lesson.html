@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>酸化数の定義と計算 | GAMBA化学</title>
+<style>
+:root{
+  --bg:#f0f4ff;
+  --card:#fff;
+  --primary:#2563eb;
+  --primary-light:#dbeafe;
+  --primary-dark:#1e40af;
+  --accent:#dc2626;
+  --accent-light:#fee2e2;
+  --success:#16a34a;
+  --success-light:#dcfce7;
+  --warn:#d97706;
+  --warn-light:#fffbeb;
+  --purple:#7c3aed;
+  --purple-light:#ede9fe;
+  --text:#1e293b;
+  --text-sub:#64748b;
+  --border:#bfdbfe;
+  --radius:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'BIZ UDPGothic','Meiryo',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;padding-bottom:60px;
+}
+
+/* ── TOPNAV ── */
+.topnav{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 16px;
+  background:linear-gradient(135deg,#1e3a8a,#1d4ed8);
+  color:#fff;flex-wrap:wrap;
+}
+.topnav .brand{font-weight:700;font-size:.9em;}
+.topnav .sep{opacity:.4;}
+.topnav a{color:#bfdbfe;text-decoration:none;font-size:.82em;}
+.topnav a:hover{color:#fff;text-decoration:underline;}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(135deg,#1e40af 0%,#4f46e5 60%,#7c3aed 100%);
+  color:#fff;padding:26px 20px 24px;
+}
+.hero .crumb{font-size:.75em;opacity:.7;margin-bottom:6px;letter-spacing:.05em;}
+.hero h1{font-size:clamp(1.4em,4vw,2em);font-weight:800;margin-bottom:8px;}
+.hero .sub{font-size:.87em;opacity:.9;line-height:1.8;max-width:680px;}
+.hero .level-badge{
+  display:inline-block;margin-top:10px;
+  background:rgba(255,255,255,.2);
+  border:1px solid rgba(255,255,255,.4);
+  border-radius:20px;padding:4px 14px;
+  font-size:.78em;font-weight:700;
+}
+
+.wrap{max-width:860px;margin:0 auto;}
+main{padding:20px 14px 0;}
+
+/* ── UNIT ── */
+.unit{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:var(--radius);margin-bottom:28px;overflow:hidden;
+}
+.unit-title{
+  display:flex;align-items:center;gap:10px;
+  background:linear-gradient(90deg,var(--primary-light),#f8faff);
+  padding:13px 16px;font-weight:700;font-size:1.05em;
+  border-bottom:1.5px solid var(--border);
+}
+.unit-title .num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;
+  background:var(--primary);color:#fff;
+  border-radius:8px;font-size:.88em;flex-shrink:0;
+}
+
+/* ── READ BOX ── */
+.read-box{
+  padding:16px;background:#f8faff;
+  border:1px solid var(--border);border-radius:10px;
+  margin:14px 16px 0;line-height:1.9;font-size:.93em;
+}
+.read-box p{margin-bottom:10px;}
+.read-box p:last-child{margin-bottom:0;}
+
+/* ── INDUCTION BOX（具体例から導く） ── */
+.induction{
+  margin:14px 16px 0;
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:10px;overflow:hidden;
+}
+.ind-title{
+  background:linear-gradient(90deg,var(--purple-light),#f5f3ff);
+  padding:10px 14px;font-weight:700;font-size:.88em;
+  color:var(--purple);border-bottom:1px solid #ddd6fe;
+}
+.ind-body{padding:14px;}
+.ind-row{
+  display:flex;align-items:center;gap:10px;
+  background:#f8faff;border-radius:8px;padding:10px 14px;
+  margin-bottom:8px;font-size:.9em;line-height:1.6;
+}
+.ind-row:last-child{margin-bottom:0;}
+.ind-arrow{
+  font-size:1.4em;color:#94a3b8;
+  flex-shrink:0;
+}
+.ind-label{
+  display:inline-block;font-size:.75em;font-weight:700;
+  padding:2px 8px;border-radius:12px;margin-left:6px;
+  background:var(--primary-light);color:var(--primary-dark);
+}
+.ind-notice{
+  margin-top:10px;padding:10px 14px;
+  background:var(--purple-light);border-radius:8px;
+  font-size:.88em;color:#4c1d95;font-weight:600;line-height:1.7;
+}
+
+/* ── RULE BOX ── */
+.rule-box{
+  margin:14px 16px 0;
+  border:2px solid var(--primary);
+  border-radius:10px;overflow:hidden;
+}
+.rule-box-title{
+  background:var(--primary);color:#fff;
+  padding:9px 14px;font-weight:700;font-size:.88em;
+  display:flex;align-items:center;gap:8px;
+}
+.rule-box-body{padding:14px;background:#fff;}
+.rule-item{
+  display:flex;gap:12px;align-items:flex-start;
+  padding:10px 0;border-bottom:1px dashed #e2e8f0;
+  font-size:.9em;line-height:1.75;
+}
+.rule-item:last-child{border-bottom:none;padding-bottom:0;}
+.rule-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:50%;
+  background:var(--primary);color:#fff;
+  font-size:.82em;font-weight:700;flex-shrink:0;margin-top:2px;
+}
+.rule-body{flex:1;}
+.rule-body strong{color:var(--primary-dark);}
+.rule-ex{
+  margin-top:4px;font-size:.84em;
+  color:var(--text-sub);background:#f8faff;
+  border-radius:6px;padding:4px 10px;
+  display:inline-block;
+}
+
+/* ── STEP-CALC（計算手順） ── */
+.step-calc{
+  margin:14px 16px 0;
+  background:#fffbeb;border:1.5px solid #fcd34d;
+  border-radius:10px;overflow:hidden;
+}
+.sc-title{
+  background:#fef3c7;padding:9px 14px;
+  font-weight:700;font-size:.88em;color:#92400e;
+  border-bottom:1px solid #fde68a;
+}
+.sc-body{padding:12px 14px;}
+.sc-step{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:8px 0;border-bottom:1px dashed #fde68a;
+  font-size:.9em;line-height:1.7;
+}
+.sc-step:last-child{border-bottom:none;}
+.sc-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:24px;border-radius:50%;
+  background:var(--warn);color:#fff;
+  font-size:.8em;font-weight:700;flex-shrink:0;margin-top:3px;
+}
+.sc-eq{
+  display:block;font-weight:700;color:var(--primary-dark);
+  font-size:.96em;margin:4px 0;
+  background:#fff;border-radius:6px;
+  padding:5px 12px;border:1px solid #fde68a;
+  text-align:center;
+}
+.sc-ans{color:var(--accent);font-weight:700;}
+
+/* ── EXCEPTION BOX ── */
+.exc-box{
+  margin:14px 16px 0;
+  background:var(--accent-light);border:2px solid #fca5a5;
+  border-radius:10px;overflow:hidden;
+}
+.exc-title{
+  background:#fca5a5;padding:9px 14px;
+  font-weight:700;font-size:.88em;color:#7f1d1d;
+  display:flex;align-items:center;gap:6px;
+}
+.exc-body{padding:14px;font-size:.9em;line-height:1.8;}
+.exc-row{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 0;border-bottom:1px dashed #fca5a5;
+}
+.exc-row:last-child{border-bottom:none;}
+.exc-formula{font-weight:700;min-width:80px;color:var(--accent);}
+.exc-val{
+  background:#fff;border-radius:6px;padding:3px 10px;
+  font-weight:700;font-size:.9em;border:1px solid #fca5a5;
+}
+.exc-reason{font-size:.84em;color:#7f1d1d;margin-left:4px;}
+
+/* ── POINT BOX ── */
+.point-box{
+  margin:14px 16px 14px;
+  background:var(--success-light);border:2px solid #86efac;
+  border-radius:10px;padding:12px 14px;
+}
+.point-box .label{
+  display:inline-block;background:var(--success);color:#fff;
+  font-size:.78em;font-weight:700;
+  padding:2px 10px;border-radius:20px;margin-bottom:8px;
+}
+.point-box ul{margin:0 0 0 18px;font-size:.9em;line-height:1.9;}
+.point-box li{margin-bottom:3px;}
+
+/* ── WARN BOX ── */
+.warn-box{
+  margin:10px 16px;
+  background:var(--warn-light);border:2px solid #fde68a;
+  border-radius:10px;padding:12px 14px;
+  font-size:.88em;line-height:1.8;color:#78350f;
+}
+.warn-box .label{
+  display:inline-block;background:var(--warn);color:#fff;
+  font-size:.78em;font-weight:700;
+  padding:2px 10px;border-radius:20px;margin-bottom:6px;
+}
+
+/* ── MISTAKE BOX（よくある間違い） ── */
+.mistake-box{
+  margin:14px 16px 0;
+  border:2px solid #fb923c;border-radius:10px;overflow:hidden;
+}
+.mb-title{
+  background:#fed7aa;padding:9px 14px;
+  font-weight:700;font-size:.88em;color:#7c2d12;
+  display:flex;align-items:center;gap:6px;
+}
+.mb-body{padding:14px;background:#fff7ed;}
+.mb-row{
+  background:#fff;border-radius:8px;
+  border:1px solid #fed7aa;padding:10px 14px;
+  margin-bottom:8px;font-size:.88em;line-height:1.75;
+}
+.mb-row:last-child{margin-bottom:0;}
+.mb-wrong{color:var(--accent);font-weight:700;}
+.mb-right{color:var(--success);font-weight:700;}
+
+/* ── MINITEST ── */
+.minitest-wrap{
+  padding:14px 16px;
+  border-top:1.5px solid var(--border);
+  background:#fafafa;
+}
+.mt-title{
+  font-weight:700;font-size:.9em;color:var(--primary-dark);
+  margin-bottom:12px;padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+.q4{margin-bottom:18px;}
+.q4:last-of-type{margin-bottom:0;}
+.q4-stem{
+  font-size:.92em;font-weight:600;
+  margin-bottom:9px;line-height:1.65;
+}
+.q4-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--primary);color:#fff;
+  font-size:.74em;padding:2px 8px;
+  border-radius:5px;margin-right:6px;font-weight:700;
+}
+.q4-choices{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  margin-bottom:6px;
+}
+.q4-c{
+  font-family:inherit;padding:10px 12px;
+  border-radius:8px;border:2px solid #cbd5e1;
+  background:#fff;font-size:.85em;font-weight:600;
+  cursor:pointer;text-align:left;
+  transition:border-color .12s,background .12s;
+  line-height:1.4;-webkit-tap-highlight-color:transparent;
+}
+.q4-c:hover{border-color:var(--primary);background:var(--primary-light);}
+.q4-c.correct{background:var(--success);border-color:var(--success);color:#fff;}
+.q4-c.wrong  {background:var(--accent);border-color:var(--accent);color:#fff;}
+.q4-c.disabled{cursor:default;}
+.q4-exp{
+  display:none;font-size:.84em;
+  background:#f0fdf4;border-left:4px solid var(--success);
+  padding:10px 14px;border-radius:0 8px 8px 0;
+  line-height:1.75;margin-top:5px;
+}
+.q4-exp.show{display:block;}
+.mt-result{
+  font-weight:700;text-align:center;
+  margin:12px 0 6px;font-size:.95em;color:var(--primary);
+}
+.mt-reset{
+  display:block;margin:0 auto;
+  font-family:inherit;background:var(--primary-light);
+  color:var(--primary-dark);border:1.5px solid var(--border);
+  padding:8px 22px;border-radius:50px;cursor:pointer;
+  font-size:.82em;font-weight:700;transition:.2s;
+}
+.mt-reset:hover{background:var(--border);}
+
+/* ── NEXT ACTIONS ── */
+.next-actions{
+  background:linear-gradient(135deg,#eff6ff,#f0fdf4);
+  border:2px solid var(--border);border-radius:var(--radius);
+  padding:22px;margin:24px 0 0;text-align:center;
+}
+.next-actions h3{color:var(--primary-dark);margin-bottom:8px;font-size:1.1em;}
+.next-actions p{font-size:.87em;color:var(--text-sub);margin-bottom:14px;}
+.next-actions .links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.next-actions a{
+  text-decoration:none;padding:11px 20px;
+  border-radius:8px;font-size:.88em;font-weight:700;
+  background:var(--primary);color:#fff;transition:.15s;
+}
+.next-actions a:hover{background:var(--primary-dark);}
+.next-actions a.sub{
+  background:#fff;color:var(--primary);
+  border:1.5px solid var(--border);
+}
+
+/* ── 花吹雪 ── */
+@keyframes confettiFall{
+  0%  {transform:translateY(0) rotate(0deg);opacity:1;}
+  80% {opacity:1;}
+  100%{transform:translateY(105vh) rotate(720deg);opacity:0;}
+}
+
+@media(max-width:520px){
+  .q4-choices{grid-template-columns:1fr;}
+  .ind-row{flex-direction:column;gap:6px;}
+}
+
+/* ── 縦型分数 ── */
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;font-size:.9em;line-height:1.1;}
+.frac .fn{padding:0 3px;border-bottom:1.5px solid currentColor;}
+.frac .fd{padding:0 3px;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">⚗️ GAMBA 化学</span>
+  <span class="sep">|</span>
+  <a href="oxred_index.html">📊 単元表</a>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="crumb">化学基礎 / 酸化還元 / 第1章</div>
+  <h1>酸化数の定義と計算</h1>
+  <p class="sub">「酸化数ってなんだろう？」というところから始めます。ルールを覚えるのではなく、まず<strong>具体例を見て感覚をつかむ</strong>ことが大切です。</p>
+  <span class="level-badge">🔰 初学者向け　丁寧解説</span>
+</header>
+
+<main>
+
+<!-- ============================================================ -->
+<!-- 単元0：酸化数とはなにか                                        -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title">
+    <span class="num">0</span>そもそも「酸化数」って何？
+  </div>
+
+  <div class="read-box">
+    <p>化学の反応を学んでいると「<strong>酸化</strong>」「<strong>還元</strong>」という言葉が出てきます。<br>
+    「鉄が酸化された」「銅が還元された」—— でも、これを<strong>数値で正確に表す方法</strong>はないでしょうか？</p>
+    <p>そこで生まれたのが <strong>酸化数（さんかすう）</strong> というルールです。</p>
+    <p>酸化数とは、<strong>「その原子がどれだけ電子を失っているか（または得ているか）を示す数」</strong>です。<br>
+    電子を失うほど酸化数は大きく（プラスに）、電子を得るほど小さく（マイナスに）なります。</p>
+  </div>
+
+  <!-- 直感的なイメージ -->
+  <div class="induction">
+    <div class="ind-title">💡 まず直感でイメージしてみよう</div>
+    <div class="ind-body">
+      <div class="ind-row">
+        <div>鉄（Fe）の単体</div>
+        <div class="ind-arrow">→</div>
+        <div>電子を誰にも渡していない → 酸化数 <strong>0</strong><span class="ind-label">基準</span></div>
+      </div>
+      <div class="ind-row">
+        <div>酸化鉄（Fe₂O₃）の中の Fe</div>
+        <div class="ind-arrow">→</div>
+        <div>O に電子を 3個奪われた → 酸化数 <strong>+3</strong><span class="ind-label">酸化された</span></div>
+      </div>
+      <div class="ind-row">
+        <div>塩化鉄（FeCl₂）の中の Fe</div>
+        <div class="ind-arrow">→</div>
+        <div>Cl に電子を 2個奪われた → 酸化数 <strong>+2</strong><span class="ind-label">酸化された</span></div>
+      </div>
+      <div class="ind-notice">
+        📌 酸化数が大きい（プラスが大きい）ほど、「より多く酸化されている」状態です。<br>
+        　 酸化数が小さい（マイナスが大きい）ほど、「より多く電子を持っている」状態です。
+      </div>
+    </div>
+  </div>
+
+  <div class="point-box" style="margin-top:14px;">
+    <span class="label">★ 酸化数のポイント</span>
+    <ul>
+      <li>酸化数は <strong>整数</strong>（…−3, −2, −1, 0, +1, +2, +3…）で表す</li>
+      <li><strong>プラス</strong> の符号は省略せず必ず書く（例：+2, +3）</li>
+      <li>単体（1種類の元素だけ）の酸化数は必ず <strong>0</strong></li>
+      <li>酸化数は「原子1個あたり」の数値</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 単元1：酸化数の5つのルール                                     -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title">
+    <span class="num">1</span>酸化数を決める5つのルール
+  </div>
+
+  <div class="read-box">
+    <p>酸化数は「実際に電子が何個移動したか」を正確に計算するのは大変なので、<strong>便利なルールを使って決めます</strong>。このルールさえ覚えれば、ほとんどの物質の酸化数が求められます。</p>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-box-title">📋 酸化数を決める5つのルール</div>
+    <div class="rule-box-body">
+
+      <div class="rule-item">
+        <div class="rule-num">①</div>
+        <div class="rule-body">
+          <strong>単体中の原子の酸化数は 0</strong><br>
+          <span class="rule-ex">例：Fe = 0 ／ Cu = 0 ／ H₂ の各 H = 0 ／ O₂ の各 O = 0 ／ Cl₂ の各 Cl = 0</span>
+        </div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">②</div>
+        <div class="rule-body">
+          <strong>単原子イオンの酸化数 = イオンの電荷</strong><br>
+          <span class="rule-ex">例：Na⁺ → +1 ／ Ca²⁺ → +2 ／ Cl⁻ → −1 ／ O²⁻ → −2</span>
+        </div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">③</div>
+        <div class="rule-body">
+          <strong>化合物中の H = +1、O = −2（例外あり）</strong><br>
+          <span class="rule-ex">H は +1、O は −2 を原則として使う</span><br>
+          <span style="font-size:.84em;color:#dc2626;margin-top:4px;display:block;">
+            ⚠️ 例外：金属水素化物（NaH など）の H = −1 ／ H₂O₂ の O = −1
+          </span>
+        </div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">④</div>
+        <div class="rule-body">
+          <strong>化合物中の全原子の酸化数の合計 = 0</strong><br>
+          <span class="rule-ex">例：H₂O → (+1)×2 + (−2) = 0 ✓ ／ CuO → (+2) + (−2) = 0 ✓</span>
+        </div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">⑤</div>
+        <div class="rule-body">
+          <strong>多原子イオン中の全原子の酸化数の合計 = イオンの電荷</strong><br>
+          <span class="rule-ex">例：SO₄²⁻ → 合計 = −2 ／ NH₄⁺ → 合計 = +1 ／ OH⁻ → 合計 = −1</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <div class="label">⚠️ 使う順番が大切！</div>
+    ルール①②は「そのまま決まる」場合。ルール③〜⑤は「他の原子の酸化数を先に決めてから、残りを計算する」のが基本です。<br>
+    <strong>求めたい元素の酸化数を x として、方程式を立てる</strong>のが最もミスが少ない方法です。
+  </div>
+
+  <!-- ミニテスト -->
+  <div class="minitest-wrap">
+    <div class="mt-title">✏️ ルールの確認（全4問）</div>
+
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問1</span>単体である Cl₂ 中の Cl の酸化数はいくらか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：−1</button>
+        <button class="q4-c" data-v="b">イ：0</button>
+        <button class="q4-c" data-v="c">ウ：+1</button>
+        <button class="q4-c" data-v="d">エ：+7</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ：0</strong>。<br>Cl₂ は塩素原子だけからなる<strong>単体</strong>です。ルール①より、単体中の原子の酸化数は必ず <strong>0</strong>。<br>「Cl は普通 −1」と混同しやすいですが、Cl₂ は単体なので 0 です。</div>
+    </div>
+
+    <div class="q4" data-correct="c">
+      <div class="q4-stem"><span class="q4-num">問2</span>Ca²⁺（カルシウムイオン）の酸化数はいくらか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：0</button>
+        <button class="q4-c" data-v="b">イ：+1</button>
+        <button class="q4-c" data-v="c">ウ：+2</button>
+        <button class="q4-c" data-v="d">エ：−2</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ウ：+2</strong>。<br>Ca²⁺ は単原子イオンです。ルール②より、単原子イオンの酸化数 = イオンの電荷 = <strong>+2</strong>。</div>
+    </div>
+
+    <div class="q4" data-correct="a">
+      <div class="q4-stem"><span class="q4-num">問3</span>H₂O（水）中の O の酸化数は？（H = +1 として）</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：−2</button>
+        <button class="q4-c" data-v="b">イ：−1</button>
+        <button class="q4-c" data-v="c">ウ：0</button>
+        <button class="q4-c" data-v="d">エ：+2</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ア：−2</strong>。<br>H₂O の合計 = 0（ルール④）。H = +1 が 2個なので (+1)×2 + O の酸化数 = 0 → O = <strong>−2</strong>。<br>あるいはルール③をそのまま使っても O = −2 です。</div>
+    </div>
+
+    <div class="q4" data-correct="d">
+      <div class="q4-stem"><span class="q4-num">問4</span>OH⁻（水酸化物イオン）の酸化数の合計はいくらか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：0</button>
+        <button class="q4-c" data-v="b">イ：+1</button>
+        <button class="q4-c" data-v="c">ウ：+2</button>
+        <button class="q4-c" data-v="d">エ：−1</button>
+      </div>
+      <div class="q4-exp">正解は<strong>エ：−1</strong>。<br>OH⁻ は多原子イオン（電荷 −1）です。ルール⑤より、多原子イオン中の酸化数の合計 = イオンの電荷 = <strong>−1</strong>。<br>実際に確認：O = −2、H = +1 → 合計 = −2 + 1 = −1 ✓</div>
+    </div>
+
+    <div class="mt-result" id="res1"></div>
+    <button class="mt-reset" onclick="resetBlock(this)">↻ もう一度</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 単元2：酸化数の計算手順（x を使った方程式）                     -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title">
+    <span class="num">2</span>酸化数の計算手順（x をおいて解く）
+  </div>
+
+  <div class="read-box">
+    <p>求めたい元素の酸化数を <strong>x</strong> とおいて方程式を立てるのが、最もミスの少ない方法です。</p>
+    <p>手順は次の通りです：<br>
+    ① わかっている元素（H = +1、O = −2 など）を先に書く<br>
+    ② 求めたい元素を <strong>x</strong> とおく<br>
+    ③ 「合計 = 0（化合物）または合計 = 電荷（イオン）」の式を立てる<br>
+    ④ x を解く</p>
+  </div>
+
+  <!-- 例題1：NH3 -->
+  <div class="step-calc">
+    <div class="sc-title">📝 例題1：NH₃ 中の N の酸化数</div>
+    <div class="sc-body">
+      <div class="sc-step">
+        <div class="sc-num">①</div>
+        <div>NH₃ は化合物なので、酸化数の合計 = 0</div>
+      </div>
+      <div class="sc-step">
+        <div class="sc-num">②</div>
+        <div>H = +1 はルール③でわかる。N の酸化数を <strong>x</strong> とおく</div>
+      </div>
+      <div class="sc-step">
+        <div class="sc-num">③</div>
+        <div>
+          式を立てる：<br>
+          <span class="sc-eq">x + (+1) × 3 = 0</span>
+        </div>
+      </div>
+      <div class="sc-step">
+        <div class="sc-num">④</div>
+        <div>
+          x = 0 − 3 = <span class="sc-ans">−3</span><br>
+          → N の酸化数は <strong>−3</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 例題2：H2SO4 -->
+  <div class="step-calc" style="margin-top:14px;">
+    <div class="sc-title">📝 例題2：H₂SO₄ 中の S の酸化数</div>
+    <div class="sc-body">
+      <div class="sc-step">
+        <div class="sc-num">①</div>
+        <div>H₂SO₄ は化合物なので、酸化数の合計 = 0</div>
+      </div>
+      <div class="sc-step">
+        <div class="sc-num">②</div>
+        <div>H = +1、O = −2 はルール③でわかる。S の酸化数を <strong>x</strong> とおく</div>
+      </div>
+      <div class="sc-step">
+        <div class="sc-num">③</div>
+        <div>
+          式を立てる（H が 2個、O が 4個）：<br>
+          <span class="sc-eq">(+1) × 2 + x + (−2) × 4 = 0</span>
+          <span class="sc-eq">2 + x − 8 = 0</span>
+        </div>
+      </div>
+      <div class="sc-step">
+        <div class="sc-num">④</div>
+        <div>
+          x = 8 − 2 = <span class="sc-ans">+6</span><br>
+          → S の酸化数は <strong>+6</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 例題3：MnO4- -->
+  <div class="step-calc" style="margin-top:14px;">
+    <div class="sc-title">📝 例題3：MnO₄⁻（過マンガン酸イオン）中の Mn の酸化数</div>
+    <div class="sc-body">
+      <div class="sc-step">
+        <div class="sc-num">①</div>
+        <div>MnO₄⁻ は多原子イオン（電荷 −1）なので、酸化数の合計 = <strong>−1</strong>（ルール⑤）</div>
+      </div>
+      <div class="sc-step">
+        <div class="sc-num">②</div>
+        <div>O = −2 はルール③でわかる。Mn の酸化数を <strong>x</strong> とおく</div>
+      </div>
+      <div class="sc-step">
+        <div class="sc-num">③</div>
+        <div>
+          式を立てる（O が 4個）：<br>
+          <span class="sc-eq">x + (−2) × 4 = −1</span>
+          <span class="sc-eq">x − 8 = −1</span>
+        </div>
+      </div>
+      <div class="sc-step">
+        <div class="sc-num">④</div>
+        <div>
+          x = −1 + 8 = <span class="sc-ans">+7</span><br>
+          → Mn の酸化数は <strong>+7</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 例題4：Cr2O72- -->
+  <div class="step-calc" style="margin-top:14px;">
+    <div class="sc-title">📝 例題4：Cr₂O₇²⁻（ニクロム酸イオン）中の Cr の酸化数</div>
+    <div class="sc-body">
+      <div class="sc-step">
+        <div class="sc-num">①</div>
+        <div>Cr₂O₇²⁻ は多原子イオン（電荷 −2）なので、酸化数の合計 = <strong>−2</strong></div>
+      </div>
+      <div class="sc-step">
+        <div class="sc-num">②</div>
+        <div>O = −2。Cr の酸化数を <strong>x</strong> とおく。<strong>Cr は 2個あるので 2x</strong> になることに注意！</div>
+      </div>
+      <div class="sc-step">
+        <div class="sc-num">③</div>
+        <div>
+          式を立てる（Cr が <strong>2個</strong>、O が 7個）：<br>
+          <span class="sc-eq"><strong>2</strong>x + (−2) × 7 = −2</span>
+          <span class="sc-eq">2x − 14 = −2</span>
+        </div>
+      </div>
+      <div class="sc-step">
+        <div class="sc-num">④</div>
+        <div>
+          2x = 12 → x = <span class="sc-ans">+6</span><br>
+          → Cr の酸化数は <strong>+6</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <div class="label">⚠️ Cr₂O₇²⁻ のような「同じ元素が複数個ある」式は要注意</div>
+    Cr が 2個あるので、方程式は「2x + ⋯ = −2」と <strong>係数をかけてから x を求めます</strong>。<br>
+    「x = −2 − (−14) = 12」と先に出てしまう間違いが多いので注意しましょう。
+  </div>
+
+  <!-- ミニテスト -->
+  <div class="minitest-wrap">
+    <div class="mt-title">✏️ 計算練習（全5問）</div>
+
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問1</span>HCl 中の Cl の酸化数はいくらか。（H = +1）</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：0</button>
+        <button class="q4-c" data-v="b">イ：−1</button>
+        <button class="q4-c" data-v="c">ウ：+1</button>
+        <button class="q4-c" data-v="d">エ：+7</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ：−1</strong>。<br>HCl は化合物、合計 = 0。x を Cl の酸化数とすると (+1) + x = 0 → x = <strong>−1</strong>。<br>単体 Cl₂（酸化数 0）と混同しないように！</div>
+    </div>
+
+    <div class="q4" data-correct="c">
+      <div class="q4-stem"><span class="q4-num">問2</span>NO₂ 中の N の酸化数はいくらか。（O = −2）</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：+2</button>
+        <button class="q4-c" data-v="b">イ：+3</button>
+        <button class="q4-c" data-v="c">ウ：+4</button>
+        <button class="q4-c" data-v="d">エ：+5</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ウ：+4</strong>。<br>x + (−2)×2 = 0 → x − 4 = 0 → x = <strong>+4</strong>。<br>N の酸化数は −3 〜 +5 と幅広いので、毎回 x を使って計算しましょう。</div>
+    </div>
+
+    <div class="q4" data-correct="d">
+      <div class="q4-stem"><span class="q4-num">問3</span>SO₃²⁻（亜硫酸イオン）中の S の酸化数はいくらか。（O = −2）</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：+2</button>
+        <button class="q4-c" data-v="b">イ：+3</button>
+        <button class="q4-c" data-v="c">ウ：+5</button>
+        <button class="q4-c" data-v="d">エ：+4</button>
+      </div>
+      <div class="q4-exp">正解は<strong>エ：+4</strong>。<br>SO₃²⁻ は多原子イオン（電荷 −2）。x + (−2)×3 = −2 → x − 6 = −2 → x = <strong>+4</strong>。<br>合計が「0」でなく「−2」になることに注意！</div>
+    </div>
+
+    <div class="q4" data-correct="a">
+      <div class="q4-stem"><span class="q4-num">問4</span>KMnO₄ 中の Mn の酸化数はいくらか。（K = +1、O = −2）</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：+7</button>
+        <button class="q4-c" data-v="b">イ：+6</button>
+        <button class="q4-c" data-v="c">ウ：+5</button>
+        <button class="q4-c" data-v="d">エ：+4</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ア：+7</strong>。<br>(+1) + x + (−2)×4 = 0 → 1 + x − 8 = 0 → x = <strong>+7</strong>。<br>KMnO₄ は酸化剤として重要。Mn の酸化数 +7 は必ず覚えましょう。</div>
+    </div>
+
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問5</span>K₂Cr₂O₇ 中の Cr の酸化数はいくらか。（K = +1、O = −2）</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：+3</button>
+        <button class="q4-c" data-v="b">イ：+6</button>
+        <button class="q4-c" data-v="c">ウ：+7</button>
+        <button class="q4-c" data-v="d">エ：+4</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ：+6</strong>。<br>(+1)×2 + <strong>2</strong>x + (−2)×7 = 0 → 2 + 2x − 14 = 0 → 2x = 12 → x = <strong>+6</strong>。<br>Cr が 2個あるので「2x」になる点がポイント！</div>
+    </div>
+
+    <div class="mt-result" id="res2"></div>
+    <button class="mt-reset" onclick="resetBlock(this)">↻ もう一度</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 単元3：例外（H₂O₂・NaH など）                               -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title">
+    <span class="num">3</span>例外をおさえよう（H₂O₂・NaH・OF₂）
+  </div>
+
+  <div class="read-box">
+    <p>ルール③では「化合物中の H = +1、O = −2」と学びましたが、<strong>例外がいくつかあります</strong>。入試でも狙われるポイントなので、しっかり確認しましょう。</p>
+  </div>
+
+  <div class="exc-box">
+    <div class="exc-title">⚠️ 例外一覧</div>
+    <div class="exc-body">
+
+      <div class="exc-row">
+        <div class="exc-formula">H₂O₂</div>
+        <div>O の酸化数は</div>
+        <div class="exc-val">−1</div>
+        <div class="exc-reason">（通常の −2 ではない！）</div>
+      </div>
+      <div style="font-size:.84em;color:#7f1d1d;padding:4px 0 10px 0;border-bottom:1px dashed #fca5a5;">
+        確認：(+1)×2 + x×2 = 0 → x = <strong>−1</strong>。O−O 結合があるため酸化数が上がります。
+      </div>
+
+      <div class="exc-row" style="margin-top:10px;">
+        <div class="exc-formula">NaH・CaH₂</div>
+        <div>H の酸化数は</div>
+        <div class="exc-val">−1</div>
+        <div class="exc-reason">（通常の +1 ではない！）</div>
+      </div>
+      <div style="font-size:.84em;color:#7f1d1d;padding:4px 0 10px 0;border-bottom:1px dashed #fca5a5;">
+        <strong>金属水素化物</strong>では、Na より H の方が電気陰性度が大きいため、H が電子を引き寄せて −1 になります。<br>
+        確認（NaH）：(+1) + x = 0 → x = <strong>−1</strong>。
+      </div>
+
+      <div class="exc-row" style="margin-top:10px;">
+        <div class="exc-formula">OF₂</div>
+        <div>O の酸化数は</div>
+        <div class="exc-val">+2</div>
+        <div class="exc-reason">（F が −1 で O を押しのける）</div>
+      </div>
+      <div style="font-size:.84em;color:#7f1d1d;padding:4px 0 0 0;">
+        F（フッ素）は全元素中で最も電気陰性度が大きいため、OF₂ では O が電子を奪われてプラスになります。<br>
+        確認：x + (−1)×2 = 0 → x = <strong>+2</strong>。（F は常に −1）
+      </div>
+
+    </div>
+  </div>
+
+  <!-- なぜ例外が生まれるか -->
+  <div class="induction" style="margin-top:14px;">
+    <div class="ind-title">💡 なぜ例外が生まれるのか？</div>
+    <div class="ind-body">
+      <div class="ind-notice" style="background:#fff7ed;color:#7c2d12;border:1px solid #fed7aa;">
+        📌 酸化数のルール③は「H = +1、O = −2 が<strong>ほとんどの場合に成り立つ</strong>」という経験則です。<br><br>
+        例外が起きるのは、<strong>結合相手の電気陰性度の大小関係が変わるとき</strong>です。<br>
+        ・NaH：Na よりも H の方が電気陰性度が大きい → H が電子を得る（−1）<br>
+        ・OF₂：F の電気陰性度が O より大きい → O が電子を失う（+2）<br>
+        ・H₂O₂：O−O 結合のため電子を分け合う → O が −1 どまり<br><br>
+        ルール③の例外に出会ったら、<strong>x をおいて計算する方法で確認</strong>するのが確実です。
+      </div>
+    </div>
+  </div>
+
+  <!-- ミニテスト -->
+  <div class="minitest-wrap">
+    <div class="mt-title">✏️ 例外の確認（全3問）</div>
+
+    <div class="q4" data-correct="c">
+      <div class="q4-stem"><span class="q4-num">問1</span>H₂O₂ 中の O の酸化数はいくらか。（H = +1）</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：−2</button>
+        <button class="q4-c" data-v="b">イ：0</button>
+        <button class="q4-c" data-v="c">ウ：−1</button>
+        <button class="q4-c" data-v="d">エ：+1</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ウ：−1</strong>。<br>x を O の酸化数とすると (+1)×2 + x×2 = 0 → 2 + 2x = 0 → x = <strong>−1</strong>。<br>H₂O₂ の O は例外で −1 です（H₂O の O = −2 と混同しないこと！）。</div>
+    </div>
+
+    <div class="q4" data-correct="d">
+      <div class="q4-stem"><span class="q4-num">問2</span>NaH（水素化ナトリウム）中の H の酸化数はいくらか。（Na = +1）</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：+2</button>
+        <button class="q4-c" data-v="b">イ：+1</button>
+        <button class="q4-c" data-v="c">ウ：0</button>
+        <button class="q4-c" data-v="d">エ：−1</button>
+      </div>
+      <div class="q4-exp">正解は<strong>エ：−1</strong>。<br>(+1) + x = 0 → x = <strong>−1</strong>。<br>NaH は金属水素化物。H は通常 +1 ですが、金属（Na, Ca など）と結合するときは例外的に <strong>−1</strong> になります。</div>
+    </div>
+
+    <div class="q4" data-correct="b">
+      <div class="q4-stem"><span class="q4-num">問3</span>OF₂ 中の O の酸化数はいくらか。（F = −1）</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：−2</button>
+        <button class="q4-c" data-v="b">イ：+2</button>
+        <button class="q4-c" data-v="c">ウ：0</button>
+        <button class="q4-c" data-v="d">エ：−1</button>
+      </div>
+      <div class="q4-exp">正解は<strong>イ：+2</strong>。<br>x + (−1)×2 = 0 → x = <strong>+2</strong>。<br>F は電気陰性度が最大で常に −1。O と結合すると O の方が電子を奪われて珍しくプラスになります。</div>
+    </div>
+
+    <div class="mt-result" id="res3"></div>
+    <button class="mt-reset" onclick="resetBlock(this)">↻ もう一度</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- 単元4：よくある間違いとその対策                                -->
+<!-- ============================================================ -->
+<div class="unit">
+  <div class="unit-title">
+    <span class="num">4</span>よくある間違いとその対策
+  </div>
+
+  <div class="mistake-box">
+    <div class="mb-title">🚫 よくある間違いパターン</div>
+    <div class="mb-body">
+
+      <div class="mb-row">
+        <div><span class="mb-wrong">✗ 間違い①</span>：「Cl₂ の Cl は −1 だ」</div>
+        <div style="margin-top:6px;"><span class="mb-right">✓ 正解</span>：Cl₂ は<strong>単体</strong>なのでルール①より <strong>0</strong>。HCl の Cl が −1 なのと混同している。</div>
+      </div>
+
+      <div class="mb-row">
+        <div><span class="mb-wrong">✗ 間違い②</span>：「SO₄²⁻ の合計は 0 だ」</div>
+        <div style="margin-top:6px;"><span class="mb-right">✓ 正解</span>：SO₄²⁻ はイオン（電荷 −2）なので合計 = <strong>−2</strong>（ルール⑤）。合計が 0 になるのは化合物のみ。</div>
+      </div>
+
+      <div class="mb-row">
+        <div><span class="mb-wrong">✗ 間違い③</span>：「Cr₂O₇²⁻ で 2x + (−2)×7 = −2 → 2x = 12 → x = 12」</div>
+        <div style="margin-top:6px;"><span class="mb-right">✓ 正解</span>：2x = 12 までは正しい。次に <strong>x = 6</strong> と計算する（2 で割るのを忘れない！）。</div>
+      </div>
+
+      <div class="mb-row">
+        <div><span class="mb-wrong">✗ 間違い④</span>：「H₂O₂ の O は −2 だ」</div>
+        <div style="margin-top:6px;"><span class="mb-right">✓ 正解</span>：H₂O₂ の O は例外で <strong>−1</strong>。x をおいて計算すれば確実に確認できる。</div>
+      </div>
+
+      <div class="mb-row">
+        <div><span class="mb-wrong">✗ 間違い⑤</span>：「酸化数にプラス符号を書かなかった」</div>
+        <div style="margin-top:6px;"><span class="mb-right">✓ 正解</span>：酸化数がプラスのときは <strong>+2、+6</strong> のように <strong>+ 符号を必ず書く</strong>。「2」だけでは不正確。</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ミニテスト -->
+  <div class="minitest-wrap">
+    <div class="mt-title">✏️ 間違いを見つけよう（全3問）</div>
+
+    <div class="q4" data-correct="c">
+      <div class="q4-stem"><span class="q4-num">問1</span>「H₂ の H の酸化数は +1 だ」この説明の誤りはどこか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：H₂ ではなく H₂O と間違えた</button>
+        <button class="q4-c" data-v="b">イ：+1 ではなく −1 が正しい</button>
+        <button class="q4-c" data-v="c">ウ：H₂ は単体なので酸化数は 0 が正しい</button>
+        <button class="q4-c" data-v="d">エ：間違いはない</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ウ</strong>。H₂ は水素の<strong>単体</strong>なのでルール①より酸化数 = <strong>0</strong>。<br>「H の酸化数は +1」は化合物（H₂O, HCl など）の場合のルールで、H₂ には適用しません。</div>
+    </div>
+
+    <div class="q4" data-correct="a">
+      <div class="q4-stem"><span class="q4-num">問2</span>「NO₃⁻ の合計 = 0 として N の酸化数を計算したら +6 になった」どこが間違いか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：NO₃⁻ はイオンなので合計 = −1 にすべきだった（正解は +5）</button>
+        <button class="q4-c" data-v="b">イ：O の酸化数を +2 にした</button>
+        <button class="q4-c" data-v="c">ウ：N が 2個あるのに x のまま計算した</button>
+        <button class="q4-c" data-v="d">エ：間違いはない</button>
+      </div>
+      <div class="q4-exp">正解は<strong>ア</strong>。NO₃⁻ は多原子イオン（電荷 −1）なので合計 = <strong>−1</strong>。<br>正しくは x + (−2)×3 = <strong>−1</strong> → x = <strong>+5</strong>。合計を 0 にしてしまうのが最頻出ミスです。</div>
+    </div>
+
+    <div class="q4" data-correct="d">
+      <div class="q4-stem"><span class="q4-num">問3</span>次のうち、酸化数の表記として正しいものはどれか。</div>
+      <div class="q4-choices">
+        <button class="q4-c" data-v="a">ア：CuO の Cu は「2」</button>
+        <button class="q4-c" data-v="b">イ：KMnO₄ の Mn は「7」</button>
+        <button class="q4-c" data-v="c">ウ：NH₃ の N は「3」</button>
+        <button class="q4-c" data-v="d">エ：H₂SO₄ の S は「+6」</button>
+      </div>
+      <div class="q4-exp">正解は<strong>エ：+6</strong>。<br>酸化数がプラスのときは <strong>+ 符号を必ず書きます</strong>。<br>ア〜ウは符号が抜けています（正しくはそれぞれ +2、+7、−3）。</div>
+    </div>
+
+    <div class="mt-result" id="res4"></div>
+    <button class="mt-reset" onclick="resetBlock(this)">↻ もう一度</button>
+  </div>
+</div>
+
+
+<!-- 次のアクション -->
+<div class="next-actions">
+  <h3>🎉 レッスン完了！</h3>
+  <p>練習問題でさらに定着させましょう！</p>
+  <div class="links">
+    <a href="oxnum_practice.html">📝 練習問題へ</a>
+    <a href="oxred_index.html" class="sub">📊 単元表へ戻る</a>
+  </div>
+</div>
+
+</main>
+</div><!-- /wrap -->
+
+<script>
+/* ── 花吹雪 ── */
+function launchConfetti(){
+  const C=['#f472b6','#facc15','#34d399','#60a5fa','#f87171','#a78bfa','#fb923c','#2dd4bf'];
+  for(let i=0;i<80;i++){
+    const el=document.createElement('div');
+    const size=Math.random()*10+6,left=Math.random()*100;
+    const delay=Math.random()*.6,dur=Math.random()*1.2+1.2;
+    const color=C[Math.floor(Math.random()*C.length)];
+    const shape=Math.random()>.5?'50%':'2px';
+    el.style.cssText=`position:fixed;top:-20px;left:${left}vw;width:${size}px;height:${size}px;background:${color};border-radius:${shape};opacity:1;pointer-events:none;z-index:9999;animation:confettiFall ${dur}s ${delay}s ease-in forwards;`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),(dur+delay)*1000+200);
+  }
+}
+
+/* ── 問題ロジック ── */
+document.addEventListener('DOMContentLoaded',()=>{
+
+  document.querySelectorAll('.q4').forEach(q=>{
+    const correct=q.dataset.correct;
+    const exp=q.querySelector('.q4-exp');
+    q.querySelectorAll('.q4-c').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        if(btn.classList.contains('disabled')) return;
+        q.querySelectorAll('.q4-c').forEach(b=>b.classList.add('disabled'));
+        if(btn.dataset.v===correct){
+          btn.classList.add('correct');
+          launchConfetti();
+        } else {
+          btn.classList.add('wrong');
+          q.querySelectorAll('.q4-c').forEach(b=>{
+            if(b.dataset.v===correct) b.classList.add('correct');
+          });
+        }
+        exp.classList.add('show');
+        updateResult(q.closest('.minitest-wrap'));
+      });
+    });
+  });
+
+  function updateResult(wrap){
+    if(!wrap) return;
+    const qs=[...wrap.querySelectorAll('.q4')];
+    if(qs.some(q=>!q.querySelector('.q4-c.correct,.q4-c.wrong'))) return;
+    const ok=qs.filter(q=>!q.querySelector('.q4-c.wrong')).length;
+    const res=wrap.querySelector('.mt-result');
+    if(res) res.textContent=`結果：${ok} / ${qs.length} 正解`;
+  }
+
+  /* リセット */
+  document.querySelectorAll('.mt-reset').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const wrap=btn.closest('.minitest-wrap');
+      wrap.querySelectorAll('.q4-c').forEach(b=>
+        b.classList.remove('correct','wrong','disabled'));
+      wrap.querySelectorAll('.q4-exp').forEach(e=>
+        e.classList.remove('show'));
+      const res=wrap.querySelector('.mt-result');
+      if(res) res.textContent='';
+    });
+  });
+});
+
+/* リセットボタン用（onclick 属性から呼ぶ） */
+function resetBlock(btn){
+  const wrap=btn.closest('.minitest-wrap');
+  wrap.querySelectorAll('.q4-c').forEach(b=>
+    b.classList.remove('correct','wrong','disabled'));
+  wrap.querySelectorAll('.q4-exp').forEach(e=>
+    e.classList.remove('show'));
+  const res=wrap.querySelector('.mt-result');
+  if(res) res.textContent='';
+}
+</script>
+
+</body>
+</html>
