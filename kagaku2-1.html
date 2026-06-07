@@ -58,7 +58,6 @@
 
 <div class="container">
 
-    <!-- 問題1：元素と単体（別問題） -->
     <div class="section-box">
         <div class="section-title">問題1．元素と単体の区別</div>
 
@@ -101,15 +100,14 @@
             ③ 競技の優勝者に金のメダルが与えられた。<br>
             ④ 負傷者が酸素吸入を受けながら救急車で運ばれていった。<br>
             ⑤ カルシウムは歯や骨に多く含まれている。<br><br>
-            答え：<span class="drop-zone" data-ans="②⑤" onclick="zCl(this)" style="min-width:60px;"></span>
+            <!-- ②⑤も⑤②も正解：data-ans-set属性で番号セット判定 -->
+            答え：<span class="drop-zone" data-ans-set="②⑤" onclick="zCl(this)" style="min-width:60px;"></span>
             <div class="hint">💡 「合成される」「含まれる」は成分（元素）の意味</div>
         </div>
     </div>
 
-    <!-- 問題2：元素記号→元素名 -->
     <div class="section-box">
         <div class="section-title">問題2．元素記号から元素名を答えよ</div>
-
         <div class="q-box">
             <div class="q-num">（1）元素記号に対応する元素名を答えよ。</div>
             <table>
@@ -135,10 +133,8 @@
         </div>
     </div>
 
-    <!-- 問題3：元素名→元素記号 -->
     <div class="section-box">
         <div class="section-title">問題3．元素名から元素記号を答えよ</div>
-
         <div class="q-box">
             <div class="q-num">（1）次の元素の元素記号を答えよ。</div>
             <table>
@@ -162,7 +158,6 @@
                 </tr>
             </table>
         </div>
-
         <div class="q-box">
             <div class="q-num">（2）原子番号を答えよ。</div>
             ① 炭素（C）の原子番号は<span class="drop-zone" data-ans="6" onclick="zCl(this)" style="min-width:40px;"></span>である。<br>
@@ -172,10 +167,8 @@
         </div>
     </div>
 
-    <!-- 問題4：入試問題形式 -->
     <div class="section-box">
         <div class="section-title">問題4．入試問題チャレンジ</div>
-
         <div class="q-box">
             <div class="q-num">（1）次の文中の空欄に適切な語句を入れよ。（北大より）</div>
             空気や土といった2種類以上の物質からなるものは<span class="drop-zone" data-ans="混合物" onclick="zCl(this)"></span>とよばれる。分離によって得られた単一な物質を<span class="drop-zone" data-ans="純物質" onclick="zCl(this)"></span>という。水はこれであるが、電気分解すれば水素と酸素が生じる。ここで生じた水素と酸素のような1種類の成分だけからできている物質を<span class="drop-zone" data-ans="単体" onclick="zCl(this)"></span>という。一方、水のように2種類以上の成分が一定の割合で結びついてできた純物質を<span class="drop-zone" data-ans="化合物" onclick="zCl(this)"></span>という。単体や化合物を構成する基本的な成分を<span class="drop-zone" data-ans="元素" onclick="zCl(this)"></span>といい、現在100種余りが知られている。
@@ -191,13 +184,11 @@
 
 <script>
     const words = [
-        // 正解
         "元素","単体","②⑤",
         "水素","ヘリウム","炭素","窒素","酸素","ナトリウム","マグネシウム","アルミニウム","塩素","カルシウム",
         "Li","B","F","Ne","Si","P","S","Ar","K","Fe",
         "6","11","20","Cl",
         "混合物","純物質","単体","化合物","元素",
-        // ダミー
         "化合物","混合物",
         "①③","③④","①⑤","②④",
         "水素","酸素","炭素","窒素","鉄","銅","銀","金",
@@ -219,17 +210,53 @@
             b.appendChild(d);
         });
     }
+
+    // 丸数字を数値に変換してソート比較する関数
+    function normalizeAnsSet(str) {
+        // ①②③...⑳ などを数値文字列に変換してソート
+        return str.replace(/[①-⑳]/g, c => String(c.charCodeAt(0) - 9311))
+                  .split('').sort().join('');
+    }
+
     function chAn() {
-        let ok=true;
+        let ok = true;
+        const doneGroups = {};
         document.querySelectorAll('.drop-zone').forEach(z => {
-            if(z.innerText.trim()===z.getAttribute('data-ans')) z.classList.add('correct');
-            else { z.classList.add('wrong'); ok=false; }
+            const group = z.getAttribute('data-group');
+            const ansSet = z.getAttribute('data-ans-set'); // 順番不問の1マス答え
+            const ans = z.getAttribute('data-ans');
+
+            if (ansSet) {
+                // 入力値と正解を丸数字→数値変換してソート比較
+                const inputNorm = normalizeAnsSet(z.innerText.trim());
+                const ansNorm = normalizeAnsSet(ansSet);
+                if (inputNorm === ansNorm) z.classList.add('correct');
+                else { z.classList.add('wrong'); ok = false; }
+            } else if (group) {
+                if (!(group in doneGroups)) {
+                    const zones = [...document.querySelectorAll(`.drop-zone[data-group="${group}"]`)];
+                    const correct = zones.map(z2 => z2.getAttribute('data-ans')).sort().join('||');
+                    const input = zones.map(z2 => z2.innerText.trim()).sort().join('||');
+                    doneGroups[group] = correct === input;
+                }
+                if (doneGroups[group]) z.classList.add('correct');
+                else { z.classList.add('wrong'); ok = false; }
+            } else {
+                if (z.innerText.trim() === ans) z.classList.add('correct');
+                else { z.classList.add('wrong'); ok = false; }
+            }
         });
         if(ok && isR){ clearInterval(tI); isR=false; const t=((Date.now()-sT)/1000).toFixed(1); if(bestTime===null||parseFloat(t)<parseFloat(bestTime)){ bestTime=t; document.getElementById('recordDisplay').innerText="🏆 ベスト: "+bestTime+"s"; } startCnf(); }
     }
+
     function shMo() {
         clearInterval(tI); isR=false;
-        document.querySelectorAll('.drop-zone').forEach(z => { z.innerText=z.getAttribute('data-ans'); z.className="drop-zone"; });
+        document.querySelectorAll('.drop-zone').forEach(z => {
+            const ansSet = z.getAttribute('data-ans-set');
+            const ans = z.getAttribute('data-ans');
+            z.innerText = ansSet || ans;
+            z.className="drop-zone";
+        });
         document.getElementById('wordBank').innerHTML="お手本表示中。";
     }
     const cvs=document.getElementById("confetti-canvas"); const ctx=cvs.getContext("2d"); let pts=[];

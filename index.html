@@ -831,7 +831,7 @@
 // ============================================================
 const UNITS = [
   {
-    id: 'pure_mixture',
+    id: 'pure_mixture', chapter:'busshitsu',
     name: '純物質と混合物',
     symbol: '⚛',
     color: '#F59E0B',
@@ -904,7 +904,7 @@ const UNITS = [
     ]
   },
   {
-    id: 'separation_1',
+    id: 'separation_1', chapter:'busshitsu',
     name: '混合物の分離方法 ①',
     symbol: '⚗',
     color: '#3B82F6',
@@ -983,7 +983,7 @@ const UNITS = [
   // 単元3: 分離方法② (昇華・抽出・再結晶・クロマト)
   // ============================================================
   {
-    id: 'separation_2',
+    id: 'separation_2', chapter:'busshitsu',
     name: '混合物の分離方法 ②',
     symbol: '⚛',
     color: '#06B6D4',
@@ -1059,7 +1059,7 @@ const UNITS = [
   // 単元4: 元素・単体・化合物
   // ============================================================
   {
-    id: 'element',
+    id: 'element', chapter:'busshitsu',
     name: '元素・単体・化合物',
     symbol: '⚛',
     color: '#10B981',
@@ -1136,7 +1136,7 @@ const UNITS = [
   // 単元5: 同素体 (SCOP)
   // ============================================================
   {
-    id: 'allotrope',
+    id: 'allotrope', chapter:'busshitsu',
     name: '同素体 (SCOP)',
     symbol: '◇',
     color: '#A855F7',
@@ -1214,7 +1214,7 @@ const UNITS = [
   // 単元6: 元素の検出 (沈殿反応・炎色反応)
   // ============================================================
   {
-    id: 'detection',
+    id: 'detection', chapter:'busshitsu',
     name: '元素の検出',
     symbol: '🔥',
     color: '#EF4444',
@@ -1293,7 +1293,7 @@ const UNITS = [
   // 単元7: 物質の三態と状態変化
   // ============================================================
   {
-    id: 'states',
+    id: 'states', chapter:'busshitsu',
     name: '物質の三態と状態変化',
     symbol: '❄',
     color: '#3B82F6',
@@ -1367,7 +1367,229 @@ const UNITS = [
       { type:'term', front:'絶対温度の換算式', back:'T(K) = t(℃) + 273', mistake:'プラス273を忘れない!\n0℃=273 K、100℃=373 K、27℃=300 K' },
       { type:'qa', front:'純物質と混合物の見分け方(熱)', back:'純物質→沸点・融点が一定\n混合物→温度が一定にならない\n海水が-2℃でも凍らないのはこのため。' }
     ]
-  }
+  },
+
+  // ── 酸化還元 ──
+  { id:'oxred_oxnum', name:'酸化数のルールと計算', chapter:'oxred',
+    symbol:'🔢', color:'#8B5CF6', colorD:'#6D28D9', bgColor:'#EDE9FE',
+    intro:'酸化数は5つのルールで計算できます。x をおいた方程式を立てる手順をマスターしましょう。',
+    steps:[
+      { title:'ルール①②：単体・単原子イオン',
+        body:'[bold:ルール①：単体の酸化数 = 0]\nH₂, O₂, Fe, Cu など単体はすべて 0。\n\n[bold:ルール②：単原子イオン = イオンの電荷]\nNa⁺→+1、Cl⁻→−1、Fe³⁺→+3\n\n[tip:まず単体か化合物かを確認。Cu（単体）は0、CuO中のCuは+2。]',
+        miniTest:[
+          {type:'choice',q:'単体 Cu の酸化数は？',options:['+2','0','+1','−2'],answer:1},
+          {type:'choice',q:'Fe³⁺ の酸化数は？',options:['0','+2','+3','−3'],answer:2}
+        ]
+      },
+      { title:'ルール③④：化合物・H・O の酸化数',
+        body:'[bold:ルール③：化合物の酸化数の合計 = 0]\n x をおいて方程式で計算。\n\n[bold:ルール④：化合物中のH=+1、O=−2（例外あり）]\n\n例：CO₂ の C → x+(−2)×2=0 → x=+4\n例：HNO₃ の N → (+1)+x+(−2)×3=0 → x=+5\n\n[tip:「xをおいて方程式」が鉄則！]',
+        miniTest:[
+          {type:'fill',q:'CO₂ の C の酸化数は{0}。',answers:['+4'],bank:['+4','+2','0','−2']},
+          {type:'choice',q:'H₂S の S の酸化数は？（H=+1）',options:['+2','0','−2','+4'],answer:2}
+        ]
+      },
+      { title:'ルール⑤：多原子イオン・例外',
+        body:'[bold:ルール⑤：多原子イオンの合計 = イオンの電荷]\n\n例：MnO₄⁻ の Mn → x+(−2)×4=−1 → x=+7\n例：Cr₂O₇²⁻ の Cr（Cr が2個！）→ 2x+(−2)×7=−2 → x=+6\n\n[bold:例外]\nH₂O₂ の O = −1（通常は−2）\nNaH の H = −1\n\n[tip:原子が2個なら「2x」とおく！]',
+        miniTest:[
+          {type:'fill',q:'MnO₄⁻ の Mn の酸化数は{0}。',answers:['+7'],bank:['+7','+6','+5','+4']},
+          {type:'choice',q:'H₂O₂ の O の酸化数は？',options:['−2','0','−1','+1'],answer:2}
+        ]
+      }
+    ],
+    fillBlanks:[{
+      text:'単体の酸化数は{0}。単原子イオンはイオンの{1}に等しい。化合物中のHは{2}、Oは{3}（例外あり）。',
+      answers:['0','電荷','+1','−2'],
+      bank:['0','+1','−1','−2','電荷','mol数','+2']
+    }],
+    quiz:[
+      {type:'choice',q:'KMnO₄ の Mn の酸化数は？（K=+1,O=−2）',options:['+4','+5','+6','+7'],answer:3},
+      {type:'choice',q:'H₂O₂ の O の酸化数は？',options:['−2','0','−1','+1'],answer:2},
+      {type:'fill',q:'Cr₂O₇²⁻ の Cr の酸化数は{0}。',answers:['+6'],bank:['+3','+6','+7','+4']},
+      {type:'choice',q:'NH₄⁺ の N の酸化数は？（H=+1）',options:['+3','0','−3','+1'],answer:2}
+    ],
+    flashcards:[
+      {type:'qa',front:'単体の酸化数',back:'0\n例：H₂,O₂,Fe,Cu → すべて0'},
+      {type:'qa',front:'KMnO₄ の Mn',back:'+7\n(+1)+x+(−2)×4=0 → x=+7'},
+      {type:'qa',front:'Cr₂O₇²⁻ の Cr',back:'+6\n2x+(−2)×7=−2 → x=+6'},
+      {type:'qa',front:'H₂O₂ の O（例外）',back:'−1（通常の−2ではない）'}
+    ]
+  },
+  { id:'oxred_def', name:'酸化・還元の定義（4つの視点）', chapter:'oxred',
+    symbol:'⚡', color:'#0EA5E9', colorD:'#0369A1', bgColor:'#E0F2FE',
+    intro:'「酸化」「還元」は4つの視点で定義できます。電子のやり取りが本質です。',
+    steps:[
+      { title:'視点①②：酸素と水素による定義',
+        body:'[bold:視点①：酸素]\n酸化=酸素を得る　還元=酸素を失う\n\n[bold:視点②：水素]\n酸化=水素を失う　還元=水素を得る\n\n[term:注意：酸素と水素で「得る・失う」が逆！]\nO の酸化数は−2 → Oを得ると酸化\nH の酸化数は+1 → Hを得ると還元',
+        miniTest:[
+          {type:'choice',q:'CuO+H₂→Cu+H₂O で「還元された」のは？',options:['H₂','Cu','CuO','H₂O'],answer:2},
+          {type:'choice',q:'「酸素を得ると酸化」「水素を得ると？」',options:['酸化','還元','変化なし','分解'],answer:1}
+        ]
+      },
+      { title:'視点③④：電子と酸化数による定義',
+        body:'[bold:視点③：電子（最も本質的）]\n酸化=電子を失う　還元=電子を得る\nZn→Zn²⁺+2e⁻（Zn が酸化）\n\n[bold:視点④：酸化数（最も広い）]\n酸化=酸化数が増える\n還元=酸化数が減る\n\n[bold:酸化と還元は必ず同時に起こる！]\n\n[tip:中和・沈殿生成は酸化還元反応ではない。]',
+        miniTest:[
+          {type:'choice',q:'「還元」とは電子を？',options:['失うこと','得ること','酸素を得ること','水素を失うこと'],answer:1},
+          {type:'choice',q:'次のうち酸化還元反応でないのは？',options:['2Na+2H₂O→2NaOH+H₂','NaCl+AgNO₃→AgCl↓+NaNO₃','Cl₂+2NaI→2NaCl+I₂','Fe+2HCl→FeCl₂+H₂'],answer:1}
+        ]
+      },
+      { title:'酸化剤・還元剤とは',
+        body:'[term:酸化剤]：相手から電子を受け取る → 自分は還元される\n[term:還元剤]：相手に電子を渡す → 自分は酸化される\n\n[bold:名前と逆の変化に注意！]\n酸化剤 → 自分は還元される\n還元剤 → 自分は酸化される\n\n[bold:4視点まとめ]\n酸素：酸化=得る/還元=失う\n水素：酸化=失う/還元=得る\n電子：酸化=失う/還元=得る\n酸化数：酸化=増える/還元=減る',
+        miniTest:[
+          {type:'choice',q:'酸化剤が反応したとき酸化剤自身は？',options:['酸化される','還元される','変化しない','分解する'],answer:1},
+          {type:'fill',q:'還元剤は電子を相手に{0}。自分は{1}される。',answers:['渡す','酸化'],bank:['渡す','受け取る','酸化','還元']}
+        ]
+      }
+    ],
+    fillBlanks:[{
+      text:'酸化とは酸素を{0}・電子を{1}・酸化数が{2}こと。酸化剤は相手を酸化させ自分は{3}される。',
+      answers:['得る','失う','増える','還元'],
+      bank:['得る','失う','増える','減る','酸化','還元']
+    }],
+    quiz:[
+      {type:'choice',q:'酸化数0→+2の変化は？',options:['還元された','酸化された','変化なし','イオン化'],answer:1},
+      {type:'choice',q:'酸化還元反応はどれか？',options:['HCl+NaOH→NaCl+H₂O','BaCl₂+H₂SO₄→BaSO₄↓+2HCl','2H₂+O₂→2H₂O','CO₂+H₂O→H₂CO₃'],answer:2},
+      {type:'fill',q:'還元剤は自分が{0}される。酸化数が{1}する。',answers:['酸化','増加'],bank:['酸化','還元','増加','減少']},
+      {type:'choice',q:'還元剤が電子を渡すと還元剤の酸化数は？',options:['減る','増える','変わらない','0になる'],answer:1}
+    ],
+    flashcards:[
+      {type:'qa',front:'酸化の定義（電子）',back:'電子を失うこと → 酸化数が増える'},
+      {type:'qa',front:'還元の定義（電子）',back:'電子を得ること → 酸化数が減る'},
+      {type:'qa',front:'酸化剤とは',back:'相手から電子を受け取る\n自分自身は還元される'},
+      {type:'qa',front:'還元剤とは',back:'相手に電子を渡す\n自分自身は酸化される'}
+    ]
+  },
+  { id:'oxred_agents', name:'酸化剤・還元剤の種類と反応', chapter:'oxred',
+    symbol:'🧪', color:'#10B981', colorD:'#059669', bgColor:'#D1FAE5',
+    intro:'入試頻出の酸化剤8種・還元剤6種の反応前後と色の変化。なぜその生成物かまで理解しましょう。',
+    steps:[
+      { title:'主な酸化剤8種',
+        body:'[bold:① KMnO₄（酸性）]\nMnO₄⁻（赤紫）→ Mn²⁺（ほぼ無色）e⁻ 5個\n\n[bold:② K₂Cr₂O₇（酸性）]\nCr₂O₇²⁻（橙赤）→ Cr³⁺（緑）e⁻ 6個\n\n③H₂O₂　酸性→H₂O、中塩基性→OH⁻、e⁻ 2個\n④希HNO₃→NO（無色）e⁻ 3個\n⑤濃HNO₃→NO₂（赤褐）e⁻ 1個\n⑥熱濃H₂SO₄→SO₂ e⁻ 2個\n⑦Cl₂（黄緑）→2Cl⁻（無色）e⁻ 2個\n⑧SO₂（強還元剤と）→S（黄）e⁻ 4個\n\n[tip:希HNO₃→NO（無色）、濃HNO₃→NO₂（赤褐）は頻出！]',
+        miniTest:[
+          {type:'choice',q:'KMnO₄（酸性）の生成物と色は？',options:['Mn²⁺（ほぼ無色）','MnO₂（黒）','Cr³⁺（緑）','Mn（銀）'],answer:0},
+          {type:'choice',q:'希HNO₃が生成する気体は？',options:['NO₂（赤褐）','SO₂（無色）','NO（無色）','N₂（無色）'],answer:2}
+        ]
+      },
+      { title:'主な還元剤6種と二面性',
+        body:'[bold:還元剤6種]\n①H₂O₂（強酸化剤と）→O₂ e⁻ 2個\n②SO₂→SO₄²⁻ e⁻ 2個\n③H₂S→S（黄）e⁻ 2個\n④(COOH)₂→2CO₂ e⁻ 2個\n⑤KI（2I⁻）→I₂（褐）e⁻ 2個\n⑥FeSO₄（Fe²⁺）→Fe³⁺ e⁻ 1個\n\n[term:H₂O₂とSO₂は二面性あり！]\nH₂O₂：通常は酸化剤/KMnO₄などと→還元剤\nSO₂：通常は還元剤/H₂Sなど強還元剤と→酸化剤\n\n[tip:二面性のカギ：H₂O₂のO=−1（中間値）、SO₂のS=+4（中間値）]',
+        miniTest:[
+          {type:'choice',q:'H₂S が還元剤のとき生成するのは？',options:['SO₄²⁻','S（黄色固体）','SO₂','H₂SO₄'],answer:1},
+          {type:'fill',q:'FeSO₄（Fe²⁺）は還元剤として{0}になる。e⁻ は{1}個。',answers:['Fe³⁺','1'],bank:['Fe³⁺','Fe','1','2','3']}
+        ]
+      },
+      { title:'H₂O₂ の条件による違い',
+        body:'[bold:酸性→H₂O]\nH₂O₂+2H⁺+2e⁻→2H₂O\nH⁺が豊富 → OH⁻+H⁺→H₂O になれる\n\n[bold:中・塩基性→OH⁻]\nH₂O₂+2e⁻→2OH⁻\nH⁺不足 → OH⁻のまま止まる\n\n[bold:KMnO₄と（還元剤として）→O₂]\nH₂O₂→O₂+2H⁺+2e⁻\nO：−1→0（増える → 還元剤）',
+        miniTest:[
+          {type:'choice',q:'H₂O₂が中・塩基性で酸化剤のとき生成するのは？',options:['H₂O','OH⁻','O₂','H₂'],answer:1},
+          {type:'choice',q:'H₂O₂がKMnO₄と反応するときH₂O₂の役割は？',options:['酸化剤（→H₂O）','還元剤（→O₂）','触媒','溶媒'],answer:1}
+        ]
+      }
+    ],
+    fillBlanks:[{
+      text:'KMnO₄（酸性）はMnO₄⁻から{0}に変化（赤紫→ほぼ無色）。K₂Cr₂O₇はCr₂O₇²⁻から{1}に（橙赤→{2}色）。希HNO₃→{3}、濃HNO₃→{4}。',
+      answers:['Mn²⁺','Cr³⁺','緑','NO','NO₂'],
+      bank:['Mn²⁺','MnO₂','Cr³⁺','Cr²⁺','緑','青','NO','NO₂','N₂','SO₂']
+    }],
+    quiz:[
+      {type:'choice',q:'K₂Cr₂O₇が酸化剤として反応後のイオンの色は？',options:['橙赤','緑','無色','赤紫'],answer:1},
+      {type:'choice',q:'SO₂が酸化剤になるのは？',options:['KMnO₄と','I₂と','H₂Sなど強還元剤と','H₂O₂と'],answer:2},
+      {type:'fill',q:'H₂S→{0}（黄色固体）。KI（2I⁻）→{1}（褐色）。',answers:['S','I₂'],bank:['S','SO₂','I₂','I⁻']},
+      {type:'choice',q:'FeSO₄（Fe²⁺）が渡すe⁻は何個か？',options:['1個','2個','3個','5個'],answer:0}
+    ],
+    flashcards:[
+      {type:'qa',front:'KMnO₄（酸性）',back:'MnO₄⁻（赤紫）→Mn²⁺（ほぼ無色）e⁻ 5個'},
+      {type:'qa',front:'K₂Cr₂O₇（酸性）',back:'Cr₂O₇²⁻（橙赤）→Cr³⁺（緑）e⁻ 6個'},
+      {type:'qa',front:'希HNO₃ vs 濃HNO₃',back:'希→NO（無色）e⁻ 3個\n濃→NO₂（赤褐）e⁻ 1個'},
+      {type:'qa',front:'H₂O₂の二面性のカギ',back:'Oの酸化数が−1（中間値）\n通常：酸化剤 / KMnO₄と：還元剤'}
+    ]
+  },
+  { id:'oxred_half', name:'半反応式の作り方', chapter:'oxred',
+    symbol:'⚗', color:'#EC4899', colorD:'#BE185D', bgColor:'#FCE7F3',
+    intro:'O→H→電荷の3ステップで半反応式が作れます。手順を身につければどんな試薬にも対応できます。',
+    steps:[
+      { title:'半反応式の4ステップ',
+        body:'[bold:手順]\n① 反応前後を書く（酸化数の変化からe⁻の数を確認）\n② OをH₂Oで合わせる\n③ HをH⁺で合わせる\n④ 電荷をe⁻で合わせる\n\n[tip:酸化剤はe⁻を左辺に、還元剤はe⁻を右辺に！]',
+        miniTest:[
+          {type:'choice',q:'酸化剤のe⁻を書く位置は？',options:['右辺','左辺','どちらでも','書かない'],answer:1},
+          {type:'choice',q:'Oの数を合わせるために加えるのは？',options:['H⁺','OH⁻','H₂O','e⁻'],answer:2}
+        ]
+      },
+      { title:'KMnO₄ の半反応式',
+        body:'① MnO₄⁻→Mn²⁺（Mn：+7→+2、5減る）\n② O4個 → 右辺に4H₂O：MnO₄⁻→Mn²⁺+4H₂O\n③ H8個 → 左辺に8H⁺：MnO₄⁻+8H⁺→Mn²⁺+4H₂O\n④ 電荷：左辺+7、右辺+2 → 差5 → 左辺に5e⁻\n\n[term:MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O]',
+        miniTest:[
+          {type:'fill',q:'MnO₄⁻ + {0}H⁺ + 5e⁻ → Mn²⁺ + {1}H₂O',answers:['8','4'],bank:['4','5','6','8','7','2']},
+          {type:'choice',q:'MnO₄⁻が受け取るe⁻は何個？',options:['3個','4個','5個','7個'],answer:2}
+        ]
+      },
+      { title:'その他の半反応式',
+        body:'[bold:Fe²⁺（還元剤）]\nFe²⁺→Fe³⁺+e⁻\n\n[bold:H₂S（還元剤）]\nH₂S→S+2H⁺+2e⁻（O含まず→H₂O・H⁺不要）\n\n[bold:Cl₂（酸化剤）]\nCl₂+2e⁻→2Cl⁻（最もシンプル）\n\n[bold:K₂Cr₂O₇（酸性）]\nCr₂O₇²⁻+14H⁺+6e⁻→2Cr³⁺+7H₂O\n\n[tip:Oを含まない反応はH₂OもH⁺も不要！]',
+        miniTest:[
+          {type:'fill',q:'Fe²⁺→Fe³⁺+{0}e⁻',answers:['1'],bank:['1','2','3','5']},
+          {type:'fill',q:'Cr₂O₇²⁻+14H⁺+{0}e⁻→2Cr³⁺+7H₂O',answers:['6'],bank:['3','4','5','6','7']}
+        ]
+      }
+    ],
+    fillBlanks:[{
+      text:'手順：OをH₂Oで合わせ→HをH⁺で合わせ→電荷を{0}で合わせる。酸化剤のe⁻は{1}辺。MnO₄⁻の式：MnO₄⁻+8H⁺+{2}e⁻→Mn²⁺+4H₂O。',
+      answers:['e⁻','左','5'],
+      bank:['e⁻','H⁺','左','右','5','3','7']
+    }],
+    quiz:[
+      {type:'fill',q:'MnO₄⁻+8H⁺+{0}e⁻→Mn²⁺+4H₂O',answers:['5'],bank:['3','4','5','6','7']},
+      {type:'fill',q:'Cr₂O₇²⁻+14H⁺+{0}e⁻→2Cr³⁺+7H₂O',answers:['6'],bank:['3','4','5','6','7']},
+      {type:'choice',q:'H₂O₂（酸性・酸化剤）の半反応式は？',options:['H₂O₂→O₂+2H⁺+2e⁻','H₂O₂+2H⁺+2e⁻→2H₂O','H₂O₂+2e⁻→2OH⁻','H₂O₂→H₂O+O'],answer:1},
+      {type:'choice',q:'SO₂（還元剤）の半反応式は？',options:['SO₂+2e⁻→S+O₂','SO₂→S+O₂+2e⁻','SO₂+2H₂O→SO₄²⁻+4H⁺+2e⁻','SO₂→SO₃+2e⁻'],answer:2}
+    ],
+    flashcards:[
+      {type:'qa',front:'KMnO₄（酸性）の半反応式',back:'MnO₄⁻+8H⁺+5e⁻→Mn²⁺+4H₂O'},
+      {type:'qa',front:'K₂Cr₂O₇（酸性）の半反応式',back:'Cr₂O₇²⁻+14H⁺+6e⁻→2Cr³⁺+7H₂O'},
+      {type:'qa',front:'Fe²⁺（還元剤）',back:'Fe²⁺→Fe³⁺+e⁻'},
+      {type:'qa',front:'H₂S（還元剤）',back:'H₂S→S+2H⁺+2e⁻'}
+    ]
+  },
+  { id:'oxred_combine', name:'半反応式の組み合わせ', chapter:'oxred',
+    symbol:'🔗', color:'#F59E0B', colorD:'#D97706', bgColor:'#FEF3C7',
+    intro:'酸化剤と還元剤の半反応式を組み合わせてイオン反応式を作ります。e⁻の係数を揃えることがポイント。',
+    steps:[
+      { title:'組み合わせの手順とmol比',
+        body:'[bold:手順]\n① 酸化剤の半反応式（e⁻左辺）\n② 還元剤の半反応式（e⁻右辺）\n③ e⁻が等しくなるよう整数倍\n④ 辺々加える（e⁻が消える）\n\n[bold:mol比 = e⁻の数の逆比]\nKMnO₄（e⁻5個）+FeSO₄（e⁻1個）→mol比 1：5\n\n[term:受け取るe⁻ = 渡すe⁻]',
+        miniTest:[
+          {type:'choice',q:'KMnO₄（e⁻5個）とFeSO₄（e⁻1個）のmol比は？',options:['1：1','5：1','1：5','2：5'],answer:2},
+          {type:'fill',q:'e⁻の数の最小公倍数で揃えると、e⁻が{0}消える。',answers:['両辺から'],bank:['両辺から','左辺から','右辺から','反応して']}
+        ]
+      },
+      { title:'頻出反応①②③',
+        body:'[bold:① KMnO₄+H₂O₂（酸性）]\ne⁻ 5 vs 2 → ×2,×5\n2MnO₄⁻+6H⁺+5H₂O₂→2Mn²⁺+8H₂O+5O₂\nmol比 2：5\n\n[bold:② KMnO₄+(COOH)₂]\ne⁻ 5 vs 2 → ×2,×5\n2MnO₄⁻+16H⁺+5C₂O₄²⁻→2Mn²⁺+8H₂O+10CO₂\nmol比 2：5\n\n[bold:③ KMnO₄+FeSO₄]\ne⁻ 5 vs 1 → ×1,×5\nMnO₄⁻+8H⁺+5Fe²⁺→Mn²⁺+4H₂O+5Fe³⁺\nmol比 1：5',
+        miniTest:[
+          {type:'choice',q:'KMnO₄と(COOH)₂のmol比（KMnO₄：(COOH)₂）は？',options:['1：2','5：2','2：5','1：5'],answer:2},
+          {type:'fill',q:'KMnO₄（e⁻5個）とH₂O₂（e⁻2個）の最小公倍数は{0}。',answers:['10'],bank:['5','7','10','8']}
+        ]
+      },
+      { title:'頻出反応④⑤⑥',
+        body:'[bold:④ K₂Cr₂O₇+FeSO₄]\ne⁻ 6 vs 1 → ×1,×6\nCr₂O₇²⁻+14H⁺+6Fe²⁺→2Cr³⁺+7H₂O+6Fe³⁺\nmol比 1：6\n\n[bold:⑤ Cl₂+FeSO₄]\ne⁻ 2 vs 1 → ×1,×2\nCl₂+2Fe²⁺→2Cl⁻+2Fe³⁺（H₂O・H⁺不要）\nmol比 1：2\n\n[bold:⑥ 希HNO₃+Cu]\ne⁻ 3 vs 2 → ×2,×3\n2HNO₃+6H⁺+3Cu→3Cu²⁺+2NO↑+4H₂O\nmol比 2：3\n\n[tip:Cl₂+FeSO₄ はH₂OもH⁺も不要！]',
+        miniTest:[
+          {type:'fill',q:'K₂Cr₂O₇：FeSO₄ のmol比は 1：{0}。',answers:['6'],bank:['3','4','5','6','7']},
+          {type:'choice',q:'希HNO₃とCuのmol比（HNO₃：Cu）は？',options:['3：2','1：3','2：3','1：2'],answer:2}
+        ]
+      }
+    ],
+    fillBlanks:[{
+      text:'KMnO₄：シュウ酸={0}、KMnO₄：FeSO₄={1}、K₂Cr₂O₇：FeSO₄={2}、Cl₂：FeSO₄={3}。mol比はe⁻の数の{4}になる。',
+      answers:['2：5','1：5','1：6','1：2','逆比'],
+      bank:['2：5','1：5','1：6','1：2','5：2','逆比','同比']
+    }],
+    quiz:[
+      {type:'choice',q:'KMnO₄とシュウ酸のmol比は？',options:['1：2','2：1','2：5','5：2'],answer:2},
+      {type:'choice',q:'Cl₂+FeSO₄ のイオン反応式は？',options:['Cl₂+2Fe²⁺→2Cl⁻+2Fe³⁺','Cl₂+Fe²⁺→2Cl⁻+Fe³⁺','Cl₂+2Fe²⁺+2H⁺→2Cl⁻+2Fe³⁺','2Cl₂+Fe²⁺→4Cl⁻+Fe³⁺'],answer:0},
+      {type:'fill',q:'希HNO₃とCuのmol比（HNO₃：Cu）は{0}。',answers:['2：3'],bank:['1：3','2：3','3：2','1：2']},
+      {type:'choice',q:'半反応式組み合わせ後e⁻が消えるのは？',options:['軽いから','受け取るe⁻=渡すe⁻で両辺同数→消える','中和されるから','H⁺と反応するから'],answer:1}
+    ],
+    flashcards:[
+      {type:'qa',front:'KMnO₄ vs FeSO₄',back:'mol比 1：5\nMnO₄⁻+8H⁺+5Fe²⁺→Mn²⁺+4H₂O+5Fe³⁺'},
+      {type:'qa',front:'K₂Cr₂O₇ vs FeSO₄',back:'mol比 1：6\nCr₂O₇²⁻+14H⁺+6Fe²⁺→2Cr³⁺+7H₂O+6Fe³⁺'},
+      {type:'qa',front:'Cl₂ vs FeSO₄',back:'mol比 1：2\nCl₂+2Fe²⁺→2Cl⁻+2Fe³⁺'},
+      {type:'qa',front:'希HNO₃ vs Cu',back:'mol比 2：3\n2HNO₃+6H⁺+3Cu→3Cu²⁺+2NO↑+4H₂O'}
+    ]
+  },
 ];
 
 // ============================================================
@@ -1394,7 +1616,7 @@ function saveSettings(s) {
 let state = {
   progress: loadProgress(),
   settings: loadSettings(),
-  view: 'dashboard',
+  view: 'dashboard', chapter: 'busshitsu',
   activeUnit: null,
   tab: 'learn',
   currentStep: 0,
@@ -1481,6 +1703,30 @@ function showModal(opts) {
     actions.appendChild(btn);
   });
 }
+
+function switchChapter(ch) {
+  state.chapter = ch;
+  render();
+  window.scrollTo(0, 0);
+}
+
+function showReviewList() {
+  var reviewUnits = UNITS.filter(function(u){ var m=getProg(u.id).mark; return m==='B'||m==='C'; });
+  if (!reviewUnits.length) return;
+  var chNames = {busshitsu:'物質の構成', oxred:'酸化還元'};
+  var items = reviewUnits.map(function(u){
+    var m = getProg(u.id).mark;
+    return '<div onclick="openUnit(\''+u.id+'\');closeModal();" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:#fff;border:1.5px solid #E5E7EB;margin-bottom:8px;cursor:pointer;">'
+         + '<div style="width:34px;height:34px;border-radius:8px;background:'+u.bgColor+';display:flex;align-items:center;justify-content:center;font-size:16px;">'+u.symbol+'</div>'
+         + '<div style="flex:1;"><div style="font-size:11px;color:#999;">'+(chNames[u.chapter]||'')+'</div><div style="font-weight:700;font-size:13px;">'+u.name+'</div></div>'
+         + '<div style="font-size:18px;">'+(m==='B'?'🤔':'😣')+'</div></div>';
+  }).join('');
+  document.getElementById('modalTitle').textContent = '📋 要復習リスト';
+  document.getElementById('modalBody').innerHTML = '<div style="font-size:12px;color:#666;margin-bottom:10px;">タップして学習を再開できます。</div>' + items;
+  document.getElementById('modalActions').innerHTML = '<button class="modal-btn secondary" onclick="closeModal()">閉じる</button>';
+  document.getElementById('modal').classList.add('show');
+}
+
 function closeModal() { document.getElementById('modal').className = 'modal-bg'; }
 
 function render() {
@@ -1490,12 +1736,14 @@ function render() {
 }
 
 function renderDashboard() {
-  const totalSteps = UNITS.reduce((s,u) => s + u.steps.length, 0);
-  const doneSteps = UNITS.reduce((s,u) => {
+  var chUnits = UNITS.filter(function(u){ return u.chapter === state.chapter; });
+  var reviewUnits = UNITS.filter(function(u){ var m=getProg(u.id).mark; return m==='B'||m==='C'; });
+  const totalSteps = chUnits.reduce((s,u) => s + u.steps.length, 0);
+  const doneSteps = chUnits.reduce((s,u) => {
     const p = getProg(u.id);
     return s + Object.values(p.steps||{}).filter(v=>v).length;
   }, 0);
-  const passedUnits = UNITS.filter(u => getProg(u.id).passed).length;
+  const passedUnits = chUnits.filter(u => getProg(u.id).passed).length;
   const pct = totalSteps > 0 ? Math.round(doneSteps/totalSteps*100) : 0;
 
   let html = '<div class="container">';
@@ -1503,8 +1751,8 @@ function renderDashboard() {
     <div class="header">
       <div class="header-inner">
         <div class="header-tag">CHEMISTRY BASIC ／ 化学基礎</div>
-        <h1 class="header-title">物質の構成</h1>
-        <div class="header-sub">純物質・混合物 / 分離精製 / 元素 / 同素体 / 物質の三態</div>
+        <h1 class="header-title">${state.chapter==='oxred'?'酸化還元':'物質の構成'}</h1>
+        <div class="header-sub">${state.chapter==='oxred'?'酸化数 / 酸化・還元の定義 / 酸化剤・還元剤 / 半反応式':'純物質・混合物 / 分離精製 / 元素 / 同素体 / 物質の三態'}</div>
         <div class="stat-row">
           <div class="stat-card">
             <div class="stat-label">学習進捗</div>
@@ -1520,6 +1768,44 @@ function renderDashboard() {
     </div>
   `;
 
+  // ── 章タブ（化学基礎 全章） ──
+  var CHAPTERS = [
+    { id:'busshitsu',  label:'物質の構成',   icon:'⚛', color:'#F59E0B', done:true  },
+    { id:'oxred',      label:'酸化還元',     icon:'⚡', color:'#8B5CF6', done:true  },
+    { id:'ionization', label:'イオンと電離', icon:'🔋', color:'#0EA5E9', done:false },
+    { id:'acid_base',  label:'酸と塩基',     icon:'🧫', color:'#10B981', done:false },
+    { id:'redox_app',  label:'酸化還元応用', icon:'🏭', color:'#EC4899', done:false }
+  ];
+  var tabHtml = '<div style="margin-bottom:12px;">'
+    + '<div style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:.08em;margin-bottom:6px;">📚 化学基礎 ─ 単元を選ぶ</div>'
+    + '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
+  CHAPTERS.forEach(function(ch){
+    var isActive = (state.chapter === ch.id);
+    var baseStyle = 'padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;';
+    var soonTag = ch.done ? '' : ' <span style="font-size:9px;background:rgba(0,0,0,.12);padding:1px 5px;border-radius:10px;">準備中</span>';
+    if (!ch.done) {
+      tabHtml += '<button style="' + baseStyle + 'background:#F3F4F6;color:#9CA3AF;opacity:.6;cursor:default;">'
+               + ch.icon + ' ' + ch.label + soonTag + '</button>';
+    } else if (isActive) {
+      tabHtml += '<button id="tab-' + ch.id + '" style="' + baseStyle + 'cursor:pointer;background:' + ch.color + ';color:#fff;box-shadow:0 2px 8px ' + ch.color + '55;">'
+               + ch.icon + ' ' + ch.label + '</button>';
+    } else {
+      tabHtml += '<button id="tab-' + ch.id + '" style="' + baseStyle + 'cursor:pointer;background:#F3F4F6;color:#6B7280;">'
+               + ch.icon + ' ' + ch.label + '</button>';
+    }
+  });
+  tabHtml += '</div></div>';
+  html += tabHtml;
+
+  // 要復習バナー
+  if (reviewUnits.length > 0) {
+    html += '<div onclick="showReviewList()" style="background:linear-gradient(135deg,#FEF3C7,#FFFBEB);border:2px solid #F59E0B;border-radius:12px;padding:11px 14px;margin-bottom:12px;cursor:pointer;display:flex;align-items:center;gap:10px;">'
+         +  '<div style="font-size:22px;">📋</div>'
+         +  '<div style="flex:1;"><div style="font-weight:800;font-size:13px;color:#92400E;">要復習リスト</div>'
+         +  '<div style="font-size:11px;color:#B45309;margin-top:2px;">🤔微妙・😣苦手 が<strong>' + reviewUnits.length + '件</strong></div></div>'
+         +  '<div style="font-size:18px;color:#D97706;">›</div></div>';
+  }
+
   html += `
     <div class="settings">
       <span class="settings-label">⚙ ステップごとのミニテスト</span>
@@ -1532,7 +1818,7 @@ function renderDashboard() {
   `;
 
   html += '<div class="grid">';
-  UNITS.forEach((u, i) => {
+  chUnits.forEach((u, i) => {
     const p = getProg(u.id);
     const cssVars = `--unit-color:${u.color};--unit-color-d:${u.colorD};--unit-bg:${u.bgColor};--unit-glow:${u.color}66`;
     const stepsDone = Object.values(p.steps||{}).filter(v=>v).length;
@@ -1590,6 +1876,12 @@ function renderDashboard() {
   html += '<div class="footer">化学基礎 ① 物質の構成 / 全7単元</div>';
   html += '</div>';
   document.getElementById('app').innerHTML = html;
+  // 章タブのイベント設定
+  // 章タブのイベント設定（準備中以外）
+  ['busshitsu','oxred','ionization','acid_base','redox_app'].forEach(function(cid){
+    var btn = document.getElementById('tab-' + cid);
+    if (btn) btn.onclick = function(){ state.chapter = cid; render(); window.scrollTo(0,0); };
+  });
 }
 
 function setMiniMode(mode) {

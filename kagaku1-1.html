@@ -64,20 +64,22 @@
         </p>
         <table>
             <tr><th style="width:130px;">分類</th><th>物質名</th></tr>
+            <!-- 純物質4つ：data-group="q1_pure" で順番不問 -->
             <tr>
                 <td style="text-align:center;"><b>純物質</b></td>
                 <td>
-                    <span class="drop-zone" data-ans="塩化ナトリウム" onclick="zCl(this)" style="min-width:110px;"></span>　
-                    <span class="drop-zone" data-ans="アルゴン" onclick="zCl(this)"></span>　
-                    <span class="drop-zone" data-ans="プロパン" onclick="zCl(this)"></span>　
-                    <span class="drop-zone" data-ans="臭素" onclick="zCl(this)"></span>
+                    <span class="drop-zone" data-ans="塩化ナトリウム" data-group="q1_pure" onclick="zCl(this)" style="min-width:110px;"></span>　
+                    <span class="drop-zone" data-ans="アルゴン" data-group="q1_pure" onclick="zCl(this)"></span>　
+                    <span class="drop-zone" data-ans="プロパン" data-group="q1_pure" onclick="zCl(this)"></span>　
+                    <span class="drop-zone" data-ans="臭素" data-group="q1_pure" onclick="zCl(this)"></span>
                 </td>
             </tr>
+            <!-- 混合物2つ：data-group="q1_mix" で順番不問 -->
             <tr>
                 <td style="text-align:center;"><b>混合物</b></td>
                 <td>
-                    <span class="drop-zone" data-ans="塩酸" onclick="zCl(this)"></span>　
-                    <span class="drop-zone" data-ans="ガラス" onclick="zCl(this)"></span>
+                    <span class="drop-zone" data-ans="塩酸" data-group="q1_mix" onclick="zCl(this)"></span>　
+                    <span class="drop-zone" data-ans="ガラス" data-group="q1_mix" onclick="zCl(this)"></span>
                     <span class="hint">※塩酸は水に塩化水素が溶けたもの</span>
                 </td>
             </tr>
@@ -91,20 +93,22 @@
         </p>
         <table>
             <tr><th style="width:130px;">分類</th><th>物質名</th></tr>
+            <!-- 単体2つ：data-group="q2_tan" で順番不問 -->
             <tr>
                 <td style="text-align:center;"><b>単体</b></td>
                 <td>
-                    <span class="drop-zone" data-ans="オゾン" onclick="zCl(this)"></span>　
-                    <span class="drop-zone" data-ans="黒鉛" onclick="zCl(this)"></span>
+                    <span class="drop-zone" data-ans="オゾン" data-group="q2_tan" onclick="zCl(this)"></span>　
+                    <span class="drop-zone" data-ans="黒鉛" data-group="q2_tan" onclick="zCl(this)"></span>
                 </td>
             </tr>
+            <!-- 化合物4つ：data-group="q2_ka" で順番不問 -->
             <tr>
                 <td style="text-align:center;"><b>化合物</b></td>
                 <td>
-                    <span class="drop-zone" data-ans="アンモニア" onclick="zCl(this)"></span>　
-                    <span class="drop-zone" data-ans="水" onclick="zCl(this)"></span>　
-                    <span class="drop-zone" data-ans="ドライアイス" onclick="zCl(this)"></span>　
-                    <span class="drop-zone" data-ans="水酸化ナトリウム" onclick="zCl(this)" style="min-width:120px;"></span>
+                    <span class="drop-zone" data-ans="アンモニア" data-group="q2_ka" onclick="zCl(this)"></span>　
+                    <span class="drop-zone" data-ans="水" data-group="q2_ka" onclick="zCl(this)"></span>　
+                    <span class="drop-zone" data-ans="ドライアイス" data-group="q2_ka" onclick="zCl(this)"></span>　
+                    <span class="drop-zone" data-ans="水酸化ナトリウム" data-group="q2_ka" onclick="zCl(this)" style="min-width:120px;"></span>
                 </td>
             </tr>
         </table>
@@ -149,7 +153,6 @@
         "オゾン","黒鉛","アンモニア","水","ドライアイス","水酸化ナトリウム",
         "蒸留","ろ過","分留","再結晶","昇華","抽出","クロマトグラフィー",
         "混合物","純物質","化合物","単体","元素","分離","精製",
-        // ダミー
         "溶解","凝固","昇温","イオン","酸化物","金属","気体","固体","液体","溶媒","溶質"
     ];
     let sT, tI, isR = false, sW = null, bestTime = null;
@@ -165,11 +168,26 @@
             b.appendChild(d);
         });
     }
+    // グループ内順番不問判定
+    function checkGroup(groupName) {
+        const zones = [...document.querySelectorAll(`.drop-zone[data-group="${groupName}"]`)];
+        const correct = zones.map(z => z.getAttribute('data-ans')).sort().join('||');
+        const input = zones.map(z => z.innerText.trim()).sort().join('||');
+        return correct === input;
+    }
     function chAn() {
-        let ok=true;
+        let ok = true;
+        const doneGroups = {};
         document.querySelectorAll('.drop-zone').forEach(z => {
-            if(z.innerText.trim()===z.getAttribute('data-ans')) z.classList.add('correct');
-            else { z.classList.add('wrong'); ok=false; }
+            const group = z.getAttribute('data-group');
+            if (group) {
+                if (!(group in doneGroups)) doneGroups[group] = checkGroup(group);
+                if (doneGroups[group]) z.classList.add('correct');
+                else { z.classList.add('wrong'); ok = false; }
+            } else {
+                if (z.innerText.trim() === z.getAttribute('data-ans')) z.classList.add('correct');
+                else { z.classList.add('wrong'); ok = false; }
+            }
         });
         if(ok && isR){ clearInterval(tI); isR=false; const t=((Date.now()-sT)/1000).toFixed(1); if(bestTime===null||parseFloat(t)<parseFloat(bestTime)){ bestTime=t; document.getElementById('recordDisplay').innerText="🏆 ベスト: "+bestTime+"s"; } startCnf(); }
     }

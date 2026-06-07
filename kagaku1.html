@@ -4,14 +4,7 @@
     <meta charset="UTF-8">
     <title>化学基礎①：純物質・混合物・分離方法</title>
     <style>
-        :root {
-            --primary: #1a3a6b;
-            --accent: #F5A623;
-            --bg: #f4f6fb;
-            --correct: #d4edda;
-            --wrong: #f8d7da;
-            --drop-bg: #fff9c4;
-        }
+        :root { --primary: #1a3a6b; --accent: #F5A623; --bg: #f4f6fb; --correct: #d4edda; --wrong: #f8d7da; --drop-bg: #fff9c4; }
         body { font-family: 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif; background: var(--bg); margin: 0; padding: 0; overflow-x: hidden; }
         .page-nav { background: #fff; padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
         .nav-btn { text-decoration: none; padding: 8px 15px; background: #eee; color: #333; border-radius: 4px; font-size: 0.85em; font-weight: bold; border: 1px solid #ccc; transition: 0.2s; }
@@ -125,32 +118,24 @@
             </tr>
         </table>
 
-        <!-- 蒸留装置図 -->
         <div style="margin-top:20px; padding:16px; background:#f8f9fa; border:1px solid #ddd; border-radius:8px;">
             <div style="font-weight:bold; margin-bottom:10px; color:#1a3a6b;">【蒸留装置】空欄を埋めよ</div>
             <div style="position:relative; width:100%; max-width:750px; margin:0 auto;">
                 <img src="distill_blank.png" style="width:100%; display:block; border:1px solid #ccc; border-radius:6px;" alt="蒸留装置">
-
-                <!-- 左上：温度計テキスト -->
                 <div style="position:absolute; top:2%; left:5%; font-size:0.82em; line-height:1.8;">
                     温度計球部はここ。<br>
                     <span class="drop-zone" data-ans="沸点" onclick="zCl(this)" style="min-width:60px;"></span>の温度を計る。
                 </div>
-
-                <!-- 右上：冷却水テキスト -->
+                <!-- 理由①②はdata-group="cooling_reason"で順番不問 -->
                 <div style="position:absolute; top:-10%; left:65%; font-size:0.82em; line-height:1.9;">
                     冷却水は<span class="drop-zone" data-ans="下" onclick="zCl(this)" style="min-width:28px;"></span>から<span class="drop-zone" data-ans="上" onclick="zCl(this)" style="min-width:28px;"></span>へ。<br>
-                    理由①［<span class="drop-zone" data-ans="冷却管内を水で満たすため" onclick="zCl(this)" style="min-width:190px;"></span>］<br>
-                    　　②［<span class="drop-zone" data-ans="冷却効率を上げるため" onclick="zCl(this)" style="min-width:170px;"></span>］<br>
+                    理由①［<span class="drop-zone" data-ans="冷却管内を水で満たすため" data-group="cooling_reason" onclick="zCl(this)" style="min-width:190px;"></span>］<br>
+                    　　②［<span class="drop-zone" data-ans="冷却効率を上げるため" data-group="cooling_reason" onclick="zCl(this)" style="min-width:170px;"></span>］<br>
                     <span class="drop-zone" data-ans="リービッヒ" onclick="zCl(this)"></span>冷却器
                 </div>
-
-                <!-- 左下：沸騰石テキスト -->
                 <div style="position:absolute; bottom:3%; left:1%; font-size:0.82em;">
                     <span class="drop-zone" data-ans="沸騰石" onclick="zCl(this)"></span>→<span class="drop-zone" data-ans="突沸" onclick="zCl(this)"></span>を防ぐ
                 </div>
-
-                <!-- 右下：密栓テキスト -->
                 <div style="position:absolute; bottom:32%; right:-10%; font-size:0.82em;">
                     注）<span class="drop-zone" data-ans="密栓" onclick="zCl(this)"></span>をしない。
                 </div>
@@ -183,11 +168,26 @@
             b.appendChild(d);
         });
     }
+    // グループ内順番不問判定
+    function checkGroup(groupName) {
+        const zones = [...document.querySelectorAll(`.drop-zone[data-group="${groupName}"]`)];
+        const correct = zones.map(z => z.getAttribute('data-ans')).sort().join('||');
+        const input = zones.map(z => z.innerText.trim()).sort().join('||');
+        return correct === input;
+    }
     function chAn() {
-        let ok=true;
+        let ok = true;
+        const doneGroups = {};
         document.querySelectorAll('.drop-zone').forEach(z => {
-            if(z.innerText.trim()===z.getAttribute('data-ans')) z.classList.add('correct');
-            else { z.classList.add('wrong'); ok=false; }
+            const group = z.getAttribute('data-group');
+            if (group) {
+                if (!(group in doneGroups)) doneGroups[group] = checkGroup(group);
+                if (doneGroups[group]) z.classList.add('correct');
+                else { z.classList.add('wrong'); ok = false; }
+            } else {
+                if (z.innerText.trim() === z.getAttribute('data-ans')) z.classList.add('correct');
+                else { z.classList.add('wrong'); ok = false; }
+            }
         });
         if(ok && isR){ clearInterval(tI); isR=false; const t=((Date.now()-sT)/1000).toFixed(1); if(bestTime===null||parseFloat(t)<parseFloat(bestTime)){ bestTime=t; document.getElementById('recordDisplay').innerText="🏆 ベスト: "+bestTime+"s"; } startCnf(); }
     }
