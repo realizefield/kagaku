@@ -275,7 +275,8 @@ main{padding:16px 14px 0;}
 .fill-table td{padding:8px 10px;border:1px solid #e2e8f0;text-align:center;vertical-align:middle;}
 .fill-table-wrap{margin-bottom:4px;}
 
-.blank{display:inline-block;min-width:60px;padding:4px 10px;border-radius:6px;border:2px dashed #94a3b8;background:#f8faff;color:var(--text-sub);cursor:pointer;font-size:.88em;font-weight:600;transition:.15s;text-align:center;vertical-align:middle;}
+.blank.hint{background:#FEF9C3;color:#854D0E;border-color:#EAB308;opacity:.85;}
+  .blank{display:inline-block;min-width:60px;padding:4px 10px;border-radius:6px;border:2px dashed #94a3b8;background:#f8faff;color:var(--text-sub);cursor:pointer;font-size:.88em;font-weight:600;transition:.15s;text-align:center;vertical-align:middle;}
 .blank:hover{border-color:var(--primary);background:var(--primary-light);}
 .blank.filled{border-style:solid;border-color:var(--primary);background:var(--primary-light);color:var(--primary-dark);}
 .blank.correct{border-color:var(--rd);background:var(--success-light);color:var(--rd);cursor:default;}
@@ -622,15 +623,15 @@ main{padding:16px 14px 0;}
         <tbody>
           <tr>
             <td>KMnO₄・I₂ など（強い酸化剤）</td>
-            <td><span class="blank" data-ans="還元剤" data-id="b1">＿＿</span></td>
-            <td>+4 → <span class="blank" data-ans="+6" data-id="b2">＿＿</span></td>
-            <td><span class="blank" data-ans="SO₄²⁻" data-id="b3">＿＿</span></td>
+            <td><span class="blank hint" data-ans="還元剤" data-filled="還元剤" data-id="b1">還元剤</span></td>
+            <td>+4 → <span class="blank hint" data-ans="+6" data-filled="+6" data-id="b2">+6</span></td>
+            <td><span class="blank hint" data-ans="SO₄²⁻" data-filled="SO₄²⁻" data-id="b3">SO₄²⁻</span></td>
           </tr>
           <tr>
             <td>H₂S など（強い還元剤）</td>
-            <td><span class="blank" data-ans="酸化剤" data-id="b4">＿＿</span></td>
-            <td>+4 → <span class="blank" data-ans="0" data-id="b5">＿＿</span></td>
-            <td><span class="blank" data-ans="S" data-id="b6">＿＿</span></td>
+            <td><span class="blank hint" data-ans="酸化剤" data-filled="酸化剤" data-id="b4">酸化剤</span></td>
+            <td>+4 → <span class="blank hint" data-ans="0" data-filled="0" data-id="b5">0</span></td>
+            <td><span class="blank hint" data-ans="S" data-filled="S" data-id="b6">S</span></td>
           </tr>
         </tbody>
       </table>
@@ -648,15 +649,15 @@ main{padding:16px 14px 0;}
         <tbody>
           <tr>
             <td>KI など（一般的な還元剤）</td>
-            <td><span class="blank" data-ans="酸化剤" data-id="b7">＿＿</span></td>
-            <td>−1 → <span class="blank" data-ans="-2" data-id="b8">＿＿</span></td>
-            <td><span class="blank" data-ans="H₂O" data-id="b9">＿＿</span></td>
+            <td><span class="blank hint" data-ans="酸化剤" data-filled="酸化剤" data-id="b7">酸化剤</span></td>
+            <td>−1 → <span class="blank hint" data-ans="-2" data-filled="-2" data-id="b8">-2</span></td>
+            <td><span class="blank hint" data-ans="H₂O" data-filled="H₂O" data-id="b9">H₂O</span></td>
           </tr>
           <tr>
             <td>KMnO₄（強い酸化剤）</td>
-            <td><span class="blank" data-ans="還元剤" data-id="b10">＿＿</span></td>
-            <td>−1 → <span class="blank" data-ans="0" data-id="b11">＿＿</span></td>
-            <td><span class="blank" data-ans="O₂" data-id="b12">＿＿</span></td>
+            <td><span class="blank hint" data-ans="還元剤" data-filled="還元剤" data-id="b10">還元剤</span></td>
+            <td>−1 → <span class="blank hint" data-ans="0" data-filled="0" data-id="b11">0</span></td>
+            <td><span class="blank hint" data-ans="O₂" data-filled="O₂" data-id="b12">O₂</span></td>
           </tr>
         </tbody>
       </table>
@@ -1384,11 +1385,16 @@ function initFill(){
     chip.onclick = () => selectWord(chip);
     pool.appendChild(chip);
   });
-  // 空欄をリセット
+  // 空欄をリセット（答えをヒント表示）
   document.querySelectorAll('.blank').forEach(b => {
-    b.textContent = '＿＿';
-    b.className = 'blank';
+    const ans = b.dataset.ans;
+    b.textContent = ans;
+    b.className = 'blank hint';
+    b.dataset.filled = '';
     b.onclick = () => fillBlank(b);
+    // 対応チップを使用済みに
+    const chip = document.querySelector('.word-chip[data-word="' + ans + '"]');
+    if (chip) chip.classList.add('used');
   });
   document.getElementById('fill-result').textContent = '';
 }
@@ -1413,8 +1419,8 @@ function fillBlank(blank){
     if(fillAnswers[blank.dataset.id]){
       const removed = fillAnswers[blank.dataset.id];
       delete fillAnswers[blank.dataset.id];
-      blank.textContent = '＿＿';
-      blank.classList.remove('filled');
+      blank.textContent = '　　';
+      blank.classList.remove('filled','hint');
       // 語群に戻す
       document.querySelectorAll('.word-chip').forEach(c => {
         if(c.dataset.word === removed) c.classList.remove('used');
@@ -1448,18 +1454,21 @@ function checkFill(){
   document.querySelectorAll('.blank').forEach(b => {
     total++;
     b.onclick = null; // ロック
-    if(fillAnswers[b.dataset.id] === b.dataset.ans){
-      b.classList.remove('filled');
+    // hint のまま（まだクリックして外していない）は正解とみなす
+    const userAns = fillAnswers[b.dataset.id];
+    const isHint = b.classList.contains('hint') && !userAns;
+    if(userAns === b.dataset.ans || isHint){
+      b.classList.remove('filled','hint');
       b.classList.add('correct');
       correct++;
     } else {
-      b.classList.remove('filled');
+      b.classList.remove('filled','hint');
       b.classList.add('wrong');
       // 正解を括弧で追記
-      if(!fillAnswers[b.dataset.id]){
-        b.textContent = `（${b.dataset.ans}）`;
+      if(!userAns){
+        b.textContent = '（' + b.dataset.ans + '）';
       } else {
-        b.textContent = fillAnswers[b.dataset.id] + ` → ${b.dataset.ans}`;
+        b.textContent = userAns + ' → ' + b.dataset.ans;
       }
     }
   });

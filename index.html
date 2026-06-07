@@ -419,6 +419,7 @@
   }
   .blank:hover { background: var(--unit-bg); }
   .blank.filled { background: var(--unit-bg); border-bottom-style: solid; }
+  .blank.hint { background: #FEF9C3; color: #854D0E; border-bottom-color: #EAB308; opacity: .8; }
   .blank.correct { background: #D1FAE5; border-bottom-color: #10B981; color: #065F46; }
   .blank.wrong {
     background: #FEE2E2; border-bottom-color: #EF4444; color: #991B1B;
@@ -2483,7 +2484,9 @@ function renderPracticeTab(u, p) {
 function buildFillTextHtml(fb) {
   return fb.text.replace(/\{(\d+)\}/g, (_, idx) => {
     const i = parseInt(idx);
-    return `<span class="blank" data-idx="${i}" data-answer="${fb.answers[i]}">　</span>`;
+    const ans = fb.answers[i];
+    // 答えを初期表示（data-filled に答えをセットして filled クラスを付与）
+    return `<span class="blank filled hint" data-idx="${i}" data-answer="${ans}" data-filled="${ans}">${ans}</span>`;
   });
 }
 
@@ -2523,6 +2526,14 @@ function attachPracticeHandlers(u) {
       if (chip) { chip.classList.add('used'); chip.classList.remove('selected'); }
       state.practicePickedChip = null;
     });
+  });
+
+  // 初期表示した答え（hint）に対応する語群チップを使用済みにする
+  document.querySelectorAll('.blank.hint').forEach(blank => {
+    const word = blank.dataset.filled;
+    if (!word) return;
+    const chip = document.querySelector('#wordBank .word-chip[data-word="' + word + '"]');
+    if (chip) chip.classList.add('used');
   });
 }
 
@@ -2564,7 +2575,7 @@ function resetPractice() {
 
 function judgePractice() {
   const blanks = [...document.querySelectorAll('.blank')];
-  const empty = blanks.filter(b => !b.dataset.filled);
+  const empty = blanks.filter(b => !b.dataset.filled && !b.classList.contains('hint'));
   if (empty.length > 0) {
     showModal({
       type: 'fail',
@@ -2576,12 +2587,13 @@ function judgePractice() {
   }
   let allCorrect = true;
   blanks.forEach(b => {
-    if (b.dataset.filled === b.dataset.answer) {
+    const isHint = b.classList.contains('hint') && !b.dataset.filled;
+    if (b.dataset.filled === b.dataset.answer || isHint) {
       b.classList.add('correct');
-      b.classList.remove('wrong');
+      b.classList.remove('wrong','hint');
     } else {
       b.classList.add('wrong');
-      b.classList.remove('correct');
+      b.classList.remove('correct','hint');
       allCorrect = false;
     }
   });
