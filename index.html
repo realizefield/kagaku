@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0045)file:///C:/Users/tinbu/Downloads/index_1.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>化学基礎 ① 物質の構成 — 学習プログラム</title>
 <style>
@@ -817,7 +817,221 @@
 </head>
 <body>
 
-<div id="app"></div>
+<div id="app"><div class="container">
+    <div class="header">
+      <div class="header-inner">
+        <div class="header-tag">CHEMISTRY BASIC ／ 化学基礎</div>
+        <h1 class="header-title">物質の構成</h1>
+        <div class="header-sub">純物質・混合物 / 分離精製 / 元素 / 同素体 / 物質の三態</div>
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-label">学習進捗</div>
+            <div class="stat-val amber">0 / 28 <span style="font-size:12px;color:#888;">ステップ</span></div>
+            <div class="stat-bar"><div class="stat-bar-fill" style="width:0%"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">合格単元</div>
+            <div class="stat-val purple">0 / 15 <span style="font-size:12px;color:#888;">単元</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div style="margin-bottom:12px;"><div style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:.08em;margin-bottom:6px;">📚 化学基礎 ─ 単元を選ぶ</div><div style="display:flex;flex-wrap:wrap;gap:6px;"><button id="tab-busshitsu" style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:#F59E0B;color:#fff;box-shadow:0 2px 8px #F59E0B55;">⚛ 物質の構成</button><button id="tab-oxred" style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:#F3F4F6;color:#6B7280;">⚡ 酸化還元</button><button style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;background:#F3F4F6;color:#9CA3AF;opacity:.6;cursor:default;">🔋 イオンと電離 <span style="font-size:9px;background:rgba(0,0,0,.12);padding:1px 5px;border-radius:10px;">準備中</span></button><button id="tab-acid_base" style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:#F3F4F6;color:#6B7280;">🧫 酸と塩基</button><button id="tab-redox_app" style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:#F3F4F6;color:#6B7280;">🏭 酸化還元応用</button></div></div>
+    <div class="settings">
+      <span class="settings-label">⚙ ステップごとのミニテスト</span>
+      <div class="toggle-wrap">
+        <button class="toggle-opt active" onclick="setMiniMode(&#39;auto&#39;)">自動表示</button>
+        <button class="toggle-opt " onclick="setMiniMode(&#39;button&#39;)">ボタン式</button>
+      </div>
+      <span style="color:#aaa;font-size:11px;">説明文の下に自動で出ます</span>
+    </div>
+  <div class="grid">
+      <div class="unit-card " style="--unit-color:#F59E0B;--unit-color-d:#D97706;--unit-bg:#FEF3C7;--unit-glow:#F59E0B66" onclick="openUnit(&#39;pure_mixture&#39;)">
+        <div class="unit-card-blob"></div>
+        <div class="unit-card-inner">
+          <div class="unit-head">
+            <div class="unit-symbol">⚛</div>
+            <div>
+              <div class="unit-idx">単元 1</div>
+              <div class="unit-name">純物質と混合物</div>
+            </div>
+          </div>
+          <div class="unit-intro">世の中の「もの」は、たった1種類でできているか、複数が混ざっているかで分類できます。化学の第一歩は、この区別から。</div>
+          <div class="unit-stats">
+            <span class="stat-chip steps">📚 0/4 ステップ</span>
+            
+          </div>
+          <button class="start-btn">学習を開始 →</button>
+          <div class="mark-row" onclick="event.stopPropagation()">
+            <button class="mark-btn A " onclick="setMark(&#39;pure_mixture&#39;,&#39;A&#39;)">😊 OK</button>
+            <button class="mark-btn B " onclick="setMark(&#39;pure_mixture&#39;,&#39;B&#39;)">🤔 微妙</button>
+            <button class="mark-btn C " onclick="setMark(&#39;pure_mixture&#39;,&#39;C&#39;)">😣 苦手</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="unit-card " style="--unit-color:#3B82F6;--unit-color-d:#1E40AF;--unit-bg:#DBEAFE;--unit-glow:#3B82F666" onclick="openUnit(&#39;separation_1&#39;)">
+        <div class="unit-card-blob"></div>
+        <div class="unit-card-inner">
+          <div class="unit-head">
+            <div class="unit-symbol">⚗</div>
+            <div>
+              <div class="unit-idx">単元 2</div>
+              <div class="unit-name">混合物の分離方法 ①</div>
+            </div>
+          </div>
+          <div class="unit-intro">混合物から純物質を取り出すための、基本的な方法を学びます。ろ過・蒸留・分留 ── 名前は似ていますが、利用する原理が違います。</div>
+          <div class="unit-stats">
+            <span class="stat-chip steps">📚 0/4 ステップ</span>
+            
+          </div>
+          <button class="start-btn">学習を開始 →</button>
+          <div class="mark-row" onclick="event.stopPropagation()">
+            <button class="mark-btn A " onclick="setMark(&#39;separation_1&#39;,&#39;A&#39;)">😊 OK</button>
+            <button class="mark-btn B " onclick="setMark(&#39;separation_1&#39;,&#39;B&#39;)">🤔 微妙</button>
+            <button class="mark-btn C " onclick="setMark(&#39;separation_1&#39;,&#39;C&#39;)">😣 苦手</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="unit-card " style="--unit-color:#06B6D4;--unit-color-d:#0E7490;--unit-bg:#CFFAFE;--unit-glow:#06B6D466" onclick="openUnit(&#39;separation_2&#39;)">
+        <div class="unit-card-blob"></div>
+        <div class="unit-card-inner">
+          <div class="unit-head">
+            <div class="unit-symbol">⚛</div>
+            <div>
+              <div class="unit-idx">単元 3</div>
+              <div class="unit-name">混合物の分離方法 ②</div>
+            </div>
+          </div>
+          <div class="unit-intro">ろ過・蒸留・分留に続き、昇華・抽出・再結晶・クロマトグラフィーの4つの分離法を学びます。それぞれが利用する「物質の性質の違い」がポイント。</div>
+          <div class="unit-stats">
+            <span class="stat-chip steps">📚 0/4 ステップ</span>
+            
+          </div>
+          <button class="start-btn">学習を開始 →</button>
+          <div class="mark-row" onclick="event.stopPropagation()">
+            <button class="mark-btn A " onclick="setMark(&#39;separation_2&#39;,&#39;A&#39;)">😊 OK</button>
+            <button class="mark-btn B " onclick="setMark(&#39;separation_2&#39;,&#39;B&#39;)">🤔 微妙</button>
+            <button class="mark-btn C " onclick="setMark(&#39;separation_2&#39;,&#39;C&#39;)">😣 苦手</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="unit-card " style="--unit-color:#10B981;--unit-color-d:#047857;--unit-bg:#D1FAE5;--unit-glow:#10B98166" onclick="openUnit(&#39;element&#39;)">
+        <div class="unit-card-blob"></div>
+        <div class="unit-card-inner">
+          <div class="unit-head">
+            <div class="unit-symbol">⚛</div>
+            <div>
+              <div class="unit-idx">単元 4</div>
+              <div class="unit-name">元素・単体・化合物</div>
+            </div>
+          </div>
+          <div class="unit-intro">「元素」と「単体」は字面が似ているけど、意味が決定的に違う。テスト頻出の区別ポイントをしっかり押さえよう。</div>
+          <div class="unit-stats">
+            <span class="stat-chip steps">📚 0/4 ステップ</span>
+            
+          </div>
+          <button class="start-btn">学習を開始 →</button>
+          <div class="mark-row" onclick="event.stopPropagation()">
+            <button class="mark-btn A " onclick="setMark(&#39;element&#39;,&#39;A&#39;)">😊 OK</button>
+            <button class="mark-btn B " onclick="setMark(&#39;element&#39;,&#39;B&#39;)">🤔 微妙</button>
+            <button class="mark-btn C " onclick="setMark(&#39;element&#39;,&#39;C&#39;)">😣 苦手</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="unit-card " style="--unit-color:#A855F7;--unit-color-d:#7E22CE;--unit-bg:#F3E8FF;--unit-glow:#A855F766" onclick="openUnit(&#39;allotrope&#39;)">
+        <div class="unit-card-blob"></div>
+        <div class="unit-card-inner">
+          <div class="unit-head">
+            <div class="unit-symbol">◇</div>
+            <div>
+              <div class="unit-idx">単元 5</div>
+              <div class="unit-name">同素体 (SCOP)</div>
+            </div>
+          </div>
+          <div class="unit-intro">同じ元素なのに性質が全然違う?「同素体」を持つ4元素「SCOP」を覚えよう。ダイヤモンドと黒鉛、酸素とオゾンなど、身近な例がたくさん。</div>
+          <div class="unit-stats">
+            <span class="stat-chip steps">📚 0/4 ステップ</span>
+            
+          </div>
+          <button class="start-btn">学習を開始 →</button>
+          <div class="mark-row" onclick="event.stopPropagation()">
+            <button class="mark-btn A " onclick="setMark(&#39;allotrope&#39;,&#39;A&#39;)">😊 OK</button>
+            <button class="mark-btn B " onclick="setMark(&#39;allotrope&#39;,&#39;B&#39;)">🤔 微妙</button>
+            <button class="mark-btn C " onclick="setMark(&#39;allotrope&#39;,&#39;C&#39;)">😣 苦手</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="unit-card " style="--unit-color:#EF4444;--unit-color-d:#B91C1C;--unit-bg:#FEE2E2;--unit-glow:#EF444466" onclick="openUnit(&#39;detection&#39;)">
+        <div class="unit-card-blob"></div>
+        <div class="unit-card-inner">
+          <div class="unit-head">
+            <div class="unit-symbol">🔥</div>
+            <div>
+              <div class="unit-idx">単元 6</div>
+              <div class="unit-name">元素の検出</div>
+            </div>
+          </div>
+          <div class="unit-intro">物質に含まれる元素を「目で見て」確認できる、沈殿反応と炎色反応。色や沈殿物の特徴を語呂合わせで覚えよう!</div>
+          <div class="unit-stats">
+            <span class="stat-chip steps">📚 0/4 ステップ</span>
+            
+          </div>
+          <button class="start-btn">学習を開始 →</button>
+          <div class="mark-row" onclick="event.stopPropagation()">
+            <button class="mark-btn A " onclick="setMark(&#39;detection&#39;,&#39;A&#39;)">😊 OK</button>
+            <button class="mark-btn B " onclick="setMark(&#39;detection&#39;,&#39;B&#39;)">🤔 微妙</button>
+            <button class="mark-btn C " onclick="setMark(&#39;detection&#39;,&#39;C&#39;)">😣 苦手</button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="unit-card " style="--unit-color:#3B82F6;--unit-color-d:#1D4ED8;--unit-bg:#DBEAFE;--unit-glow:#3B82F666" onclick="openUnit(&#39;states&#39;)">
+        <div class="unit-card-blob"></div>
+        <div class="unit-card-inner">
+          <div class="unit-head">
+            <div class="unit-symbol">❄</div>
+            <div>
+              <div class="unit-idx">単元 7</div>
+              <div class="unit-name">物質の三態と状態変化</div>
+            </div>
+          </div>
+          <div class="unit-intro">固体・液体・気体の三態と、その間の変化(融解・蒸発・凝縮など)を学びます。状態変化中は温度が変わらない理由 = エネルギーの行方を理解しよう。</div>
+          <div class="unit-stats">
+            <span class="stat-chip steps">📚 0/4 ステップ</span>
+            
+          </div>
+          <button class="start-btn">学習を開始 →</button>
+          <div class="mark-row" onclick="event.stopPropagation()">
+            <button class="mark-btn A " onclick="setMark(&#39;states&#39;,&#39;A&#39;)">😊 OK</button>
+            <button class="mark-btn B " onclick="setMark(&#39;states&#39;,&#39;B&#39;)">🤔 微妙</button>
+            <button class="mark-btn C " onclick="setMark(&#39;states&#39;,&#39;C&#39;)">😣 苦手</button>
+          </div>
+        </div>
+      </div>
+    
+    <div class="unit-card" style="--unit-color:#8B5CF6;--unit-color-d:#6D28D9;--unit-bg:#EDE9FE;--unit-glow:#8B5CF666" onclick="openSummaryFlash()">
+      <div class="unit-card-blob"></div>
+      <div class="unit-card-inner">
+        <div class="unit-head">
+          <div class="unit-symbol">📇</div>
+          <div>
+            <div class="unit-idx">SUMMARY</div>
+            <div class="unit-name">全体まとめ</div>
+          </div>
+        </div>
+        <div class="unit-intro">全単元の重要ポイント・ミスしがちな箇所をフラッシュカードで横断的に復習。試験前の総ざらいに最適。</div>
+        <div class="unit-stats">
+          <span class="stat-chip steps">📇 104 枚のカード</span>
+        </div>
+        <button class="start-btn">フラッシュカードを開く →</button>
+      </div>
+    </div>
+  </div><div class="footer">化学基礎 ① 物質の構成 / 全7単元</div></div></div>
 
 <div class="modal-bg" id="modal">
   <div class="modal" id="modalInner">
@@ -1879,6 +2093,62 @@ function render() {
 }
 
 function renderDashboard() {
+  // ── 酸と塩基チャプターは専用ファイルリンクダッシュボード ──
+  if (state.chapter === 'acid_base') {
+    var abFiles = [
+      { file:'ch5.html',              badge:'Chapter 5', icon:'🧪', color:'#2563eb', colorD:'#1d4ed8', bg:'#eff6ff',
+        name:'酸と塩基の定義', desc:'アレニウス／ブレンステッド・ローリーの定義・強酸弱酸・電離度・中和反応式の書き方' },
+      { file:'ch6.html',              badge:'Chapter 6', icon:'⚖️', color:'#7c3aed', colorD:'#5b21b6', bg:'#f5f3ff',
+        name:'中和反応・中和計算', desc:'中和の量的関係・nCV＝n′C′V′・固体・気体の中和計算' },
+      { file:'ch7.html',              badge:'Chapter 7', icon:'🔬', color:'#059669', colorD:'#047857', bg:'#ecfdf5',
+        name:'酸性・塩基性酸化物 ／ pH計算', desc:'酸性酸化物・塩基性酸化物・水のイオン積・[H⁺]とpHの計算' },
+      { file:'ch8.html',              badge:'Chapter 8', icon:'🧂', color:'#d97706', colorD:'#b45309', bg:'#fffbeb',
+        name:'塩の分類・加水分解・弱酸弱塩基遊離反応', desc:'正塩・酸性塩・塩基性塩・加水分解・弱酸弱塩基の遊離' },
+      { file:'ch9.html',              badge:'Chapter 9', icon:'🧫', color:'#dc2626', colorD:'#b91c1c', bg:'#fef2f2',
+        name:'中和滴定・器具・指示薬・計算', desc:'実験器具・洗い方・フェノールフタレイン・メチルオレンジ・滴定曲線・計算パターン' },
+      { file:'ch10.html',             badge:'Chapter 10', icon:'📈', color:'#0891b2', colorD:'#0e7490', bg:'#ecfeff',
+        name:'二段滴定', desc:'Na₂CO₃の2段階中和・NaOH＋Na₂CO₃混合・練習問題・滴定曲線SVG' },
+      { file:'back_titration.html',   badge:'発展',       icon:'🔄', color:'#65a30d', colorD:'#4d7c0f', bg:'#f7fee7',
+        name:'逆滴定', desc:'気体を過剰の酸に吸収させる滴定法・例題4・Ba(OH)₂の逆滴定（島根大）' },
+      { file:'two_stage_titration.html', badge:'発展',    icon:'🧪', color:'#c026d3', colorD:'#a21caf', bg:'#fdf4ff',
+        name:'二段滴定（詳細版）', desc:'2段階反応式・例題5・6・NaOH＋Na₂CO₃の解き方・深掘りコラム' },
+    ];
+    var abHtml = '<div class="container">';
+    abHtml += '<div style="margin-bottom:18px;">'
+      + '<div style="font-size:1rem;font-weight:800;color:#065f46;margin-bottom:4px;">🧫 酸と塩基</div>'
+      + '<div style="font-size:0.82rem;color:#64748b;">各ファイルをクリックして学習を開始してください。</div>'
+      + '</div>';
+    abHtml += '<div class="grid">';
+    var abGrid = document.createElement('div');
+    abGrid.className = 'grid';
+    abFiles.forEach(function(f) {
+      var card = document.createElement('div');
+      card.style.cssText = 'cursor:pointer;background:' + f.bg + ';border:2px solid ' + f.color + '33;'
+        + 'border-radius:14px;padding:18px 16px;position:relative;overflow:hidden;'
+        + 'box-shadow:0 2px 8px ' + f.color + '22;transition:transform 0.15s,box-shadow 0.15s;';
+      card.innerHTML = '<div style="position:absolute;top:0;right:0;background:' + f.color + ';color:white;'
+        + 'font-size:0.68rem;font-weight:800;padding:3px 10px;border-radius:0 12px 0 8px;">' + f.badge + '</div>'
+        + '<div style="font-size:1.6rem;margin-bottom:8px;">' + f.icon + '</div>'
+        + '<div style="font-weight:800;font-size:0.95rem;color:' + f.colorD + ';margin-bottom:6px;line-height:1.4;">' + f.name + '</div>'
+        + '<div style="font-size:0.78rem;color:#475569;line-height:1.7;">' + f.desc + '</div>'
+        + '<div style="margin-top:12px;display:inline-block;background:' + f.color + ';color:white;'
+        + 'font-size:0.78rem;font-weight:700;padding:5px 14px;border-radius:20px;">\u5b66\u7fd2\u3092\u958b\u59cb \u2192</div>';
+      card.addEventListener('click', (function(fn){ return function(){ window.open(fn,'_blank'); }; })(f.file));
+      card.addEventListener('mouseover', (function(fc){ return function(){
+        this.style.transform='translateY(-3px)';
+        this.style.boxShadow='0 6px 20px ' + fc + '44';
+      }; })(f.color));
+      card.addEventListener('mouseout', (function(fc){ return function(){
+        this.style.transform='';
+        this.style.boxShadow='0 2px 8px ' + fc + '22';
+      }; })(f.color));
+      abGrid.appendChild(card);
+    });
+    abHtml += '</div></div>';
+    document.getElementById('app').innerHTML = abHtml;
+    return;
+  }
+
   var chUnits = UNITS.filter(function(u){ return u.chapter === state.chapter; });
   var reviewUnits = UNITS.filter(function(u){ var m=getProg(u.id).mark; return m==='B'||m==='C'; });
   const totalSteps = chUnits.reduce((s,u) => s + u.steps.length, 0);
@@ -1916,7 +2186,7 @@ function renderDashboard() {
     { id:'busshitsu',  label:'物質の構成',   icon:'⚛', color:'#F59E0B', done:true  },
     { id:'oxred',      label:'酸化還元',     icon:'⚡', color:'#8B5CF6', done:true  },
     { id:'ionization', label:'イオンと電離', icon:'🔋', color:'#0EA5E9', done:false },
-    { id:'acid_base',  label:'酸と塩基',     icon:'🧫', color:'#10B981', done:false },
+    { id:'acid_base',  label:'酸と塩基',     icon:'🧫', color:'#10B981', done:true  },
     { id:'redox_app',  label:'酸化還元応用', icon:'🏭', color:'#EC4899', done:true  }
   ];
   var tabHtml = '<div style="margin-bottom:12px;">'
@@ -3331,5 +3601,6 @@ function renderSummary() {
 render();
 </script>
 
-</body>
-</html>
+
+
+</body></html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)file:///C:/Users/tinbu/Downloads/acid_base_ch6_v2.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMBA | 中和反応・中和滴定</title>
+<style>
+  :root {
+    --primary:#2563eb; --primary-dark:#1d4ed8; --accent:#059669;
+    --accent2:#d97706; --accent3:#7c3aed; --danger:#dc2626;
+    --bg:#f0f4ff; --card:#ffffff; --text:#1e293b; --muted:#64748b; --border:#e2e8f0;
+    --yellow-hint:#fef9c3; --blank-border:#fbbf24;
+    --acid:#dc2626; --base:#059669; --salt:#7c3aed; --water:#0ea5e9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  header{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%);color:white;}
+  .header-top{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.15);}
+  .logo{font-size:1.5rem;font-weight:900;letter-spacing:2px;color:#fbbf24;}
+  .header-sub{font-size:0.75rem;opacity:0.8;}
+  .chapter-title-bar{padding:14px 20px;display:flex;align-items:center;gap:12px;}
+  .chapter-badge{background:#fbbf24;color:#1e3a8a;font-weight:900;font-size:0.75rem;padding:3px 10px;border-radius:20px;}
+  .chapter-title-text{font-size:1.1rem;font-weight:700;}
+  .tab-bar{display:flex;background:white;border-bottom:2px solid var(--border);overflow-x:auto;padding:0 16px;gap:4px;}
+  .tab-btn{padding:10px 16px;border:none;background:none;font-size:0.82rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all 0.2s;font-family:inherit;}
+  .tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
+  .tab-btn:hover{color:var(--primary);}
+  main{max-width:860px;margin:0 auto;padding:20px 16px 60px;}
+  .tab-content{display:none;} .tab-content.active{display:block;}
+  .section-card{background:var(--card);border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:20px;overflow:hidden;}
+  .section-header{padding:14px 20px;font-weight:800;font-size:0.95rem;display:flex;align-items:center;gap:8px;}
+  .sh-blue{background:#eff6ff;border-left:4px solid var(--primary);color:#1e40af;}
+  .sh-green{background:#ecfdf5;border-left:4px solid var(--accent);color:#065f46;}
+  .sh-amber{background:#fffbeb;border-left:4px solid var(--accent2);color:#92400e;}
+  .sh-purple{background:#f5f3ff;border-left:4px solid var(--accent3);color:#4c1d95;}
+  .sh-red{background:#fef2f2;border-left:4px solid var(--danger);color:#991b1b;}
+  .section-body{padding:18px 20px;}
+  .text-block{font-size:0.92rem;line-height:1.9;margin-bottom:12px;}
+  .key-box{background:#eff6ff;border:2px solid #93c5fd;border-radius:8px;padding:14px 16px;margin:12px 0;}
+  .key-box .box-label{font-weight:800;color:var(--primary);font-size:0.82rem;margin-bottom:6px;}
+  .important-box{background:#fef2f2;border:2px solid #fca5a5;border-radius:8px;padding:14px 16px;margin:12px 0;}
+  .important-box .box-label{font-weight:800;color:var(--danger);font-size:0.82rem;margin-bottom:6px;}
+  .green-box{background:#ecfdf5;border:2px solid #6ee7b7;border-radius:8px;padding:14px 16px;margin:12px 0;}
+  .green-box .box-label{font-weight:800;color:#065f46;font-size:0.82rem;margin-bottom:6px;}
+  .note-block{background:#f0fdf4;border-left:3px solid var(--accent);padding:8px 12px;border-radius:0 6px 6px 0;font-size:0.87rem;margin:8px 0;line-height:1.8;}
+  .warn-block{background:#fff7ed;border-left:3px solid var(--accent2);padding:8px 12px;border-radius:0 6px 6px 0;font-size:0.87rem;margin:8px 0;line-height:1.8;}
+  .chem-table{width:100%;border-collapse:collapse;font-size:0.87rem;margin:12px 0;}
+  .chem-table th{background:#1e40af;color:white;padding:8px 12px;text-align:center;font-weight:700;}
+  .chem-table td{padding:7px 12px;border:1px solid #dbeafe;text-align:center;}
+  .chem-table tr:nth-child(even) td{background:#f0f7ff;}
+  .formula{font-family:'Courier New',monospace;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 14px;font-size:0.88rem;margin:8px 0;line-height:2;}
+  .frac{display:inline-block;text-align:center;vertical-align:middle;font-size:0.85em;}
+  .frac>span{display:block;} .frac .num{border-bottom:1.5px solid currentColor;padding:0 2px;} .frac .den{padding:0 2px;}
+  /* color labels */
+  .c-acid{color:var(--acid);font-weight:700;} .c-base{color:var(--base);font-weight:700;}
+  .c-salt{color:var(--salt);font-weight:700;} .c-water{color:var(--water);font-weight:700;}
+  .bg-acid{background:#fff0f0;} .bg-base{background:#f0fdf4;} .bg-salt{background:#f5f3ff;} .bg-water{background:#f0f9ff;}
+
+  /* ===== NEUTRALIZATION COLOR EQUATION ===== */
+  .color-eq{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:1rem;font-weight:700;margin:12px 0;justify-content:center;}
+  .eq-box{padding:6px 14px;border-radius:8px;text-align:center;border:2px solid;}
+  .eq-acid{background:#fff0f0;border-color:var(--acid);color:var(--acid);}
+  .eq-base{background:#f0fdf4;border-color:var(--base);color:var(--base);}
+  .eq-salt{background:#f5f3ff;border-color:var(--salt);color:var(--salt);}
+  .eq-water{background:#f0f9ff;border-color:var(--water);color:var(--water);}
+  .eq-op{font-size:1.2rem;color:var(--muted);font-weight:900;}
+
+  /* ===== TITRATION APPARATUS DIAGRAM (CSS art) ===== */
+  .apparatus-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:14px 0;}
+  @media(max-width:600px){.apparatus-grid{grid-template-columns:1fr;}}
+  .apparatus-card{border-radius:12px;padding:14px;text-align:center;border:3px solid;}
+  .apparatus-card.burette{background:#fff7f0;border-color:#f97316;}
+  .apparatus-card.pipette{background:#f0fdf4;border-color:#10b981;}
+  .apparatus-card.flask{background:#f0f9ff;border-color:#0ea5e9;}
+  .apparatus-card.conical{background:#fdf4ff;border-color:#a855f7;}
+  .apparatus-card.measuring{background:#fef9c3;border-color:#eab308;}
+  .apparatus-name{font-weight:800;font-size:0.9rem;margin-bottom:6px;}
+  .apparatus-icon{font-size:2.5rem;margin:8px 0;}
+  .apparatus-use{font-size:0.78rem;line-height:1.7;color:var(--text);}
+  .apparatus-caution{font-size:0.75rem;font-weight:700;margin-top:6px;padding:4px 8px;border-radius:4px;}
+  .caution-share{background:#fed7aa;color:#9a3412;}
+  .caution-water{background:#d1fae5;color:#065f46;}
+  .caution-dry{background:#fef9c3;color:#78350f;}
+
+  /* ===== INDICATOR TABLE ===== */
+  .indicator-card{border-radius:10px;padding:14px;margin:10px 0;border:2px solid;}
+  .indicator-pp{background:linear-gradient(135deg,#fff0f9,#f3e8ff);border-color:#d946ef;}
+  .indicator-mo{background:linear-gradient(135deg,#fff7ed,#fef3c7);border-color:#f59e0b;}
+  .indicator-name{font-weight:800;font-size:0.92rem;margin-bottom:6px;}
+  .color-change-row{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap;}
+  .color-chip{padding:4px 12px;border-radius:20px;font-size:0.82rem;font-weight:700;}
+
+  /* ===== PATTERN TABLE for neutralization combinations ===== */
+  .pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
+  @media(max-width:600px){.pattern-grid{grid-template-columns:1fr;}}
+  .pattern-card{border-radius:10px;padding:12px;border:2px solid;}
+  .pattern-title{font-weight:800;font-size:0.85rem;margin-bottom:6px;}
+  .pattern-indicator{font-size:0.8rem;margin-top:4px;font-weight:600;}
+
+  /* ===== FILL BLANK ===== */
+  .fill-text{font-size:0.92rem;line-height:2.4;}
+  .blank{display:inline-block;min-width:80px;padding:2px 8px;border-radius:4px;border-bottom:2px solid var(--blank-border);background:var(--yellow-hint);color:#92400e;font-weight:700;text-align:center;transition:all 0.3s;cursor:default;}
+  .blank.hidden{color:transparent;background:#e5e7eb;border-bottom-color:#9ca3af;}
+  .blank.revealed{background:#dcfce7;color:#166534;border-bottom-color:var(--accent);}
+  .challenge-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0 8px;}
+  .btn{padding:7px 16px;border-radius:6px;border:none;font-weight:700;font-size:0.82rem;cursor:pointer;transition:all 0.18s;font-family:inherit;}
+  .btn-primary{background:var(--primary);color:white;} .btn-primary:hover{background:var(--primary-dark);}
+  .btn-amber{background:var(--accent2);color:white;} .btn-amber:hover{background:#b45309;}
+  .btn-gray{background:#94a3b8;color:white;} .btn-gray:hover{background:#64748b;}
+  .word-bank{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;padding:10px 12px;background:#f1f5f9;border-radius:8px;font-size:0.85rem;min-height:38px;}
+  .word-bank.hidden{display:none;}
+  .word-chip{background:white;border:1.5px solid #cbd5e1;border-radius:4px;padding:2px 10px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+  .word-chip:hover{background:#dbeafe;border-color:var(--primary);}
+  .progress-bar-wrap{background:#e2e8f0;border-radius:99px;height:7px;margin:8px 0 4px;overflow:hidden;}
+  .progress-bar-fill{height:100%;background:var(--accent);border-radius:99px;transition:width 0.4s;}
+  .progress-label{font-size:0.78rem;color:var(--muted);}
+  .timer-display{font-size:1.1rem;font-weight:800;color:var(--primary);font-variant-numeric:tabular-nums;}
+  .timer-row{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+  .score-board{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:white;border-radius:10px;padding:14px 18px;margin-top:16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+  .score-item{text-align:center;} .score-num{font-size:1.6rem;font-weight:900;} .score-sub{font-size:0.72rem;opacity:0.8;}
+  .grade-badge{font-size:2rem;font-weight:900;padding:6px 16px;border-radius:8px;margin-left:auto;}
+  .grade-A{background:#fbbf24;color:#1e3a8a;} .grade-B{background:#60a5fa;color:white;} .grade-C{background:#94a3b8;color:white;}
+  .quiz-card{border:2px solid var(--border);border-radius:10px;padding:16px;margin:12px 0;}
+  .quiz-q{font-weight:700;font-size:0.9rem;margin-bottom:12px;line-height:1.7;}
+  .quiz-opts{display:flex;flex-direction:column;gap:8px;}
+  .quiz-opt{padding:9px 14px;border:2px solid var(--border);border-radius:7px;cursor:pointer;font-size:0.87rem;transition:all 0.15s;background:white;font-family:inherit;text-align:left;}
+  .quiz-opt:hover{border-color:var(--primary);background:#eff6ff;}
+  .quiz-opt.correct{background:#dcfce7;border-color:var(--accent);color:#166534;font-weight:700;}
+  .quiz-opt.wrong{background:#fef2f2;border-color:var(--danger);color:var(--danger);}
+  .quiz-feedback{margin-top:10px;padding:8px 12px;border-radius:6px;font-size:0.85rem;display:none;font-weight:600;line-height:1.7;}
+  .quiz-feedback.show{display:block;} .quiz-feedback.ok{background:#dcfce7;color:#166534;} .quiz-feedback.ng{background:#fef2f2;color:var(--danger);}
+  .confetti-piece{position:fixed;width:10px;height:10px;border-radius:2px;animation:confettiFall 1.5s ease-out forwards;pointer-events:none;z-index:9999;}
+  @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(80vh) rotate(720deg);opacity:0}}
+
+  /* 計算ステップ */
+  .step-box{counter-reset:step-counter;margin:10px 0;}
+  .step-item{display:flex;gap:12px;margin:8px 0;align-items:flex-start;font-size:0.88rem;line-height:1.8;}
+  .step-num{background:var(--primary);color:white;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.75rem;flex-shrink:0;margin-top:2px;}
+  .step-content{flex:1;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top"><div class="logo">GAMBA</div><div class="header-sub">江原予備校 化学</div></div>
+  <div class="chapter-title-bar">
+    <span class="chapter-badge">Chapter 6</span>
+    <span class="chapter-title-text">中和反応・中和滴定</span>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(&#39;learn&#39;)">📖 学習</button>
+  <button class="tab-btn" onclick="showTab(&#39;fill&#39;)">✏️ 穴埋め</button>
+  <button class="tab-btn" onclick="showTab(&#39;quiz&#39;)">🧪 確認テスト</button>
+</div>
+
+<main>
+
+<!-- ========== LEARN ========== -->
+<div id="tab-learn" class="tab-content active">
+
+  <!-- 1. 中和反応 -->
+  <div class="section-card">
+    <div class="section-header sh-blue">⚗️ 1. 中和反応とは</div>
+    <div class="section-body">
+      <div class="text-block">
+        酸と塩基が反応すると、<strong class="c-salt">塩（えん）</strong> と <strong class="c-water">水</strong> が生成します。この反応を <strong>中和反応</strong> といいます。
+      </div>
+      <div class="important-box">
+        <div class="box-label">📌 中和反応の基本式（カラーで覚えよう）</div>
+        <div class="color-eq">
+          <div class="eq-box eq-acid">酸</div>
+          <span class="eq-op">＋</span>
+          <div class="eq-box eq-base">塩基</div>
+          <span class="eq-op">→</span>
+          <div class="eq-box eq-salt">塩（えん）</div>
+          <span class="eq-op">＋</span>
+          <div class="eq-box eq-water">水</div>
+        </div>
+        <div style="text-align:center;font-size:0.9rem;margin-top:8px;font-weight:700">
+          <span class="c-acid">H⁺</span> ＋ <span class="c-base">OH⁻</span> → <span class="c-water">H₂O</span>
+        </div>
+      </div>
+
+      <div class="text-block" style="margin-top:14px">具体的な中和反応の例：</div>
+
+      <!-- 反応式カラー表示 -->
+      <div style="background:#f8fafc;border-radius:10px;padding:14px;margin:10px 0">
+        <div class="color-eq" style="justify-content:flex-start;font-size:0.9rem;margin-bottom:6px">
+          <div class="eq-box eq-acid" style="padding:4px 10px;font-size:0.85rem">HCl</div>
+          <span>＋</span>
+          <div class="eq-box eq-base" style="padding:4px 10px;font-size:0.85rem">NaOH</div>
+          <span>→</span>
+          <div class="eq-box eq-salt" style="padding:4px 10px;font-size:0.85rem">NaCl</div>
+          <span>＋</span>
+          <div class="eq-box eq-water" style="padding:4px 10px;font-size:0.85rem">H₂O</div>
+        </div>
+        <div style="font-size:0.8rem;color:var(--muted)">塩化水素（塩酸）＋ 水酸化ナトリウム → 塩化ナトリウム（食塩）＋ 水</div>
+      </div>
+
+      <div style="background:#f8fafc;border-radius:10px;padding:14px;margin:10px 0">
+        <div class="color-eq" style="justify-content:flex-start;font-size:0.9rem;margin-bottom:6px">
+          <div class="eq-box eq-acid" style="padding:4px 10px;font-size:0.85rem">H₂SO₄</div>
+          <span>＋</span>
+          <div class="eq-box eq-base" style="padding:4px 10px;font-size:0.85rem">2NaOH</div>
+          <span>→</span>
+          <div class="eq-box eq-salt" style="padding:4px 10px;font-size:0.85rem">Na₂SO₄</div>
+          <span>＋</span>
+          <div class="eq-box eq-water" style="padding:4px 10px;font-size:0.85rem">2H₂O</div>
+        </div>
+        <div style="font-size:0.8rem;color:var(--muted)">硫酸（2価）＋ 水酸化ナトリウム → 硫酸ナトリウム ＋ 水</div>
+      </div>
+
+      <div style="background:#f8fafc;border-radius:10px;padding:14px;margin:10px 0">
+        <div class="color-eq" style="justify-content:flex-start;font-size:0.9rem;margin-bottom:6px">
+          <div class="eq-box eq-acid" style="padding:4px 10px;font-size:0.85rem">HCl</div>
+          <span>＋</span>
+          <div class="eq-box eq-base" style="padding:4px 10px;font-size:0.85rem">NH₃</div>
+          <span>→</span>
+          <div class="eq-box eq-salt" style="padding:4px 10px;font-size:0.85rem">NH₄Cl</div>
+        </div>
+        <div style="font-size:0.8rem;color:var(--muted)">塩酸 ＋ アンモニア → 塩化アンモニウム（水が生成しない場合もある）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 中和計算 -->
+  <div class="section-card">
+    <div class="section-header sh-amber">⚖️ 2. 中和計算の基本公式</div>
+    <div class="section-body">
+      <div class="key-box">
+        <div class="box-label">📌 中和の条件（最重要）</div>
+        <div style="font-size:1rem;font-weight:800;text-align:center;margin:10px 0;line-height:2.5">
+          <span class="c-acid">酸の H⁺ の物質量</span>　＝　<span class="c-base">塩基の OH⁻ の物質量</span><br>
+          <div style="font-size:0.92rem;margin-top:4px">
+            <span class="c-acid">n₁ × c₁ × <span class="frac"><span class="num">V₁</span><span class="den">1000</span></span></span>
+            　＝　
+            <span class="c-base">n₂ × c₂ × <span class="frac"><span class="num">V₂</span><span class="den">1000</span></span></span>
+          </div>
+        </div>
+        <div style="font-size:0.82rem;color:var(--muted);text-align:center">
+          n：価数　c：モル濃度[mol/L]　V：体積[mL]
+        </div>
+      </div>
+
+      <div style="margin-top:14px;font-weight:800;font-size:0.9rem;margin-bottom:8px">【計算例】0.10mol/L 硫酸 10mL を NaOH で中和。NaOH の体積は？</div>
+      <div class="step-box">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-content">硫酸は2価の酸なので n₁ ＝ 2、c₁ ＝ 0.10、V₁ ＝ 10</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-content">NaOH は1価なので n₂ ＝ 1、c₂ ＝ 0.10（仮定）、V₂ ＝ ?</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            2 × 0.10 × <span class="frac"><span class="num">10</span><span class="den">1000</span></span>
+            ＝ 1 × 0.10 × <span class="frac"><span class="num">V₂</span><span class="den">1000</span></span>
+            → <strong>V₂ ＝ 20 mL</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 実験器具（カラー図解） -->
+  <div class="section-card">
+    <div class="section-header sh-green">🔬 3. 中和滴定の実験器具（カラー図解）</div>
+    <div class="section-body">
+      <div class="text-block">中和滴定では、3つの器具を正しく使い分けることが重要です。</div>
+
+      <div class="apparatus-grid">
+        <!-- ビュレット -->
+        <div class="apparatus-card burette">
+          <div class="apparatus-name" style="color:#ea580c">🟠 ビュレット</div>
+          <div class="apparatus-icon">⚗️</div>
+          <div style="font-size:2rem;margin-bottom:4px">🔶</div>
+          <div class="apparatus-use">
+            <strong>用途：</strong>滴定液（NaOH など）を少量ずつ正確に滴下する<br>
+            <strong>向き：</strong>上から液を落とす<br>
+            <strong>容量：</strong>50mL が一般的
+          </div>
+          <div class="apparatus-caution caution-share">
+            ⚠️ 共洗い必須！<br>入れる溶液で2〜3回洗う
+          </div>
+        </div>
+
+        <!-- ホールピペット -->
+        <div class="apparatus-card pipette">
+          <div class="apparatus-name" style="color:#10b981">🟢 ホールピペット</div>
+          <div class="apparatus-icon">🟢</div>
+          <div style="font-size:2rem;margin-bottom:4px">🔬</div>
+          <div class="apparatus-use">
+            <strong>用途：</strong>正確な体積をはかりとる（10mL、20mLなど）<br>
+            <strong>向き：</strong>上から液を落とす<br>
+            <strong>精度：</strong>非常に高い
+          </div>
+          <div class="apparatus-caution caution-share">
+            ⚠️ 共洗い必須！<br>はかる液体で2〜3回洗う
+          </div>
+        </div>
+
+        <!-- メスフラスコ -->
+        <div class="apparatus-card flask">
+          <div class="apparatus-name" style="color:#0284c7">🔵 メスフラスコ</div>
+          <div class="apparatus-icon">🫙</div>
+          <div style="font-size:2rem;margin-bottom:4px">💧</div>
+          <div class="apparatus-use">
+            <strong>用途：</strong>正確な濃度の溶液を調製する<br>
+            <strong>向き：</strong>下に置いて使う<br>
+            <strong>特徴：</strong>標線まで蒸留水を加える
+          </div>
+          <div class="apparatus-caution caution-water">
+            ✅ 水洗いでOK！<br>（蒸留水で標線に合わせるから）
+          </div>
+        </div>
+
+        <!-- コニカルビーカー -->
+        <div class="apparatus-card conical">
+          <div class="apparatus-name" style="color:#9333ea">🟣 コニカルビーカー</div>
+          <div class="apparatus-icon">🔺</div>
+          <div style="font-size:2rem;margin-bottom:4px">🫗</div>
+          <div class="apparatus-use">
+            <strong>用途：</strong>滴定を行う容器（被滴定液を入れる）<br>
+            <strong>特徴：</strong>振り混ぜやすい形状<br>
+            ＝ 三角フラスコでも可
+          </div>
+          <div class="apparatus-caution caution-water">
+            ✅ 水洗いでOK！<br>（液の量は測らないから）
+          </div>
+        </div>
+      </div>
+
+      <!-- 洗い方まとめ -->
+      <div style="background:linear-gradient(135deg,#1e3a8a,#2563eb);color:white;border-radius:10px;padding:14px 18px;margin-top:14px">
+        <div style="font-weight:800;font-size:0.9rem;margin-bottom:10px">📌 洗い方のルール（超重要）</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:0.85rem">
+          <div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:10px">
+            <div style="font-weight:800;color:#fbbf24;margin-bottom:4px">🔶🟢 共洗いする器具</div>
+            <div>ビュレット・ホールピペット</div>
+            <div style="opacity:0.8;font-size:0.78rem;margin-top:4px">理由：水滴が残ると濃度が変わるから</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:10px">
+            <div style="font-weight:800;color:#6ee7b7;margin-bottom:4px">🔵🟣 蒸留水で洗う器具</div>
+            <div>メスフラスコ・コニカルビーカー</div>
+            <div style="opacity:0.8;font-size:0.78rem;margin-top:4px">理由：最終的に蒸留水を加えるから</div>
+          </div>
+        </div>
+        <div style="background:rgba(255,200,0,0.2);border-radius:6px;padding:8px;margin-top:10px;font-size:0.82rem">
+          ⚡ メスフラスコとビュレットは加熱乾燥してはいけない（目盛りが狂う）
+        </div>
+      </div>
+
+      <!-- Gemini図の場所 -->
+      <div style="border:2px dashed #94a3b8;border-radius:10px;padding:16px;margin:14px 0;text-align:center;background:#f8fafc;color:var(--muted)">
+        <div style="font-size:1.5rem;margin-bottom:6px">🖼️</div>
+        <div style="font-weight:700;font-size:0.9rem">【図の挿入位置】</div>
+        <div style="font-size:0.83rem;margin-top:4px">
+          中和滴定装置の全体図（ビュレット・ホールピペット・コニカルビーカー・メスフラスコを示す図）<br>
+          ※ Geminiで作成してここに配置
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 指示薬 -->
+  <div class="section-card">
+    <div class="section-header sh-purple">🌈 4. 指示薬の選び方</div>
+    <div class="section-body">
+      <!-- フェノールフタレイン -->
+      <div class="indicator-card indicator-pp">
+        <div class="indicator-name">🟣 フェノールフタレイン（PP）</div>
+        <div style="font-size:0.85rem">変色域：pH 8.2 〜 9.8</div>
+        <div class="color-change-row">
+          <span class="color-chip" style="background:#f9fafb;border:2px solid #9ca3af;color:#374151">無色</span>
+          <span style="font-size:1.3rem;font-weight:900;color:var(--muted)">→</span>
+          <span class="color-chip" style="background:#ec4899;color:white">赤色（ピンク）</span>
+          <span style="font-size:0.8rem;color:var(--muted)">（pH が上がるにつれ）</span>
+        </div>
+      </div>
+
+      <!-- メチルオレンジ -->
+      <div class="indicator-card indicator-mo" style="margin-top:10px">
+        <div class="indicator-name">🟡 メチルオレンジ（MO）</div>
+        <div style="font-size:0.85rem">変色域：pH 3.1 〜 4.4</div>
+        <div class="color-change-row">
+          <span class="color-chip" style="background:#dc2626;color:white">赤色</span>
+          <span style="font-size:1.3rem;font-weight:900;color:var(--muted)">→</span>
+          <span class="color-chip" style="background:#f59e0b;color:white">黄色</span>
+          <span style="font-size:0.8rem;color:var(--muted)">（pH が上がるにつれ）</span>
+        </div>
+      </div>
+
+      <div style="font-weight:800;font-size:0.9rem;margin:14px 0 8px">どちらを使う？ → 中和点の pH で決まる</div>
+      <div class="pattern-grid">
+        <div class="pattern-card" style="background:#ecfdf5;border-color:#10b981">
+          <div class="pattern-title">強酸 ＋ 強塩基</div>
+          <div style="font-size:0.82rem">中和点 pH ≒ 7（中性）</div>
+          <div class="pattern-indicator" style="color:#4c1d95">→ PP・MO どちらでも可</div>
+        </div>
+        <div class="pattern-card" style="background:#f5f3ff;border-color:#a855f7">
+          <div class="pattern-title">弱酸 ＋ 強塩基</div>
+          <div style="font-size:0.82rem">中和点 pH ＞ 7（塩基性側）</div>
+          <div class="pattern-indicator" style="color:#4c1d95">→ <strong>フェノールフタレイン</strong></div>
+        </div>
+        <div class="pattern-card" style="background:#fff7ed;border-color:#f59e0b">
+          <div class="pattern-title">強酸 ＋ 弱塩基</div>
+          <div style="font-size:0.82rem">中和点 pH ＜ 7（酸性側）</div>
+          <div class="pattern-indicator" style="color:#92400e">→ <strong>メチルオレンジ</strong></div>
+        </div>
+        <div class="pattern-card" style="background:#f8fafc;border-color:#94a3b8">
+          <div class="pattern-title">弱酸 ＋ 弱塩基</div>
+          <div style="font-size:0.82rem">中和点が不明確</div>
+          <div class="pattern-indicator" style="color:var(--danger)">→ 測定不能</div>
+        </div>
+      </div>
+
+      <!-- Gemini図の場所 -->
+      <div style="border:2px dashed #94a3b8;border-radius:10px;padding:16px;margin:14px 0;text-align:center;background:#f8fafc;color:var(--muted)">
+        <div style="font-size:1.5rem;margin-bottom:6px">🖼️</div>
+        <div style="font-weight:700;font-size:0.9rem">【図の挿入位置】</div>
+        <div style="font-size:0.83rem;margin-top:4px">
+          4パターンの滴定曲線（強酸強塩基・弱酸強塩基・強酸弱塩基・弱酸弱塩基）のpH曲線グラフ<br>
+          縦軸pH（0〜14）横軸：滴下量。各変色域をカラーで塗り分け。<br>
+          ※ Geminiで作成してここに配置
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 塩の液性 -->
+  <div class="section-card">
+    <div class="section-header sh-amber">🧂 5. 塩の分類と水溶液の液性</div>
+    <div class="section-body">
+      <div class="text-block">中和でできる<strong class="c-salt">塩（えん）</strong>の水溶液は、必ずしも中性ではありません。</div>
+      <table class="chem-table">
+        <thead><tr><th>組み合わせ</th><th>例の塩</th><th>水溶液の液性</th><th>理由</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="c-acid">強酸</span>＋<span class="c-base">強塩基</span></td>
+            <td>NaCl（塩化ナトリウム）<br>K₂SO₄（硫酸カリウム）</td>
+            <td><strong>中性</strong></td>
+            <td>加水分解しない</td>
+          </tr>
+          <tr>
+            <td><span class="c-acid">強酸</span>＋弱塩基</td>
+            <td>NH₄Cl（塩化アンモニウム）</td>
+            <td><strong style="color:var(--acid)">酸性</strong></td>
+            <td>NH₄⁺ ＋ H₂O → NH₃ ＋ H₃O⁺</td>
+          </tr>
+          <tr>
+            <td>弱酸＋<span class="c-base">強塩基</span></td>
+            <td>CH₃COONa（酢酸ナトリウム）</td>
+            <td><strong style="color:var(--base)">塩基性</strong></td>
+            <td>CH₃COO⁻ ＋ H₂O ⇌ CH₃COOH ＋ OH⁻</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="warn-block" style="margin-top:8px">
+        ⚡ 「酸性塩」「塩基性塩」は形式上の分類であり、水溶液が酸性か塩基性かとは別の話！<br>
+        例：NaHCO₃（酸性塩の形式）の水溶液は <strong>塩基性</strong>。
+      </div>
+
+      <!-- Gemini図の場所 -->
+      <div style="border:2px dashed #94a3b8;border-radius:10px;padding:12px;margin:12px 0;text-align:center;background:#f8fafc;color:var(--muted)">
+        <div style="font-size:1.2rem;margin-bottom:4px">🖼️</div>
+        <div style="font-weight:700;font-size:0.88rem">【図の挿入位置】</div>
+        <div style="font-size:0.82rem;margin-top:2px">
+          塩の液性まとめ図（強酸強塩基→中性、強酸弱塩基→酸性、弱酸強塩基→塩基性 の分類フロー図）<br>
+          ※ Geminiで作成してここに配置
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-learn -->
+
+<!-- ========== FILL ========== -->
+<div id="tab-fill" class="tab-content">
+  <div class="section-card">
+    <div class="section-header sh-blue">✏️ 穴埋めチャレンジ</div>
+    <div class="section-body">
+      <div class="timer-row">
+        <span class="timer-display" id="timerDisp">00:00</span>
+        <div style="flex:1">
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+          <div class="progress-label" id="progressLabel">0 / 15 正解</div>
+        </div>
+      </div>
+      <div class="challenge-bar">
+        <button class="btn btn-primary" id="btnStart" onclick="startChallenge()">チャレンジ開始</button>
+        <button class="btn btn-amber" id="btnHint" onclick="showHint()" style="display:none">手本を見る</button>
+        <button class="btn btn-gray" id="btnReset" onclick="resetChallenge()" style="display:none">本文に戻る</button>
+      </div>
+      <div class="word-bank hidden" id="wordBank"></div>
+
+      <div class="fill-text" id="fillText">
+
+        <p style="margin:14px 0 6px;font-weight:800;color:#dc2626">▶ 中和反応</p>
+        <p>
+          酸と塩基が反応すると <span class="blank" data-ans="塩（えん）">塩（えん）</span> と
+          <span class="blank" data-ans="水">水</span> が生成します。これを中和反応といいます。
+          中和の本質は <span class="blank" data-ans="H⁺">H⁺</span> と <span class="blank" data-ans="OH⁻">OH⁻</span> が
+          結合して <span class="blank" data-ans="H₂O">H₂O</span> になることです。
+        </p>
+
+        <p style="margin:14px 0 6px;font-weight:800;color:#059669">▶ 実験器具</p>
+        <p>
+          滴定液を少量ずつ滴下する器具は <span class="blank" data-ans="ビュレット">ビュレット</span>、
+          正確な体積をはかりとる器具は <span class="blank" data-ans="ホールピペット">ホールピペット</span>、
+          正確な濃度の溶液を調製する器具は <span class="blank" data-ans="メスフラスコ">メスフラスコ</span> です。
+          ビュレットとホールピペットは <span class="blank" data-ans="共洗い">共洗い</span>（入れる液で洗う）が必要です。
+          メスフラスコとコニカルビーカーは <span class="blank" data-ans="蒸留水">蒸留水</span> で洗えばよいです。
+        </p>
+
+        <p style="margin:14px 0 6px;font-weight:800;color:#7c3aed">▶ 指示薬</p>
+        <p>
+          フェノールフタレインの変色域は pH <span class="blank" data-ans="8.2〜9.8">8.2〜9.8</span> で、
+          <span class="blank" data-ans="無色から赤色">無色から赤色</span> に変化します。
+          メチルオレンジの変色域は pH <span class="blank" data-ans="3.1〜4.4">3.1〜4.4</span> で、
+          <span class="blank" data-ans="赤色から黄色">赤色から黄色</span> に変化します。
+          弱酸を強塩基で滴定する場合は <span class="blank" data-ans="フェノールフタレイン">フェノールフタレイン</span> を使います。
+        </p>
+
+      </div>
+
+      <div class="score-board" id="scoreBoard" style="display:none">
+        <div class="score-item"><div class="score-num" id="scoreCorrect">0</div><div class="score-sub">正解</div></div>
+        <div class="score-item"><div class="score-num" id="scoreMiss">0</div><div class="score-sub">ミス</div></div>
+        <div class="score-item"><div class="score-num" id="scoreTime">0:00</div><div class="score-sub">タイム</div></div>
+        <div class="grade-badge" id="gradeBadge">-</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== QUIZ ========== -->
+<div id="tab-quiz" class="tab-content">
+  <div class="section-card">
+    <div class="section-header sh-green">🧪 確認テスト</div>
+    <div class="section-body">
+      <div id="quizContainer"><div class="quiz-card" id="qc0"><div class="quiz-q">Q1. 0.10mol/L の硫酸（2価）10mL を、0.10mol/L NaOH（1価）で中和するとき、必要な NaOH の体積は？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(0,0)">10mL</button><button class="quiz-opt" onclick="answerQuiz(0,1)">20mL</button><button class="quiz-opt" onclick="answerQuiz(0,2)">5mL</button><button class="quiz-opt" onclick="answerQuiz(0,3)">40mL</button></div><div class="quiz-feedback" id="qf0"></div></div><div class="quiz-card" id="qc1"><div class="quiz-q">Q2. 中和滴定でビュレットに水が残っていた場合どうすればよいか？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(1,0)">そのまま使う</button><button class="quiz-opt" onclick="answerQuiz(1,1)">乾燥させてから使う</button><button class="quiz-opt" onclick="answerQuiz(1,2)">滴定する液で2〜3回すすぐ（共洗い）</button><button class="quiz-opt" onclick="answerQuiz(1,3)">蒸留水で洗う</button></div><div class="quiz-feedback" id="qf1"></div></div><div class="quiz-card" id="qc2"><div class="quiz-q">Q3. 酢酸（弱酸）を NaOH（強塩基）で滴定するとき、使うべき指示薬は？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(2,0)">メチルオレンジ</button><button class="quiz-opt" onclick="answerQuiz(2,1)">フェノールフタレイン</button><button class="quiz-opt" onclick="answerQuiz(2,2)">BTB溶液</button><button class="quiz-opt" onclick="answerQuiz(2,3)">リトマス</button></div><div class="quiz-feedback" id="qf2"></div></div><div class="quiz-card" id="qc3"><div class="quiz-q">Q4. 塩化アンモニウム NH₄Cl の水溶液の液性は？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(3,0)">酸性</button><button class="quiz-opt" onclick="answerQuiz(3,1)">中性</button><button class="quiz-opt" onclick="answerQuiz(3,2)">塩基性</button><button class="quiz-opt" onclick="answerQuiz(3,3)">どちらでもない</button></div><div class="quiz-feedback" id="qf3"></div></div><div class="quiz-card" id="qc4"><div class="quiz-q">Q5. フェノールフタレインは酸性側では何色か？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(4,0)">赤色</button><button class="quiz-opt" onclick="answerQuiz(4,1)">黄色</button><button class="quiz-opt" onclick="answerQuiz(4,2)">無色</button><button class="quiz-opt" onclick="answerQuiz(4,3)">青色</button></div><div class="quiz-feedback" id="qf4"></div></div><div class="quiz-card" id="qc5"><div class="quiz-q">Q6. HCl ＋ NaOH → NaCl ＋ H₂O の反応で、NaCl の水溶液は何性を示すか？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(5,0)">酸性</button><button class="quiz-opt" onclick="answerQuiz(5,1)">中性</button><button class="quiz-opt" onclick="answerQuiz(5,2)">塩基性</button><button class="quiz-opt" onclick="answerQuiz(5,3)">場合による</button></div><div class="quiz-feedback" id="qf5"></div></div></div>
+      <div style="margin-top:16px"><button class="btn btn-primary" onclick="resetQuiz()">もう一度</button></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(function(el){ el.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(el){ el.classList.remove('active'); });
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+var WORDS = ['塩（えん）','水','H⁺','OH⁻','H₂O','ビュレット','ホールピペット','メスフラスコ','共洗い','蒸留水','8.2〜9.8','無色から赤色','3.1〜4.4','赤色から黄色','フェノールフタレイン'];
+var timerInterval=null, timerSeconds=0, timerRunning=false, totalBlanks=0, correctCount=0, missCount=0, activeBlank=null;
+
+function updateTimer(){ timerSeconds++; var m=Math.floor(timerSeconds/60).toString().padStart(2,'0'); var s=(timerSeconds%60).toString().padStart(2,'0'); document.getElementById('timerDisp').textContent=m+':'+s; }
+
+function startChallenge(){
+  timerSeconds=0;correctCount=0;missCount=0;activeBlank=null;
+  document.getElementById('scoreBoard').style.display='none';
+  document.getElementById('btnStart').style.display='none';
+  document.getElementById('btnHint').style.display='';
+  document.getElementById('btnReset').style.display='';
+  var blanks=document.querySelectorAll('#fillText .blank');
+  totalBlanks=blanks.length;
+  blanks.forEach(function(b){ b.classList.remove('revealed');b.classList.add('hidden');b.dataset.done='false';b.style.boxShadow='';b.style.cursor='pointer';b.onclick=function(){selectBlank(b);}; });
+  var allW=WORDS.slice().sort(function(){return Math.random()-0.5;});
+  var wb=document.getElementById('wordBank');wb.innerHTML='';wb.classList.remove('hidden');
+  allW.forEach(function(w){ var chip=document.createElement('span');chip.className='word-chip';chip.textContent=w;chip.dataset.word=w;chip.onclick=function(){fillWithWord(w,chip);};wb.appendChild(chip); });
+  updateProgress();
+  if(timerInterval)clearInterval(timerInterval);
+  timerRunning=true;
+  timerInterval=setInterval(function(){if(timerRunning)updateTimer();},1000);
+}
+
+function selectBlank(b){ if(b.dataset.done==='true')return; document.querySelectorAll('#fillText .blank').forEach(function(el){if(el.dataset.done!=='true')el.style.boxShadow='';}); activeBlank=b;b.style.boxShadow='0 0 0 3px #2563eb'; }
+
+function fillWithWord(word,chip){
+  if(!activeBlank){ var blanks=document.querySelectorAll('#fillText .blank'); for(var i=0;i<blanks.length;i++){if(blanks[i].dataset.done!=='true'){activeBlank=blanks[i];break;}} }
+  if(!activeBlank)return;
+  var ans=activeBlank.dataset.ans;
+  if(word===ans){ activeBlank.textContent=word;activeBlank.classList.remove('hidden');activeBlank.classList.add('revealed');activeBlank.dataset.done='true';activeBlank.style.boxShadow='';activeBlank.onclick=null;activeBlank.style.cursor='default';correctCount++;chip.style.opacity='0.35';chip.style.pointerEvents='none';launchConfetti(3);activeBlank=null; }
+  else{ missCount++;var prev=activeBlank;prev.style.boxShadow='0 0 0 3px #dc2626';setTimeout(function(){if(prev.dataset.done!=='true')prev.style.boxShadow='0 0 0 3px #2563eb';},600); }
+  updateProgress();
+  if(correctCount===totalBlanks)finishChallenge();
+}
+
+function updateProgress(){ var pct=totalBlanks>0?Math.round(correctCount/totalBlanks*100):0; document.getElementById('progressBar').style.width=pct+'%'; document.getElementById('progressLabel').textContent=correctCount+' / '+totalBlanks+' 正解'; }
+
+function showHint(){ timerRunning=false; document.querySelectorAll('#fillText .blank').forEach(function(b){b.textContent=b.dataset.ans;b.classList.remove('hidden');b.classList.add('revealed');}); }
+
+function resetChallenge(){ clearInterval(timerInterval);timerRunning=false;timerSeconds=0;activeBlank=null; document.getElementById('timerDisp').textContent='00:00'; document.getElementById('progressBar').style.width='0%'; document.getElementById('progressLabel').textContent='0 / 15 正解'; document.getElementById('btnStart').style.display=''; document.getElementById('btnHint').style.display='none'; document.getElementById('btnReset').style.display='none'; document.getElementById('wordBank').classList.add('hidden'); document.getElementById('scoreBoard').style.display='none'; document.querySelectorAll('#fillText .blank').forEach(function(b){b.textContent=b.dataset.ans;b.classList.remove('hidden','revealed');b.style.boxShadow='';b.style.cursor='default';b.onclick=null;b.dataset.done='false';}); }
+
+function finishChallenge(){ timerRunning=false;clearInterval(timerInterval); document.getElementById('wordBank').classList.add('hidden'); var m=Math.floor(timerSeconds/60);var s=timerSeconds%60; document.getElementById('scoreCorrect').textContent=correctCount; document.getElementById('scoreMiss').textContent=missCount; document.getElementById('scoreTime').textContent=m+':'+s.toString().padStart(2,'0'); var acc=correctCount/Math.max(1,correctCount+missCount);var grade,gc; if(acc>=0.9&&timerSeconds<120){grade='A';gc='grade-A';launchConfetti(30);}else if(acc>=0.7){grade='B';gc='grade-B';}else{grade='C';gc='grade-C';} var gb=document.getElementById('gradeBadge');gb.textContent=grade;gb.className='grade-badge '+gc; document.getElementById('scoreBoard').style.display='flex'; }
+
+function launchConfetti(n){ var colors=['#fbbf24','#60a5fa','#34d399','#f87171','#a78bfa']; for(var i=0;i<n;i++){ var el=document.createElement('div');el.className='confetti-piece';el.style.cssText='left:'+(30+Math.random()*40)+'vw;top:20vh;background:'+colors[Math.floor(Math.random()*colors.length)]+';animation-delay:'+(Math.random()*0.5)+'s';document.body.appendChild(el);setTimeout(function(e){return function(){e.remove();};}(el),2000); } }
+
+var quizData=[
+  {q:'0.10mol/L の硫酸（2価）10mL を、0.10mol/L NaOH（1価）で中和するとき、必要な NaOH の体積は？',opts:['10mL','20mL','5mL','40mL'],ans:1,exp:'2×0.10×10/1000 = 1×0.10×V/1000 → V = 20mL。硫酸は2価なので NaOH は2倍必要。'},
+  {q:'中和滴定でビュレットに水が残っていた場合どうすればよいか？',opts:['そのまま使う','乾燥させてから使う','滴定する液で2〜3回すすぐ（共洗い）','蒸留水で洗う'],ans:2,exp:'ビュレットは共洗いが必要。水が残ると滴定液が薄まり濃度が変わる。'},
+  {q:'酢酸（弱酸）を NaOH（強塩基）で滴定するとき、使うべき指示薬は？',opts:['メチルオレンジ','フェノールフタレイン','BTB溶液','リトマス'],ans:1,exp:'弱酸＋強塩基の中和点は塩基性側（pH>7）→ フェノールフタレイン（pH 8.2〜9.8）が適切。'},
+  {q:'塩化アンモニウム NH₄Cl の水溶液の液性は？',opts:['酸性','中性','塩基性','どちらでもない'],ans:0,exp:'NH₄Cl は強酸HCl ＋ 弱塩基NH₃ の塩。NH₄⁺ が水と反応してH₃O⁺ を生じるため酸性になる。'},
+  {q:'フェノールフタレインは酸性側では何色か？',opts:['赤色','黄色','無色','青色'],ans:2,exp:'フェノールフタレインは酸性〜中性（pH<8.2）では無色、塩基性（pH>9.8）で赤色（ピンク）になる。'},
+  {q:'HCl ＋ NaOH → NaCl ＋ H₂O の反応で、NaCl の水溶液は何性を示すか？',opts:['酸性','中性','塩基性','場合による'],ans:1,exp:'NaClは強酸HCl ＋ 強塩基NaOH の塩（正塩）。加水分解せず水溶液は中性。'},
+];
+var quizState=[];
+function buildQuiz(){ quizState=quizData.map(function(){return{answered:false};}); var container=document.getElementById('quizContainer'); container.innerHTML=quizData.map(function(q,qi){ return '<div class="quiz-card" id="qc'+qi+'"><div class="quiz-q">Q'+(qi+1)+'. '+q.q+'</div><div class="quiz-opts">'+q.opts.map(function(opt,oi){return '<button class="quiz-opt" onclick="answerQuiz('+qi+','+oi+')">'+opt+'</button>';}).join('')+'</div><div class="quiz-feedback" id="qf'+qi+'"></div></div>'; }).join(''); }
+function answerQuiz(qi,oi){ if(quizState[qi].answered)return; quizState[qi].answered=true; var q=quizData[qi]; var opts=document.querySelectorAll('#qc'+qi+' .quiz-opt'); var fb=document.getElementById('qf'+qi); opts.forEach(function(o){o.disabled=true;}); if(oi===q.ans){opts[oi].classList.add('correct');fb.className='quiz-feedback show ok';fb.textContent='✅ 正解！ '+q.exp;launchConfetti(5);}else{opts[oi].classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='quiz-feedback show ng';fb.textContent='❌ 不正解。正解は「'+q.opts[q.ans]+'」。'+q.exp;} }
+function resetQuiz(){buildQuiz();}
+buildQuiz();
+</script>
+
+
+</body></html>

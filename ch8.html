@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)file:///C:/Users/tinbu/Downloads/acid_base_ch8_1.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMBA | 中和反応・塩・遊離反応</title>
+<style>
+  :root {
+    --primary:#2563eb; --primary-dark:#1d4ed8;
+    --accent:#059669; --accent2:#d97706; --accent3:#7c3aed;
+    --danger:#dc2626; --bg:#f0f4ff; --card:#ffffff;
+    --text:#1e293b; --muted:#64748b; --border:#e2e8f0;
+    --yellow-hint:#fef9c3; --blank-border:#fbbf24;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  header{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:white;}
+  .header-top{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.15);}
+  .logo{font-size:1.5rem;font-weight:900;letter-spacing:2px;color:#fbbf24;}
+  .header-sub{font-size:0.75rem;opacity:0.8;}
+  .chapter-title-bar{padding:14px 20px;display:flex;align-items:center;gap:12px;}
+  .chapter-badge{background:#fbbf24;color:#1e3a8a;font-weight:900;font-size:0.75rem;padding:3px 10px;border-radius:20px;}
+  .chapter-title-text{font-size:1.1rem;font-weight:700;}
+  .tab-bar{display:flex;background:white;border-bottom:2px solid var(--border);overflow-x:auto;padding:0 16px;gap:4px;}
+  .tab-btn{padding:10px 16px;border:none;background:none;font-size:0.82rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all 0.2s;font-family:inherit;}
+  .tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
+  .tab-btn:hover{color:var(--primary);}
+  main{max-width:860px;margin:0 auto;padding:20px 16px 60px;}
+  .tab-content{display:none;} .tab-content.active{display:block;}
+  .section-card{background:var(--card);border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:20px;overflow:hidden;}
+  .section-header{padding:14px 20px;font-weight:800;font-size:0.95rem;display:flex;align-items:center;gap:8px;}
+  .sh-blue{background:#eff6ff;border-left:4px solid var(--primary);color:#1e40af;}
+  .sh-green{background:#ecfdf5;border-left:4px solid var(--accent);color:#065f46;}
+  .sh-amber{background:#fffbeb;border-left:4px solid var(--accent2);color:#92400e;}
+  .sh-purple{background:#f5f3ff;border-left:4px solid var(--accent3);color:#4c1d95;}
+  .sh-red{background:#fef2f2;border-left:4px solid var(--danger);color:#991b1b;}
+  .section-body{padding:18px 20px;}
+  .text-block{font-size:0.92rem;line-height:1.9;margin-bottom:12px;}
+  .key-box{background:#eff6ff;border:2px solid #93c5fd;border-radius:8px;padding:14px 16px;margin:12px 0;}
+  .key-box .box-label{font-weight:800;color:var(--primary);font-size:0.82rem;margin-bottom:6px;}
+  .important-box{background:#fef2f2;border:2px solid #fca5a5;border-radius:8px;padding:14px 16px;margin:12px 0;}
+  .important-box .box-label{font-weight:800;color:var(--danger);font-size:0.82rem;margin-bottom:6px;}
+  .green-box{background:#ecfdf5;border:2px solid #6ee7b7;border-radius:8px;padding:14px 16px;margin:12px 0;}
+  .green-box .box-label{font-weight:800;color:#065f46;font-size:0.82rem;margin-bottom:6px;}
+  .amber-box{background:#fffbeb;border:2px solid #fcd34d;border-radius:8px;padding:14px 16px;margin:12px 0;}
+  .amber-box .box-label{font-weight:800;color:#92400e;font-size:0.82rem;margin-bottom:6px;}
+  .purple-box{background:#f5f3ff;border:2px solid #c4b5fd;border-radius:8px;padding:14px 16px;margin:12px 0;}
+  .purple-box .box-label{font-weight:800;color:#4c1d95;font-size:0.82rem;margin-bottom:6px;}
+  .note-block{background:#f0fdf4;border-left:3px solid var(--accent);padding:8px 12px;border-radius:0 6px 6px 0;font-size:0.87rem;margin:8px 0;line-height:1.8;}
+  .warn-block{background:#fff7ed;border-left:3px solid var(--accent2);padding:8px 12px;border-radius:0 6px 6px 0;font-size:0.87rem;margin:8px 0;line-height:1.8;}
+  .chem-table{width:100%;border-collapse:collapse;font-size:0.87rem;margin:12px 0;}
+  .chem-table th{background:#1e40af;color:white;padding:8px 12px;text-align:center;font-weight:700;}
+  .chem-table td{padding:8px 12px;border:1px solid #dbeafe;text-align:center;line-height:1.7;}
+  .chem-table tr:nth-child(even) td{background:#f0f7ff;}
+  .formula{font-family:'Courier New',monospace;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 14px;font-size:0.88rem;margin:8px 0;line-height:2.1;}
+  .frac{display:inline-block;text-align:center;vertical-align:middle;font-size:0.85em;}
+  .frac>span{display:block;} .frac .num{border-bottom:1.5px solid currentColor;padding:0 2px;} .frac .den{padding:0 2px;}
+
+  /* 中和式カラー */
+  .c-acid{color:#dc2626;font-weight:700;} .c-base{color:#059669;font-weight:700;}
+  .c-salt{color:#7c3aed;font-weight:700;} .c-water{color:#0ea5e9;font-weight:700;}
+  .eq-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:0.95rem;font-weight:700;margin:10px 0;}
+  .eq-box{padding:5px 12px;border-radius:7px;border:2px solid;text-align:center;}
+  .eq-acid{background:#fff0f0;border-color:#dc2626;color:#dc2626;}
+  .eq-base{background:#f0fdf4;border-color:#059669;color:#059669;}
+  .eq-salt{background:#f5f3ff;border-color:#7c3aed;color:#7c3aed;}
+  .eq-water{background:#f0f9ff;border-color:#0ea5e9;color:#0ea5e9;}
+  .eq-op{font-size:1.1rem;color:var(--muted);}
+
+  /* 塩の液性カード */
+  .liquidity-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
+  @media(max-width:560px){.liquidity-grid{grid-template-columns:1fr;}}
+  .liq-card{border-radius:10px;padding:12px 14px;border:2px solid;}
+  .liq-neutral{background:#f0f9ff;border-color:#0ea5e9;}
+  .liq-acid{background:#fff0f0;border-color:#dc2626;}
+  .liq-base{background:#f0fdf4;border-color:#059669;}
+  .liq-title{font-weight:800;font-size:0.85rem;margin-bottom:6px;}
+  .liq-example{font-size:0.82rem;margin-top:4px;color:#64748b;}
+
+  /* 遊離反応矢印図 */
+  .chase-diagram{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0;font-size:0.88rem;}
+  .chase-box{background:white;border:2px solid;border-radius:7px;padding:6px 12px;text-align:center;font-weight:700;}
+  .chase-arrow{font-size:1.4rem;font-weight:900;}
+
+  /* 4択ミニテスト */
+  .mini-q-block{background:#f8fafc;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .mini-q-label{display:inline-block;border-radius:4px;padding:1px 8px;font-size:0.75rem;font-weight:800;margin-bottom:8px;color:white;}
+  .mini-q-text{font-size:0.88rem;font-weight:700;margin-bottom:10px;line-height:1.7;}
+  .mini-opts{display:flex;gap:6px;flex-wrap:wrap;}
+  .mini-opt{flex:1;min-width:80px;padding:8px 4px;border:2px solid #cbd5e1;border-radius:7px;background:white;font-weight:700;font-size:0.88rem;cursor:pointer;font-family:inherit;transition:all 0.15s;}
+  .mini-opt:hover{border-color:var(--primary);background:#eff6ff;}
+  .mini-opt.correct{background:#dcfce7;border-color:#059669;color:#065f46;}
+  .mini-opt.wrong{background:#fef2f2;border-color:#dc2626;color:#dc2626;}
+  .mini-fb{display:none;margin-top:8px;padding:10px 12px;border-radius:6px;font-size:0.85rem;line-height:1.9;border-left:4px solid;}
+  .mini-fb.show{display:block;}
+  .mini-fb.ok{background:#f0fdf4;border-color:#059669;color:#065f46;}
+  .mini-fb.ng{background:#fef2f2;border-color:#dc2626;color:#dc2626;}
+
+  /* FILL */
+  .fill-text{font-size:0.92rem;line-height:2.4;}
+  .blank{display:inline-block;min-width:80px;padding:2px 8px;border-radius:4px;border-bottom:2px solid var(--blank-border);background:var(--yellow-hint);color:#92400e;font-weight:700;text-align:center;transition:all 0.3s;cursor:default;}
+  .blank.hidden{color:transparent;background:#e5e7eb;border-bottom-color:#9ca3af;}
+  .blank.revealed{background:#dcfce7;color:#166534;border-bottom-color:var(--accent);}
+  .challenge-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0 8px;}
+  .btn{padding:7px 16px;border-radius:6px;border:none;font-weight:700;font-size:0.82rem;cursor:pointer;transition:all 0.18s;font-family:inherit;}
+  .btn-primary{background:var(--primary);color:white;} .btn-primary:hover{background:var(--primary-dark);}
+  .btn-amber{background:var(--accent2);color:white;} .btn-amber:hover{background:#b45309;}
+  .btn-gray{background:#94a3b8;color:white;} .btn-gray:hover{background:#64748b;}
+  .word-bank{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;padding:10px 12px;background:#f1f5f9;border-radius:8px;font-size:0.85rem;min-height:38px;}
+  .word-bank.hidden{display:none;}
+  .word-chip{background:white;border:1.5px solid #cbd5e1;border-radius:4px;padding:2px 10px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+  .word-chip:hover{background:#dbeafe;border-color:var(--primary);}
+  .progress-bar-wrap{background:#e2e8f0;border-radius:99px;height:7px;margin:8px 0 4px;overflow:hidden;}
+  .progress-bar-fill{height:100%;background:var(--accent);border-radius:99px;transition:width 0.4s;}
+  .progress-label{font-size:0.78rem;color:var(--muted);}
+  .timer-display{font-size:1.1rem;font-weight:800;color:var(--primary);font-variant-numeric:tabular-nums;}
+  .timer-row{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+  .score-board{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:white;border-radius:10px;padding:14px 18px;margin-top:16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+  .score-item{text-align:center;} .score-num{font-size:1.6rem;font-weight:900;} .score-sub{font-size:0.72rem;opacity:0.8;}
+  .grade-badge{font-size:2rem;font-weight:900;padding:6px 16px;border-radius:8px;margin-left:auto;}
+  .grade-A{background:#fbbf24;color:#1e3a8a;} .grade-B{background:#60a5fa;color:white;} .grade-C{background:#94a3b8;color:white;}
+
+  /* QUIZ */
+  .quiz-card{border:2px solid var(--border);border-radius:10px;padding:16px;margin:12px 0;}
+  .quiz-q{font-weight:700;font-size:0.9rem;margin-bottom:12px;line-height:1.7;}
+  .quiz-opts{display:flex;flex-direction:column;gap:8px;}
+  .quiz-opt{padding:9px 14px;border:2px solid var(--border);border-radius:7px;cursor:pointer;font-size:0.87rem;transition:all 0.15s;background:white;font-family:inherit;text-align:left;}
+  .quiz-opt:hover{border-color:var(--primary);background:#eff6ff;}
+  .quiz-opt.correct{background:#dcfce7;border-color:var(--accent);color:#166534;font-weight:700;}
+  .quiz-opt.wrong{background:#fef2f2;border-color:var(--danger);color:var(--danger);}
+  .quiz-feedback{margin-top:10px;padding:8px 12px;border-radius:6px;font-size:0.85rem;display:none;font-weight:600;line-height:1.8;}
+  .quiz-feedback.show{display:block;} .quiz-feedback.ok{background:#dcfce7;color:#166534;} .quiz-feedback.ng{background:#fef2f2;color:var(--danger);}
+  .confetti-piece{position:fixed;width:10px;height:10px;border-radius:2px;animation:confettiFall 1.5s ease-out forwards;pointer-events:none;z-index:9999;}
+  @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(80vh) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top"><div class="logo">GAMBA</div><div class="header-sub">江原予備校 化学</div></div>
+  <div class="chapter-title-bar">
+    <span class="chapter-badge">Chapter 8</span>
+    <span class="chapter-title-text">中和反応・塩の分類・弱酸弱塩基遊離反応</span>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(&#39;learn&#39;)">📖 学習</button>
+  <button class="tab-btn" onclick="showTab(&#39;fill&#39;)">✏️ 穴埋め</button>
+  <button class="tab-btn" onclick="showTab(&#39;quiz&#39;)">🧪 確認テスト</button>
+</div>
+
+<main>
+
+<!-- ========== LEARN ========== -->
+<div id="tab-learn" class="tab-content active">
+
+  <!-- 1. 中和反応 -->
+  <div class="section-card">
+    <div class="section-header sh-blue">⚗️ 1. 中和反応とは</div>
+    <div class="section-body">
+      <div class="text-block">
+        酸と塩基が反応すると <span class="c-salt">塩（えん）</span> と <span class="c-water">水</span> が生成します。この反応を <strong>中和反応</strong> といいます。
+      </div>
+
+      <div class="important-box">
+        <div class="box-label">📌 中和の本質（最重要）</div>
+        <div style="font-size:1rem;font-weight:800;text-align:center;padding:8px 0;line-height:2.5">
+          <span class="c-acid">H⁺</span> ＋ <span class="c-base">OH⁻</span> → <span class="c-water">H₂O</span>
+        </div>
+        <div style="font-size:0.88rem;line-height:2;color:#374151">
+          酸の陰イオンと塩基の陽イオンが結びついてできる物質を <strong class="c-salt">塩（えん）</strong> といいます。<br>
+          ※「しお」ではなく「<strong>えん</strong>」と読みます！
+        </div>
+      </div>
+
+      <!-- 中和反応式 → すべてミニテスト化 -->
+      <div style="margin:14px 0">
+        <div style="font-size:0.82rem;color:var(--muted);margin-bottom:10px;font-weight:700">▼ 代表的な中和反応式 ― 生成物を選んでみましょう</div>
+
+        <!-- 問1 -->
+        <div class="mini-q-block" style="margin-bottom:10px">
+          <span class="mini-q-label" style="background:#2563eb">問1</span>
+          <div class="mini-q-text">
+            <span class="c-acid">HCl</span> ＋ <span class="c-base">NaOH</span> → ?
+          </div>
+          <div class="mini-opts" id="mq1_opts">
+            <button class="mini-opt" onclick="miniAns(&#39;mq1&#39;,this,&#39;A&#39;,&#39;A&#39;)">NaCl ＋ H₂O</button>
+            <button class="mini-opt" onclick="miniAns(&#39;mq1&#39;,this,&#39;B&#39;,&#39;A&#39;)">NaOH ＋ Cl₂</button>
+            <button class="mini-opt" onclick="miniAns(&#39;mq1&#39;,this,&#39;C&#39;,&#39;A&#39;)">NaCl ＋ H₂</button>
+            <button class="mini-opt" onclick="miniAns(&#39;mq1&#39;,this,&#39;D&#39;,&#39;A&#39;)">Na₂Cl ＋ H₂O</button>
+          </div>
+          <div class="mini-fb" id="mq1_fb"></div>
+        </div>
+
+        <!-- 問2 -->
+        <div class="mini-q-block" style="margin-bottom:10px">
+          <span class="mini-q-label" style="background:#2563eb">問2</span>
+          <div class="mini-q-text">
+            <span class="c-acid">H₂SO₄</span> ＋ <span class="c-base">NaOH</span> → ?　（係数に注意）
+          </div>
+          <div class="mini-opts" id="mq2a_opts">
+            <button class="mini-opt" onclick="miniAns(&#39;mq2a&#39;,this,&#39;A&#39;,&#39;C&#39;)">Na₂SO₄ ＋ H₂O</button>
+            <button class="mini-opt" onclick="miniAns(&#39;mq2a&#39;,this,&#39;B&#39;,&#39;C&#39;)">NaSO₄ ＋ 2H₂O</button>
+            <button class="mini-opt" onclick="miniAns(&#39;mq2a&#39;,this,&#39;C&#39;,&#39;C&#39;)">Na₂SO₄ ＋ 2H₂O　（H₂SO₄ ＋ 2NaOH →）</button>
+            <button class="mini-opt" onclick="miniAns(&#39;mq2a&#39;,this,&#39;D&#39;,&#39;C&#39;)">Na₂SO₄ ＋ 2H₂</button>
+          </div>
+          <div class="mini-fb" id="mq2a_fb"></div>
+        </div>
+
+        <!-- 問3 -->
+        <div class="mini-q-block" style="margin-bottom:10px">
+          <span class="mini-q-label" style="background:#2563eb">問3</span>
+          <div class="mini-q-text">
+            <span class="c-acid">HCl</span> ＋ <span class="c-base">NH₃</span> → ?　（水は生成しない！）
+          </div>
+          <div class="mini-opts" id="mq3a_opts">
+            <button class="mini-opt" onclick="miniAns(&#39;mq3a&#39;,this,&#39;A&#39;,&#39;B&#39;)">NHCl ＋ H₂O</button>
+            <button class="mini-opt" onclick="miniAns(&#39;mq3a&#39;,this,&#39;B&#39;,&#39;B&#39;)">NH₄Cl</button>
+            <button class="mini-opt" onclick="miniAns(&#39;mq3a&#39;,this,&#39;C&#39;,&#39;B&#39;)">NH₃Cl ＋ H⁺</button>
+            <button class="mini-opt" onclick="miniAns(&#39;mq3a&#39;,this,&#39;D&#39;,&#39;B&#39;)">NHCl₂</button>
+          </div>
+          <div class="mini-fb" id="mq3a_fb"></div>
+        </div>
+
+        <!-- 問4 -->
+        <div class="mini-q-block">
+          <span class="mini-q-label" style="background:#2563eb">問4</span>
+          <div class="mini-q-text">
+            <span class="c-acid">H₂SO₄</span> ＋ <span class="c-base">Ca(OH)₂</span> → ?
+          </div>
+          <div class="mini-opts" id="mq4a_opts">
+            <button class="mini-opt" onclick="miniAns(&#39;mq4a&#39;,this,&#39;A&#39;,&#39;B&#39;)">CaSO₃ ＋ H₂O</button>
+            <button class="mini-opt" onclick="miniAns(&#39;mq4a&#39;,this,&#39;B&#39;,&#39;B&#39;)">CaSO₄ ＋ 2H₂O</button>
+            <button class="mini-opt" onclick="miniAns(&#39;mq4a&#39;,this,&#39;C&#39;,&#39;B&#39;)">Ca₂SO₄ ＋ H₂O</button>
+            <button class="mini-opt" onclick="miniAns(&#39;mq4a&#39;,this,&#39;D&#39;,&#39;B&#39;)">CaSO₄ ＋ H₂O</button>
+          </div>
+          <div class="mini-fb" id="mq4a_fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 塩の分類 -->
+  <div class="section-card">
+    <div class="section-header sh-purple">🧂 2. 塩の分類</div>
+    <div class="section-body">
+      <div class="text-block">
+        塩（えん）はその構造によって3種類に分類されます。
+      </div>
+
+      <table class="chem-table">
+        <thead><tr><th>種類</th><th>特徴</th><th>代表例</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:#dc2626">酸性塩</strong></td>
+            <td style="text-align:left">H⁺ が残っている塩<br><small style="color:#64748b">※「酸性」という意味ではない</small></td>
+            <td>NaHCO₃（炭酸水素ナトリウム）<br>NaHSO₄（硫酸水素ナトリウム）</td>
+          </tr>
+          <tr>
+            <td><strong>中性塩（正塩）</strong></td>
+            <td style="text-align:left">H⁺も OH⁻も残っていない<br>完全に中和された塩</td>
+            <td>NaCl・Na₂SO₄<br>CH₃COONa</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#059669">塩基性塩</strong></td>
+            <td style="text-align:left">OH⁻ が残っている塩<br><small style="color:#64748b">※「塩基性」という意味ではない</small></td>
+            <td>Cu(OH)Cl<br>CaCl(OH)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warn-block">
+        ⚡ 塩の「種類（酸性塩・塩基性塩）」と水溶液の「液性（酸性・塩基性）」は<strong>別の話</strong>！<br>
+        例：NaHCO₃ は「酸性塩」でも、水溶液は<strong>塩基性</strong>を示します。
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 塩の水溶液の液性（加水分解） -->
+  <div class="section-card">
+    <div class="section-header sh-amber">💧 3. 塩の水溶液の液性（加水分解）</div>
+    <div class="section-body">
+      <div class="text-block">
+        正塩（中性塩）の水溶液は、もとになった酸と塩基の強さによって液性が決まります。
+      </div>
+
+      <!-- 覚え方 -->
+      <div class="amber-box">
+        <div class="box-label">🧠 覚え方：「強い方が液性を決める」</div>
+        <div style="font-size:0.9rem;line-height:2.2">
+          強塩基が残れば → <strong style="color:#059669">塩基性</strong><br>
+          強酸が残れば　→ <strong style="color:#dc2626">酸性</strong><br>
+          同士（強酸＋強塩基）→ <strong>中性</strong>
+        </div>
+      </div>
+
+      <div class="liquidity-grid" style="margin-top:12px">
+        <div class="liq-card liq-neutral">
+          <div class="liq-title" style="color:#0284c7">強酸 ＋ 強塩基 → 中性</div>
+          <div style="font-size:0.85rem;line-height:1.8">加水分解しない</div>
+          <div class="liq-example">例：NaCl（HCl ＋ NaOH）<br>K₂SO₄（H₂SO₄ ＋ KOH）</div>
+        </div>
+        <div class="liq-card liq-base">
+          <div class="liq-title" style="color:#065f46">弱酸 ＋ 強塩基 → 塩基性</div>
+          <div style="font-size:0.85rem;line-height:1.8">弱酸イオンが加水分解してOH⁻を出す</div>
+          <div class="liq-example">例：CH₃COONa（酢酸ナトリウム）<br>Na₂CO₃（炭酸ナトリウム）</div>
+        </div>
+        <div class="liq-card liq-acid">
+          <div class="liq-title" style="color:#991b1b">強酸 ＋ 弱塩基 → 酸性</div>
+          <div style="font-size:0.85rem;line-height:1.8">弱塩基イオンが加水分解してH⁺を出す</div>
+          <div class="liq-example">例：NH₄Cl（塩化アンモニウム）<br>CuSO₄（硫酸銅）</div>
+        </div>
+        <div class="liq-card" style="background:#f8fafc;border-color:#94a3b8">
+          <div class="liq-title" style="color:#475569">弱酸 ＋ 弱塩基 → ほぼ中性</div>
+          <div style="font-size:0.85rem;line-height:1.8">両方が加水分解するため打ち消しあう</div>
+          <div class="liq-example">例：CH₃COONH₄（酢酸アンモニウム）</div>
+        </div>
+      </div>
+
+      <!-- 加水分解のしくみ -->
+      <div style="margin-top:14px">
+        <button onclick="toggleHydro()" id="hydroBtn" style="width:100%;padding:11px 16px;background:linear-gradient(135deg,#92400e,#d97706);color:white;border:none;border-radius:10px;font-weight:800;font-size:0.88rem;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:space-between">
+          <span>🔬 加水分解のしくみを詳しく見る</span>
+          <span id="hydroArrow" style="transition:transform 0.3s">▼</span>
+        </button>
+        <div id="hydroBody" style="display:none;background:#fffbeb;border:2px solid #fcd34d;border-radius:0 0 10px 10px;padding:16px 18px;font-size:0.88rem;line-height:2">
+
+          <!-- まず直感的な説明 -->
+          <div style="background:white;border-radius:8px;padding:12px 14px;margin-bottom:14px;border-left:4px solid #d97706">
+            <div style="font-weight:800;color:#92400e;margin-bottom:8px">💡 まず直感的に理解しよう</div>
+            <div style="line-height:2.2">
+              <strong>弱酸</strong>は電離度が小さい ＝ H⁺ をいったん出しても、<strong>すぐに取り戻そうとする</strong>性質があります。<br>
+              だから水の中で「H⁺ を取り戻す ＝ H⁺ を水からもらう」反応が起きます。<br><br>
+              <strong>弱塩基</strong>は電離度が小さい ＝ OH⁻ をいったん出しても、<strong>すぐに取り戻そうとする</strong>性質があります。<br>
+              だから「OH⁻ の代わりに H⁺ を水へ渡す ＝ 水から OH⁻ を奪う」反応が起きます。<br><br>
+              <div style="background:#fffbeb;border-radius:6px;padding:8px 12px;font-weight:700;color:#92400e">
+                👉 「弱い酸・塩基ほど分子に戻ろうとする力が強い」<br>
+                　　これが加水分解の原動力（ドライビングフォース）です！
+              </div>
+            </div>
+          </div>
+
+          <!-- ① 弱酸＋強塩基 2段階 -->
+          <div style="font-weight:800;color:#059669;margin-bottom:8px;font-size:0.9rem">
+            ① 弱酸＋強塩基の塩（例：CH₃COONa）→ 塩基性
+          </div>
+          <div style="background:white;border-radius:8px;padding:12px 14px;margin-bottom:8px;border:1px solid #6ee7b7">
+            <div style="font-weight:700;font-size:0.82rem;color:#64748b;margin-bottom:6px">【第1段階】塩がイオンに分かれる</div>
+            <div class="formula" style="font-size:0.84rem;background:#f0fdf4;border-color:#6ee7b7">
+              CH₃COONa → CH₃COO⁻ ＋ Na⁺
+            </div>
+            <div style="font-weight:700;font-size:0.82rem;color:#64748b;margin:8px 0 6px">【第2段階】弱酸イオンが水から H⁺ を「奪い返す」</div>
+            <div class="formula" style="font-size:0.84rem;background:#f0fdf4;border-color:#6ee7b7">
+              CH₃COO⁻ ＋ H₂O ⇌ CH₃COOH ＋ <strong style="color:#059669;font-size:1rem">OH⁻</strong>
+            </div>
+            <div style="margin-top:8px;background:#ecfdf5;border-radius:6px;padding:8px 10px;font-size:0.84rem;line-height:1.9">
+              <strong>なぜ H⁺ を奪うのか？</strong><br>
+              CH₃COO⁻ は「酢酸 CH₃COOH に戻りたい」という力を持っています（弱酸だから）。<br>
+              そこで水（H₂O）から H⁺ をもらって CH₃COOH になります。<br>
+              H⁺ を渡した水は OH⁻ になります。→ <strong style="color:#059669">OH⁻ が増えるので塩基性</strong>
+            </div>
+          </div>
+
+          <!-- ② 強酸＋弱塩基 2段階 -->
+          <div style="font-weight:800;color:#dc2626;margin-bottom:8px;font-size:0.9rem;margin-top:14px">
+            ② 強酸＋弱塩基の塩（例：NH₄Cl）→ 酸性
+          </div>
+          <div style="background:white;border-radius:8px;padding:12px 14px;margin-bottom:8px;border:1px solid #fca5a5">
+            <div style="font-weight:700;font-size:0.82rem;color:#64748b;margin-bottom:6px">【第1段階】塩がイオンに分かれる</div>
+            <div class="formula" style="font-size:0.84rem;background:#fef2f2;border-color:#fca5a5">
+              NH₄Cl → NH₄⁺ ＋ Cl⁻
+            </div>
+            <div style="font-weight:700;font-size:0.82rem;color:#64748b;margin:8px 0 6px">【第2段階】弱塩基イオンが水に H⁺ を「渡す」（OH⁻ を奪う）</div>
+            <div class="formula" style="font-size:0.84rem;background:#fef2f2;border-color:#fca5a5">
+              NH₄⁺ ＋ H₂O ⇌ NH₃ ＋ <strong style="color:#dc2626;font-size:1rem">H₃O⁺</strong>（＝ H⁺）
+            </div>
+            <div style="margin-top:8px;background:#fef2f2;border-radius:6px;padding:8px 10px;font-size:0.84rem;line-height:1.9">
+              <strong>なぜ H⁺ を渡すのか？</strong><br>
+              NH₄⁺ は「アンモニア NH₃ に戻りたい」という力を持っています（弱塩基だから）。<br>
+              NH₃ に戻るには H⁺ を手放す必要があります。→ 水（H₂O）に H⁺ を渡します。<br>
+              H⁺ を受け取った水は H₃O⁺（オキソニウムイオン）になります。→ <strong style="color:#dc2626">H⁺ が増えるので酸性</strong>
+            </div>
+          </div>
+
+          <!-- まとめ -->
+          <div style="margin-top:12px;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:white;border-radius:8px;padding:12px 14px;font-size:0.85rem;line-height:2">
+            <div style="font-weight:800;margin-bottom:6px">🔑 まとめ</div>
+            <div>・<strong>弱酸イオン</strong>：H⁺ を取り戻したい → 水から H⁺ をもらう → <span style="color:#6ee7b7">OH⁻ が残る → 塩基性</span></div>
+            <div>・<strong>弱塩基イオン</strong>：H⁺ を手放したい → 水に H⁺ を渡す → <span style="color:#fca5a5">H⁺ が増える → 酸性</span></div>
+            <div style="margin-top:6px;font-size:0.82rem;opacity:0.85">強酸・強塩基のイオンは完全に安定しているので、このような反応（加水分解）は起こりません。</div>
+          </div>
+
+          <!-- 2段階ミニテスト -->
+          <div style="margin-top:16px;font-weight:800;font-size:0.88rem;color:#92400e;margin-bottom:10px">🖊️ 2段階反応の確認テスト</div>
+
+          <!-- 問A -->
+          <div style="background:white;border:1.5px solid #6ee7b7;border-radius:8px;padding:12px 14px;margin-bottom:10px">
+            <div style="font-size:0.82rem;font-weight:800;color:#059669;margin-bottom:8px">
+              <span style="background:#059669;color:white;border-radius:4px;padding:1px 8px;font-size:0.75rem;margin-right:6px">問A</span>
+              CH₃COONa の加水分解の第2段階の反応式はどれですか？
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px" id="hydroQ1_opts">
+              <button onclick="hydroAns(&#39;hydroQ1&#39;,this,&#39;A&#39;,&#39;B&#39;)" style="padding:8px 12px;border:2px solid #cbd5e1;border-radius:7px;background:white;font-weight:600;font-size:0.84rem;cursor:pointer;font-family:inherit;text-align:left">A. CH₃COONa → CH₃COO⁻ ＋ Na⁺</button>
+              <button onclick="hydroAns(&#39;hydroQ1&#39;,this,&#39;B&#39;,&#39;B&#39;)" style="padding:8px 12px;border:2px solid #cbd5e1;border-radius:7px;background:white;font-weight:600;font-size:0.84rem;cursor:pointer;font-family:inherit;text-align:left">B. CH₃COO⁻ ＋ H₂O ⇌ CH₃COOH ＋ OH⁻</button>
+              <button onclick="hydroAns(&#39;hydroQ1&#39;,this,&#39;C&#39;,&#39;B&#39;)" style="padding:8px 12px;border:2px solid #cbd5e1;border-radius:7px;background:white;font-weight:600;font-size:0.84rem;cursor:pointer;font-family:inherit;text-align:left">C. CH₃COOH ＋ NaOH → CH₃COONa ＋ H₂O</button>
+              <button onclick="hydroAns(&#39;hydroQ1&#39;,this,&#39;D&#39;,&#39;B&#39;)" style="padding:8px 12px;border:2px solid #cbd5e1;border-radius:7px;background:white;font-weight:600;font-size:0.84rem;cursor:pointer;font-family:inherit;text-align:left">D. CH₃COO⁻ → CH₃COOH</button>
+            </div>
+            <div id="hydroQ1_fb" style="display:none;margin-top:8px;padding:10px 12px;border-radius:6px;font-size:0.84rem;line-height:1.9"></div>
+          </div>
+
+          <!-- 問B -->
+          <div style="background:white;border:1.5px solid #fca5a5;border-radius:8px;padding:12px 14px">
+            <div style="font-size:0.82rem;font-weight:800;color:#dc2626;margin-bottom:8px">
+              <span style="background:#dc2626;color:white;border-radius:4px;padding:1px 8px;font-size:0.75rem;margin-right:6px">問B</span>
+              NH₄Cl の加水分解で水溶液が酸性になる理由として正しいのはどれですか？
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px" id="hydroQ2_opts">
+              <button onclick="hydroAns(&#39;hydroQ2&#39;,this,&#39;A&#39;,&#39;C&#39;)" style="padding:8px 12px;border:2px solid #cbd5e1;border-radius:7px;background:white;font-weight:600;font-size:0.84rem;cursor:pointer;font-family:inherit;text-align:left">A. Cl⁻ が水に溶けて HCl になるから</button>
+              <button onclick="hydroAns(&#39;hydroQ2&#39;,this,&#39;B&#39;,&#39;C&#39;)" style="padding:8px 12px;border:2px solid #cbd5e1;border-radius:7px;background:white;font-weight:600;font-size:0.84rem;cursor:pointer;font-family:inherit;text-align:left">B. NH₄⁺ が水から OH⁻ を奪うから</button>
+              <button onclick="hydroAns(&#39;hydroQ2&#39;,this,&#39;C&#39;,&#39;C&#39;)" style="padding:8px 12px;border:2px solid #cbd5e1;border-radius:7px;background:white;font-weight:600;font-size:0.84rem;cursor:pointer;font-family:inherit;text-align:left">C. NH₄⁺ が NH₃ に戻ろうとして水に H⁺ を渡し、H₃O⁺ が増えるから</button>
+              <button onclick="hydroAns(&#39;hydroQ2&#39;,this,&#39;D&#39;,&#39;C&#39;)" style="padding:8px 12px;border:2px solid #cbd5e1;border-radius:7px;background:white;font-weight:600;font-size:0.84rem;cursor:pointer;font-family:inherit;text-align:left">D. HCl が水に溶けて H⁺ を出すから</button>
+            </div>
+            <div id="hydroQ2_fb" style="display:none;margin-top:8px;padding:10px 12px;border-radius:6px;font-size:0.84rem;line-height:1.9"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 注意すべき酸性塩 -->
+      <div style="margin-top:14px">
+        <div style="font-weight:800;font-size:0.9rem;color:#92400e;margin-bottom:10px">⚠️ 注意！酸性塩の液性</div>
+        <table class="chem-table">
+          <thead><tr><th>塩</th><th>分類</th><th>水溶液の液性</th><th>理由</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>NaHCO₃</strong><br>炭酸水素ナトリウム</td>
+              <td>酸性塩</td>
+              <td><strong style="color:#059669">塩基性</strong></td>
+              <td style="text-align:left;font-size:0.82rem">HCO₃⁻ ＋ H₂O ⇌ H₂CO₃ ＋ OH⁻<br>炭酸は弱酸 → OH⁻ を出す</td>
+            </tr>
+            <tr>
+              <td><strong>NaHSO₄</strong><br>硫酸水素ナトリウム</td>
+              <td>酸性塩</td>
+              <td><strong style="color:#dc2626">酸性</strong></td>
+              <td style="text-align:left;font-size:0.82rem">HSO₄⁻ → SO₄²⁻ ＋ H⁺<br>硫酸は強酸 → H⁺ を出す</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ミニテスト -->
+      <div class="mini-q-block" style="margin-top:14px;background:#fdf4ff;border-color:#c4b5fd">
+        <span class="mini-q-label" style="background:#7c3aed">問1</span>
+        <div class="mini-q-text">CH₃COONa（酢酸ナトリウム）の水溶液の液性はどれですか？</div>
+        <div class="mini-opts" id="mq2_opts">
+          <button class="mini-opt" onclick="miniAns(&#39;mq2&#39;,this,&#39;酸性&#39;,&#39;塩基性&#39;)">酸性</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq2&#39;,this,&#39;中性&#39;,&#39;塩基性&#39;)">中性</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq2&#39;,this,&#39;塩基性&#39;,&#39;塩基性&#39;)">塩基性</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq2&#39;,this,&#39;不明&#39;,&#39;塩基性&#39;)">不明</button>
+        </div>
+        <div class="mini-fb" id="mq2_fb"></div>
+      </div>
+
+      <div class="mini-q-block" style="background:#fff0f0;border-color:#fca5a5">
+        <span class="mini-q-label" style="background:#dc2626">問2</span>
+        <div class="mini-q-text">NH₄Cl（塩化アンモニウム）の水溶液の液性はどれですか？</div>
+        <div class="mini-opts" id="mq3_opts">
+          <button class="mini-opt" onclick="miniAns(&#39;mq3&#39;,this,&#39;酸性&#39;,&#39;酸性&#39;)">酸性</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq3&#39;,this,&#39;中性&#39;,&#39;酸性&#39;)">中性</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq3&#39;,this,&#39;塩基性&#39;,&#39;酸性&#39;)">塩基性</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq3&#39;,this,&#39;不明&#39;,&#39;酸性&#39;)">不明</button>
+        </div>
+        <div class="mini-fb" id="mq3_fb"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 弱酸・弱塩基遊離反応 -->
+  <div class="section-card">
+    <div class="section-header sh-red">🔓 4. 弱酸・弱塩基遊離反応</div>
+    <div class="section-body">
+
+      <div class="important-box">
+        <div class="box-label">📌 遊離反応の法則（最重要）</div>
+        <div style="font-size:0.92rem;line-height:2.3;font-weight:700">
+          ① <span style="color:#dc2626">弱酸遊離反応</span>：<br>
+          　「弱酸＋強塩基の塩」に <span style="color:#dc2626">強酸</span> を加える<br>
+          　→ 強酸が弱酸を <strong>「追い出す」</strong><br><br>
+          ② <span style="color:#059669">弱塩基遊離反応</span>：<br>
+          　「弱塩基＋強酸の塩」に <span style="color:#059669">強塩基</span> を加える<br>
+          　→ 強塩基が弱塩基を <strong>「追い出す」</strong>
+        </div>
+      </div>
+
+      <div class="note-block">
+        💡 <strong>なぜ「追い出せる」のか？</strong><br>
+        強酸・強塩基はほぼ完全にイオン化します。弱酸・弱塩基は分子に戻ろうとする力が強いため、強い相手に H⁺（または OH⁻）を渡して分子として外に出ていきます。
+      </div>
+
+      <!-- 弱酸遊離 -->
+      <div style="background:#fff0f0;border:2px solid #fca5a5;border-radius:10px;padding:14px;margin-top:14px">
+        <div style="font-weight:800;color:#dc2626;font-size:0.9rem;margin-bottom:10px">① 弱酸遊離反応の例</div>
+
+        <div class="chase-diagram">
+          <div class="chase-box" style="border-color:#7c3aed;color:#7c3aed">CH₃COONa<br><small>（弱酸＋強塩基の塩）</small></div>
+          <span class="chase-arrow" style="color:#dc2626">＋</span>
+          <div class="chase-box" style="border-color:#dc2626;color:#dc2626">HCl<br><small>（強酸）</small></div>
+          <span class="chase-arrow">→</span>
+          <div class="chase-box" style="border-color:#0ea5e9;color:#0ea5e9">NaCl<br><small>（強酸の塩）</small></div>
+          <span class="chase-arrow" style="color:#dc2626">＋</span>
+          <div class="chase-box" style="border-color:#f59e0b;color:#d97706">CH₃COOH<br><small>（弱酸が遊離）</small></div>
+        </div>
+        <div class="formula" style="font-size:0.85rem;margin-top:8px">
+          CH₃COONa ＋ HCl → NaCl ＋ CH₃COOH<br>
+          CaCO₃ ＋ 2HCl → CaCl₂ ＋ H₂O ＋ CO₂↑<br>
+          FeS ＋ H₂SO₄ → FeSO₄ ＋ H₂S↑<br>
+          NaHCO₃ ＋ HCl → NaCl ＋ H₂O ＋ CO₂↑
+        </div>
+      </div>
+
+      <!-- 弱塩基遊離 -->
+      <div style="background:#f0fdf4;border:2px solid #6ee7b7;border-radius:10px;padding:14px;margin-top:12px">
+        <div style="font-weight:800;color:#059669;font-size:0.9rem;margin-bottom:10px">② 弱塩基遊離反応の例</div>
+
+        <div class="chase-diagram">
+          <div class="chase-box" style="border-color:#7c3aed;color:#7c3aed">NH₄Cl<br><small>（弱塩基＋強酸の塩）</small></div>
+          <span class="chase-arrow" style="color:#059669">＋</span>
+          <div class="chase-box" style="border-color:#059669;color:#059669">NaOH<br><small>（強塩基）</small></div>
+          <span class="chase-arrow">→</span>
+          <div class="chase-box" style="border-color:#0ea5e9;color:#0ea5e9">NaCl ＋ H₂O</div>
+          <span class="chase-arrow" style="color:#059669">＋</span>
+          <div class="chase-box" style="border-color:#f59e0b;color:#d97706">NH₃↑<br><small>（弱塩基が遊離）</small></div>
+        </div>
+        <div class="formula" style="font-size:0.85rem;margin-top:8px">
+          NH₄Cl ＋ NaOH → NaCl ＋ H₂O ＋ NH₃↑<br>
+          2NH₄Cl ＋ Ca(OH)₂ → CaCl₂ ＋ 2H₂O ＋ 2NH₃↑
+        </div>
+      </div>
+
+      <!-- ミニテスト -->
+      <div class="mini-q-block" style="margin-top:14px;background:#f0fdf4;border-color:#6ee7b7">
+        <span class="mini-q-label" style="background:#059669">問1</span>
+        <div class="mini-q-text">NaHSO₃（弱酸 H₂SO₃ と強塩基 NaOH の塩）に HCl を加えたときの反応式の生成物はどれですか？</div>
+        <div class="mini-opts" id="mq4_opts">
+          <button class="mini-opt" onclick="miniAns(&#39;mq4&#39;,this,&#39;A&#39;,&#39;B&#39;)">NaOH ＋ H₂SO₃</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq4&#39;,this,&#39;B&#39;,&#39;B&#39;)">NaCl ＋ H₂O ＋ SO₂</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq4&#39;,this,&#39;C&#39;,&#39;B&#39;)">NaCl ＋ H₂SO₃</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq4&#39;,this,&#39;D&#39;,&#39;B&#39;)">Na₂SO₃ ＋ H₂O</button>
+        </div>
+        <div class="mini-fb" id="mq4_fb"></div>
+      </div>
+
+      <div class="mini-q-block" style="background:#fdf4ff;border-color:#c4b5fd">
+        <span class="mini-q-label" style="background:#7c3aed">問2</span>
+        <div class="mini-q-text">次のうち「弱酸遊離反応」はどれですか？</div>
+        <div class="mini-opts" id="mq5_opts">
+          <button class="mini-opt" onclick="miniAns(&#39;mq5&#39;,this,&#39;A&#39;,&#39;A&#39;)">CH₃COONa ＋ HCl → NaCl ＋ CH₃COOH</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq5&#39;,this,&#39;B&#39;,&#39;A&#39;)">NH₄Cl ＋ NaOH → NaCl ＋ H₂O ＋ NH₃</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq5&#39;,this,&#39;C&#39;,&#39;A&#39;)">HCl ＋ NaOH → NaCl ＋ H₂O</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq5&#39;,this,&#39;D&#39;,&#39;A&#39;)">CaO ＋ 2HCl → CaCl₂ ＋ H₂O</button>
+        </div>
+        <div class="mini-fb" id="mq5_fb"></div>
+      </div>
+
+      <!-- 問3：CaCO₃ ＋ HCl -->
+      <div class="mini-q-block" style="background:#fff0f0;border-color:#fca5a5">
+        <span class="mini-q-label" style="background:#dc2626">問3</span>
+        <div class="mini-q-text">CaCO₃（炭酸カルシウム）に塩酸（HCl）を加えたときの生成物はどれですか？</div>
+        <div class="mini-opts" id="mq6_opts">
+          <button class="mini-opt" onclick="miniAns(&#39;mq6&#39;,this,&#39;A&#39;,&#39;C&#39;)">CaCl ＋ H₂O ＋ CO₂</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq6&#39;,this,&#39;B&#39;,&#39;C&#39;)">CaCO₃ ＋ HCl</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq6&#39;,this,&#39;C&#39;,&#39;C&#39;)">CaCl₂ ＋ H₂O ＋ CO₂</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq6&#39;,this,&#39;D&#39;,&#39;C&#39;)">CaCl₂ ＋ H₂CO₃</button>
+        </div>
+        <div class="mini-fb" id="mq6_fb"></div>
+      </div>
+
+      <!-- 問4：FeS ＋ H₂SO₄ -->
+      <div class="mini-q-block" style="background:#fff0f0;border-color:#fca5a5">
+        <span class="mini-q-label" style="background:#dc2626">問4</span>
+        <div class="mini-q-text">FeS（硫化鉄）に希硫酸（H₂SO₄）を加えたときの生成物はどれですか？</div>
+        <div class="mini-opts" id="mq7_opts">
+          <button class="mini-opt" onclick="miniAns(&#39;mq7&#39;,this,&#39;A&#39;,&#39;B&#39;)">FeSO₄ ＋ S</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq7&#39;,this,&#39;B&#39;,&#39;B&#39;)">FeSO₄ ＋ H₂S</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq7&#39;,this,&#39;C&#39;,&#39;B&#39;)">Fe ＋ H₂SO₄</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq7&#39;,this,&#39;D&#39;,&#39;B&#39;)">FeSO₄ ＋ H₂O ＋ SO₂</button>
+        </div>
+        <div class="mini-fb" id="mq7_fb"></div>
+      </div>
+
+      <!-- 問5：NaHCO₃ ＋ HCl -->
+      <div class="mini-q-block" style="background:#fff0f0;border-color:#fca5a5">
+        <span class="mini-q-label" style="background:#dc2626">問5</span>
+        <div class="mini-q-text">NaHCO₃（炭酸水素ナトリウム）に塩酸（HCl）を加えたときの生成物はどれですか？</div>
+        <div class="mini-opts" id="mq8_opts">
+          <button class="mini-opt" onclick="miniAns(&#39;mq8&#39;,this,&#39;A&#39;,&#39;D&#39;)">NaCl ＋ H₂CO₃</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq8&#39;,this,&#39;B&#39;,&#39;D&#39;)">NaOH ＋ CO₂</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq8&#39;,this,&#39;C&#39;,&#39;D&#39;)">NaCl ＋ 2H₂O ＋ CO₂</button>
+          <button class="mini-opt" onclick="miniAns(&#39;mq8&#39;,this,&#39;D&#39;,&#39;D&#39;)">NaCl ＋ H₂O ＋ CO₂</button>
+        </div>
+        <div class="mini-fb" id="mq8_fb"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 塩の液性まとめ表 -->
+  <div class="section-card">
+    <div class="section-header sh-green">📊 5. 塩の液性まとめ（入試頻出）</div>
+    <div class="section-body">
+      <table class="chem-table">
+        <thead>
+          <tr><th>塩の名称</th><th>化学式</th><th>もとの酸</th><th>もとの塩基</th><th>液性</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>塩化ナトリウム</td><td>NaCl</td><td>HCl（強）</td><td>NaOH（強）</td><td><strong>中性</strong></td></tr>
+          <tr><td>硫酸カリウム</td><td>K₂SO₄</td><td>H₂SO₄（強）</td><td>KOH（強）</td><td><strong>中性</strong></td></tr>
+          <tr><td>酢酸ナトリウム</td><td>CH₃COONa</td><td>CH₃COOH（弱）</td><td>NaOH（強）</td><td><strong style="color:#059669">塩基性</strong></td></tr>
+          <tr><td>炭酸ナトリウム</td><td>Na₂CO₃</td><td>H₂CO₃（弱）</td><td>NaOH（強）</td><td><strong style="color:#059669">塩基性</strong></td></tr>
+          <tr><td>炭酸水素ナトリウム</td><td>NaHCO₃</td><td>H₂CO₃（弱）</td><td>NaOH（強）</td><td><strong style="color:#059669">塩基性</strong></td></tr>
+          <tr><td>塩化アンモニウム</td><td>NH₄Cl</td><td>HCl（強）</td><td>NH₃（弱）</td><td><strong style="color:#dc2626">酸性</strong></td></tr>
+          <tr><td>硫酸銅（Ⅱ）</td><td>CuSO₄</td><td>H₂SO₄（強）</td><td>Cu(OH)₂（弱）</td><td><strong style="color:#dc2626">酸性</strong></td></tr>
+          <tr><td>硫酸水素ナトリウム</td><td>NaHSO₄</td><td>H₂SO₄（強）</td><td>NaOH（強）</td><td><strong style="color:#dc2626">酸性</strong>（H⁺放出）</td></tr>
+          <tr><td>炭酸水素ナトリウム</td><td>NaHCO₃</td><td>H₂CO₃（弱）</td><td>NaOH（強）</td><td><strong style="color:#059669">塩基性</strong>（OH⁻放出）</td></tr>
+        </tbody>
+      </table>
+      <div class="note-block">
+        💡 暗記の優先順位：NaCl（中）、CH₃COONa（塩基）、NH₄Cl（酸）、NaHCO₃（塩基）、NaHSO₄（酸） を確実に！
+      </div>
+
+      <!-- 液性暗記フラッシュカード -->
+      <div style="margin-top:14px;border:3px solid #2563eb;border-radius:12px;overflow:hidden">
+        <div style="background:linear-gradient(135deg,#1d4ed8,#2563eb);padding:10px 16px;display:flex;align-items:center;justify-content:space-between">
+          <div style="color:white;font-weight:800;font-size:0.88rem">📝 液性クイック確認</div>
+          <div style="display:flex;gap:6px">
+            <button onclick="lqRestart()" style="padding:4px 12px;border-radius:20px;border:2px solid white;background:transparent;color:white;font-weight:700;font-size:0.75rem;cursor:pointer;font-family:inherit">もう一度</button>
+          </div>
+        </div>
+        <div style="background:#eff6ff;padding:14px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div style="flex:1;background:#bfdbfe;border-radius:99px;height:7px;overflow:hidden">
+              <div id="lqBar" style="height:100%;background:#2563eb;border-radius:99px;transition:width 0.3s;width:0%"></div>
+            </div>
+            <span id="lqLabel" style="font-size:0.8rem;font-weight:800;color:#1e40af;white-space:nowrap">1 / 7</span>
+          </div>
+          <div id="lqCard" onclick="lqReveal()" style="background:white;border:2px solid #bfdbfe;border-radius:10px;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:16px;text-align:center">
+            <div id="lqQ" style="display: block;">
+              <div id="lqQLabel" style="font-size:0.72rem;font-weight:800;color:#1d4ed8;background:#eff6ff;border-radius:4px;padding:1px 10px;margin-bottom:8px;display:inline-block">塩の化学式</div>
+              <div id="lqQText" style="font-size:1.3rem;font-weight:800;font-family:&#39;Courier New&#39;,monospace">NaCl</div>
+              <div style="font-size:0.75rem;color:#94a3b8;margin-top:8px">タップして液性を確認</div>
+            </div>
+            <div id="lqA" style="display:none;width:100%">
+              <div id="lqQLabel2" style="font-size:0.72rem;font-weight:800;color:#1d4ed8;background:#eff6ff;border-radius:4px;padding:1px 10px;margin-bottom:6px;display:inline-block">塩の化学式</div>
+              <div id="lqQText2" style="font-size:1rem;font-weight:800;font-family:&#39;Courier New&#39;,monospace;color:#64748b;margin-bottom:8px">NaCl</div>
+              <div style="border-top:2px dashed #bfdbfe;margin:6px 0"></div>
+              <div id="lqALabel" style="font-size: 0.72rem; font-weight: 800; border-radius: 4px; padding: 1px 10px; margin-bottom: 6px; display: inline-block; background: rgb(240, 249, 255); color: rgb(2, 132, 199);">液性</div>
+              <div id="lqAText" style="font-size: 1.4rem; font-weight: 800; color: rgb(2, 132, 199);">中性</div>
+            </div>
+          </div>
+          <div id="lqNext" style="display:none;margin-top:10px;text-align:center">
+            <button onclick="lqNext()" style="padding:9px 26px;background:#2563eb;color:white;border:none;border-radius:8px;font-weight:800;font-size:0.88rem;cursor:pointer;font-family:inherit">次の問題 →</button>
+          </div>
+          <div id="lqDone" style="display:none;text-align:center;padding:16px">
+            <div style="font-size:1.8rem;margin-bottom:6px">🎉</div>
+            <div style="font-weight:800;font-size:0.95rem;color:#065f46">全問終了！</div>
+            <button onclick="lqRestart()" style="margin-top:10px;padding:7px 20px;background:#2563eb;color:white;border:none;border-radius:8px;font-weight:800;font-size:0.85rem;cursor:pointer;font-family:inherit">もう一度</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /tab-learn -->
+
+
+<!-- ========== FILL ========== -->
+<div id="tab-fill" class="tab-content">
+  <div class="section-card">
+    <div class="section-header sh-blue">✏️ 穴埋めチャレンジ</div>
+    <div class="section-body">
+      <div class="timer-row">
+        <span class="timer-display" id="timerDisp">00:00</span>
+        <div style="flex:1">
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+          <div class="progress-label" id="progressLabel">0 / 18 正解</div>
+        </div>
+      </div>
+      <div class="challenge-bar">
+        <button class="btn btn-primary" id="btnStart" onclick="startChallenge()">チャレンジ開始</button>
+        <button class="btn btn-amber" id="btnHint" onclick="showHint()" style="display:none">手本を見る</button>
+        <button class="btn btn-gray" id="btnReset" onclick="resetChallenge()" style="display:none">本文に戻る</button>
+      </div>
+      <div class="word-bank hidden" id="wordBank"></div>
+
+      <div class="fill-text" id="fillText">
+
+        <p style="margin:14px 0 6px;font-weight:800;color:#2563eb">▶ 中和反応・塩</p>
+        <p>
+          酸と塩基が反応すると <span class="blank" data-ans="塩（えん）">塩（えん）</span> と
+          <span class="blank" data-ans="水">水</span> が生成します。
+          中和の本質は <span class="blank" data-ans="H⁺">H⁺</span> ＋ <span class="blank" data-ans="OH⁻">OH⁻</span> → H₂O です。
+          H⁺ が残っている塩を <span class="blank" data-ans="酸性塩">酸性塩</span>、
+          完全に中和された塩を <span class="blank" data-ans="中性塩（正塩）">中性塩（正塩）</span>、
+          OH⁻ が残っている塩を <span class="blank" data-ans="塩基性塩">塩基性塩</span> といいます。
+        </p>
+
+        <p style="margin:14px 0 6px;font-weight:800;color:#92400e">▶ 塩の水溶液の液性</p>
+        <p>
+          強酸＋強塩基の塩（例 NaCl）の水溶液は <span class="blank" data-ans="中性">中性</span> です。
+          弱酸＋強塩基の塩（例 CH₃COONa）の水溶液は <span class="blank" data-ans="塩基性">塩基性</span> です。
+          強酸＋弱塩基の塩（例 NH₄Cl）の水溶液は <span class="blank" data-ans="酸性">酸性</span> です。
+          NaHCO₃ は酸性塩ですが水溶液は <span class="blank" data-ans="塩基性">塩基性</span> を示します。
+          NaHSO₄ は酸性塩で水溶液は <span class="blank" data-ans="酸性">酸性</span> を示します。
+        </p>
+
+        <p style="margin:14px 0 6px;font-weight:800;color:#dc2626">▶ 弱酸・弱塩基遊離反応</p>
+        <p>
+          弱酸＋強塩基の塩に強酸を加えると <span class="blank" data-ans="弱酸">弱酸</span> が遊離します（弱酸遊離反応）。
+          例：CH₃COONa ＋ HCl → NaCl ＋ <span class="blank" data-ans="CH₃COOH">CH₃COOH</span>
+        </p>
+        <p>
+          弱塩基＋強酸の塩に強塩基を加えると <span class="blank" data-ans="弱塩基">弱塩基</span> が遊離します（弱塩基遊離反応）。
+          例：NH₄Cl ＋ NaOH → NaCl ＋ H₂O ＋ <span class="blank" data-ans="NH₃">NH₃</span>
+          例：CaCO₃ ＋ 2HCl → CaCl₂ ＋ H₂O ＋ <span class="blank" data-ans="CO₂">CO₂</span>
+        </p>
+
+      </div>
+
+      <div class="score-board" id="scoreBoard" style="display:none">
+        <div class="score-item"><div class="score-num" id="scoreCorrect">0</div><div class="score-sub">正解</div></div>
+        <div class="score-item"><div class="score-num" id="scoreMiss">0</div><div class="score-sub">ミス</div></div>
+        <div class="score-item"><div class="score-num" id="scoreTime">0:00</div><div class="score-sub">タイム</div></div>
+        <div class="grade-badge" id="gradeBadge">-</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========== QUIZ ========== -->
+<div id="tab-quiz" class="tab-content">
+  <div class="section-card">
+    <div class="section-header sh-green">🧪 確認テスト</div>
+    <div class="section-body">
+      <div id="quizContainer"><div class="quiz-card" id="qc0"><div class="quiz-q">Q1. 次のうち「弱酸＋強塩基」の塩はどれですか？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(0,0)">NaCl</button><button class="quiz-opt" onclick="answerQuiz(0,1)">NH₄Cl</button><button class="quiz-opt" onclick="answerQuiz(0,2)">CH₃COONa</button><button class="quiz-opt" onclick="answerQuiz(0,3)">NaHSO₄</button></div><div class="quiz-feedback" id="qf0"></div></div><div class="quiz-card" id="qc1"><div class="quiz-q">Q2. CH₃COO⁻ ＋ H₂O ⇌ CH₃COOH ＋ OH⁻ の反応は何を示していますか？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(1,0)">中和反応</button><button class="quiz-opt" onclick="answerQuiz(1,1)">弱酸遊離反応</button><button class="quiz-opt" onclick="answerQuiz(1,2)">塩の加水分解</button><button class="quiz-opt" onclick="answerQuiz(1,3)">ブレンステッドの酸反応</button></div><div class="quiz-feedback" id="qf1"></div></div><div class="quiz-card" id="qc2"><div class="quiz-q">Q3. NaHCO₃（炭酸水素ナトリウム）の水溶液の液性は？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(2,0)">酸性</button><button class="quiz-opt" onclick="answerQuiz(2,1)">中性</button><button class="quiz-opt" onclick="answerQuiz(2,2)">塩基性</button><button class="quiz-opt" onclick="answerQuiz(2,3)">温度による</button></div><div class="quiz-feedback" id="qf2"></div></div><div class="quiz-card" id="qc3"><div class="quiz-q">Q4. 弱酸遊離反応の正しい例はどれですか？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(3,0)">NH₄Cl ＋ NaOH → NaCl ＋ H₂O ＋ NH₃</button><button class="quiz-opt" onclick="answerQuiz(3,1)">CaCO₃ ＋ 2HCl → CaCl₂ ＋ H₂O ＋ CO₂</button><button class="quiz-opt" onclick="answerQuiz(3,2)">HCl ＋ NaOH → NaCl ＋ H₂O</button><button class="quiz-opt" onclick="answerQuiz(3,3)">CO₂ ＋ NaOH → NaHCO₃</button></div><div class="quiz-feedback" id="qf3"></div></div><div class="quiz-card" id="qc4"><div class="quiz-q">Q5. 硫酸銅(II) CuSO₄ の水溶液の液性は？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(4,0)">酸性</button><button class="quiz-opt" onclick="answerQuiz(4,1)">中性</button><button class="quiz-opt" onclick="answerQuiz(4,2)">塩基性</button><button class="quiz-opt" onclick="answerQuiz(4,3)">不明</button></div><div class="quiz-feedback" id="qf4"></div></div><div class="quiz-card" id="qc5"><div class="quiz-q">Q6. 次の塩のうち、水溶液が中性を示すのはどれか？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(5,0)">NH₄Cl</button><button class="quiz-opt" onclick="answerQuiz(5,1)">CH₃COONa</button><button class="quiz-opt" onclick="answerQuiz(5,2)">K₂SO₄</button><button class="quiz-opt" onclick="answerQuiz(5,3)">NaHCO₃</button></div><div class="quiz-feedback" id="qf5"></div></div></div>
+      <div style="margin-top:16px">
+        <button class="btn btn-primary" onclick="resetQuiz()">もう一度</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ===== TABS =====
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(function(el){ el.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(el){ el.classList.remove('active'); });
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ===== 加水分解コラム内ミニテスト =====
+var hydroDone = {};
+var hydroExp = {
+  'hydroQ1': {
+    correct: 'B',
+    ok:  '✅ 正解！ 第2段階は CH₃COO⁻ ＋ H₂O ⇌ CH₃COOH ＋ OH⁻ です。弱酸イオン CH₃COO⁻ が水から H⁺ を奪い、酢酸（CH₃COOH）に戻ります。残った OH⁻ が塩基性を示します。',
+    ng: '❌ 不正解。第1段階は「塩が電離する」反応（A）です。第2段階は「弱酸イオンが水から H⁺ を奪う」反応で、CH₃COO⁻ ＋ H₂O ⇌ CH₃COOH ＋ OH⁻ となります（B）。'
+  },
+  'hydroQ2': {
+    correct: 'C',
+    ok:  '✅ 正解！ NH₄⁺ は「NH₃ に戻りたい（弱塩基だから）」という力を持っています。NH₃ に戻るために水に H⁺ を渡すと、水が H₃O⁺ になります。こうして H⁺ が増えるため酸性になります。',
+    ng: '❌ 不正解。NH₄Cl が酸性になる理由は、NH₄⁺ が弱塩基のイオンなので NH₃ に戻ろうとして水に H⁺ を渡すからです（C）。Cl⁻ は HCl の強酸イオンなので加水分解しません。'
+  }
+};
+
+function hydroAns(qid, btn, chosen, correct) {
+  if (hydroDone[qid]) return;
+  hydroDone[qid] = true;
+  var opts = btn.parentNode.querySelectorAll('button');
+  opts.forEach(function(b) {
+    b.disabled = true;
+    var oc = b.getAttribute('onclick');
+    var m = oc.match(/'([^']+)','([^']+)'\)/);
+    if (m && m[1] === correct) { b.style.background = '#dcfce7'; b.style.borderColor = '#059669'; b.style.color = '#065f46'; }
+    else if (b === btn && chosen !== correct) { b.style.background = '#fef2f2'; b.style.borderColor = '#dc2626'; b.style.color = '#dc2626'; }
+  });
+  var fb = document.getElementById(qid + '_fb');
+  var cfg = hydroExp[qid];
+  var isOk = (chosen === correct);
+  if (fb && cfg) {
+    fb.style.display = 'block';
+    fb.style.background = isOk ? '#f0fdf4' : '#fef2f2';
+    fb.style.borderLeft = '4px solid ' + (isOk ? '#059669' : '#dc2626');
+    fb.innerHTML = '<strong style="color:' + (isOk ? '#065f46' : '#dc2626') + '">' + (isOk ? cfg.ok : cfg.ng) + '</strong>';
+    if (isOk) launchConfetti(8);
+  }
+}
+
+// ===== 加水分解コラム =====
+function toggleHydro() {
+  var b = document.getElementById('hydroBody');
+  var a = document.getElementById('hydroArrow');
+  if (!b) return;
+  if (b.style.display === 'none') { b.style.display = 'block'; a.style.transform = 'rotate(180deg)'; }
+  else { b.style.display = 'none'; a.style.transform = 'rotate(0deg)'; }
+}
+
+// ===== ミニテスト =====
+var miniDone = {};
+var miniExp = {
+  'mq1':  { correct:'A', ok:'✅ 正解！ HCl（1価）＋ NaOH（1価）→ NaCl ＋ H₂O。H⁺ 1個と OH⁻ 1個が結合して水になります。', ng:'❌ 不正解。HCl と NaOH はどちらも1価。H⁺ 1個と OH⁻ 1個が結合 → H₂O 1個。塩は Na⁺ ＋ Cl⁻ ＝ NaCl。→ NaCl ＋ H₂O' },
+  'mq2a': { correct:'C', ok:'✅ 正解！ H₂SO₄ は2価（H⁺ 2個）なので NaOH が2個必要。→ H₂SO₄ ＋ 2NaOH → Na₂SO₄ ＋ 2H₂O', ng:'❌ 不正解。H₂SO₄ は2価（H⁺ 2個）、NaOH は1価（OH⁻ 1個）。H⁺ 2個に対して NaOH が2個必要。→ H₂SO₄ ＋ 2NaOH → Na₂SO₄ ＋ 2H₂O' },
+  'mq3a': { correct:'B', ok:'✅ 正解！ HCl ＋ NH₃ → NH₄Cl。NH₃ が H⁺ を受け取って NH₄⁺ になり、Cl⁻ と組み合わさります。水は生成しません。', ng:'❌ 不正解。HCl ＋ NH₃ → NH₄Cl です。NH₃ に H⁺ が結合して NH₄Cl（塩化アンモニウム）になります。水は生成しません。' },
+  'mq4a': { correct:'B', ok:'✅ 正解！ H₂SO₄（2価）＋ Ca(OH)₂（2価）→ CaSO₄ ＋ 2H₂O。H⁺ 2個と OH⁻ 2個が結合 → H₂O 2個。', ng:'❌ 不正解。H₂SO₄ は2価（H⁺ 2個）、Ca(OH)₂ は2価（OH⁻ 2個）。H⁺ 2個と OH⁻ 2個が結合 → H₂O 2個。塩は CaSO₄。→ CaSO₄ ＋ 2H₂O' },
+  'mq2':  { correct:'塩基性', ok:'✅ 正解！ CH₃COONa は弱酸（酢酸）＋ 強塩基（NaOH）の塩。弱酸イオン CH₃COO⁻ が加水分解して OH⁻ を生じるため塩基性になります。', ng:'❌ 不正解。CH₃COONa は「弱酸＋強塩基」の塩。弱酸イオンが加水分解して OH⁻ を出すため、水溶液は塩基性になります。' },
+  'mq3':  { correct:'酸性', ok:'✅ 正解！ NH₄Cl は強酸（HCl）＋ 弱塩基（NH₃）の塩。弱塩基イオン NH₄⁺ が加水分解して H⁺ を生じるため酸性になります。', ng:'❌ 不正解。NH₄Cl は「強酸＋弱塩基」の塩。弱塩基イオン NH₄⁺ が加水分解して H⁺ を出すため、水溶液は酸性になります。' },
+  'mq4':  { correct:'B', ok:'✅ 正解！ NaHSO₃（弱酸 H₂SO₃ の塩）に HCl（強酸）を加えると弱酸遊離反応。弱酸 H₂SO₃ が遊離し H₂O ＋ SO₂ に分解します。→ NaCl ＋ H₂O ＋ SO₂', ng:'❌ 不正解。弱酸遊離反応です。NaHSO₃（弱酸の塩）に HCl（強酸）を加えると弱酸 H₂SO₃ が追い出され、H₂O ＋ SO₂ に分解します。→ NaCl ＋ H₂O ＋ SO₂' },
+  'mq6':  { correct:'C', ok:'✅ 正解！ CaCO₃ ＋ 2HCl → CaCl₂ ＋ H₂O ＋ CO₂↑。CaCO₃ は弱酸（H₂CO₃）の塩。強酸 HCl を加えると弱酸 H₂CO₃ が遊離し、すぐに H₂O と CO₂ に分解します。', ng:'❌ 不正解。CaCO₃（炭酸カルシウム）は弱酸 H₂CO₃ の塩。HCl（強酸）を加えると弱酸遊離反応が起こり、遊離した H₂CO₃ がすぐ H₂O ＋ CO₂ に分解します。→ CaCl₂ ＋ H₂O ＋ CO₂' },
+  'mq7':  { correct:'B', ok:'✅ 正解！ FeS ＋ H₂SO₄ → FeSO₄ ＋ H₂S↑。FeS は弱酸（H₂S）の塩。強酸 H₂SO₄ を加えると弱酸 H₂S が遊離します。発生する H₂S（硫化水素）は特有の腐卵臭があります。', ng:'❌ 不正解。FeS（硫化鉄）は弱酸 H₂S（硫化水素）の塩。H₂SO₄（強酸）を加えると弱酸遊離反応が起こり、H₂S が気体として発生します。→ FeSO₄ ＋ H₂S' },
+  'mq8':  { correct:'D', ok:'✅ 正解！ NaHCO₃ ＋ HCl → NaCl ＋ H₂O ＋ CO₂↑。NaHCO₃（炭酸水素ナトリウム）は弱酸 H₂CO₃ の酸性塩。HCl を加えると CO₂ が発生します。重曹に酢をかけると泡が出るのも同じ原理です！', ng:'❌ 不正解。NaHCO₃ は弱酸 H₂CO₃ の酸性塩。HCl（強酸）を加えると弱酸遊離反応が起こり、H₂CO₃ が遊離してすぐ H₂O ＋ CO₂ に分解します。係数に注意。→ NaCl ＋ H₂O ＋ CO₂（HCl は 1mol）' },
+};
+
+function miniAns(qid, btn, chosen, correct) {
+  if (miniDone[qid]) return;
+  miniDone[qid] = true;
+  var opts = btn.parentNode.querySelectorAll('.mini-opt');
+  opts.forEach(function(b) {
+    b.disabled = true;
+    var oc = b.getAttribute('onclick');
+    var m = oc.match(/'([^']+)','([^']+)'\)/);
+    if (m && m[1] === correct) { b.classList.add('correct'); }
+    else if (b === btn && chosen !== correct) { b.classList.add('wrong'); }
+  });
+  var fb = document.getElementById(qid + '_fb');
+  var cfg = miniExp[qid];
+  var isOk = (chosen === correct);
+  if (fb && cfg) {
+    fb.className = 'mini-fb show ' + (isOk ? 'ok' : 'ng');
+    fb.innerHTML = '<strong>' + (isOk ? cfg.ok : cfg.ng) + '</strong>';
+    if (isOk) launchConfetti(8);
+  }
+}
+
+// ===== 液性フラッシュカード =====
+var lqData = [
+  { q:'NaCl',        ans:'中性',   color:'#0284c7', bg:'#f0f9ff' },
+  { q:'K₂SO₄',       ans:'中性',   color:'#0284c7', bg:'#f0f9ff' },
+  { q:'CH₃COONa',    ans:'塩基性', color:'#059669', bg:'#ecfdf5' },
+  { q:'Na₂CO₃',      ans:'塩基性', color:'#059669', bg:'#ecfdf5' },
+  { q:'NaHCO₃',      ans:'塩基性', color:'#059669', bg:'#ecfdf5' },
+  { q:'NH₄Cl',       ans:'酸性',   color:'#dc2626', bg:'#fff0f0' },
+  { q:'NaHSO₄',      ans:'酸性',   color:'#dc2626', bg:'#fff0f0' },
+];
+var lqIdx = 0;
+var lqShown = false;
+
+function lqRender() {
+  var card = document.getElementById('lqCard');
+  var qDiv = document.getElementById('lqQ');
+  var aDiv = document.getElementById('lqA');
+  var nextDiv = document.getElementById('lqNext');
+  var doneDiv = document.getElementById('lqDone');
+  if (!card) return;
+
+  if (lqIdx >= lqData.length) {
+    card.style.display = 'none';
+    nextDiv.style.display = 'none';
+    doneDiv.style.display = 'block';
+    lqUpdateBar();
+    return;
+  }
+
+  card.style.display = 'flex';
+  doneDiv.style.display = 'none';
+  lqShown = false;
+
+  var d = lqData[lqIdx];
+  document.getElementById('lqQText').textContent = d.q;
+  document.getElementById('lqQText2').textContent = d.q;
+  document.getElementById('lqAText').textContent = d.ans;
+  document.getElementById('lqAText').style.color = d.color;
+  document.getElementById('lqALabel').style.background = d.bg;
+  document.getElementById('lqALabel').style.color = d.color;
+
+  qDiv.style.display = 'block';
+  aDiv.style.display = 'none';
+  nextDiv.style.display = 'none';
+  card.style.cursor = 'pointer';
+  card.style.borderColor = '#bfdbfe';
+  card.style.background = 'white';
+  lqUpdateBar();
+}
+
+function lqReveal() {
+  if (lqShown || lqIdx >= lqData.length) return;
+  lqShown = true;
+  var d = lqData[lqIdx];
+  document.getElementById('lqQ').style.display = 'none';
+  document.getElementById('lqA').style.display = 'block';
+  document.getElementById('lqNext').style.display = 'block';
+  document.getElementById('lqCard').style.cursor = 'default';
+  document.getElementById('lqCard').style.borderColor = d.color;
+  document.getElementById('lqCard').style.background = d.bg;
+  launchConfetti(5);
+}
+
+function lqNext() { lqIdx++; lqRender(); }
+
+function lqRestart() {
+  lqIdx = 0;
+  document.getElementById('lqDone').style.display = 'none';
+  document.getElementById('lqCard').style.display = 'flex';
+  lqRender();
+}
+
+function lqUpdateBar() {
+  var pct = lqData.length > 0 ? Math.round(lqIdx / lqData.length * 100) : 0;
+  var bar = document.getElementById('lqBar');
+  var label = document.getElementById('lqLabel');
+  if (bar) bar.style.width = pct + '%';
+  if (label) label.textContent = lqIdx >= lqData.length ? '完了！' : (Math.min(lqIdx+1, lqData.length) + ' / ' + lqData.length);
+}
+
+// ===== FILL BLANK =====
+var WORDS = ['塩（えん）','水','H⁺','OH⁻','酸性塩','中性塩（正塩）','塩基性塩','中性','塩基性','酸性','CH₃COOH','弱酸','弱塩基','NH₃','CO₂'];
+var timerInterval=null, timerSeconds=0, timerRunning=false, totalBlanks=0, correctCount=0, missCount=0, activeBlank=null;
+
+function updateTimer(){ timerSeconds++; var m=Math.floor(timerSeconds/60).toString().padStart(2,'0'); var s=(timerSeconds%60).toString().padStart(2,'0'); document.getElementById('timerDisp').textContent=m+':'+s; }
+
+function startChallenge(){
+  timerSeconds=0; correctCount=0; missCount=0; activeBlank=null;
+  document.getElementById('scoreBoard').style.display='none';
+  document.getElementById('btnStart').style.display='none';
+  document.getElementById('btnHint').style.display='';
+  document.getElementById('btnReset').style.display='';
+  var blanks=document.querySelectorAll('#fillText .blank');
+  totalBlanks=blanks.length;
+  blanks.forEach(function(b){ b.classList.remove('revealed'); b.classList.add('hidden'); b.dataset.done='false'; b.style.boxShadow=''; b.style.cursor='pointer'; b.onclick=function(){ selectBlank(b); }; });
+  var allW=WORDS.slice().sort(function(){ return Math.random()-0.5; });
+  var wb=document.getElementById('wordBank'); wb.innerHTML=''; wb.classList.remove('hidden');
+  allW.forEach(function(w){ var chip=document.createElement('span'); chip.className='word-chip'; chip.textContent=w; chip.onclick=function(){ fillWithWord(w,chip); }; wb.appendChild(chip); });
+  updateProgress();
+  if(timerInterval) clearInterval(timerInterval);
+  timerRunning=true;
+  timerInterval=setInterval(function(){ if(timerRunning) updateTimer(); },1000);
+}
+
+function selectBlank(b){ if(b.dataset.done==='true') return; document.querySelectorAll('#fillText .blank').forEach(function(el){ if(el.dataset.done!=='true') el.style.boxShadow=''; }); activeBlank=b; b.style.boxShadow='0 0 0 3px #2563eb'; }
+
+function fillWithWord(word,chip){
+  if(!activeBlank){ var bl=document.querySelectorAll('#fillText .blank'); for(var i=0;i<bl.length;i++){ if(bl[i].dataset.done!=='true'){ activeBlank=bl[i]; break; } } }
+  if(!activeBlank) return;
+  if(word===activeBlank.dataset.ans){ activeBlank.textContent=word; activeBlank.classList.remove('hidden'); activeBlank.classList.add('revealed'); activeBlank.dataset.done='true'; activeBlank.style.boxShadow=''; activeBlank.onclick=null; activeBlank.style.cursor='default'; correctCount++; chip.style.opacity='0.35'; chip.style.pointerEvents='none'; launchConfetti(3); activeBlank=null; }
+  else{ missCount++; var prev=activeBlank; prev.style.boxShadow='0 0 0 3px #dc2626'; setTimeout(function(){ if(prev.dataset.done!=='true') prev.style.boxShadow='0 0 0 3px #2563eb'; },600); }
+  updateProgress();
+  if(correctCount===totalBlanks) finishChallenge();
+}
+
+function updateProgress(){ var pct=totalBlanks>0?Math.round(correctCount/totalBlanks*100):0; document.getElementById('progressBar').style.width=pct+'%'; document.getElementById('progressLabel').textContent=correctCount+' / '+totalBlanks+' 正解'; }
+
+function showHint(){ timerRunning=false; document.querySelectorAll('#fillText .blank').forEach(function(b){ b.textContent=b.dataset.ans; b.classList.remove('hidden'); b.classList.add('revealed'); }); }
+
+function resetChallenge(){ clearInterval(timerInterval); timerRunning=false; timerSeconds=0; activeBlank=null; document.getElementById('timerDisp').textContent='00:00'; document.getElementById('progressBar').style.width='0%'; document.getElementById('progressLabel').textContent='0 / 18 正解'; document.getElementById('btnStart').style.display=''; document.getElementById('btnHint').style.display='none'; document.getElementById('btnReset').style.display='none'; document.getElementById('wordBank').classList.add('hidden'); document.getElementById('scoreBoard').style.display='none'; document.querySelectorAll('#fillText .blank').forEach(function(b){ b.textContent=b.dataset.ans; b.classList.remove('hidden','revealed'); b.style.boxShadow=''; b.style.cursor='default'; b.onclick=null; b.dataset.done='false'; }); }
+
+function finishChallenge(){ timerRunning=false; clearInterval(timerInterval); document.getElementById('wordBank').classList.add('hidden'); var m=Math.floor(timerSeconds/60); var s=timerSeconds%60; document.getElementById('scoreCorrect').textContent=correctCount; document.getElementById('scoreMiss').textContent=missCount; document.getElementById('scoreTime').textContent=m+':'+s.toString().padStart(2,'0'); var acc=correctCount/Math.max(1,correctCount+missCount); var grade,gc; if(acc>=0.9&&timerSeconds<150){grade='A';gc='grade-A';launchConfetti(30);}else if(acc>=0.7){grade='B';gc='grade-B';}else{grade='C';gc='grade-C';} var gb=document.getElementById('gradeBadge'); gb.textContent=grade; gb.className='grade-badge '+gc; document.getElementById('scoreBoard').style.display='flex'; }
+
+// ===== QUIZ =====
+var quizData = [
+  { q:'次のうち「弱酸＋強塩基」の塩はどれですか？', opts:['NaCl','NH₄Cl','CH₃COONa','NaHSO₄'], ans:2, exp:'CH₃COONa（酢酸ナトリウム）は弱酸の酢酸 CH₃COOH と強塩基の NaOH から生じた塩です。水溶液は塩基性になります。' },
+  { q:'CH₃COO⁻ ＋ H₂O ⇌ CH₃COOH ＋ OH⁻ の反応は何を示していますか？', opts:['中和反応','弱酸遊離反応','塩の加水分解','ブレンステッドの酸反応'], ans:2, exp:'塩のイオンが水と反応して酸（または塩基）を生成する反応を「塩の加水分解」といいます。この反応で OH⁻ が生じるため、CH₃COONa 水溶液は塩基性になります。' },
+  { q:'NaHCO₃（炭酸水素ナトリウム）の水溶液の液性は？', opts:['酸性','中性','塩基性','温度による'], ans:2, exp:'NaHCO₃ は「酸性塩」ですが水溶液は塩基性です。HCO₃⁻ ＋ H₂O ⇌ H₂CO₃ ＋ OH⁻ の反応でOH⁻ が生じます。' },
+  { q:'弱酸遊離反応の正しい例はどれですか？', opts:['NH₄Cl ＋ NaOH → NaCl ＋ H₂O ＋ NH₃','CaCO₃ ＋ 2HCl → CaCl₂ ＋ H₂O ＋ CO₂','HCl ＋ NaOH → NaCl ＋ H₂O','CO₂ ＋ NaOH → NaHCO₃'], ans:1, exp:'CaCO₃ は弱酸 H₂CO₃ の塩。HCl（強酸）を加えると弱酸（CO₂ として遊離）が追い出されます。これが弱酸遊離反応です。' },
+  { q:'硫酸銅(II) CuSO₄ の水溶液の液性は？', opts:['酸性','中性','塩基性','不明'], ans:0, exp:'CuSO₄ は強酸 H₂SO₄ と弱塩基 Cu(OH)₂ の塩。弱塩基イオンが加水分解して H⁺ を生じるため、水溶液は酸性になります。' },
+  { q:'次の塩のうち、水溶液が中性を示すのはどれか？', opts:['NH₄Cl','CH₃COONa','K₂SO₄','NaHCO₃'], ans:2, exp:'K₂SO₄（硫酸カリウム）は強酸 H₂SO₄ と強塩基 KOH の塩。加水分解しないため水溶液は中性です。' },
+];
+
+var quizState=[];
+function buildQuiz(){
+  quizState=quizData.map(function(){ return {answered:false}; });
+  var container=document.getElementById('quizContainer');
+  container.innerHTML=quizData.map(function(q,qi){
+    return '<div class="quiz-card" id="qc'+qi+'"><div class="quiz-q">Q'+(qi+1)+'. '+q.q+'</div><div class="quiz-opts">'+
+      q.opts.map(function(opt,oi){ return '<button class="quiz-opt" onclick="answerQuiz('+qi+','+oi+')">'+opt+'</button>'; }).join('')+
+      '</div><div class="quiz-feedback" id="qf'+qi+'"></div></div>';
+  }).join('');
+}
+
+function answerQuiz(qi,oi){
+  if(quizState[qi].answered) return;
+  quizState[qi].answered=true;
+  var q=quizData[qi];
+  var opts=document.querySelectorAll('#qc'+qi+' .quiz-opt');
+  var fb=document.getElementById('qf'+qi);
+  opts.forEach(function(o){ o.disabled=true; });
+  if(oi===q.ans){ opts[oi].classList.add('correct'); fb.className='quiz-feedback show ok'; fb.textContent='✅ 正解！ '+q.exp; launchConfetti(5); }
+  else{ opts[oi].classList.add('wrong'); opts[q.ans].classList.add('correct'); fb.className='quiz-feedback show ng'; fb.textContent='❌ 不正解。正解は「'+q.opts[q.ans]+'」。'+q.exp; }
+}
+
+function resetQuiz(){ buildQuiz(); }
+
+function launchConfetti(n){ var colors=['#fbbf24','#60a5fa','#34d399','#f87171','#a78bfa']; for(var i=0;i<n;i++){ var el=document.createElement('div'); el.className='confetti-piece'; el.style.cssText='left:'+(30+Math.random()*40)+'vw;top:20vh;background:'+colors[Math.floor(Math.random()*colors.length)]+';animation-delay:'+(Math.random()*0.5)+'s'; document.body.appendChild(el); setTimeout(function(e){ return function(){ e.remove(); }; }(el),2000); } }
+
+// 初期化
+document.addEventListener('DOMContentLoaded', function(){ lqRender(); buildQuiz(); });
+setTimeout(function(){ lqRender(); buildQuiz(); }, 100);
+</script>
+
+
+</body></html>

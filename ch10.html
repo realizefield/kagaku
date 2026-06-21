@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)file:///C:/Users/tinbu/Downloads/two_stage_titration_7.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMBA | 二段滴定</title>
+<style>
+  :root {
+    --primary: #2563eb; --primary-dark: #1d4ed8;
+    --accent: #059669; --accent2: #d97706; --accent3: #7c3aed;
+    --danger: #dc2626; --bg: #f0f4ff; --card: #ffffff;
+    --text: #1e293b; --muted: #64748b; --border: #e2e8f0;
+    --yellow-hint: #fef9c3; --blank-border: #fbbf24;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  header { background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%); color:white; }
+  .header-top { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; border-bottom:1px solid rgba(255,255,255,0.15); }
+  .logo { font-size:1.5rem; font-weight:900; letter-spacing:2px; color:#fbbf24; }
+  .header-sub { font-size:0.75rem; opacity:0.8; }
+  .chapter-title-bar { padding:14px 20px; display:flex; align-items:center; gap:12px; }
+  .chapter-badge { background:#fbbf24; color:#1e3a8a; font-weight:900; font-size:0.75rem; padding:3px 10px; border-radius:20px; }
+  .chapter-title-text { font-size:1.1rem; font-weight:700; }
+
+  .tab-bar { display:flex; background:white; border-bottom:2px solid var(--border); overflow-x:auto; padding:0 16px; gap:4px; }
+  .tab-btn { padding:10px 16px; border:none; background:none; font-size:0.82rem; font-weight:600; color:var(--muted); cursor:pointer; border-bottom:3px solid transparent; white-space:nowrap; transition:all 0.2s; font-family:inherit; }
+  .tab-btn.active { color:var(--primary); border-bottom-color:var(--primary); }
+  .tab-btn:hover { color:var(--primary); }
+
+  main { max-width:860px; margin:0 auto; padding:20px 16px 60px; }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
+
+  .section-card { background:var(--card); border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.07); margin-bottom:20px; overflow:hidden; }
+  .section-header { padding:14px 20px; font-weight:800; font-size:0.95rem; display:flex; align-items:center; gap:8px; }
+  .sh-blue   { background:#eff6ff; border-left:4px solid var(--primary); color:#1e40af; }
+  .sh-green  { background:#ecfdf5; border-left:4px solid var(--accent); color:#065f46; }
+  .sh-amber  { background:#fffbeb; border-left:4px solid var(--accent2); color:#92400e; }
+  .sh-purple { background:#f5f3ff; border-left:4px solid var(--accent3); color:#4c1d95; }
+  .sh-red    { background:#fef2f2; border-left:4px solid var(--danger); color:#991b1b; }
+  .section-body { padding:18px 20px; }
+
+  .text-block { font-size:0.92rem; line-height:1.9; margin-bottom:12px; }
+
+  .key-box { background:#eff6ff; border:2px solid #93c5fd; border-radius:8px; padding:14px 16px; margin:12px 0; }
+  .key-box .box-label { font-weight:800; color:var(--primary); font-size:0.82rem; margin-bottom:6px; }
+  .important-box { background:#fef2f2; border:2px solid #fca5a5; border-radius:8px; padding:14px 16px; margin:12px 0; }
+  .important-box .box-label { font-weight:800; color:var(--danger); font-size:0.82rem; margin-bottom:6px; }
+  .green-box { background:#ecfdf5; border:2px solid #6ee7b7; border-radius:8px; padding:14px 16px; margin:12px 0; }
+  .green-box .box-label { font-weight:800; color:#065f46; font-size:0.82rem; margin-bottom:6px; }
+  .amber-box { background:#fffbeb; border:2px solid #fcd34d; border-radius:8px; padding:14px 16px; margin:12px 0; }
+  .amber-box .box-label { font-weight:800; color:#92400e; font-size:0.82rem; margin-bottom:6px; }
+  .note-block { background:#f0fdf4; border-left:3px solid var(--accent); padding:8px 12px; border-radius:0 6px 6px 0; font-size:0.87rem; margin:8px 0; line-height:1.8; }
+  .warn-block { background:#fff7ed; border-left:3px solid var(--accent2); padding:8px 12px; border-radius:0 6px 6px 0; font-size:0.87rem; margin:8px 0; line-height:1.8; }
+
+  .chem-table { width:100%; border-collapse:collapse; font-size:0.87rem; margin:12px 0; }
+  .chem-table th { background:#1e40af; color:white; padding:8px 12px; text-align:center; font-weight:700; }
+  .chem-table td { padding:7px 12px; border:1px solid #dbeafe; text-align:center; }
+  .chem-table tr:nth-child(even) td { background:#f0f7ff; }
+
+  .formula { font-family:'Courier New',monospace; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:10px 14px; font-size:0.9rem; margin:8px 0; line-height:2.2; }
+  .formula.highlight { border-color:var(--primary); background:#eff6ff; }
+  .frac { display:inline-block; text-align:center; vertical-align:middle; font-size:0.85em; }
+  .frac > span { display:block; }
+  .frac .num { border-bottom:1.5px solid currentColor; padding:0 2px; }
+  .frac .den { padding:0 2px; }
+
+  /* 線分図 */
+  .segment-diagram { margin:14px 0; }
+  .seg-row { display:flex; align-items:center; gap:0; margin-bottom:6px; font-size:0.82rem; }
+  .seg-label { width:120px; font-weight:700; color:var(--muted); flex-shrink:0; }
+  .seg-bar { height:28px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.8rem; color:white; border-radius:4px; }
+  .seg-acid  { background:#dc2626; }
+  .seg-base  { background:#059669; }
+  .seg-remain{ background:#d97706; }
+  .seg-equal { display:flex; align-items:center; justify-content:center; font-size:1.2rem; font-weight:900; color:var(--primary); width:36px; flex-shrink:0; }
+  .seg-total { display:flex; width:100%; gap:4px; flex:1; }
+  .seg-note { font-size:0.78rem; color:var(--muted); margin-top:4px; margin-left:120px; }
+
+  /* 計算ステップ */
+  .calc-step { background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin:10px 0; font-size:0.88rem; line-height:2; }
+  .calc-step .step-no { font-weight:800; color:var(--primary); margin-bottom:4px; font-size:0.8rem; }
+
+  /* ミニテスト */
+  .mini-test-area { border-top:2px dashed #bfdbfe; padding-top:14px; margin-top:18px; }
+  .mini-test-label { font-size:0.8rem; font-weight:700; color:var(--primary); margin-bottom:10px; }
+  .mini-q-wrap { background:#f8fafc; border-radius:8px; padding:14px; margin-bottom:10px; }
+  .mini-q-text { font-size:0.88rem; font-weight:700; margin-bottom:10px; line-height:1.7; }
+  .opts-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .opt-btn { padding:9px 10px; border:2px solid var(--border); border-radius:8px; background:white; cursor:pointer; font-size:0.82rem; font-family:inherit; font-weight:600; text-align:left; line-height:1.4; transition:all 0.15s; }
+  .opt-btn:hover:not(:disabled) { border-color:var(--primary); background:#eff6ff; }
+  .opt-btn.correct { background:#dcfce7; border-color:var(--accent); color:#166534; }
+  .opt-btn.wrong   { background:#fee2e2; border-color:var(--danger); color:#991b1b; }
+  .mini-fb { margin-top:8px; padding:8px 12px; border-radius:6px; font-size:0.82rem; font-weight:600; display:none; line-height:1.7; }
+  .mini-fb.ok { display:block; background:#dcfce7; color:#166534; }
+  .mini-fb.ng { display:block; background:#fee2e2; color:#991b1b; }
+
+  /* 穴埋め */
+  .fill-text { font-size:0.92rem; line-height:2.4; }
+  .blank { display:inline-block; min-width:80px; padding:2px 8px; border-radius:4px; border-bottom:2px solid var(--blank-border); background:var(--yellow-hint); color:#92400e; font-weight:700; text-align:center; transition:all 0.3s; cursor:default; }
+  .blank.hidden { color:transparent; background:#e5e7eb; border-bottom-color:#9ca3af; }
+  .blank.revealed { background:#dcfce7; color:#166534; border-bottom-color:var(--accent); }
+  .challenge-bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:14px 0 8px; }
+  .btn { padding:7px 16px; border-radius:6px; border:none; font-weight:700; font-size:0.82rem; cursor:pointer; transition:all 0.18s; font-family:inherit; }
+  .btn-primary { background:var(--primary); color:white; }
+  .btn-primary:hover { background:var(--primary-dark); }
+  .btn-amber { background:var(--accent2); color:white; }
+  .btn-amber:hover { background:#b45309; }
+  .btn-gray { background:#94a3b8; color:white; }
+  .word-bank { display:flex; flex-wrap:wrap; gap:6px; margin:10px 0; padding:10px 12px; background:#f1f5f9; border-radius:8px; font-size:0.85rem; min-height:38px; }
+  .word-chip { background:white; border:1.5px solid #cbd5e1; border-radius:4px; padding:2px 10px; font-weight:600; cursor:pointer; transition:all 0.15s; }
+  .word-chip:hover { background:#dbeafe; border-color:var(--primary); }
+  .progress-bar-wrap { background:#e2e8f0; border-radius:99px; height:7px; margin:8px 0 4px; overflow:hidden; }
+  .progress-bar-fill { height:100%; background:var(--accent); border-radius:99px; transition:width 0.4s; }
+  .progress-label { font-size:0.78rem; color:var(--muted); }
+  .timer-display { font-size:1.1rem; font-weight:800; color:var(--primary); font-variant-numeric:tabular-nums; }
+  .timer-row { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+  .score-board { background:linear-gradient(135deg,#1e3a8a,#2563eb); color:white; border-radius:10px; padding:14px 18px; margin-top:16px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+  .score-item { text-align:center; }
+  .score-num { font-size:1.6rem; font-weight:900; }
+  .score-sub { font-size:0.72rem; opacity:0.8; }
+  .grade-badge { font-size:2rem; font-weight:900; padding:6px 16px; border-radius:8px; margin-left:auto; }
+  .grade-A { background:#fbbf24; color:#1e3a8a; }
+  .grade-B { background:#60a5fa; color:white; }
+  .grade-C { background:#94a3b8; color:white; }
+
+  /* クイズ */
+  .quiz-card { border:2px solid var(--border); border-radius:10px; padding:16px; margin:12px 0; }
+  .quiz-q { font-weight:700; font-size:0.9rem; margin-bottom:12px; line-height:1.7; }
+  .quiz-opts { display:flex; flex-direction:column; gap:8px; }
+  .quiz-opt { padding:9px 14px; border:2px solid var(--border); border-radius:7px; cursor:pointer; font-size:0.87rem; transition:all 0.15s; background:white; font-family:inherit; text-align:left; }
+  .quiz-opt:hover:not(:disabled) { border-color:var(--primary); background:#eff6ff; }
+  .quiz-opt.correct { background:#dcfce7; border-color:var(--accent); color:#166534; font-weight:700; }
+  .quiz-opt.wrong   { background:#fef2f2; border-color:var(--danger); color:var(--danger); }
+  .quiz-feedback { margin-top:10px; padding:8px 12px; border-radius:6px; font-size:0.85rem; display:none; font-weight:600; line-height:1.7; }
+  .quiz-feedback.show { display:block; }
+  .quiz-feedback.ok { background:#dcfce7; color:#166534; }
+  .quiz-feedback.ng { background:#fef2f2; color:var(--danger); }
+
+  .confetti-piece { position:fixed; width:10px; height:10px; border-radius:2px; animation:confettiFall 1.5s ease-out forwards; pointer-events:none; z-index:9999; }
+  @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(80vh) rotate(720deg);opacity:0} }
+  .ion-h  { color:#dc2626; font-weight:800; }
+  .ion-oh { color:#059669; font-weight:800; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo">GAMBA</div>
+    <div class="header-sub">江原予備校 化学</div>
+  </div>
+  <div class="chapter-title-bar">
+    <span class="chapter-badge">中和滴定</span>
+    <span class="chapter-title-text">🧪 二段滴定</span>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(&#39;learn&#39;)">📖 学習</button>
+  <button class="tab-btn" onclick="showTab(&#39;fill&#39;)">✏️ 穴埋め</button>
+  <button class="tab-btn" onclick="showTab(&#39;quiz&#39;)">🧪 確認テスト</button>
+</div>
+
+<main>
+
+<!-- ========== 学習タブ ========== -->
+<div id="tab-learn" class="tab-content active">
+
+  <!-- 1. 二段滴定とは -->
+  <div class="section-card">
+    <div class="section-header sh-blue">🧪 1. 二段滴定とは ― Na₂CO₃ の2段階中和</div>
+    <div class="section-body">
+      <div class="text-block">
+        炭酸ナトリウム Na₂CO₃ は<strong>強塩基 NaOH</strong> と<strong>弱酸 H₂CO₃</strong> からできた塩です。水溶液は<strong>塩基性</strong>を示します。<br>
+        この Na₂CO₃ を塩酸で中和すると、<strong>2段階</strong>に分けて反応が起こります。
+      </div>
+      <div class="key-box">
+        <div class="box-label">🔑 2段階の反応式（必ず暗記）</div>
+        <span style="color:#2563eb;font-weight:800;">第一段階</span>（フェノールフタレイン変色）<br>
+        <span style="font-family:&#39;Courier New&#39;,monospace;font-size:0.95rem;">Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl</span><br>
+        <small style="color:#64748b;">CO₃²⁻ が H⁺ を1個受け取り HCO₃⁻ になる。中和点は pH 約8.3（塩基性）</small><br><br>
+        <span style="color:#dc2626;font-weight:800;">第二段階</span>（メチルオレンジ変色）<br>
+        <span style="font-family:&#39;Courier New&#39;,monospace;font-size:0.95rem;">NaHCO₃ ＋ HCl → NaCl ＋ H₂O ＋ CO₂</span><br>
+        <small style="color:#64748b;">HCO₃⁻ がさらに H⁺ を1個受け取り H₂CO₃ → H₂O ＋ CO₂ になる。中和点は pH 約4（酸性）</small>
+      </div>
+      <div class="important-box">
+        <div class="box-label">⚠️ 重要ポイント</div>
+        ●第一段階と第二段階の反応は<strong>同時には起こりません</strong>。<br>
+        　CO₃²⁻ が HCO₃⁻ より H⁺ を受け取る力が強いため、CO₃²⁻ が先にすべて反応します。<br>
+        ●①②で使う HCl の量は<strong>等しい</strong>です。<br>
+        　Na₂CO₃ → NaHCO₃（1個の CO₃²⁻ が H⁺ を1個受け取る）<br>
+        　NaHCO₃ → CO₂（1個の HCO₃⁻ が H⁺ をさらに1個受け取る）<br><br>
+        <button id="deepBtn" onclick="toggleDeep()" style="margin-top:4px;padding:6px 16px;background:#dc2626;color:white;border:none;border-radius:20px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;">
+          🔍 深く知りたい
+        </button>
+      </div>
+
+      <!-- 深掘りコラム -->
+      <div id="deepDive" style="display:none;background:#fff7ed;border:2px solid #f97316;border-radius:10px;padding:18px 18px;margin:8px 0 14px;">
+        <div style="font-size:0.88rem;font-weight:800;color:#c2410c;margin-bottom:14px;">🔬 なぜ「同時に起こらない」のか ― 深掘り解説</div>
+
+        <!-- ① 塩基の強さの違い -->
+        <div style="margin-bottom:14px;">
+          <div style="font-size:0.83rem;font-weight:800;color:#1e40af;margin-bottom:6px;">① CO₃²⁻ と HCO₃⁻ の「H⁺ を受け取る力」の違い</div>
+          <div style="font-size:0.85rem;line-height:1.9;color:#1e293b;">
+            CO₃²⁻（炭酸イオン）は<strong>2価の陰イオン</strong>で、電荷が −2 と大きいため、H⁺（＋）をとても強く引きつけます。<br>
+            一方、HCO₃⁻（炭酸水素イオン）はすでに H⁺ を1個受け取って電荷が −1 になっているため、H⁺ を引きつける力は CO₃²⁻ より<strong>はるかに弱い</strong>です。<br><br>
+            つまり、HCl を加えていくと H⁺ は必ず「引きつける力が強い CO₃²⁻」の方へ先に吸収されます。<br>
+            CO₃²⁻ がすべてなくなって初めて、HCO₃⁻ が H⁺ を受け取れるようになります。
+          </div>
+          <!-- 図解：引力の強さ比較 -->
+          <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
+            <div style="flex:1;min-width:140px;background:white;border:2px solid #3b82f6;border-radius:8px;padding:10px 12px;text-align:center;">
+              <div style="font-size:1.3rem;font-weight:900;color:#1d4ed8;">CO₃²⁻</div>
+              <div style="font-size:0.75rem;color:#1d4ed8;font-weight:700;">電荷 −2</div>
+              <div style="font-size:0.78rem;margin-top:4px;color:#334155;">H⁺ を引きつける力：<br><strong style="color:#dc2626;">とても強い 💪</strong></div>
+              <div style="font-size:0.72rem;color:#64748b;margin-top:4px;">→ 先に反応する</div>
+            </div>
+            <div style="display:flex;align-items:center;font-size:1.2rem;color:#64748b;">▶</div>
+            <div style="flex:1;min-width:140px;background:white;border:2px solid #94a3b8;border-radius:8px;padding:10px 12px;text-align:center;">
+              <div style="font-size:1.3rem;font-weight:900;color:#475569;">HCO₃⁻</div>
+              <div style="font-size:0.75rem;color:#475569;font-weight:700;">電荷 −1</div>
+              <div style="font-size:0.78rem;margin-top:4px;color:#334155;">H⁺ を引きつける力：<br><strong style="color:#d97706;">弱い 🤏</strong></div>
+              <div style="font-size:0.72rem;color:#64748b;margin-top:4px;">→ CO₃²⁻ が尽きてから反応</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ② HCl の量が等しい理由 -->
+        <div style="margin-bottom:14px;">
+          <div style="font-size:0.83rem;font-weight:800;color:#059669;margin-bottom:6px;">② なぜ第一段階と第二段階で使う HCl の量が「等しい」のか</div>
+          <div style="font-size:0.85rem;line-height:1.9;color:#1e293b;">
+            Na₂CO₃ が 1 mol あるとき、何が起きるか追いかけてみましょう。
+          </div>
+          <!-- 段階的フロー -->
+          <div style="margin-top:10px;font-size:0.85rem;">
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#eff6ff;border-radius:8px;margin-bottom:6px;flex-wrap:wrap;">
+              <span style="background:#2563eb;color:white;border-radius:4px;padding:2px 8px;font-weight:700;font-size:0.78rem;flex-shrink:0;">第一段階</span>
+              <span style="font-family:&#39;Courier New&#39;,monospace;font-size:0.88rem;">Na₂CO₃（1mol）＋ HCl（<strong style="color:#dc2626;">1mol</strong>）→ NaHCO₃（1mol）＋ NaCl</span>
+            </div>
+            <div style="text-align:center;font-size:1.1rem;color:#64748b;margin:2px 0;">↓ CO₃²⁻ がすべてなくなる（第一中和点）</div>
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff1f2;border-radius:8px;margin-top:6px;flex-wrap:wrap;">
+              <span style="background:#dc2626;color:white;border-radius:4px;padding:2px 8px;font-weight:700;font-size:0.78rem;flex-shrink:0;">第二段階</span>
+              <span style="font-family:&#39;Courier New&#39;,monospace;font-size:0.88rem;">NaHCO₃（1mol）＋ HCl（<strong style="color:#dc2626;">1mol</strong>）→ NaCl ＋ H₂O ＋ CO₂</span>
+            </div>
+          </div>
+          <div style="background:#f0fdf4;border-left:3px solid #059669;padding:8px 12px;border-radius:0 6px 6px 0;font-size:0.83rem;margin-top:10px;line-height:1.8;">
+            ポイント：Na₂CO₃ 1mol → 第一段階で NaHCO₃ が <strong>1mol 生成</strong>します。<br>
+            第二段階ではこの NaHCO₃ 1mol が HCl 1mol と反応します。<br>
+            つまり「Na₂CO₃ の mol 数 ＝ 第一段階の HCl mol 数 ＝ 第二段階の HCl mol 数」となり、<strong>必ず等量</strong>になります。
+          </div>
+        </div>
+
+        <!-- ③ 弱酸の話とのつながり -->
+        <div>
+          <div style="font-size:0.83rem;font-weight:800;color:#7c3aed;margin-bottom:6px;">③ 酸の強さとの関係（発展）</div>
+          <div style="font-size:0.85rem;line-height:1.9;color:#1e293b;">
+            H₂CO₃（炭酸）は<strong>2段階で電離</strong>する弱酸です。<br>
+            <span style="font-family:&#39;Courier New&#39;,monospace;font-size:0.85rem;">H₂CO₃ ⇌ H⁺ ＋ HCO₃⁻　（第一段階電離、Ka₁≈4×10⁻⁷）</span><br>
+            <span style="font-family:&#39;Courier New&#39;,monospace;font-size:0.85rem;">HCO₃⁻ ⇌ H⁺ ＋ CO₃²⁻　（第二段階電離、Ka₂≈5×10⁻¹¹）</span><br><br>
+            Ka₁ ≫ Ka₂ なので、CO₃²⁻ は H⁺ をとても強く抱え込もうとします（Ka₂ が小さい ＝ H⁺ を離したくない）。<br>
+            これが「CO₃²⁻ が HCO₃⁻ より H⁺ を受け取る力が強い」理由です。<br><br>
+            Na₂CO₃ を HCl で滴定するのは、炭酸の電離の「逆反応」を強制的に起こしていることに相当します。
+          </div>
+          <div style="background:#f5f3ff;border-left:3px solid #7c3aed;padding:8px 12px;border-radius:0 6px 6px 0;font-size:0.82rem;margin-top:8px;line-height:1.8;">
+            💡 まとめると：<br>
+            CO₃²⁻ → HCO₃⁻（第一段階）が起き終わるまで、HCO₃⁻ → H₂CO₃（第二段階）は起きません。<br>
+            これは「強い方が先に仕事をする」という自然の原理です。
+          </div>
+        </div>
+
+        <button onclick="toggleDeep()" style="margin-top:14px;padding:5px 14px;background:#94a3b8;color:white;border:none;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit;">
+          ▲ 閉じる
+        </button>
+      </div>
+      <div class="note-block">
+        💡 <strong>指示薬の使い分け</strong><br>
+        第一中和点（pH≈8.3）→ <strong>フェノールフタレイン（PP）</strong>：赤色→無色<br>
+        第二中和点（pH≈4）　→ <strong>メチルオレンジ（MO）</strong>：黄色→赤色
+      </div>
+
+      <!-- 滴定曲線 SVG -->
+      <div style="margin:16px 0;">
+        <div style="font-size:0.82rem;font-weight:700;color:#1e40af;margin-bottom:8px;">📈 Na₂CO₃ の HCl による二段滴定曲線</div>
+        <div style="overflow-x:auto;">
+        <svg viewBox="0 0 520 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;display:block;font-family:&#39;Hiragino Kaku Gothic ProN&#39;,Meiryo,sans-serif;">
+
+          <!-- 背景 -->
+          <rect width="520" height="320" fill="#f8fafc" rx="10"></rect>
+
+          <!-- フェノールフタレイン変色域帯（pH 8.2〜9.8）-->
+          <!-- pH 8.2 → y=130, pH 9.8 → y=98  (y = 290 - ph*20) -->
+          <rect x="55" y="98" width="410" height="32" fill="#e9d5ff" opacity="0.55"></rect>
+          <text x="470" y="108" font-size="9" fill="#7c3aed" font-weight="700">PP</text>
+          <text x="470" y="120" font-size="9" fill="#7c3aed">8.2-9.8</text>
+
+          <!-- メチルオレンジ変色域帯（pH 3.1〜4.4）-->
+          <!-- pH 3.1 → y=228, pH 4.4 → y=202 -->
+          <rect x="55" y="202" width="410" height="26" fill="#fed7aa" opacity="0.65"></rect>
+          <text x="470" y="211" font-size="9" fill="#d97706" font-weight="700">MO</text>
+          <text x="470" y="223" font-size="9" fill="#d97706">3.1-4.4</text>
+
+          <!-- グリッド横線 -->
+          <g stroke="#e2e8f0" stroke-width="0.8">
+            <line x1="55" y1="50" x2="465" y2="50"></line>   <!-- pH 12 -->
+            <line x1="55" y1="90" x2="465" y2="90"></line>   <!-- pH 10 -->
+            <line x1="55" y1="130" x2="465" y2="130"></line>  <!-- pH 8 -->
+            <line x1="55" y1="170" x2="465" y2="170"></line>  <!-- pH 6 -->
+            <line x1="55" y1="210" x2="465" y2="210"></line>  <!-- pH 4 -->
+            <line x1="55" y1="250" x2="465" y2="250"></line>  <!-- pH 2 -->
+          </g>
+
+          <!-- 軸 -->
+          <line x1="55" y1="20" x2="55" y2="280" stroke="#334155" stroke-width="1.5"></line>
+          <line x1="55" y1="280" x2="470" y2="280" stroke="#334155" stroke-width="1.5"></line>
+
+          <!-- y軸ラベル（pH） -->
+          <text x="28" y="54" font-size="10" fill="#475569" text-anchor="middle">12</text>
+          <text x="28" y="94" font-size="10" fill="#475569" text-anchor="middle">10</text>
+          <text x="28" y="134" font-size="10" fill="#475569" text-anchor="middle">8</text>
+          <text x="28" y="174" font-size="10" fill="#475569" text-anchor="middle">6</text>
+          <text x="28" y="214" font-size="10" fill="#475569" text-anchor="middle">4</text>
+          <text x="28" y="254" font-size="10" fill="#475569" text-anchor="middle">2</text>
+          <text x="14" y="165" font-size="11" fill="#334155" font-weight="700" transform="rotate(-90,14,165)">pH</text>
+
+          <!-- x軸ラベル（HCl 滴下量 mL） -->
+          <!-- 0=x55, V=x185, 2V=x315, 余裕右=x465  →  1V=130px -->
+          <text x="55" y="295" font-size="10" fill="#475569" text-anchor="middle">0</text>
+          <text x="185" y="295" font-size="10" fill="#475569" text-anchor="middle">V</text>
+          <text x="315" y="295" font-size="10" fill="#475569" text-anchor="middle">2V</text>
+          <text x="260" y="312" font-size="11" fill="#334155" font-weight="700" text-anchor="middle">HCl 滴下量（mL）</text>
+
+          <!-- 滴定曲線（Na₂CO₃ のみ） -->
+          <!-- 開始pH≈11.6, 緩やかに下降 → V手前で急降下(pH11→8.3) → 水平(pH≈8.3) → 2V手前で急降下(pH7→4) → pH2台へ -->
+          <path d="
+            M 55,62
+            C 80,65 110,68 130,74
+            C 150,80 160,86 170,95
+            C 175,102 178,108 180,114
+            C 182,120 183,125 184,128
+            C 184.5,130 185,133 185,136
+            C 185,140 185.5,145 186,150
+            C 187,157 190,163 195,168
+            C 210,178 230,182 260,184
+            C 285,185 300,185 305,185
+            C 308,185 310,186 312,188
+            C 313,191 314,196 315,200
+            C 315.5,204 316,210 316,215
+            C 316,220 316,226 316.5,230
+            C 317,234 318,240 320,248
+            C 325,258 335,263 355,266
+            C 380,268 420,268 465,268
+          " fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round"></path>
+
+          <!-- 第一中和点 A（x=185, pH=8.3→y=124） -->
+          <line x1="185" y1="20" x2="185" y2="280" stroke="#7c3aed" stroke-width="1.2" stroke-dasharray="5,3"></line>
+          <circle cx="185" cy="124" r="6" fill="#7c3aed" opacity="0.9"></circle>
+          <text x="185" y="15" font-size="10" fill="#7c3aed" font-weight="800" text-anchor="middle">A点</text>
+          <text x="193" y="118" font-size="9" fill="#7c3aed" font-weight="700">pH≈8.3</text>
+
+          <!-- 第二中和点 B（x=315, pH=4.0→y=210） -->
+          <line x1="315" y1="20" x2="315" y2="280" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="5,3"></line>
+          <circle cx="315" cy="210" r="6" fill="#dc2626" opacity="0.9"></circle>
+          <text x="315" y="15" font-size="10" fill="#dc2626" font-weight="800" text-anchor="middle">B点</text>
+          <text x="323" y="205" font-size="9" fill="#dc2626" font-weight="700">pH≈4</text>
+
+          <!-- 矢印＋ラベル：第一段階 -->
+          <line x1="80" y1="245" x2="175" y2="245" stroke="#7c3aed" stroke-width="1.2" marker-end="url(#arrowP)"></line>
+          <text x="118" y="240" font-size="9" fill="#7c3aed" font-weight="700" text-anchor="middle">第一段階</text>
+          <text x="118" y="252" font-size="8" fill="#7c3aed" text-anchor="middle">Na₂CO₃→NaHCO₃</text>
+
+          <!-- 矢印＋ラベル：第二段階 -->
+          <line x1="195" y1="245" x2="305" y2="245" stroke="#dc2626" stroke-width="1.2" marker-end="url(#arrowR)"></line>
+          <text x="250" y="240" font-size="9" fill="#dc2626" font-weight="700" text-anchor="middle">第二段階</text>
+          <text x="250" y="252" font-size="8" fill="#dc2626" text-anchor="middle">NaHCO₃→CO₂</text>
+
+          <!-- 等量ブレース -->
+          <path d="M 60,260 Q 60,265 118,265 Q 175,265 175,270" fill="none" stroke="#7c3aed" stroke-width="1"></path>
+          <path d="M 195,270 Q 195,265 255,265 Q 315,265 315,260" fill="none" stroke="#dc2626" stroke-width="1"></path>
+          <text x="245" y="278" font-size="9" fill="#334155" text-anchor="middle" font-weight="700">← 等量 →</text>
+
+          <!-- 矢印マーカー -->
+          <defs>
+            <marker id="arrowP" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L6,3 z" fill="#7c3aed"></path>
+            </marker>
+            <marker id="arrowR" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L6,3 z" fill="#dc2626"></path>
+            </marker>
+          </defs>
+
+          <!-- 凡例 -->
+          <rect x="58" y="26" width="9" height="9" fill="#e9d5ff" opacity="0.9" rx="2"></rect>
+          <text x="70" y="35" font-size="9" fill="#7c3aed">PP変色域</text>
+          <rect x="115" y="26" width="9" height="9" fill="#fed7aa" opacity="0.9" rx="2"></rect>
+          <text x="127" y="35" font-size="9" fill="#d97706">メチルオレンジ変色域</text>
+        </svg>
+        </div>
+        <div style="font-size:0.78rem;color:#64748b;margin-top:6px;line-height:1.7;">
+          A点（第一中和点）：フェノールフタレイン 赤→無色　／　B点（第二中和点）：メチルオレンジ 黄→赤<br>
+          第一段階と第二段階で使う HCl の量（V）は等しくなります。
+        </div>
+      </div>
+
+      <div class="mini-test-area">
+        <div class="mini-test-label">🎯 ミニテスト①</div>
+        <div class="mini-q-wrap" id="mt1">
+          <div class="mini-q-text">Na₂CO₃ を HCl で滴定するとき、第一段階の反応式はどれか？</div>
+          <div class="opts-grid">
+            <button class="opt-btn" data-qid="mt1" data-ans="1" data-idx="0">① Na₂CO₃ ＋ 2HCl → 2NaCl ＋ H₂O ＋ CO₂</button>
+            <button class="opt-btn" data-qid="mt1" data-ans="1" data-idx="1">② Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl</button>
+            <button class="opt-btn" data-qid="mt1" data-ans="1" data-idx="2">③ NaHCO₃ ＋ HCl → NaCl ＋ H₂O ＋ CO₂</button>
+            <button class="opt-btn" data-qid="mt1" data-ans="1" data-idx="3">④ Na₂CO₃ ＋ HCl → Na₂Cl ＋ HCO₃⁻</button>
+          </div>
+          <div class="mini-fb" id="mt1_fb"></div>
+        </div>
+        <div class="mini-q-wrap" id="mt2" style="margin-top:10px;">
+          <div class="mini-q-text">第一中和点と第二中和点で使う指示薬の組み合わせとして正しいものは？</div>
+          <div class="opts-grid">
+            <button class="opt-btn" data-qid="mt2" data-ans="0" data-idx="0">① 第一：フェノールフタレイン（赤→無色）　第二：メチルオレンジ（黄→赤）</button>
+            <button class="opt-btn" data-qid="mt2" data-ans="0" data-idx="1">② 第一：メチルオレンジ（黄→赤）　第二：フェノールフタレイン（赤→無色）</button>
+            <button class="opt-btn" data-qid="mt2" data-ans="0" data-idx="2">③ 両方ともフェノールフタレインを使う</button>
+            <button class="opt-btn" data-qid="mt2" data-ans="0" data-idx="3">④ 両方ともメチルオレンジを使う</button>
+          </div>
+          <div class="mini-fb" id="mt2_fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 例題5 -->
+  <div class="section-card">
+    <div class="section-header sh-green">📝 2. 例題5 ― Na₂CO₃ のみの二段滴定</div>
+    <div class="section-body">
+      <div class="amber-box">
+        <div class="box-label">【例題5】問題文</div>
+        0.20 mol/L 炭酸ナトリウム水溶液 10.0 mL に 0.10 mol/L 塩酸を滴下した。<br>
+        （1）中和点 A（第一段階完了）を確認する指示薬と色の変化を答えよ。<br>
+        （2）中和点 A までに加えた塩酸は何 mL か。<br>
+        （3）中和点 B（第二段階完了）までに加えた塩酸は何 mL か。
+      </div>
+
+      <div class="calc-step">
+        <div class="step-no">（1）指示薬</div>
+        第一中和点は pH≈8.3（塩基性側）→ <strong>フェノールフタレイン</strong>を使用<br>
+        色の変化：<strong>赤色 → 無色</strong>
+      </div>
+      <div class="calc-step">
+        <div class="step-no">（2）第一中和点（A点）までの塩酸の量</div>
+        第一段階：<b>Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl</b><br>
+        Na₂CO₃ と HCl は 1:1 で反応する（Na₂CO₃ が1価として振る舞う）<br><br>
+        Na₂CO₃ の物質量：0.20 × <span class="frac"><span class="num">10.0</span><span class="den">1000</span></span> ＝ <b>0.0020 mol</b><br><br>
+        HCl の体積を v mL とすると：<br>
+        0.0020 ＝ 0.10 × <span class="frac"><span class="num">v</span><span class="den">1000</span></span><br>
+        <strong style="color:var(--primary);">v ＝ 20 mL</strong>
+      </div>
+      <div class="calc-step">
+        <div class="step-no">（3）第二中和点（B点）までの塩酸の量</div>
+        ①②で使う HCl の量は等しいので、B点は A点の<b>2倍</b><br>
+        <strong style="color:var(--primary);">20 × 2 ＝ 40 mL</strong>
+      </div>
+
+      <div class="mini-test-area">
+        <div class="mini-test-label">🎯 ミニテスト②</div>
+        <div class="mini-q-wrap" id="mt3">
+          <div class="mini-q-text">例題5の第一中和点までに加えた HCl が 20 mL のとき、第二中和点 B までの HCl の合計は？</div>
+          <div class="opts-grid">
+            <button class="opt-btn" data-qid="mt3" data-ans="2" data-idx="0">① 20 mL</button>
+            <button class="opt-btn" data-qid="mt3" data-ans="2" data-idx="1">② 30 mL</button>
+            <button class="opt-btn" data-qid="mt3" data-ans="2" data-idx="2">③ 40 mL</button>
+            <button class="opt-btn" data-qid="mt3" data-ans="2" data-idx="3">④ 60 mL</button>
+          </div>
+          <div class="mini-fb" id="mt3_fb"></div>
+        </div>
+        <div class="mini-q-wrap" id="mt4" style="margin-top:10px;">
+          <div class="mini-q-text">第一段階と第二段階で使う HCl の量が「等しい」理由はどれか？</div>
+          <div class="opts-grid">
+            <button class="opt-btn" data-qid="mt4" data-ans="0" data-idx="0">① 第一段階で生じた NaHCO₃ の mol 数が、元の Na₂CO₃ と同じだから</button>
+            <button class="opt-btn" data-qid="mt4" data-ans="0" data-idx="1">② Na₂CO₃ と NaHCO₃ の式量が等しいから</button>
+            <button class="opt-btn" data-qid="mt4" data-ans="0" data-idx="2">③ 塩酸の濃度が一定だから</button>
+            <button class="opt-btn" data-qid="mt4" data-ans="0" data-idx="3">④ CO₂ が発生するから</button>
+          </div>
+          <div class="mini-fb" id="mt4_fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 例題6 NaOH + Na₂CO₃ 混合 -->
+  <div class="section-card">
+    <div class="section-header sh-purple">📝 3. 例題6 ― NaOH と Na₂CO₃ の混合溶液</div>
+    <div class="section-body">
+      <div class="text-block">
+        空気中に放置した NaOH 水溶液は、CO₂ を吸収して一部が Na₂CO₃ に変化します。このため <strong>NaOH と Na₂CO₃ の混合溶液</strong>になります。
+      </div>
+      <div class="amber-box">
+        <div class="box-label">【例題6】問題文</div>
+        空気中に放置した NaOH 水溶液 20.0 mL に<br>
+        ①フェノールフタレインを加えて 0.10 mol/L HCl で滴定 → <b>30.0 mL</b> で変色<br>
+        ②さらにメチルオレンジを加えて滴定 → 合計 <b>40.0 mL</b> で終点<br><br>
+        （1）最初の中和反応式を書け。<br>
+        （2）次の中和反応式を書け。<br>
+        （3）NaOH と Na₂CO₃ の物質量比を求めよ。
+      </div>
+
+      <div class="calc-step">
+        <div class="step-no">（1）第一段階の反応（フェノールフタレインが変色するまで）</div>
+        NaOH と HCl の反応、および Na₂CO₃ の第一段階反応が<b>同時に</b>起こります：<br>
+        <b>NaOH ＋ HCl → NaCl ＋ H₂O</b><br>
+        <b>Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl</b>
+      </div>
+      <div class="calc-step">
+        <div class="step-no">（2）第二段階の反応（メチルオレンジが変色するまで）</div>
+        第一段階で生じた NaHCO₃ が HCl と反応します：<br>
+        <b>NaHCO₃ ＋ HCl → NaCl ＋ H₂O ＋ CO₂</b>
+      </div>
+      <div class="calc-step">
+        <div class="step-no">（3）NaOH と Na₂CO₃ の物質量比</div>
+        第二段階（メチルオレンジ変色まで）に使った HCl：40.0 − 30.0 ＝ <b>10.0 mL</b><br>
+        → これが Na₂CO₃ の第二段階分<br>
+        → Na₂CO₃ の第一段階も同じ量 → <b>10.0 mL</b><br><br>
+        NaOH に使った HCl ＝ 30.0 − 10.0 ＝ <b>20.0 mL</b><br><br>
+        NaOH の物質量：0.10 × <span class="frac"><span class="num">20.0</span><span class="den">1000</span></span> ＝ 0.0020 mol<br>
+        Na₂CO₃ の物質量：0.10 × <span class="frac"><span class="num">10.0</span><span class="den">1000</span></span> ＝ 0.0010 mol<br><br>
+        <strong style="color:var(--primary);">NaOH : Na₂CO₃ ＝ 0.0020 : 0.0010 ＝ 2 : 1</strong>
+      </div>
+
+      <div style="background:#eff6ff;border-radius:10px;padding:14px 16px;margin:12px 0;font-size:0.87rem;line-height:2;">
+        <strong>📊 HCl の内訳図解</strong><br>
+        <div style="display:flex;gap:4px;margin-top:8px;height:36px;border-radius:6px;overflow:hidden;font-size:0.78rem;font-weight:700;color:white;">
+          <div style="background:#2563eb;flex:2;display:flex;align-items:center;justify-content:center;">NaOH の分<br>20mL</div>
+          <div style="background:#7c3aed;flex:1;display:flex;align-items:center;justify-content:center;">Na₂CO₃<br>第一段 10mL</div>
+          <div style="background:#dc2626;flex:1;display:flex;align-items:center;justify-content:center;">Na₂CO₃<br>第二段 10mL</div>
+        </div>
+        <div style="display:flex;gap:4px;margin-top:4px;font-size:0.75rem;color:#64748b;">
+          <div style="flex:3;text-align:center;">← フェノールフタレイン変色まで 30mL →</div>
+          <div style="flex:1;text-align:center;">← メチルオレンジ変色 10mL →</div>
+        </div>
+      </div>
+
+      <div class="mini-test-area">
+        <div class="mini-test-label">🎯 ミニテスト③</div>
+        <div class="mini-q-wrap" id="mt5">
+          <div class="mini-q-text">
+            例題6で、Na₂CO₃ の第二段階に使われた HCl は何 mL か？
+          </div>
+          <div class="opts-grid">
+            <button class="opt-btn" data-qid="mt5" data-ans="1" data-idx="0">① 30.0 mL</button>
+            <button class="opt-btn" data-qid="mt5" data-ans="1" data-idx="1">② 10.0 mL</button>
+            <button class="opt-btn" data-qid="mt5" data-ans="1" data-idx="2">③ 20.0 mL</button>
+            <button class="opt-btn" data-qid="mt5" data-ans="1" data-idx="3">④ 40.0 mL</button>
+          </div>
+          <div class="mini-fb" id="mt5_fb"></div>
+        </div>
+        <div class="mini-q-wrap" id="mt6" style="margin-top:10px;">
+          <div class="mini-q-text">
+            例題6で NaOH に使われた HCl は何 mL か？
+          </div>
+          <div class="opts-grid">
+            <button class="opt-btn" data-qid="mt6" data-ans="2" data-idx="0">① 10.0 mL</button>
+            <button class="opt-btn" data-qid="mt6" data-ans="2" data-idx="1">② 15.0 mL</button>
+            <button class="opt-btn" data-qid="mt6" data-ans="2" data-idx="2">③ 20.0 mL</button>
+            <button class="opt-btn" data-qid="mt6" data-ans="2" data-idx="3">④ 30.0 mL</button>
+          </div>
+          <div class="mini-fb" id="mt6_fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 練習問題 -->
+  <div class="section-card">
+    <div class="section-header sh-red">✏️ 4. 練習問題</div>
+    <div class="section-body">
+
+      <div class="amber-box">
+        <div class="box-label">【練習1】Na₂CO₃ のみの二段滴定（PDF 練習4）</div>
+        濃度 χ mol/L の Na₂CO₃ 水溶液 25 mL を フェノールフタレイン を指示薬として 0.10 mol/L HCl で滴定したところ、y mL で色が変わった。さらに メチルオレンジ を加えて滴定を続けたところ、合計 30 mL で終点になった。<br>
+        ① この滴定の化学反応式を書け。　② (a)(b) の色の変化を書け。　③ χ と y の値を求めよ。
+      </div>
+      <div class="calc-step">
+        <div class="step-no">① 化学反応式</div>
+        第一段階：<b>Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl</b><br>
+        第二段階：<b>NaHCO₃ ＋ HCl → NaCl ＋ H₂O ＋ CO₂</b>
+      </div>
+      <div class="calc-step">
+        <div class="step-no">② 色の変化</div>
+        (a) フェノールフタレイン：<b>赤色 → 無色</b>（第一中和点、塩基性→中性付近）<br>
+        (b) メチルオレンジ：<b>黄色 → 赤色</b>（第二中和点、酸性側）
+      </div>
+      <div class="calc-step">
+        <div class="step-no">③ χ と y の計算</div>
+        第一・第二段階で使う HCl は等しいので：<br>
+        2y ＝ 30 → <strong>y ＝ 15 mL</strong><br><br>
+        Na₂CO₃ と HCl の物質量が等しいから（第一段階 1:1）：<br>
+        χ × <span class="frac"><span class="num">25</span><span class="den">1000</span></span> ＝ 0.10 × <span class="frac"><span class="num">15</span><span class="den">1000</span></span><br>
+        <strong style="color:var(--primary);">χ ＝ 0.060 mol/L</strong>
+      </div>
+
+      <div class="amber-box" style="margin-top:20px;">
+        <div class="box-label">【練習2】NaOH ＋ Na₂CO₃ 混合溶液（PDF 練習5）</div>
+        NaOH と Na₂CO₃ の混合水溶液 10 mL を フェノールフタレイン を指示薬として 0.10 mol/L HCl で滴定すると 20 mL で変色。さらに メチルオレンジ を加えて滴定を続けたところ 35 mL で終点になった。<br>
+        ① フェノールフタレイン が変色するまでの反応式を書け。<br>
+        ② NaOH と Na₂CO₃ の物質量比を求めよ。<br>
+        ③ 混合物中の Na₂CO₃ の質量百分率を求めよ。
+      </div>
+      <div class="calc-step">
+        <div class="step-no">① フェノールフタレイン変色までの反応式（2つの反応が同時に進む）</div>
+        <b>NaOH ＋ HCl → NaCl ＋ H₂O</b><br>
+        <b>Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl</b>
+      </div>
+      <div class="calc-step">
+        <div class="step-no">② NaOH と Na₂CO₃ の物質量比</div>
+        第二段階（メチルオレンジ変色まで）に使った HCl ＝ 35 − 20 ＝ <b>15 mL</b> → Na₂CO₃ の第二段階分<br>
+        Na₂CO₃ の第一段階も同じ → <b>15 mL</b><br>
+        NaOH の分 ＝ 20 − 15 ＝ <b>5 mL</b><br><br>
+        NaOH：0.10 × <span class="frac"><span class="num">5</span><span class="den">1000</span></span> ＝ 0.00050 mol<br>
+        Na₂CO₃：0.10 × <span class="frac"><span class="num">15</span><span class="den">1000</span></span> ＝ 0.0015 mol<br>
+        <strong style="color:var(--primary);">NaOH : Na₂CO₃ ＝ 1 : 3</strong>
+      </div>
+      <div class="calc-step">
+        <div class="step-no">③ Na₂CO₃ の質量百分率（式量：NaOH＝40、Na₂CO₃＝106）</div>
+        Na₂CO₃ の質量：0.0015 × 106 ＝ 0.159 g<br>
+        NaOH の質量：0.00050 × 40 ＝ 0.020 g<br>
+        全体の質量：0.159 ＋ 0.020 ＝ 0.179 g<br>
+        <strong style="color:var(--primary);">Na₂CO₃ の質量百分率 ＝ 0.159 ÷ 0.179 × 100 ≒ 89 ％</strong>
+      </div>
+
+      <div class="mini-test-area">
+        <div class="mini-test-label">🎯 ミニテスト④</div>
+        <div class="mini-q-wrap" id="mt7">
+          <div class="mini-q-text">
+            練習1で「第一段階と第二段階で使う HCl が等しい」ことから、合計 30 mL のとき y（第一中和点）は何 mL か？
+          </div>
+          <div class="opts-grid">
+            <button class="opt-btn" data-qid="mt7" data-ans="1" data-idx="0">① 10 mL</button>
+            <button class="opt-btn" data-qid="mt7" data-ans="1" data-idx="1">② 15 mL</button>
+            <button class="opt-btn" data-qid="mt7" data-ans="1" data-idx="2">③ 20 mL</button>
+            <button class="opt-btn" data-qid="mt7" data-ans="1" data-idx="3">④ 30 mL</button>
+          </div>
+          <div class="mini-fb" id="mt7_fb"></div>
+        </div>
+        <div class="mini-q-wrap" id="mt8" style="margin-top:10px;">
+          <div class="mini-q-text">
+            練習2で NaOH に使われた HCl は何 mL か？（フェノールフタレイン変色まで 20 mL、メチルオレンジ変色まで合計 35 mL）
+          </div>
+          <div class="opts-grid">
+            <button class="opt-btn" data-qid="mt8" data-ans="0" data-idx="0">① 5 mL</button>
+            <button class="opt-btn" data-qid="mt8" data-ans="0" data-idx="1">② 10 mL</button>
+            <button class="opt-btn" data-qid="mt8" data-ans="0" data-idx="2">③ 15 mL</button>
+            <button class="opt-btn" data-qid="mt8" data-ans="0" data-idx="3">④ 20 mL</button>
+          </div>
+          <div class="mini-fb" id="mt8_fb"></div>
+        </div>
+        <div class="mini-q-wrap" id="mt9" style="margin-top:10px;">
+          <div class="mini-q-text">
+            練習2の NaOH : Na₂CO₃ の物質量比は？
+          </div>
+          <div class="opts-grid">
+            <button class="opt-btn" data-qid="mt9" data-ans="3" data-idx="0">① 3 : 1</button>
+            <button class="opt-btn" data-qid="mt9" data-ans="3" data-idx="1">② 2 : 1</button>
+            <button class="opt-btn" data-qid="mt9" data-ans="3" data-idx="2">③ 1 : 2</button>
+            <button class="opt-btn" data-qid="mt9" data-ans="3" data-idx="3">④ 1 : 3</button>
+          </div>
+          <div class="mini-fb" id="mt9_fb"></div>
+        </div>
+
+        <div class="mini-q-wrap" id="mt10" style="margin-top:10px;">
+          <div class="mini-q-text">
+            練習2の混合物中の Na₂CO₃ の質量を求めよ。<br>
+            <small style="color:#64748b;">（Na₂CO₃：0.0015 mol、式量106　／　NaOH：0.00050 mol、式量40）</small>
+          </div>
+          <div class="opts-grid">
+            <button class="opt-btn" data-qid="mt10" data-ans="1" data-idx="0">① 0.020 g</button>
+            <button class="opt-btn" data-qid="mt10" data-ans="1" data-idx="1">② 0.159 g</button>
+            <button class="opt-btn" data-qid="mt10" data-ans="1" data-idx="2">③ 0.179 g</button>
+            <button class="opt-btn" data-qid="mt10" data-ans="1" data-idx="3">④ 1.06 g</button>
+          </div>
+          <div class="mini-fb" id="mt10_fb"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. まとめ -->
+  <div class="section-card">
+    <div class="section-header sh-amber">📋 5. 二段滴定の解き方まとめ</div>
+    <div class="section-body">
+      <table class="chem-table">
+        <tbody><tr><th>場合</th><th>構成</th><th>解き方のポイント</th></tr>
+        <tr>
+          <td><b>Na₂CO₃ のみ</b></td>
+          <td>Na₂CO₃</td>
+          <td>第一段階 ＝ 第二段階（HCl 量等しい）<br>合計 ÷ 2 が各段階の量</td>
+        </tr>
+        <tr>
+          <td><b>NaOH ＋ Na₂CO₃</b></td>
+          <td>NaOH と Na₂CO₃ の混合</td>
+          <td>メチルオレンジ変色まで − フェノールフタレイン変色まで ＝ Na₂CO₃ 第二段階分<br>フェノールフタレイン変色まで − Na₂CO₃ 第一段階分 ＝ NaOH 分</td>
+        </tr>
+        <tr>
+          <td><b>Na₂CO₃ ＋ NaHCO₃</b></td>
+          <td>Na₂CO₃ と NaHCO₃ の混合</td>
+          <td>フェノールフタレイン変色まで ＝ Na₂CO₃ 第一段階のみ<br>（NaHCO₃ はフェノールフタレイン変色前には反応しない）</td>
+        </tr>
+      </tbody></table>
+      <div class="important-box">
+        <div class="box-label">⚠️ よくある間違い</div>
+        ・NaOH ＋ Na₂CO₃ の混合で「フェノールフタレイン変色までの全量」を NaOH の量と間違える<br>
+        　→ フェノールフタレイン変色までには Na₂CO₃ の第一段階分も含まれている！<br>
+        ・第一段階と第二段階を同時に使う HCl の量が違うと思い込む<br>
+        　→ Na₂CO₃ だけの場合は必ず等しい（1:1 の反応が2回）
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-learn -->
+
+
+<!-- ========== 穴埋めタブ ========== -->
+<div id="tab-fill" class="tab-content">
+  <div class="section-card">
+    <div class="section-header sh-blue">✏️ 穴埋めチャレンジ</div>
+    <div class="section-body">
+      <div class="timer-row">
+        <span style="font-size:0.82rem;color:var(--muted);font-weight:600;">⏱ 経過時間：</span>
+        <span class="timer-display" id="timerDisp">00:00</span>
+        <span style="margin-left:auto;font-size:0.82rem;color:var(--muted);" id="progressLabel">0 / 14 正解</span>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+
+      <div class="fill-text" id="fillText">
+        Na₂CO₃ を HCl で滴定すると<span class="blank hidden" data-ans="2段階" id="b0">2段階</span>で反応します。第一段階では Na₂CO₃ ＋ HCl → <span class="blank hidden" data-ans="NaHCO₃" id="b1">NaHCO₃</span> ＋ NaCl が起こり、中和点は<span class="blank hidden" data-ans="塩基性" id="b2">塩基性</span>（pH ≈ 8.3）です。このとき使う指示薬は<span class="blank hidden" data-ans="フェノールフタレイン" id="b3">フェノールフタレイン</span>で、<span class="blank hidden" data-ans="赤色" id="b4">赤色</span>から無色に変化します。<br><br>
+        第二段階では NaHCO₃ ＋ HCl → NaCl ＋ <span class="blank hidden" data-ans="H₂O" id="b5">H₂O</span> ＋ <span class="blank hidden" data-ans="CO₂" id="b6">CO₂</span> が起こり、中和点は<span class="blank hidden" data-ans="酸性" id="b7">酸性</span>（pH ≈ 4）です。このとき使う指示薬は<span class="blank hidden" data-ans="メチルオレンジ" id="b8">メチルオレンジ</span>で、黄色から<span class="blank hidden" data-ans="赤色" id="b9">赤色</span>に変化します。<br><br>
+        Na₂CO₃ だけの場合、第一段階と第二段階で使う HCl の量は<span class="blank hidden" data-ans="等しい" id="b10">等しい</span>です。<br><br>
+        NaOH ＋ Na₂CO₃ の混合溶液を滴定するとき、フェノールフタレイン変色まで 30 mL、メチルオレンジ変色まで合計 40 mL なら、Na₂CO₃ の第二段階に使われた HCl は<span class="blank hidden" data-ans="10 mL" id="b11">10 mL</span>で、Na₂CO₃ の第一段階も<span class="blank hidden" data-ans="10 mL" id="b12">10 mL</span>、NaOH に使われた HCl は<span class="blank hidden" data-ans="20 mL" id="b13">20 mL</span>となります。
+      </div>
+
+      <div class="challenge-bar">
+        <button class="btn btn-primary" onclick="revealNext()">次の答えを表示</button>
+        <button class="btn btn-amber" onclick="revealAll()">すべて表示</button>
+        <button class="btn btn-gray" onclick="resetFill()">リセット</button>
+      </div>
+
+      <div style="font-size:0.8rem;font-weight:700;color:var(--muted);margin:12px 0 6px;">📦 単語バンクから選ぶ</div>
+      <div class="word-bank" id="wordBank"><span class="word-chip">2段階</span><span class="word-chip">1段階</span><span class="word-chip">NaHCO₃</span><span class="word-chip">Na₂CO₃</span><span class="word-chip">NaCl</span><span class="word-chip">塩基性</span><span class="word-chip">酸性</span><span class="word-chip">中性</span><span class="word-chip">フェノールフタレイン</span><span class="word-chip">メチルオレンジ</span><span class="word-chip">赤色</span><span class="word-chip">黄色</span><span class="word-chip">無色</span><span class="word-chip">H₂O</span><span class="word-chip">CO₂</span><span class="word-chip">H₂</span><span class="word-chip">等しい</span><span class="word-chip">異なる</span><span class="word-chip">5 mL</span><span class="word-chip">10 mL</span><span class="word-chip">15 mL</span><span class="word-chip">20 mL</span><span class="word-chip">30 mL</span></div>
+
+      <div class="score-board" id="scoreBoard" style="display:none;">
+        <div class="score-item"><div class="score-num" id="scoreCorrect">0</div><div class="score-sub">正解</div></div>
+        <div class="score-item"><div class="score-num" id="scoreMiss">0</div><div class="score-sub">ミス</div></div>
+        <div class="score-item"><div class="score-num" id="scoreTime">0:00</div><div class="score-sub">タイム</div></div>
+        <div class="grade-badge" id="gradeBadge">-</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========== 確認テストタブ ========== -->
+<div id="tab-quiz" class="tab-content">
+  <div class="section-card">
+    <div class="section-header sh-green">🧪 確認テスト</div>
+    <div class="section-body">
+      <div id="quizContainer"><div class="quiz-card" id="qc0"><div class="quiz-q">Q1. Na₂CO₃ を HCl で滴定するとき、第二段階の反応式はどれか？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(0,0)">Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl</button><button class="quiz-opt" onclick="answerQuiz(0,1)">NaHCO₃ ＋ HCl → NaCl ＋ H₂O ＋ CO₂</button><button class="quiz-opt" onclick="answerQuiz(0,2)">Na₂CO₃ ＋ 2HCl → 2NaCl ＋ H₂O ＋ CO₂</button><button class="quiz-opt" onclick="answerQuiz(0,3)">NaOH ＋ HCl → NaCl ＋ H₂O</button></div><div class="quiz-feedback" id="qf0"></div></div><div class="quiz-card" id="qc1"><div class="quiz-q">Q2. 0.10 mol/L Na₂CO₃ 水溶液 20 mL を 0.10 mol/L HCl で滴定した。第一中和点までに必要な HCl は何 mL か？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(1,0)">10 mL</button><button class="quiz-opt" onclick="answerQuiz(1,1)">20 mL</button><button class="quiz-opt" onclick="answerQuiz(1,2)">30 mL</button><button class="quiz-opt" onclick="answerQuiz(1,3)">40 mL</button></div><div class="quiz-feedback" id="qf1"></div></div><div class="quiz-card" id="qc2"><div class="quiz-q">Q3. NaOH ＋ Na₂CO₃ の混合溶液でフェノールフタレイン変色まで 25 mL、メチルオレンジ変色まで合計 35 mL 要した。Na₂CO₃ 第二段階に使った HCl は？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(2,0)">10 mL</button><button class="quiz-opt" onclick="answerQuiz(2,1)">15 mL</button><button class="quiz-opt" onclick="answerQuiz(2,2)">25 mL</button><button class="quiz-opt" onclick="answerQuiz(2,3)">35 mL</button></div><div class="quiz-feedback" id="qf2"></div></div><div class="quiz-card" id="qc3"><div class="quiz-q">Q4. 上の問題で NaOH に使われた HCl は何 mL か？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(3,0)">5 mL</button><button class="quiz-opt" onclick="answerQuiz(3,1)">10 mL</button><button class="quiz-opt" onclick="answerQuiz(3,2)">15 mL</button><button class="quiz-opt" onclick="answerQuiz(3,3)">25 mL</button></div><div class="quiz-feedback" id="qf3"></div></div><div class="quiz-card" id="qc4"><div class="quiz-q">Q5. 二段滴定で「第一段階と第二段階で使う HCl の量が等しい」のはどの場合か？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(4,0)">NaOH のみの場合</button><button class="quiz-opt" onclick="answerQuiz(4,1)">NaOH ＋ Na₂CO₃ の混合の場合</button><button class="quiz-opt" onclick="answerQuiz(4,2)">Na₂CO₃ のみの場合</button><button class="quiz-opt" onclick="answerQuiz(4,3)">NaHCO₃ のみの場合</button></div><div class="quiz-feedback" id="qf4"></div></div><div class="quiz-card" id="qc5"><div class="quiz-q">Q6. 二段滴定で第一中和点にフェノールフタレインを使う理由はどれか？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(5,0)">第一中和点が酸性側だから</button><button class="quiz-opt" onclick="answerQuiz(5,1)">第一中和点が pH≈8.3（塩基性側）にあり、フェノールフタレインの変色域（pH 8.2〜9.8）と一致するから</button><button class="quiz-opt" onclick="answerQuiz(5,2)">フェノールフタレインはメチルオレンジより安いから</button><button class="quiz-opt" onclick="answerQuiz(5,3)">PP は2色に変化するから</button></div><div class="quiz-feedback" id="qf5"></div></div></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function toggleDeep() {
+  var el = document.getElementById('deepDive');
+  var btn = document.getElementById('deepBtn');
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    btn.textContent = '▲ 閉じる';
+    btn.style.background = '#94a3b8';
+  } else {
+    el.style.display = 'none';
+    btn.textContent = '🔍 深く知りたい';
+    btn.style.background = '#dc2626';
+  }
+}
+
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(function(el){ el.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(el){ el.classList.remove('active'); });
+  document.getElementById('tab-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if(id==='fill' && !timerStarted) startTimer();
+}
+
+// ===== ミニテスト解説 =====
+var mtFeedback = {
+  mt1:{msgs:[
+    '❌ それは第一段階と第二段階を合わせた反応です。<br>第一段階：<b>Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl</b><br>CO₃²⁻ が H⁺ を1個だけ受け取って HCO₃⁻ になります。',
+    '✅ 正解！<br><b>Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl</b><br>CO₃²⁻ が H⁺ を1個受け取って HCO₃⁻（炭酸水素イオン）になります。第一段階はここで止まります（CO₃²⁻ がなくなるまで第二段階は起きません）。',
+    '❌ それは第二段階の反応式です。<br>第一段階：<b>Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl</b>',
+    '❌ Na₂Cl という化学式は存在しません。<br>第一段階：<b>Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl</b>'
+  ]},
+  mt2:{msgs:[
+    '✅ 正解！<br>第一中和点（pH≈8.3、塩基性側）→ <b>フェノールフタレイン（PP）：赤色→無色</b><br>第二中和点（pH≈4、酸性側）→ <b>メチルオレンジ（MO）：黄色→赤色</b><br>「変色域が中和点のpHをまたぐ指示薬」を選ぶのが原則です。',
+    '❌ 順番が逆です。フェノールフタレインは塩基性側（pH 8.2〜9.8）で変色するため第一中和点に使います。<br>第一：<b>フェノールフタレイン（赤→無色）</b>　第二：<b>メチルオレンジ（黄→赤）</b>',
+    '❌ 第二中和点は pH≈4（酸性側）なのでフェノールフタレイン（pH 8.2〜9.8）は変色しません。<br>第二中和点には <b>メチルオレンジ（pH 3.1〜4.4）</b>を使います。',
+    '❌ 第一中和点は pH≈8.3（塩基性側）なのでメチルオレンジ（pH 3.1〜4.4）は変色しません。<br>第一中和点には <b>フェノールフタレイン（pH 8.2〜9.8）</b>を使います。'
+  ]},
+  mt3:{msgs:[
+    '❌ 20 mL は第一中和点（A点）までの量です。B点は A点の2倍です。<br>第一段階 ＝ 第二段階なので：<b>20 ＋ 20 ＝ 40 mL</b>',
+    '❌ 30 mL は A点と B点の中間です。B点は A点の2倍です。<br><b>20 ＋ 20 ＝ 40 mL</b>',
+    '✅ 正解！<br>第一段階と第二段階で使う HCl の量は等しいので、A点までが 20 mL なら B点まで合計は <b>20 ＋ 20 ＝ 40 mL</b> です。',
+    '❌ 3倍ではありません。第一段階と第二段階の HCl 量が等しいので B点は A点の2倍です。<br><b>20 ＋ 20 ＝ 40 mL</b>'
+  ]},
+  mt4:{msgs:[
+    '✅ 正解！<br>Na₂CO₃（1mol）→ 第一段階で NaHCO₃（1mol）が生じます。<br>この NaHCO₃ の量は元の Na₂CO₃ と同じ mol 数なので、第二段階でも同じ量の HCl が必要になります。<br>【第一段階】Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl<br>【第二段階】NaHCO₃ ＋ HCl → NaCl ＋ H₂O ＋ CO₂',
+    '❌ 式量は関係ありません。HCl の消費量は mol 数で決まります。<br>Na₂CO₃ 1mol → NaHCO₃ 1mol が生じ、同じ量の HCl で反応するためです。',
+    '❌ 濃度が一定であることは関係ありません。mol 数の関係が等しいのが理由です。<br>Na₂CO₃ 1mol → 第一段階 HCl 1mol 消費 → NaHCO₃ 1mol → 第二段階 HCl 1mol 消費',
+    '❌ CO₂ が発生するのは第二段階の特徴ですが、量が等しい理由ではありません。<br>Na₂CO₃ 1mol → NaHCO₃ 1mol（第一段階）→ CO₂ 1mol（第二段階）というように mol が保存されるためです。'
+  ]},
+  mt5:{msgs:[
+    '❌ 30.0 mL はフェノールフタレインが変色するまでの HCl の合計量（第一中和点）です。<br>'
+    +'Na₂CO₃ の第二段階の反応（NaHCO₃ ＋ HCl → NaCl ＋ H₂O ＋ CO₂）は、フェノールフタレインが変色した<b>後</b>に起こります。<br><br>'
+    +'【考え方】<br>'
+    +'　フェノールフタレイン変色まで：30.0 mL　← 第一段階 ＋ NaOH（あれば）の分<br>'
+    +'　メチルオレンジ変色まで合計：40.0 mL<br>'
+    +'　Na₂CO₃ 第二段階 ＝ 40.0 − 30.0 ＝ <b>10.0 mL</b>',
+    '✅ 正解！<br>'
+    +'【解き方の流れ】<br>'
+    +'　フェノールフタレインが変色するまで（第一中和点）：30.0 mL<br>'
+    +'　メチルオレンジが変色するまで（第二中和点）合計：40.0 mL<br><br>'
+    +'　Na₂CO₃ の第二段階に使われた HCl<br>'
+    +'　＝ メチルオレンジ変色まで合計 − フェノールフタレイン変色まで<br>'
+    +'　＝ 40.0 − 30.0 ＝ <b>10.0 mL</b><br><br>'
+    +'　💡 この 10.0 mL は Na₂CO₃ の第一段階に使われた量とも等しくなります（第一段階 ＝ 第二段階）。',
+    '❌ 20.0 mL は NaOH に使われた HCl の量です。<br>'
+    +'この問題では NaOH の量を聞いているのではなく、<b>Na₂CO₃ の第二段階</b>の量を聞いています。<br><br>'
+    +'【整理】<br>'
+    +'　Na₂CO₃ 第二段階 ＝ 40.0 − 30.0 ＝ <b>10.0 mL</b><br>'
+    +'　Na₂CO₃ 第一段階 ＝ 10.0 mL（等しいから）<br>'
+    +'　NaOH の分 ＝ 30.0 − 10.0 ＝ 20.0 mL',
+    '❌ 40.0 mL はメチルオレンジが変色するまでの HCl の<b>合計量</b>（第一段階 ＋ 第二段階の全体）です。<br>'
+    +'第二段階だけの量を求めるには、合計から第一中和点（フェノールフタレイン変色まで）を引きます。<br><br>'
+    +'　Na₂CO₃ 第二段階 ＝ <b>40.0 − 30.0 ＝ 10.0 mL</b>'
+  ]},
+  mt6:{msgs:[
+    '❌ 10.0 mL は Na₂CO₃ の第一段階（または第二段階）に使われた HCl の量で、NaOH の量ではありません。<br><br>'
+    +'【3ステップで考える】<br>'
+    +'　Step 1　Na₂CO₃ の第二段階 ＝ メチルオレンジ変色まで合計 − フェノールフタレイン変色まで<br>'
+    +'　　　　　＝ 40.0 − 30.0 ＝ <b>10.0 mL</b><br>'
+    +'　Step 2　Na₂CO₃ の第一段階も = <b>10.0 mL</b>（第一段階 ＝ 第二段階 だから）<br>'
+    +'　Step 3　NaOH の分 ＝ フェノールフタレイン変色まで − Na₂CO₃ 第一段階<br>'
+    +'　　　　　＝ 30.0 − 10.0 ＝ <b>20.0 mL</b>',
+    '❌ 15.0 mL はこの例題では出てこない数値です。<br>'
+    +'フェノールフタレイン変色まで 30.0 mL の内訳は：<br>'
+    +'　・Na₂CO₃ 第一段階：10.0 mL<br>'
+    +'　・NaOH の分：20.0 mL<br>'
+    +'　合計：30.0 mL<br><br>'
+    +'NaOH の分 ＝ 30.0 − 10.0 ＝ <b>20.0 mL</b>',
+    '✅ 正解！<br>'
+    +'【3ステップで確認】<br>'
+    +'　Step 1　Na₂CO₃ 第二段階 ＝ 40.0 − 30.0 ＝ <b>10.0 mL</b><br>'
+    +'　　　　　（メチルオレンジ変色まで合計 − フェノールフタレイン変色まで）<br>'
+    +'　Step 2　Na₂CO₃ 第一段階も <b>10.0 mL</b>（第一 ＝ 第二 だから）<br>'
+    +'　Step 3　NaOH の分 ＝ フェノールフタレイン変色まで(30.0) − Na₂CO₃ 第一段階(10.0)<br>'
+    +'　　　　　＝ <b>20.0 mL</b><br><br>'
+    +'💡 フェノールフタレイン変色までの 30.0 mL には「NaOH の分 20.0 mL」と「Na₂CO₃ 第一段階の分 10.0 mL」が混在しています。',
+    '❌ 30.0 mL はフェノールフタレインが変色するまでの合計量です。<br>'
+    +'この 30.0 mL の中には<b>NaOH の分と Na₂CO₃ 第一段階の分が両方含まれています</b>。<br><br>'
+    +'【内訳】<br>'
+    +'　Na₂CO₃ 第一段階：10.0 mL　＋　NaOH の分：20.0 mL　＝　計 30.0 mL<br><br>'
+    +'NaOH だけの量を取り出すには Na₂CO₃ 第一段階の分を引く必要があります。<br>'
+    +'　NaOH の分 ＝ 30.0 − 10.0 ＝ <b>20.0 mL</b>'
+  ]},
+  mt7:{msgs:[
+    '❌ 10 mL は「第一段階だけ」または「第二段階だけ」の半分の値です。<br>'
+    +'【考え方】Na₂CO₃ だけの二段滴定では<b>第一段階と第二段階で使う HCl の量は必ず等しく</b>なります。<br>'
+    +'それぞれ y mL 使うとすると：<br>'
+    +'　第一段階：y mL ＋ 第二段階：y mL ＝ 合計 30 mL<br>'
+    +'　2y ＝ 30 → <b>y ＝ 15 mL</b>',
+    '✅ 正解！<br>'
+    +'【解き方の流れ】<br>'
+    +'Na₂CO₃ だけの二段滴定では、第一段階と第二段階で使う HCl の量が等しくなります。<br>'
+    +'　第一段階：<b>Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl</b>　← y mL<br>'
+    +'　第二段階：<b>NaHCO₃ ＋ HCl → NaCl ＋ H₂O ＋ CO₂</b>　← y mL<br>'
+    +'　合計：2y ＝ 30 → <b>y ＝ 15 mL</b>（第一中和点・フェノールフタレイン変色）',
+    '❌ 20 mL だと 2 × 20 ＝ 40 mL になってしまい、合計 30 mL に合いません。<br>'
+    +'【考え方】第一段階 ＝ 第二段階 ＝ y mL<br>'
+    +'　2y ＝ 30（合計） → <b>y ＝ 15 mL</b>',
+    '❌ 30 mL は合計の量です。第一段階は合計の半分になります。<br>'
+    +'【考え方】第一段階 ＝ 第二段階 ＝ y mL<br>'
+    +'　2y ＝ 30 → <b>y ＝ 15 mL</b><br>'
+    +'y ＝ 30 だと合計 60 mL になってしまいます。'
+  ]},
+  mt8:{msgs:[
+    '✅ 正解！<br>'
+    +'【3ステップで解く】<br>'
+    +'<b>Step 1</b>　Na₂CO₃ の第二段階に使われた HCl を求める<br>'
+    +'　メチルオレンジ変色まで（合計）35 mL − フェノールフタレイン変色まで 20 mL ＝ <b>15 mL</b><br>'
+    +'　（これが NaHCO₃ ＋ HCl → NaCl ＋ H₂O ＋ CO₂ の分）<br><br>'
+    +'<b>Step 2</b>　Na₂CO₃ の第一段階も同じ量なので <b>15 mL</b><br>'
+    +'　（Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl の分）<br><br>'
+    +'<b>Step 3</b>　NaOH に使われた HCl ＝ フェノールフタレイン変色まで − Na₂CO₃ 第一段階<br>'
+    +'　20 − 15 ＝ <b>5 mL</b>',
+    '❌ 10 mL は正しくありません。<br>'
+    +'【解き方】<br>'
+    +'① Na₂CO₃ 第二段階 ＝ 35 − 20 ＝ 15 mL<br>'
+    +'② Na₂CO₃ 第一段階も ＝ 15 mL（等しいから）<br>'
+    +'③ NaOH の分 ＝ フェノールフタレイン変色まで(20) − Na₂CO₃ 第一段階(15) ＝ <b>5 mL</b><br>'
+    +'10 mL は Na₂CO₃ 第一・第二段階を足した半分です。',
+    '❌ 15 mL は Na₂CO₃ の第一段階（または第二段階）の量で、NaOH の量ではありません。<br>'
+    +'【解き方】<br>'
+    +'① Na₂CO₃ 第二段階 ＝ 35 − 20 ＝ <b>15 mL</b>（これは Na₂CO₃ の分）<br>'
+    +'② Na₂CO₃ 第一段階も <b>15 mL</b><br>'
+    +'③ NaOH の分 ＝ 20 − 15 ＝ <b>5 mL</b><br>'
+    +'NaOH は全体の中でわずか 5 mL しか使われていません。',
+    '❌ 20 mL はフェノールフタレイン変色までの<b>合計量</b>です。<br>'
+    +'この 20 mL の中には NaOH の分と Na₂CO₃ 第一段階の分が<b>混在</b>しています。<br>'
+    +'【解き方】<br>'
+    +'① Na₂CO₃ 第二段階 ＝ 35 − 20 ＝ <b>15 mL</b><br>'
+    +'② Na₂CO₃ 第一段階も <b>15 mL</b>（等しいから）<br>'
+    +'③ NaOH の分 ＝ 20（フェノールフタレイン変色まで全体）− 15（Na₂CO₃ 第一段階） ＝ <b>5 mL</b>'
+  ]},
+  mt9:{msgs:[
+    '❌ 3:1 は逆です。この問題では NaOH の方が少ない（5 mL 分）で Na₂CO₃ の方が多い（15 mL 分）です。<br>'
+    +'【確認】<br>'
+    +'　NaOH に使われた HCl：5 mL → 0.10 × <span class="frac"><span class="num">5</span><span class="den">1000</span></span> ＝ 0.00050 mol<br>'
+    +'　Na₂CO₃ に使われた HCl：15 mL → 0.10 × <span class="frac"><span class="num">15</span><span class="den">1000</span></span> ＝ 0.0015 mol<br>'
+    +'　NaOH : Na₂CO₃ ＝ 0.00050 : 0.0015 ＝ <b>1 : 3</b>',
+    '❌ 2:1 は例題6（NaOH 20 mL 分、Na₂CO₃ 10 mL 分）の比です。この練習2では数値が異なります。<br>'
+    +'【確認】<br>'
+    +'　NaOH：5 mL 分 → 0.00050 mol<br>'
+    +'　Na₂CO₃：15 mL 分 → 0.0015 mol<br>'
+    +'　NaOH : Na₂CO₃ ＝ 0.00050 : 0.0015 ＝ <b>1 : 3</b>',
+    '❌ 1:2 ではありません。Na₂CO₃ 分は 15 mL、NaOH 分は 5 mL です。<br>'
+    +'HCl の体積の比 ＝ mol 数の比（濃度が同じなので）<br>'
+    +'　NaOH : Na₂CO₃ ＝ 5 : 15 ＝ <b>1 : 3</b>',
+    '✅ 正解！<br>'
+    +'【計算の流れ】<br>'
+    +'Step 1　NaOH に使われた HCl：5 mL<br>'
+    +'　NaOH の物質量 ＝ 0.10 × <span class="frac"><span class="num">5</span><span class="den">1000</span></span> ＝ <b>0.00050 mol</b><br><br>'
+    +'Step 2　Na₂CO₃ に使われた HCl：15 mL（第一段階分）<br>'
+    +'　Na₂CO₃ の物質量 ＝ 0.10 × <span class="frac"><span class="num">15</span><span class="den">1000</span></span> ＝ <b>0.0015 mol</b><br><br>'
+    +'Step 3　物質量比を求める<br>'
+    +'　NaOH : Na₂CO₃ ＝ 0.00050 : 0.0015 ＝ <b>1 : 3</b><br>'
+    +'（HCl の体積比 5 : 15 ＝ 1 : 3 で直接求めても同じです）'
+  ]},
+  mt10:{msgs:[
+    '❌ 0.020 g は NaOH の質量です（0.00050 mol × 40 ＝ 0.020 g）。<br>'
+    +'Na₂CO₃ の式量は <b>106</b> です。NaOH の式量 40 と混同しないようにしましょう。<br><br>'
+    +'【計算】<br>'
+    +'　Na₂CO₃ の質量 ＝ 物質量 × 式量<br>'
+    +'　＝ 0.0015 mol × 106 ＝ <b>0.159 g</b>',
+    '✅ 正解！<br>'
+    +'【計算の流れ】<br>'
+    +'　Na₂CO₃ の質量 ＝ 物質量 × 式量<br>'
+    +'　＝ 0.0015 mol × 106 ＝ <b>0.159 g</b><br><br>'
+    +'　（参考）NaOH の質量 ＝ 0.00050 × 40 ＝ 0.020 g<br>'
+    +'　混合物全体の質量 ＝ 0.159 ＋ 0.020 ＝ 0.179 g<br>'
+    +'　Na₂CO₃ の質量百分率 ＝ <span class="frac"><span class="num">0.159</span><span class="den">0.179</span></span> × 100 ≒ <b>89 ％</b>',
+    '❌ 0.179 g は NaOH と Na₂CO₃ を合わせた<b>混合物全体</b>の質量です。<br>'
+    +'　NaOH の質量：0.00050 × 40 ＝ 0.020 g<br>'
+    +'　Na₂CO₃ の質量：0.0015 × 106 ＝ 0.159 g<br>'
+    +'　合計：0.020 ＋ 0.159 ＝ 0.179 g ← これは全体の質量<br><br>'
+    +'　Na₂CO₃ だけの質量は <b>0.159 g</b> です。',
+    '❌ 1.06 g は 0.0015 mol × 106 の小数点を間違えた値（0.01 mol と間違えた場合）です。<br>'
+    +'　物質量を確認しましょう：Na₂CO₃ ＝ <b>0.0015 mol</b>（15 mL 分）<br>'
+    +'　0.0015 × 106 ＝ <b>0.159 g</b><br>'
+    +'　（1.06 g は Na₂CO₃ が 0.01 mol のときの値です）'
+  ]}
+};
+
+document.querySelectorAll('.opt-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var qid = this.dataset.qid;
+    var ans = parseInt(this.dataset.ans);
+    var idx = parseInt(this.dataset.idx);
+    var container = document.getElementById(qid);
+    if(!container||container.dataset.done) return;
+    container.dataset.done='1';
+    var btns = container.querySelectorAll('.opt-btn');
+    btns.forEach(function(b,i){
+      b.disabled=true;
+      if(i===ans) b.classList.add('correct');
+      else if(i===idx) b.classList.add('wrong');
+    });
+    var fb = document.getElementById(qid+'_fb');
+    if(!fb) return;
+    var msgs = (mtFeedback[qid]||{msgs:[]}).msgs;
+    if(idx===ans){ fb.className='mini-fb ok'; fb.innerHTML=msgs[ans]||'✅ 正解！'; launchConfetti(12); }
+    else { fb.className='mini-fb ng'; fb.innerHTML=msgs[idx]||'❌ 不正解です。'; }
+  });
+});
+
+// ===== 穴埋め =====
+var blanks=['2段階','NaHCO₃','塩基性','フェノールフタレイン','赤色','H₂O','CO₂','酸性','メチルオレンジ','赤色','等しい','10 mL','10 mL','20 mL'];
+var wordBankWords=['2段階','1段階','NaHCO₃','Na₂CO₃','NaCl','塩基性','酸性','中性','フェノールフタレイン','メチルオレンジ','赤色','黄色','無色','H₂O','CO₂','H₂','等しい','異なる','5 mL','10 mL','15 mL','20 mL','30 mL'];
+var totalBlanks=blanks.length;
+var revealedCount=0;
+var timerStarted=false;
+var timerSec=0;
+var timerInterval=null;
+var activeBlank=null;
+
+function buildWordBank(){
+  var wb=document.getElementById('wordBank');
+  wb.innerHTML='';
+  wordBankWords.forEach(function(w){
+    var chip=document.createElement('span');
+    chip.className='word-chip';
+    chip.textContent=w;
+    chip.addEventListener('click',function(){
+      if(!activeBlank) return;
+      activeBlank.textContent=w;
+      activeBlank.classList.remove('hidden');
+      chip.style.opacity='0.4';
+      chip.style.pointerEvents='none';
+      activeBlank=null;
+      updateProgress();
+    });
+    wb.appendChild(chip);
+  });
+  blanks.forEach(function(ans,i){
+    var el=document.getElementById('b'+i);
+    if(!el) return;
+    el.addEventListener('click',function(){
+      document.querySelectorAll('.blank').forEach(function(b){b.style.outline='none';});
+      this.style.outline='2px solid #2563eb';
+      activeBlank=this;
+    });
+  });
+}
+
+function revealNext(){
+  for(var i=0;i<blanks.length;i++){
+    var el=document.getElementById('b'+i);
+    if(el&&el.classList.contains('hidden')){
+      el.textContent=blanks[i]; el.classList.remove('hidden'); el.classList.add('revealed');
+      revealedCount++; updateProgress();
+      if(revealedCount===totalBlanks) showScore();
+      return;
+    }
+  }
+}
+function revealAll(){
+  blanks.forEach(function(ans,i){
+    var el=document.getElementById('b'+i);
+    if(el&&el.classList.contains('hidden')){el.textContent=ans;el.classList.remove('hidden');el.classList.add('revealed');}
+  });
+  revealedCount=totalBlanks; updateProgress(); showScore();
+}
+function resetFill(){
+  blanks.forEach(function(ans,i){
+    var el=document.getElementById('b'+i);
+    if(el){el.textContent=ans;el.classList.add('hidden');el.classList.remove('revealed');}
+  });
+  revealedCount=0; updateProgress();
+  timerSec=0; document.getElementById('timerDisp').textContent='00:00';
+  document.getElementById('scoreBoard').style.display='none';
+  document.querySelectorAll('.word-chip').forEach(function(c){c.style.opacity='';c.style.pointerEvents='';});
+  activeBlank=null;
+}
+function updateProgress(){
+  var pct=Math.round(revealedCount/totalBlanks*100);
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('progressLabel').textContent=revealedCount+' / '+totalBlanks+' 正解';
+}
+function startTimer(){
+  timerStarted=true;
+  timerInterval=setInterval(function(){
+    timerSec++;
+    var m=Math.floor(timerSec/60);
+    var s=timerSec%60;
+    document.getElementById('timerDisp').textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  },1000);
+}
+function showScore(){
+  clearInterval(timerInterval);
+  var m=Math.floor(timerSec/60);
+  var s=timerSec%60;
+  document.getElementById('scoreTime').textContent=m+':'+(s<10?'0':'')+s;
+  document.getElementById('scoreCorrect').textContent=totalBlanks;
+  document.getElementById('scoreMiss').textContent=0;
+  var gb=document.getElementById('gradeBadge');
+  if(timerSec<90){gb.textContent='A';gb.className='grade-badge grade-A';launchConfetti(30);}
+  else if(timerSec<180){gb.textContent='B';gb.className='grade-badge grade-B';}
+  else{gb.textContent='C';gb.className='grade-badge grade-C';}
+  document.getElementById('scoreBoard').style.display='flex';
+}
+buildWordBank();
+
+// ===== 確認テスト =====
+var quizData=[
+  {q:'Na₂CO₃ を HCl で滴定するとき、第二段階の反応式はどれか？',
+   opts:['Na₂CO₃ ＋ HCl → NaHCO₃ ＋ NaCl','NaHCO₃ ＋ HCl → NaCl ＋ H₂O ＋ CO₂','Na₂CO₃ ＋ 2HCl → 2NaCl ＋ H₂O ＋ CO₂','NaOH ＋ HCl → NaCl ＋ H₂O'],
+   ans:1, exp:'第一段階：Na₂CO₃＋HCl→NaHCO₃＋NaCl。第二段階：NaHCO₃＋HCl→NaCl＋H₂O＋CO₂。第二段階で CO₂ が発生します。'},
+  {q:'0.10 mol/L Na₂CO₃ 水溶液 20 mL を 0.10 mol/L HCl で滴定した。第一中和点までに必要な HCl は何 mL か？',
+   opts:['10 mL','20 mL','30 mL','40 mL'],
+   ans:1, exp:'Na₂CO₃ 1価として反応（第一段階）。Na₂CO₃ の mol ＝ HCl の mol。0.10×20 ＝ 0.10×V → V＝20 mL。'},
+  {q:'NaOH ＋ Na₂CO₃ の混合溶液でフェノールフタレイン変色まで 25 mL、メチルオレンジ変色まで合計 35 mL 要した。Na₂CO₃ 第二段階に使った HCl は？',
+   opts:['10 mL','15 mL','25 mL','35 mL'],
+   ans:0, exp:'Na₂CO₃ 第二段階 ＝ 合計 − フェノールフタレイン変色まで ＝ 35 − 25 ＝ 10 mL。'},
+  {q:'上の問題で NaOH に使われた HCl は何 mL か？',
+   opts:['5 mL','10 mL','15 mL','25 mL'],
+   ans:2, exp:'Na₂CO₃ 第一段階も 10 mL。NaOH の分 ＝ フェノールフタレイン変色まで(25) − Na₂CO₃第一段階(10) ＝ 15 mL。'},
+  {q:'二段滴定で「第一段階と第二段階で使う HCl の量が等しい」のはどの場合か？',
+   opts:['NaOH のみの場合','NaOH ＋ Na₂CO₃ の混合の場合','Na₂CO₃ のみの場合','NaHCO₃ のみの場合'],
+   ans:2, exp:'Na₂CO₃ のみの場合、Na₂CO₃→NaHCO₃（第一段階）と NaHCO₃→CO₂（第二段階）で消費 HCl が等しくなります。'},
+  {q:'二段滴定で第一中和点にフェノールフタレインを使う理由はどれか？',
+   opts:['第一中和点が酸性側だから','第一中和点が pH≈8.3（塩基性側）にあり、フェノールフタレインの変色域（pH 8.2〜9.8）と一致するから','フェノールフタレインはメチルオレンジより安いから','PP は2色に変化するから'],
+   ans:1, exp:'第一中和点は NaHCO₃ の水溶液（弱塩基性）で pH≈8.3。フェノールフタレインの変色域 pH 8.2〜9.8 と一致するので適切です。'}
+];
+var quizState=quizData.map(function(){return{answered:false};});
+
+function buildQuiz(){
+  quizState=quizData.map(function(){return{answered:false};});
+  document.getElementById('quizContainer').innerHTML=quizData.map(function(q,qi){
+    return '<div class="quiz-card" id="qc'+qi+'">'
+      +'<div class="quiz-q">Q'+(qi+1)+'. '+q.q+'</div>'
+      +'<div class="quiz-opts">'
+      +q.opts.map(function(o,oi){return '<button class="quiz-opt" onclick="answerQuiz('+qi+','+oi+')">'+o+'</button>';}).join('')
+      +'</div><div class="quiz-feedback" id="qf'+qi+'"></div></div>';
+  }).join('');
+}
+
+function answerQuiz(qi,oi){
+  if(quizState[qi].answered) return;
+  quizState[qi].answered=true;
+  var q=quizData[qi];
+  var opts=document.querySelectorAll('#qc'+qi+' .quiz-opt');
+  var fb=document.getElementById('qf'+qi);
+  opts.forEach(function(o){o.disabled=true;});
+  if(oi===q.ans){
+    opts[oi].classList.add('correct');
+    fb.className='quiz-feedback show ok';
+    fb.innerHTML='✅ 正解！ '+q.exp;
+    launchConfetti(10);
+  } else {
+    opts[oi].classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    fb.className='quiz-feedback show ng';
+    fb.innerHTML='❌ 不正解。'+q.exp;
+  }
+}
+buildQuiz();
+
+function launchConfetti(n){
+  var colors=['#fbbf24','#34d399','#60a5fa','#f87171','#a78bfa','#fb923c'];
+  for(var i=0;i<n;i++){
+    var el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=Math.random()*100+'vw';
+    el.style.top='-20px';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.transform='rotate('+Math.random()*360+'deg)';
+    el.style.animationDelay=Math.random()*0.5+'s';
+    document.body.appendChild(el);
+    setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); },2000);
+  }
+}
+</script>
+
+</body></html>

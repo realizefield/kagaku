@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)file:///C:/Users/tinbu/Downloads/acid_base_ch5_v2_1.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMBA | 酸と塩基の定義</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --accent: #059669;
+    --accent2: #d97706;
+    --accent3: #7c3aed;
+    --danger: #dc2626;
+    --bg: #f0f4ff;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --yellow-hint: #fef9c3;
+    --blank-border: #fbbf24;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Hiragino Kaku Gothic ProN','Meiryo',sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  header { background: linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%); color: white; }
+  .header-top { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; border-bottom:1px solid rgba(255,255,255,0.15); }
+  .logo { font-size:1.5rem; font-weight:900; letter-spacing:2px; color:#fbbf24; }
+  .header-sub { font-size:0.75rem; opacity:0.8; }
+  .chapter-title-bar { padding:14px 20px; display:flex; align-items:center; gap:12px; }
+  .chapter-badge { background:#fbbf24; color:#1e3a8a; font-weight:900; font-size:0.75rem; padding:3px 10px; border-radius:20px; }
+  .chapter-title-text { font-size:1.1rem; font-weight:700; }
+
+  .tab-bar { display:flex; background:white; border-bottom:2px solid var(--border); overflow-x:auto; padding:0 16px; gap:4px; }
+  .tab-btn { padding:10px 16px; border:none; background:none; font-size:0.82rem; font-weight:600; color:var(--muted); cursor:pointer; border-bottom:3px solid transparent; white-space:nowrap; transition:all 0.2s; font-family:inherit; }
+  .tab-btn.active { color:var(--primary); border-bottom-color:var(--primary); }
+  .tab-btn:hover { color:var(--primary); }
+
+  main { max-width:860px; margin:0 auto; padding:20px 16px 60px; }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
+
+  .section-card { background:var(--card); border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.07); margin-bottom:20px; overflow:hidden; }
+  .section-header { padding:14px 20px; font-weight:800; font-size:0.95rem; display:flex; align-items:center; gap:8px; }
+  .sh-blue   { background:#eff6ff; border-left:4px solid var(--primary); color:#1e40af; }
+  .sh-green  { background:#ecfdf5; border-left:4px solid var(--accent); color:#065f46; }
+  .sh-amber  { background:#fffbeb; border-left:4px solid var(--accent2); color:#92400e; }
+  .sh-purple { background:#f5f3ff; border-left:4px solid var(--accent3); color:#4c1d95; }
+  .sh-red    { background:#fef2f2; border-left:4px solid var(--danger); color:#991b1b; }
+  .section-body { padding:18px 20px; }
+
+  .text-block { font-size:0.92rem; line-height:1.9; margin-bottom:12px; }
+  .text-block:last-child { margin-bottom:0; }
+
+  /* ===== BOXES ===== */
+  .key-box { background:#eff6ff; border:2px solid #93c5fd; border-radius:8px; padding:14px 16px; margin:12px 0; }
+  .key-box .box-label { font-weight:800; color:var(--primary); font-size:0.82rem; margin-bottom:6px; }
+  .important-box { background:#fef2f2; border:2px solid #fca5a5; border-radius:8px; padding:14px 16px; margin:12px 0; }
+  .important-box .box-label { font-weight:800; color:var(--danger); font-size:0.82rem; margin-bottom:6px; }
+  .green-box { background:#ecfdf5; border:2px solid #6ee7b7; border-radius:8px; padding:14px 16px; margin:12px 0; }
+  .green-box .box-label { font-weight:800; color:#065f46; font-size:0.82rem; margin-bottom:6px; }
+  .amber-box { background:#fffbeb; border:2px solid #fcd34d; border-radius:8px; padding:14px 16px; margin:12px 0; }
+  .amber-box .box-label { font-weight:800; color:#92400e; font-size:0.82rem; margin-bottom:6px; }
+  .purple-box { background:#f5f3ff; border:2px solid #c4b5fd; border-radius:8px; padding:14px 16px; margin:12px 0; }
+  .purple-box .box-label { font-weight:800; color:#4c1d95; font-size:0.82rem; margin-bottom:6px; }
+  .note-block { background:#f0fdf4; border-left:3px solid var(--accent); padding:8px 12px; border-radius:0 6px 6px 0; font-size:0.87rem; margin:8px 0; line-height:1.8; }
+  .warn-block { background:#fff7ed; border-left:3px solid var(--accent2); padding:8px 12px; border-radius:0 6px 6px 0; font-size:0.87rem; margin:8px 0; line-height:1.8; }
+
+  /* ===== TABLE ===== */
+  .chem-table { width:100%; border-collapse:collapse; font-size:0.87rem; margin:12px 0; }
+  .chem-table th { background:#1e40af; color:white; padding:8px 12px; text-align:center; font-weight:700; }
+  .chem-table td { padding:7px 12px; border:1px solid #dbeafe; text-align:center; }
+  .chem-table tr:nth-child(even) td { background:#f0f7ff; }
+
+  /* ===== FORMULA ===== */
+  .formula { font-family:'Courier New',monospace; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:10px 14px; font-size:0.88rem; margin:8px 0; line-height:2; }
+  .frac { display:inline-block; text-align:center; vertical-align:middle; font-size:0.85em; }
+  .frac > span { display:block; }
+  .frac .num { border-bottom:1.5px solid currentColor; padding:0 2px; }
+  .frac .den { padding:0 2px; }
+
+  /* ===== STORY PANELS (for "why" explanation) ===== */
+  .story-panel { display:flex; gap:12px; align-items:flex-start; margin:12px 0; flex-wrap:wrap; }
+  .story-bubble {
+    background:white; border:2px solid var(--border); border-radius:12px;
+    padding:10px 14px; font-size:0.87rem; line-height:1.8; flex:1; min-width:200px;
+    position:relative;
+  }
+  .story-bubble.question { border-color:#fbbf24; background:#fffbeb; }
+  .story-bubble.answer  { border-color:#34d399; background:#ecfdf5; }
+  .story-bubble.problem { border-color:#f87171; background:#fef2f2; }
+  .bubble-icon { font-size:1.5rem; margin-bottom:4px; }
+  .bubble-label { font-weight:800; font-size:0.78rem; margin-bottom:4px; }
+
+  /* ===== H⁺ TRANSFER DIAGRAM ===== */
+  .transfer-diagram {
+    display:flex; align-items:center; justify-content:center;
+    gap:8px; flex-wrap:wrap; margin:14px 0; font-size:0.9rem;
+  }
+  .mol-box {
+    border:2px solid var(--primary); border-radius:8px; padding:8px 14px;
+    text-align:center; background:white; font-weight:700; min-width:80px;
+  }
+  .mol-box.acid-mol   { border-color:#dc2626; background:#fff0f0; }
+  .mol-box.base-mol   { border-color:#059669; background:#f0fdf4; }
+  .mol-box.product    { border-color:#7c3aed; background:#f5f3ff; }
+  .mol-box.water-mol  { border-color:#0ea5e9; background:#f0f9ff; }
+  .mol-label { font-size:0.7rem; color:var(--muted); font-weight:400; }
+  .arrow-box { font-size:1.4rem; color:var(--primary); font-weight:900; }
+  .hplus-badge {
+    background:#dc2626; color:white; border-radius:50%;
+    width:28px; height:28px; display:inline-flex; align-items:center;
+    justify-content:center; font-weight:900; font-size:0.8rem;
+    vertical-align:middle; margin:0 4px;
+  }
+  .hplus-move {
+    display:flex; align-items:center; gap:6px; color:var(--danger);
+    font-weight:700; font-size:0.85rem; margin:4px 0;
+  }
+  .move-arrow { font-size:1.2rem; }
+
+  /* ===== COMPARISON TABLE ===== */
+  .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+  @media(max-width:600px){ .compare-grid { grid-template-columns:1fr; } }
+  .compare-card { border-radius:10px; padding:14px; }
+  .compare-card.old { background:#fef2f2; border:2px solid #fca5a5; }
+  .compare-card.new { background:#ecfdf5; border:2px solid #6ee7b7; }
+  .compare-title { font-weight:800; font-size:0.88rem; margin-bottom:8px; }
+
+  /* ===== FILL BLANK ===== */
+  .fill-text { font-size:0.92rem; line-height:2.4; }
+  .blank { display:inline-block; min-width:80px; padding:2px 8px; border-radius:4px; border-bottom:2px solid var(--blank-border); background:var(--yellow-hint); color:#92400e; font-weight:700; text-align:center; transition:all 0.3s; cursor:default; }
+  .blank.hidden { color:transparent; background:#e5e7eb; border-bottom-color:#9ca3af; }
+  .blank.revealed { background:#dcfce7; color:#166534; border-bottom-color:var(--accent); }
+  .challenge-bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:14px 0 8px; }
+  .btn { padding:7px 16px; border-radius:6px; border:none; font-weight:700; font-size:0.82rem; cursor:pointer; transition:all 0.18s; font-family:inherit; }
+  .btn-primary { background:var(--primary); color:white; }
+  .btn-primary:hover { background:var(--primary-dark); }
+  .btn-amber { background:var(--accent2); color:white; }
+  .btn-amber:hover { background:#b45309; }
+  .btn-gray { background:#94a3b8; color:white; }
+  .btn-gray:hover { background:#64748b; }
+  .word-bank { display:flex; flex-wrap:wrap; gap:6px; margin:10px 0; padding:10px 12px; background:#f1f5f9; border-radius:8px; font-size:0.85rem; min-height:38px; }
+  .word-bank.hidden { display:none; }
+  .word-chip { background:white; border:1.5px solid #cbd5e1; border-radius:4px; padding:2px 10px; font-weight:600; cursor:pointer; transition:all 0.15s; }
+  .word-chip:hover { background:#dbeafe; border-color:var(--primary); }
+  .progress-bar-wrap { background:#e2e8f0; border-radius:99px; height:7px; margin:8px 0 4px; overflow:hidden; }
+  .progress-bar-fill { height:100%; background:var(--accent); border-radius:99px; transition:width 0.4s; }
+  .progress-label { font-size:0.78rem; color:var(--muted); }
+  .timer-display { font-size:1.1rem; font-weight:800; color:var(--primary); font-variant-numeric:tabular-nums; }
+  .timer-row { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+  .score-board { background:linear-gradient(135deg,#1e3a8a,#2563eb); color:white; border-radius:10px; padding:14px 18px; margin-top:16px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+  .score-item { text-align:center; }
+  .score-num { font-size:1.6rem; font-weight:900; }
+  .score-sub { font-size:0.72rem; opacity:0.8; }
+  .grade-badge { font-size:2rem; font-weight:900; padding:6px 16px; border-radius:8px; margin-left:auto; }
+  .grade-A { background:#fbbf24; color:#1e3a8a; }
+  .grade-B { background:#60a5fa; color:white; }
+  .grade-C { background:#94a3b8; color:white; }
+
+  /* ===== QUIZ ===== */
+  .quiz-card { border:2px solid var(--border); border-radius:10px; padding:16px; margin:12px 0; }
+  .quiz-q { font-weight:700; font-size:0.9rem; margin-bottom:12px; line-height:1.7; }
+  .quiz-opts { display:flex; flex-direction:column; gap:8px; }
+  .quiz-opt { padding:9px 14px; border:2px solid var(--border); border-radius:7px; cursor:pointer; font-size:0.87rem; transition:all 0.15s; background:white; font-family:inherit; text-align:left; }
+  .quiz-opt:hover { border-color:var(--primary); background:#eff6ff; }
+  .quiz-opt.correct { background:#dcfce7; border-color:var(--accent); color:#166534; font-weight:700; }
+  .quiz-opt.wrong { background:#fef2f2; border-color:var(--danger); color:var(--danger); }
+  .quiz-feedback { margin-top:10px; padding:8px 12px; border-radius:6px; font-size:0.85rem; display:none; font-weight:600; line-height:1.7; }
+  .quiz-feedback.show { display:block; }
+  .quiz-feedback.ok { background:#dcfce7; color:#166534; }
+  .quiz-feedback.ng { background:#fef2f2; color:var(--danger); }
+
+  .confetti-piece { position:fixed; width:10px; height:10px; border-radius:2px; animation:confettiFall 1.5s ease-out forwards; pointer-events:none; z-index:9999; }
+  @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(80vh) rotate(720deg);opacity:0} }
+
+  /* ion colors */
+  .ion-h  { color:#dc2626; font-weight:800; }
+  .ion-oh { color:#059669; font-weight:800; }
+  .hl-red { background:#fee2e2; border-radius:3px; padding:1px 4px; }
+  .hl-green { background:#d1fae5; border-radius:3px; padding:1px 4px; }
+  .hl-blue { background:#dbeafe; border-radius:3px; padding:1px 4px; }
+
+  /* deep dive toggle */
+  .deep-toggle:hover { opacity:0.9; }
+  .deep-toggle.open .deep-arrow { transform:rotate(180deg); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo">GAMBA</div>
+    <div class="header-sub">江原予備校 化学</div>
+  </div>
+  <div class="chapter-title-bar">
+    <span class="chapter-badge">Chapter 5</span>
+    <span class="chapter-title-text">酸と塩基の定義 ― アレニウス ＆ ブレンステッド・ローリー</span>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(&#39;learn&#39;,&#39;learn-btn&#39;)">📖 学習</button>
+  <button class="tab-btn" onclick="showTab(&#39;fill&#39;,&#39;fill-btn&#39;)">✏️ 穴埋め</button>
+  <button class="tab-btn" onclick="showTab(&#39;quiz&#39;,&#39;quiz-btn&#39;)">🧪 確認テスト</button>
+</div>
+
+<main>
+
+<!-- ========== LEARN ========== -->
+<div id="tab-learn" class="tab-content active">
+
+  <!-- 0. 導入 -->
+  <div class="section-card">
+    <div class="section-header sh-blue">🤔 そもそも「酸」「塩基」って何？</div>
+    <div class="section-body">
+      <div class="text-block">
+        レモンが酸っぱいのは「酸」だから。石けんがぬるぬるするのは「塩基性」だから。<br>
+        でも「酸」「塩基」を化学的に<strong>どう定義するか</strong>は、実は何度もアップデートされてきました。
+      </div>
+      <div class="amber-box">
+        <div class="box-label">📜 定義の歴史</div>
+        <div style="line-height:2.3;font-size:0.9rem">
+          <span style="color:#92400e;font-weight:800">1884年</span>　アレニウス（スウェーデン）が最初の定義を提唱<br>
+          <span style="color:#92400e;font-weight:800">1923年</span>　ブレンステッドとローリーがより広い定義を提唱<br>
+          → どちらも「正解」。場面によって使い分けます。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. 酸の性質 -->
+  <div class="section-card">
+    <div class="section-header sh-red">🍋 1. 酸の性質と H⁺</div>
+    <div class="section-body">
+      <div class="text-block">
+        酸の正体は <span class="ion-h">水素イオン H⁺</span> です。これが酸の性質を示す原因です。
+      </div>
+      <div class="key-box">
+        <div class="box-label">💧 水溶液中のH⁺の正体</div>
+        <div style="font-size:0.9rem;line-height:2">
+          H⁺ は実は非常に不安定なので、水 H₂O と結合して<strong>オキソニウムイオン H₃O⁺</strong> になります。<br>
+          <div class="formula">H⁺ ＋ H₂O <span style="color:var(--primary);font-weight:700">→</span> <span class="ion-h">H₃O⁺</span>　（省略して H⁺ と表す）</div>
+        </div>
+      </div>
+      <div class="text-block" style="margin-top:12px">酸の水溶液の性質：</div>
+      <table class="chem-table">
+        <tbody><tr><th>性質</th><th>説明</th></tr>
+        <tr><td>酸味がある</td><td>レモン・酢など</td></tr>
+        <tr><td>リトマス紙</td><td><span class="hl-blue">青色</span> → <span class="hl-red">赤色</span> に変える</td></tr>
+        <tr><td>金属と反応</td><td>水素ガスを発生する（例：Zn ＋ HCl）</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- 2. 塩基の性質 -->
+  <div class="section-card">
+    <div class="section-header sh-green">🧼 2. 塩基の性質と OH⁻</div>
+    <div class="section-body">
+      <div class="text-block">
+        塩基の正体は <span class="ion-oh">水酸化物イオン OH⁻</span> です。
+      </div>
+      <div class="key-box">
+        <div class="box-label">📌 塩基とアルカリの違い</div>
+        <div style="font-size:0.9rem;line-height:2.2">
+          ・酸の性質を打ち消すものを <strong>塩基</strong> という<br>
+          ・塩基のうち、水に溶けやすいものを <strong>アルカリ</strong> という<br>
+          　→ アルカリ ⊂ 塩基　（アルカリは塩基の一部）
+        </div>
+      </div>
+      <div class="text-block" style="margin-top:12px">塩基の水溶液の性質：</div>
+      <table class="chem-table">
+        <tbody><tr><th>性質</th><th>説明</th></tr>
+        <tr><td>苦味がある</td><td>重曹（NaHCO₃）の苦み</td></tr>
+        <tr><td>リトマス紙</td><td><span class="hl-red">赤色</span> → <span class="hl-blue">青色</span> に変える</td></tr>
+        <tr><td>手がぬるぬる</td><td>皮膚の脂肪を分解するため</td></tr>
+      </tbody></table>
+      <div class="formula" style="margin-top:10px">
+        【例】NaOH → Na⁺ ＋ <span class="ion-oh">OH⁻</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 重要イオン表 -->
+  <div class="section-card">
+    <div class="section-header sh-amber">📋 重要イオン一覧（暗記）</div>
+    <div class="section-body">
+      <table class="chem-table">
+        <thead><tr><th>イオン式</th><th>名称</th><th>イオン式</th><th>名称</th></tr></thead>
+        <tbody>
+          <tr><td>OH⁻</td><td>水酸化物イオン</td><td>NO₃⁻</td><td>硝酸イオン</td></tr>
+          <tr><td>Cl⁻</td><td>塩化物イオン</td><td>SO₄²⁻</td><td>硫酸イオン</td></tr>
+          <tr><td>F⁻</td><td>フッ化物イオン</td><td>CO₃²⁻</td><td>炭酸イオン</td></tr>
+          <tr><td>Br⁻</td><td>臭化物イオン</td><td>PO₄³⁻</td><td>リン酸イオン</td></tr>
+          <tr><td>I⁻</td><td>ヨウ化物イオン</td><td>NH₄⁺</td><td>アンモニウムイオン</td></tr>
+          <tr><td>CH₃COO⁻</td><td>酢酸イオン</td><td>H₃O⁺</td><td>オキソニウムイオン</td></tr>
+        </tbody>
+      </table>
+      <div class="note-block">💡 単原子の陰イオンは「〇〇<strong>化物</strong>」イオン。（Cl⁻ 塩化物、F⁻ フッ化物、S²⁻ 硫化物）</div>
+
+      <!-- ===== 暗記プログラム（フラッシュカード式） ===== -->
+      <div style="margin-top:18px;border:3px solid #f59e0b;border-radius:14px;overflow:hidden">
+        <div style="background:linear-gradient(135deg,#d97706,#f59e0b);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+          <div style="color:white;font-weight:800;font-size:0.95rem">📝 暗記トレーニング</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button onclick="fcSetMode(&#39;formula&#39;)" id="modeFormula" style="padding:5px 12px;border-radius:20px;border:2px solid white;background:white;color:#d97706;font-weight:800;font-size:0.78rem;cursor:pointer;font-family:inherit">式 → 名称</button>
+            <button onclick="fcSetMode(&#39;name&#39;)" id="modeName" style="padding:5px 12px;border-radius:20px;border:2px solid white;background:transparent;color:white;font-weight:800;font-size:0.78rem;cursor:pointer;font-family:inherit">名称 → 式</button>
+            <button onclick="fcSetMode(&#39;both&#39;)" id="modeBoth" style="padding:5px 12px;border-radius:20px;border:2px solid white;background:transparent;color:white;font-weight:800;font-size:0.78rem;cursor:pointer;font-family:inherit">ランダム</button>
+          </div>
+        </div>
+        <div style="background:#fffbeb;padding:16px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="flex:1;background:#e2e8f0;border-radius:99px;height:8px;overflow:hidden">
+              <div id="fcProgressBar" style="height:100%;background:#f59e0b;border-radius:99px;transition:width 0.3s;width:0%"></div>
+            </div>
+            <div id="fcProgressLabel" style="font-size:0.82rem;font-weight:800;color:#92400e;white-space:nowrap">1 / 12</div>
+          </div>
+          <div id="fcCard" onclick="fcReveal()" style="background:white;border:2px solid #fde68a;border-radius:12px;min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)">
+            <div id="fcQuestion" style="display: block;">
+              <div id="fcQLabel" style="font-size:0.72rem;font-weight:800;color:#d97706;background:#fff7ed;border-radius:4px;padding:2px 10px;margin-bottom:10px;display:inline-block">イオン式</div>
+              <div id="fcQText" style="font-size:1.6rem;font-weight:800;font-family:&#39;Courier New&#39;,monospace;color:#1e293b">OH⁻</div>
+              <div style="font-size:0.78rem;color:#94a3b8;margin-top:10px">タップして答えを見る</div>
+            </div>
+            <div id="fcAnswer" style="display:none;width:100%">
+              <div id="fcQLabel2" style="font-size:0.72rem;font-weight:800;color:#d97706;background:#fff7ed;border-radius:4px;padding:2px 10px;margin-bottom:6px;display:inline-block">イオン式</div>
+              <div id="fcQText2" style="font-size:1.3rem;font-weight:800;font-family:&#39;Courier New&#39;,monospace;color:#64748b;margin-bottom:10px">OH⁻</div>
+              <div style="border-top:2px dashed #fde68a;margin:8px 0"></div>
+              <div id="fcALabel" style="font-size:0.72rem;font-weight:800;color:#059669;background:#ecfdf5;border-radius:4px;padding:2px 10px;margin-bottom:8px;display:inline-block">名称</div>
+              <div id="fcAText" style="font-size:1.5rem;font-weight:800;color:#065f46">水酸化物イオン</div>
+            </div>
+          </div>
+          <div id="fcNextArea" style="display:none;margin-top:12px;text-align:center">
+            <button onclick="fcNext()" style="padding:10px 28px;background:#2563eb;color:white;border:none;border-radius:8px;font-weight:800;font-size:0.9rem;cursor:pointer;font-family:inherit">次の問題 →</button>
+          </div>
+          <div id="fcDone" style="display:none;text-align:center;padding:20px">
+            <div style="font-size:2rem;margin-bottom:8px">🎉</div>
+            <div style="font-weight:800;font-size:1rem;color:#065f46;margin-bottom:4px">全問終了しました！</div>
+            <div style="font-size:0.85rem;color:#64748b;margin-bottom:14px">もう一度練習しますか？</div>
+            <button onclick="fcRestart()" style="padding:8px 24px;background:#f59e0b;color:white;border:none;border-radius:8px;font-weight:800;font-size:0.88rem;cursor:pointer;font-family:inherit">もう一度</button>
+          </div>
+        </div>
+      </div>
+      <!-- ===== /暗記プログラム ===== -->
+
+    </div>
+  </div>
+
+  <!-- 4. アレニウスの定義 -->
+  <div class="section-card">
+    <div class="section-header sh-blue">🇸🇪 3. アレニウスの定義</div>
+    <div class="section-body">
+      <div class="important-box">
+        <div class="box-label">📌 アレニウスの定義（1884年）</div>
+        <div style="font-size:1rem;line-height:2.5;font-weight:700;text-align:center">
+          酸　＝ 水溶液中で電離して <span class="ion-h">H⁺</span> を生じる物質<br>
+          塩基 ＝ 水溶液中で電離して <span class="ion-oh">OH⁻</span> を生じる物質
+        </div>
+      </div>
+      <div class="text-block" style="margin-top:12px">具体的な電離式：</div>
+      <div class="formula">
+        <span style="color:var(--danger)">【酸】</span><br>
+        HCl → <span class="ion-h">H⁺</span> ＋ Cl⁻　（塩酸）<br>
+        H₂SO₄ → 2<span class="ion-h">H⁺</span> ＋ SO₄²⁻　（硫酸）<br>
+        CH₃COOH ⇌ <span class="ion-h">H⁺</span> ＋ CH₃COO⁻　（酢酸：弱酸なので ⇌）
+      </div>
+      <div class="formula" style="margin-top:6px">
+        <span style="color:var(--accent)">【塩基】</span><br>
+        NaOH → Na⁺ ＋ <span class="ion-oh">OH⁻</span>　（水酸化ナトリウム）<br>
+        Ca(OH)₂ → Ca²⁺ ＋ 2<span class="ion-oh">OH⁻</span>　（水酸化カルシウム）
+      </div>
+
+      <div style="margin-top:16px">
+        <div style="font-weight:800;font-size:0.9rem;margin-bottom:8px;color:var(--danger)">⚠️ アレニウスの定義の「限界」</div>
+        <div class="story-panel">
+          <div class="story-bubble problem">
+            <div class="bubble-icon">🤔</div>
+            <div class="bubble-label">困った問題</div>
+            アンモニア <strong>NH₃</strong> を水に溶かすと塩基性になる。<br>
+            でも NH₃ の中に <span class="ion-oh">OH⁻</span> はない！<br>
+            → アレニウスの定義では説明できない…
+          </div>
+          <div class="story-bubble question">
+            <div class="bubble-icon">🧐</div>
+            <div class="bubble-label">実際の反応</div>
+            NH₃ ＋ H₂O ⇌ NH₄⁺ ＋ <span class="ion-oh">OH⁻</span><br><br>
+            確かに OH⁻ は出てくる！でも、NH₃ 自身には OH がない。なぜ？
+          </div>
+        </div>
+        <div class="note-block" style="margin-top:8px">
+          💡 アレニウスの定義は「水溶液」だけに限定されており、気体や固体の反応を説明できません。そこでより広い定義が必要になりました。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ブレンステッド・ローリー -->
+  <div class="section-card">
+    <div class="section-header sh-purple">🔬 4. ブレンステッド・ローリーの定義 ― なぜ必要？</div>
+    <div class="section-body">
+
+      <!-- なぜ必要かのストーリー -->
+      <div class="amber-box">
+        <div class="box-label">📌 ブレンステッドとローリーが考えたこと（1923年）</div>
+        <div style="font-size:0.92rem;line-height:2">
+          「酸・塩基の本質は <strong>H⁺（水素イオン）のやり取り</strong> なのではないか？」<br>
+          H⁺ を <span style="color:var(--danger)">渡す</span>のが酸、H⁺ を <span style="color:var(--accent)">受け取る</span>のが塩基。<br>
+          これなら NH₃ も説明できるようになります。
+        </div>
+      </div>
+
+      <!-- ===== 深掘りコラム ===== -->
+      <div style="margin-top:14px">
+        <button class="deep-toggle" onclick="toggleDeep(this)" style="
+          width:100%; background:linear-gradient(135deg,#1e1b4b,#4c1d95);
+          color:white; border:none; border-radius:10px; padding:12px 18px;
+          font-family:inherit; font-size:0.88rem; font-weight:800; cursor:pointer;
+          display:flex; align-items:center; gap:10px; text-align:left;
+        ">
+          <span style="font-size:1.3rem">🔬</span>
+          <span style="flex:1">深掘りコラム：なぜ H⁺ は「移動」できるのか？― 電気陰性度との関係</span>
+          <span class="deep-arrow" style="font-size:1.1rem;transition:transform 0.3s">▼</span>
+        </button>
+
+        <div class="deep-content" style="display:none; background:#faf5ff; border:2px solid #c4b5fd; border-top:none; border-radius:0 0 10px 10px; padding:18px 20px;">
+
+          <div style="font-size:0.9rem;line-height:1.9;margin-bottom:12px">
+            「H⁺ が渡される」と言うけれど、なぜそんなことが起きるの？<br>
+            ヒントは <strong>電気陰性度（電子を引き寄せる力）</strong> にあります。
+          </div>
+
+          <!-- 電気陰性度の図 -->
+          <div style="background:white;border-radius:10px;padding:14px;margin:10px 0;border:1px solid #e9d5ff">
+            <div style="font-weight:800;font-size:0.85rem;color:#4c1d95;margin-bottom:10px;text-align:center">
+              電気陰性度の大小（大きいほど電子を強く引き寄せる）
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:0;margin:8px 0;font-size:0.85rem;flex-wrap:wrap">
+              <div style="background:#fee2e2;border:2px solid #dc2626;border-radius:8px;padding:8px 14px;text-align:center;min-width:80px">
+                <div style="font-weight:900;color:#dc2626">H</div>
+                <div style="font-size:0.78rem">約 2.1</div>
+                <div style="font-size:0.72rem;color:var(--muted)">小さい</div>
+              </div>
+              <div style="padding:0 8px;font-size:1.2rem;color:var(--muted)">≪</div>
+              <div style="background:#dbeafe;border:2px solid #2563eb;border-radius:8px;padding:8px 14px;text-align:center;min-width:80px">
+                <div style="font-weight:900;color:#2563eb">N</div>
+                <div style="font-size:0.78rem">約 3.0</div>
+              </div>
+              <div style="padding:0 8px;font-size:1.2rem;color:var(--muted)">&lt;</div>
+              <div style="background:#dcfce7;border:2px solid #059669;border-radius:8px;padding:8px 14px;text-align:center;min-width:80px">
+                <div style="font-weight:900;color:#059669">O</div>
+                <div style="font-size:0.78rem">約 3.4</div>
+                <div style="font-size:0.72rem;color:var(--muted)">大きい</div>
+              </div>
+              <div style="padding:0 8px;font-size:1.2rem;color:var(--muted)">&lt;</div>
+              <div style="background:#fef3c7;border:2px solid #f59e0b;border-radius:8px;padding:8px 14px;text-align:center;min-width:80px">
+                <div style="font-weight:900;color:#b45309">F</div>
+                <div style="font-size:0.78rem">約 4.0</div>
+                <div style="font-size:0.72rem;color:var(--muted)">最大</div>
+              </div>
+            </div>
+            <div style="font-size:0.82rem;color:var(--muted);text-align:center;margin-top:6px">
+              H は電気陰性度が小さい → 結合相手の O や N に電子を引き寄せられやすい
+            </div>
+          </div>
+
+          <!-- H₂O の中のHの状態 -->
+          <div style="margin:14px 0;font-weight:800;font-size:0.88rem;color:#1e40af">
+            ① H₂O の中の H は、なぜ「出やすい」のか？
+          </div>
+          <div style="background:#f0f9ff;border-radius:8px;padding:12px 14px;font-size:0.87rem;line-height:2;border:1px solid #bae6fd">
+            H₂O では、O（電気陰性度 大）が H（電気陰性度 小）との結合電子を<strong>強く引き寄せています</strong>。<br>
+            そのため H は「電子をほぼ持っていない」 <strong>δ⁺（部分的に正）</strong> の状態になっています。<br>
+            → H⁺ として抜けやすい状態になっています。
+            <div style="text-align:center;margin-top:10px;font-size:0.95rem;font-weight:800">
+              <span style="color:#059669">O</span>
+              <span style="font-size:0.75rem;vertical-align:super;color:#dc2626">δ⁻</span>
+              ─── H
+              <span style="font-size:0.75rem;vertical-align:super;color:#dc2626">δ⁺</span>
+              　→　H⁺ として離れやすい
+            </div>
+          </div>
+
+          <!-- NH₃ の孤立電子対 -->
+          <div style="margin:14px 0;font-weight:800;font-size:0.88rem;color:#065f46">
+            ② NH₃ が H⁺ を「引き寄せる」のはなぜ？
+          </div>
+          <div style="background:#ecfdf5;border-radius:8px;padding:12px 14px;font-size:0.87rem;line-height:2;border:1px solid #6ee7b7">
+            NH₃ の N 原子には <strong>孤立電子対（非共有電子対）</strong> があります。<br>
+            この電子対が、δ⁺ になっている H⁺ を<strong>引き寄せる</strong>ことができます。<br>
+            → これが「H⁺ を受け取る」＝ 塩基としてはたらく仕組みです。
+            <div style="text-align:center;margin-top:10px;font-size:0.92rem;font-weight:800">
+              <span style="color:#2563eb">N</span>（孤立電子対 :）　＋　H
+              <span style="font-size:0.75rem;vertical-align:super;color:#dc2626">δ⁺</span>
+              　→　<span style="color:#2563eb">N</span>─H（結合）
+            </div>
+          </div>
+
+          <!-- まとめ -->
+          <div style="background:linear-gradient(135deg,#1e1b4b,#4c1d95);color:white;border-radius:8px;padding:14px;margin-top:14px;font-size:0.87rem;line-height:2">
+            <div style="font-weight:800;margin-bottom:6px">🔑 まとめると…</div>
+            <div>
+              ・H は電気陰性度が小さく、O や N と結合すると電子を奪われて <strong>H⁺ として「出やすく」</strong> なる<br>
+              ・N や O の <strong>孤立電子対</strong> が H⁺ を引き寄せる（受け取る）力を持つ<br>
+              ・だから H⁺ は「渡す側（酸）」から「受け取る側（塩基）」へ移動できるわけです。<br><br>
+              <span style="color:#fbbf24">酸化還元との共通点：</span>電子の引き寄せ合い（電気陰性度）が反応を生む、という本質は同じです。
+            </div>
+          </div>
+
+          <div style="margin-top:10px;font-size:0.8rem;color:var(--muted);text-align:center">
+            ※ このレベルは大学化学の入り口です。入試では「H⁺のやりとり」を覚えれば十分です。
+          </div>
+
+        </div>
+      </div>
+      <!-- ===== /深掘りコラム ===== -->
+
+      <div class="important-box" style="margin-top:14px">
+        <div class="box-label">📌 ブレンステッド・ローリーの定義（重要）</div>
+        <div style="font-size:1rem;line-height:2.5;font-weight:700;text-align:center">
+          酸　＝ <span class="ion-h">H⁺</span> を <span style="color:var(--danger)">与える</span> 物質<br>
+          塩基 ＝ <span class="ion-h">H⁺</span> を <span style="color:var(--accent)">受け取る</span> 物質
+        </div>
+      </div>
+
+      <!-- NH₃の説明 -->
+      <div style="margin-top:18px;font-weight:800;font-size:0.9rem;color:#4c1d95;margin-bottom:10px">
+        💡 NH₃ が塩基になれる理由を見てみよう
+      </div>
+
+      <div class="purple-box">
+        <div class="box-label">反応式：NH₃ ＋ H₂O ⇌ NH₄⁺ ＋ OH⁻</div>
+        <div style="font-size:0.9rem;line-height:2">
+          ここで何が起きているかというと…
+        </div>
+      </div>
+
+      <!-- H⁺ 移動の図解 -->
+      <div style="background:#f8fafc;border:2px solid #c4b5fd;border-radius:12px;padding:16px;margin:12px 0">
+        <div style="font-weight:800;font-size:0.85rem;color:#4c1d95;margin-bottom:12px;text-align:center">
+          H⁺ が H₂O から NH₃ へ移動している！
+        </div>
+        <div class="transfer-diagram">
+          <div>
+            <div class="mol-box water-mol">H₂O<div class="mol-label">H⁺を渡す→酸</div></div>
+          </div>
+          <div style="text-align:center">
+            <div class="hplus-move">
+              <span class="hplus-badge">H⁺</span>
+              <span class="move-arrow">→</span>
+              <span style="font-size:0.8rem">移動！</span>
+            </div>
+            <div style="font-size:0.75rem;color:var(--muted)">ブレンステッド酸</div>
+          </div>
+          <div>
+            <div class="mol-box base-mol">NH₃<div class="mol-label">H⁺を受取る→塩基</div></div>
+          </div>
+        </div>
+        <div style="border-top:1px solid #e9d5ff;margin:12px 0;padding-top:12px">
+          <div class="transfer-diagram">
+            <div>
+              <div class="mol-box product">OH⁻<div class="mol-label">H⁺ を失った水</div></div>
+            </div>
+            <div style="font-size:1.2rem;color:var(--muted)">＋</div>
+            <div>
+              <div class="mol-box product">NH₄⁺<div class="mol-label">H⁺ を受け取ったNH₃</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="note-block" style="margin-top:8px">
+          ✅ NH₃ に OH がなくても大丈夫です。H₂O から H⁺ をもらうことで OH⁻ が生まれ、塩基性になります。
+        </div>
+      </div>
+
+      <!-- 酢酸の例 -->
+      <div style="margin-top:16px;font-weight:800;font-size:0.9rem;color:#92400e;margin-bottom:10px">
+        もう一つの例：CH₃COOH ＋ H₂O ⇌ CH₃COO⁻ ＋ H₃O⁺
+      </div>
+      <div style="background:#fffbeb;border:2px solid #fcd34d;border-radius:12px;padding:16px;margin:12px 0">
+        <div class="transfer-diagram">
+          <div>
+            <div class="mol-box acid-mol">CH₃COOH<div class="mol-label">H⁺を渡す→酸</div></div>
+          </div>
+          <div style="text-align:center">
+            <div class="hplus-move">
+              <span class="hplus-badge">H⁺</span>
+              <span class="move-arrow">→</span>
+            </div>
+          </div>
+          <div>
+            <div class="mol-box water-mol">H₂O<div class="mol-label">H⁺を受取る→塩基</div></div>
+          </div>
+        </div>
+        <div class="note-block" style="margin-top:10px">
+          💡 同じ水（H₂O）が、NH₃ の反応では <strong>酸</strong>、CH₃COOH の反応では <strong>塩基</strong> としてはたらきます！<br>
+          これがブレンステッド・ローリー定義の面白いところです。
+        </div>
+      </div>
+
+      <!-- 2つの定義の比較 -->
+      <div style="margin-top:18px;font-weight:800;font-size:0.9rem;margin-bottom:10px">📊 2つの定義の比較</div>
+      <div class="compare-grid">
+        <div class="compare-card old">
+          <div class="compare-title">🇸🇪 アレニウスの定義</div>
+          <div style="font-size:0.85rem;line-height:2">
+            酸 → <span class="ion-h">H⁺</span> を出す<br>
+            塩基 → <span class="ion-oh">OH⁻</span> を出す<br>
+            <span style="color:var(--danger)">✗ 水溶液に限定</span><br>
+            <span style="color:var(--danger)">✗ NH₃ を説明できない</span>
+          </div>
+        </div>
+        <div class="compare-card new">
+          <div class="compare-title">🔬 ブレンステッド・ローリーの定義</div>
+          <div style="font-size:0.85rem;line-height:2">
+            酸 → <span class="ion-h">H⁺</span> を<strong>渡す</strong><br>
+            塩基 → <span class="ion-h">H⁺</span> を<strong>受け取る</strong><br>
+            <span style="color:var(--accent)">✓ 水溶液以外でも使える</span><br>
+            <span style="color:var(--accent)">✓ NH₃ も説明できます！</span>
+          </div>
+        </div>
+      </div>
+      <div class="warn-block" style="margin-top:8px">
+        ⚡ 「アレニウスで酸・塩基になるものは、ブレンステッド・ローリーでも酸・塩基になる」（より広い定義に包まれている関係）
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. ブレンステッド例題 -->
+  <div class="section-card">
+    <div class="section-header sh-purple">✏️ 5. ブレンステッド・ローリーの例題</div>
+    <div class="section-body">
+      <div class="text-block" style="font-weight:700">
+        次の下線部の物質は酸か？塩基か？（H⁺を渡す側か受け取る側か？を考える）
+      </div>
+
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin:10px 0;font-size:0.88rem">
+        <div style="font-weight:800;margin-bottom:8px">ア） <u>CH₃COOH</u> ＋ H₂O ⇌ CH₃COO⁻ ＋ H₃O⁺</div>
+        <div style="background:#fee2e2;border-radius:6px;padding:8px 12px;line-height:2">
+          CH₃COOH は H⁺ を H₂O に <strong>渡している</strong><br>
+          → <span style="color:var(--danger);font-weight:800">酸</span>　（CH₃COOH → CH₃COO⁻ ＋ H⁺）
+        </div>
+        <div style="font-weight:800;margin:12px 0 8px">イ） CH₃COOH ＋ <u>H₂O</u> ⇌ CH₃COO⁻ ＋ H₃O⁺</div>
+        <div style="background:#dcfce7;border-radius:6px;padding:8px 12px;line-height:2">
+          H₂O は H⁺ を CH₃COOH から <strong>受け取っている</strong>（H₃O⁺ になる）<br>
+          → <span style="color:var(--accent);font-weight:800">塩基</span>
+        </div>
+      </div>
+
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin:10px 0;font-size:0.88rem">
+        <div style="font-weight:800;margin-bottom:8px">ウ） <u>NH₃</u> ＋ H₂O ⇌ NH₄⁺ ＋ OH⁻</div>
+        <div style="background:#dcfce7;border-radius:6px;padding:8px 12px;line-height:2">
+          NH₃ は H⁺ を H₂O から <strong>受け取っている</strong>（NH₄⁺ になる）<br>
+          → <span style="color:var(--accent);font-weight:800">塩基</span>
+        </div>
+        <div style="font-weight:800;margin:12px 0 8px">エ） NH₃ ＋ <u>H₂O</u> ⇌ NH₄⁺ ＋ OH⁻</div>
+        <div style="background:#fee2e2;border-radius:6px;padding:8px 12px;line-height:2">
+          H₂O は H⁺ を NH₃ に <strong>渡している</strong>（OH⁻ になる）<br>
+          → <span style="color:var(--danger);font-weight:800">酸</span>
+        </div>
+      </div>
+
+      <div class="warn-block">
+        ⚡ H₂O は相手によって「酸」にも「塩基」にもなれます。これを<strong>両性物質</strong>といいます。
+      </div>
+
+      <!-- 深掘りコラム -->
+      <div style="margin-top:16px">
+        <button onclick="toggleColumn()" id="colBtn" style="width:100%;padding:12px 16px;background:linear-gradient(135deg,#4c1d95,#7c3aed);color:white;border:none;border-radius:10px;font-weight:800;font-size:0.9rem;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:space-between;">
+          <span>🔬 深掘りコラム：なぜ H⁺ が移動できるの？― 電気陰性度との関係</span>
+          <span id="colArrow" style="font-size:1.2rem;transition:transform 0.3s">▼</span>
+        </button>
+        <div id="colBody" style="display:none;background:#faf5ff;border:2px solid #c4b5fd;border-radius:0 0 10px 10px;padding:18px 20px;font-size:0.9rem;line-height:1.9">
+
+          <div style="color:#4c1d95;font-weight:800;margin-bottom:10px">
+            💡 酸化還元で学んだ「電気陰性度」を思い出してください
+          </div>
+
+          <div style="background:white;border-radius:8px;padding:12px 16px;margin-bottom:12px;border:1px solid #e9d5ff">
+            <div style="font-weight:800;font-size:0.85rem;color:#6d28d9;margin-bottom:8px">電気陰性度とは？</div>
+            <div>原子が電子を引き寄せる力の強さのことです。</div>
+            <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+              <div style="background:#fef2f2;border:2px solid #fca5a5;border-radius:6px;padding:6px 12px;text-align:center">
+                <div style="font-weight:800;color:#dc2626">H（水素）</div>
+                <div style="font-size:0.82rem">電気陰性度 2.1</div>
+                <div style="font-size:0.75rem;color:var(--muted)">比較的小さい</div>
+              </div>
+              <div style="font-size:1.3rem;color:var(--muted)">＜</div>
+              <div style="background:#fff7ed;border:2px solid #fcd34d;border-radius:6px;padding:6px 12px;text-align:center">
+                <div style="font-weight:800;color:#d97706">N（窒素）</div>
+                <div style="font-size:0.82rem">電気陰性度 3.0</div>
+                <div style="font-size:0.75rem;color:var(--muted)">大きい</div>
+              </div>
+              <div style="font-size:1.3rem;color:var(--muted)">＜</div>
+              <div style="background:#eff6ff;border:2px solid #93c5fd;border-radius:6px;padding:6px 12px;text-align:center">
+                <div style="font-weight:800;color:#2563eb">O（酸素）</div>
+                <div style="font-size:0.82rem">電気陰性度 3.4</div>
+                <div style="font-size:0.75rem;color:var(--muted)">とても大きい</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-weight:800;font-size:0.87rem;color:#4c1d95;margin-bottom:8px">
+            ① H₂O の中の H が「δ⁺」になっている理由
+          </div>
+          <div style="background:white;border-radius:8px;padding:12px 16px;margin-bottom:12px;border:1px solid #e9d5ff;line-height:2">
+            O は電気陰性度がとても大きいので、H−O 結合の電子を自分の方に引き寄せてしまいます。<br>
+            その結果、H は電子を引っ張られて <strong style="color:#dc2626">δ⁺（部分的に正の電荷）</strong> を帯びた状態になります。<br><br>
+            <div style="text-align:center;font-size:1.1rem;margin:8px 0">
+              <span style="color:#dc2626;font-weight:800">δ⁺</span>H ―
+              <span style="color:#2563eb;font-weight:800">δ⁻</span>O
+              <span style="font-size:0.8rem;color:var(--muted);margin-left:8px">← 電子が O 側に偏っています</span>
+            </div>
+            つまり H₂O の H は「引っ張られやすい（＝渡しやすい）状態」になっているわけです。<br>
+            これが H₂O が <strong>H⁺ を渡す側 ＝ 酸</strong> としてはたらける理由です。
+          </div>
+
+          <div style="font-weight:800;font-size:0.87rem;color:#4c1d95;margin-bottom:8px">
+            ② NH₃ が H⁺ を「受け取れる」理由
+          </div>
+          <div style="background:white;border-radius:8px;padding:12px 16px;margin-bottom:12px;border:1px solid #e9d5ff;line-height:2">
+            NH₃ の N には <strong style="color:#059669">孤立電子対（非共有電子対）</strong> があります。<br>
+            この孤立電子対が、H⁺（陽子だけで電子を持っていない）を引き寄せることができます。<br><br>
+            <div style="text-align:center;font-size:1rem;margin:8px 0">
+              <span style="color:#059669;font-weight:800">:N</span>H₃
+              <span style="font-size:0.8rem;color:var(--muted);margin-left:8px">← : が孤立電子対をあらわしています</span>
+            </div>
+            H⁺ は陽子だけ（電子がない）なので、電子を持っている孤立電子対に引き寄せられます。<br>
+            これが NH₃ が <strong>H⁺ を受け取る側 ＝ 塩基</strong> としてはたらける理由です。
+          </div>
+
+          <div style="font-weight:800;font-size:0.87rem;color:#4c1d95;margin-bottom:8px">
+            ③ まとめ：H⁺ が移動する「動き」
+          </div>
+          <div style="background:white;border-radius:8px;padding:12px 16px;border:1px solid #e9d5ff">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;margin:8px 0;font-size:0.9rem">
+              <div style="text-align:center">
+                <div style="background:#eff6ff;border:2px solid #93c5fd;border-radius:8px;padding:8px 14px;font-weight:800;color:#2563eb">
+                  H₂O<br>
+                  <span style="font-size:0.75rem;color:#dc2626">O が電子を引き寄せるため</span><br>
+                  <span style="font-size:0.75rem;color:#dc2626">H が δ⁺ になっています</span>
+                </div>
+                <div style="font-size:0.78rem;color:#059669;margin-top:4px">H⁺ を渡します → 酸</div>
+              </div>
+              <div style="font-size:1.5rem;font-weight:900;color:#dc2626">H⁺→</div>
+              <div style="text-align:center">
+                <div style="background:#ecfdf5;border:2px solid #6ee7b7;border-radius:8px;padding:8px 14px;font-weight:800;color:#059669">
+                  NH₃<br>
+                  <span style="font-size:0.75rem;color:#059669">N の孤立電子対が</span><br>
+                  <span style="font-size:0.75rem;color:#059669">H⁺ を引き寄せます</span>
+                </div>
+                <div style="font-size:0.78rem;color:#dc2626;margin-top:4px">H⁺ を受け取ります → 塩基</div>
+              </div>
+              <div style="font-size:1.5rem;font-weight:900;color:var(--muted)">→</div>
+              <div style="text-align:center">
+                <div style="background:#fef9c3;border:2px solid #fbbf24;border-radius:8px;padding:8px 14px;font-weight:800">
+                  OH⁻ ＋ NH₄⁺
+                </div>
+                <div style="font-size:0.78rem;color:var(--muted);margin-top:4px">生成物</div>
+              </div>
+            </div>
+            <div style="background:#f0fdf4;border-radius:6px;padding:10px 12px;margin-top:10px;font-size:0.85rem;line-height:1.8">
+              ✅ <strong>酸化還元との共通点</strong>：酸化還元は「電子のやりとり」、ブレンステッド酸塩基は「H⁺（陽子）のやりとり」です。<br>
+              どちらも「何を渡すか・受け取るか」という視点で理解できますね。
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===== ミニテスト ===== -->
+      <div style="margin-top:20px;background:linear-gradient(135deg,#fdf4ff,#f5f3ff);border:2px solid #c4b5fd;border-radius:12px;padding:16px 18px">
+        <div style="font-weight:800;font-size:0.95rem;color:#4c1d95;margin-bottom:14px">
+          🖊️ ミニテスト ― ブレンステッド・ローリーの定義
+        </div>
+
+        <!-- 問1 -->
+        <div style="margin-bottom:16px">
+          <div style="font-weight:700;font-size:0.9rem;margin-bottom:10px;line-height:1.8">
+            <span style="background:#4c1d95;color:white;border-radius:4px;padding:1px 8px;font-size:0.78rem;margin-right:6px">問1</span>
+            次の反応において、下線部の物質はブレンステッド・ローリーの定義で「酸」か「塩基」か答えなさい。<br>
+            <div style="background:white;border-radius:8px;padding:10px 14px;margin-top:8px;font-size:0.95rem;font-family:&#39;Courier New&#39;,monospace;font-weight:800;border:1px solid #e9d5ff">
+              <u>HCl</u> ＋ H₂O → H₃O⁺ ＋ Cl⁻
+            </div>
+          </div>
+
+          <!-- 選択肢 -->
+          <div style="display:flex;gap:8px;flex-wrap:wrap" id="mt1opts">
+            <button onclick="mtAnswer(1,&#39;acid&#39;)" style="flex:1;min-width:100px;padding:10px;border:2px solid #e2e8f0;border-radius:8px;background:white;font-weight:700;font-size:0.9rem;cursor:pointer;font-family:inherit;transition:all 0.15s" id="mt1-acid">酸</button>
+            <button onclick="mtAnswer(1,&#39;base&#39;)" style="flex:1;min-width:100px;padding:10px;border:2px solid #e2e8f0;border-radius:8px;background:white;font-weight:700;font-size:0.9rem;cursor:pointer;font-family:inherit;transition:all 0.15s" id="mt1-base">塩基</button>
+          </div>
+
+          <!-- 解説（非表示） -->
+          <div id="mt1feedback" style="display:none;margin-top:10px;border-radius:8px;padding:12px 14px;font-size:0.87rem;line-height:1.9"></div>
+        </div>
+
+        <div style="border-top:1px dashed #c4b5fd;margin:16px 0"></div>
+
+        <!-- 問2 -->
+        <div>
+          <div style="font-weight:700;font-size:0.9rem;margin-bottom:10px;line-height:1.8">
+            <span style="background:#4c1d95;color:white;border-radius:4px;padding:1px 8px;font-size:0.78rem;margin-right:6px">問2</span>
+            次の反応において、下線部の物質はブレンステッド・ローリーの定義で「酸」か「塩基」か答えなさい。<br>
+            <div style="background:white;border-radius:8px;padding:10px 14px;margin-top:8px;font-size:0.95rem;font-family:&#39;Courier New&#39;,monospace;font-weight:800;border:1px solid #e9d5ff">
+              NH₄⁺ ＋ H₂O ⇌ NH₃ ＋ <u>H₃O⁺</u>
+            </div>
+            <div style="font-size:0.8rem;color:#64748b;margin-top:6px;font-family:inherit;font-weight:400">
+              ヒント：H₃O⁺（オキソニウムイオン）は H⁺ を持っています。この H⁺ はどこへ行ったのでしょう？
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap" id="mt2opts">
+            <button onclick="mtAnswer(2,&#39;acid&#39;)" style="flex:1;min-width:100px;padding:10px;border:2px solid #e2e8f0;border-radius:8px;background:white;font-weight:700;font-size:0.9rem;cursor:pointer;font-family:inherit;transition:all 0.15s" id="mt2-acid">酸</button>
+            <button onclick="mtAnswer(2,&#39;base&#39;)" style="flex:1;min-width:100px;padding:10px;border:2px solid #e2e8f0;border-radius:8px;background:white;font-weight:700;font-size:0.9rem;cursor:pointer;font-family:inherit;transition:all 0.15s" id="mt2-base">塩基</button>
+          </div>
+
+          <div id="mt2feedback" style="display:none;margin-top:10px;border-radius:8px;padding:12px 14px;font-size:0.87rem;line-height:1.9"></div>
+        </div>
+
+      </div>
+      <!-- ===== /ミニテスト ===== -->
+
+    </div>
+  </div>
+  <div class="section-card">
+    <div class="section-header sh-amber">⚡ 6. 電離度・強酸・弱酸</div>
+    <div class="section-body">
+
+      <!-- 電離度の定義 -->
+      <div class="key-box">
+        <div class="box-label">📌 電離度 α とは？</div>
+        <div style="font-size:0.9rem;line-height:2.2">
+          溶かした酸（または塩基）のうち、実際にイオンに分かれた割合のことです。<br>
+          <div style="text-align:center;margin:8px 0;font-size:1rem;font-weight:800">
+            α ＝ <span class="frac"><span class="num">電離したモル数</span><span class="den">溶かした全モル数</span></span>
+          </div>
+          α の値は 0（まったく電離しない）〜 1（すべて電離）の間になります。
+        </div>
+      </div>
+
+      <!-- 具体的イメージ図 -->
+      <div style="margin:16px 0;font-weight:800;font-size:0.9rem;color:#92400e">💡 「100個の分子を溶かしたとき、何個がイオンになる？」で考えてみましょう</div>
+
+      <!-- 強酸（塩酸）のイメージ -->
+      <div style="background:#fff0f0;border:2px solid #fca5a5;border-radius:12px;padding:14px 16px;margin-bottom:12px">
+        <div style="font-weight:800;color:#dc2626;font-size:0.9rem;margin-bottom:10px">
+          🔴 強酸（例：塩酸 HCl）　α ≒ 1
+        </div>
+        <div style="font-size:0.85rem;color:#64748b;margin-bottom:8px">100個溶かすと…ほぼ全部がイオンになります</div>
+        <!-- 粒子イメージ -->
+        <div style="background:white;border-radius:8px;padding:10px;margin-bottom:8px">
+          <div style="font-size:0.78rem;color:#dc2626;font-weight:700;margin-bottom:6px">HCl 分子（電離前）</div>
+          <div id="strongAcidDots" style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:10px"><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span></div>
+          <div style="border-top:1px dashed #fca5a5;margin:8px 0;padding-top:8px">
+            <div style="font-size:0.78rem;color:#059669;font-weight:700;margin-bottom:6px">H⁺ イオン（電離後）</div>
+            <div id="strongIonDots" style="display:flex;flex-wrap:wrap;gap:3px"><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span></div>
+          </div>
+        </div>
+        <div class="formula" style="font-size:0.85rem">
+          HCl → <span style="color:#dc2626;font-weight:800">H⁺</span> ＋ Cl⁻　（100個 → H⁺ が約100個）
+        </div>
+        <div style="font-size:0.85rem;margin-top:6px;line-height:1.8;color:#7f1d1d">
+          → 水溶液中の H⁺ の数が<strong>多い</strong>ので、酸性が強くなります。
+        </div>
+      </div>
+
+      <!-- 弱酸（酢酸）のイメージ -->
+      <div style="background:#f0fdf4;border:2px solid #6ee7b7;border-radius:12px;padding:14px 16px;margin-bottom:12px">
+        <div style="font-weight:800;color:#059669;font-size:0.9rem;margin-bottom:10px">
+          🟢 弱酸（例：酢酸 CH₃COOH）　α ≒ 0.01（約1%）
+        </div>
+        <div style="font-size:0.85rem;color:#64748b;margin-bottom:8px">100個溶かすと…たった1〜2個しかイオンになりません</div>
+        <!-- 粒子イメージ -->
+        <div style="background:white;border-radius:8px;padding:10px;margin-bottom:8px">
+          <div style="font-size:0.78rem;color:#059669;font-weight:700;margin-bottom:6px">CH₃COOH 分子（電離前・後も大部分が分子のまま）</div>
+          <div id="weakAcidDots" style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:10px"><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span><span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span></div>
+          <div style="border-top:1px dashed #6ee7b7;margin:8px 0;padding-top:8px">
+            <div style="font-size:0.78rem;color:#dc2626;font-weight:700;margin-bottom:6px">H⁺ イオン（電離したのはごくわずか）</div>
+            <div id="weakIonDots" style="display:flex;flex-wrap:wrap;gap:3px"><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span><span style="font-size:0.8rem;color:#94a3b8;margin-left:6px;align-self:center">← 20個中 たったこれだけ！</span></div>
+          </div>
+        </div>
+        <div class="formula" style="font-size:0.85rem">
+          CH₃COOH ⇌ <span style="color:#dc2626;font-weight:800">H⁺</span> ＋ CH₃COO⁻　（100個 → H⁺ が約1個）
+        </div>
+        <div style="font-size:0.85rem;margin-top:6px;line-height:1.8;color:#14532d">
+          → 水溶液中の H⁺ の数が<strong>少ない</strong>ので、酸性は弱くなります。<br>
+          ⇌ は「完全には電離しきらない」ことをあらわしています。
+        </div>
+      </div>
+
+      <!-- 比較まとめ -->
+      <div style="background:linear-gradient(135deg,#1e3a8a,#2563eb);color:white;border-radius:10px;padding:14px 18px;margin-bottom:14px">
+        <div style="font-weight:800;font-size:0.88rem;margin-bottom:10px">📊 同じ濃度（1mol/L）で比べると…</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:0.85rem">
+          <div style="background:rgba(239,68,68,0.3);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-weight:800;margin-bottom:4px">🔴 HCl（強酸）</div>
+            <div>H⁺ が約 <strong style="font-size:1.2rem">1mol</strong></div>
+            <div style="font-size:0.78rem;opacity:0.85;margin-top:2px">ほぼ全部イオン</div>
+          </div>
+          <div style="background:rgba(16,185,129,0.3);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-weight:800;margin-bottom:4px">🟢 CH₃COOH（弱酸）</div>
+            <div>H⁺ が約 <strong style="font-size:1.2rem">0.01mol</strong></div>
+            <div style="font-size:0.78rem;opacity:0.85;margin-top:2px">100分の1しかイオンにならない</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:0.82rem;background:rgba(255,255,255,0.15);border-radius:6px;padding:8px">
+          ✅ 同じ濃度でも、強酸のほうが H⁺ が圧倒的に多く、酸性が強くなります。
+        </div>
+      </div>
+
+      <table class="chem-table">
+        <thead><tr><th></th><th>強酸（α≒1）</th><th>弱酸（α＜1）</th></tr></thead>
+        <tbody>
+          <tr><td><strong>代表例</strong></td><td>HCl 塩酸<br>H₂SO₄ 硫酸<br>HNO₃ 硝酸</td><td>CH₃COOH 酢酸<br>H₂CO₃ 炭酸<br>H₃PO₄ リン酸</td></tr>
+        </tbody>
+      </table>
+      <table class="chem-table" style="margin-top:10px">
+        <thead><tr><th></th><th>強塩基（α≒1）</th><th>弱塩基（α＜1）</th></tr></thead>
+        <tbody>
+          <tr><td><strong>代表例</strong></td><td>NaOH 水酸化ナトリウム<br>KOH 水酸化カリウム<br>Ca(OH)₂ 水酸化カルシウム</td><td>NH₃ アンモニア<br>Cu(OH)₂<br>Al(OH)₃</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ===== 強酸弱酸 暗記プログラム ===== -->
+      <div style="margin-top:18px;border:3px solid #2563eb;border-radius:14px;overflow:hidden">
+
+        <!-- ヘッダー -->
+        <div style="background:linear-gradient(135deg,#1d4ed8,#2563eb);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+          <div style="color:white;font-weight:800;font-size:0.95rem">📝 強酸・弱酸・強塩基・弱塩基 暗記</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button onclick="ab2SetMode(&#39;classify&#39;)" id="ab2ModeClassify" style="padding:5px 12px;border-radius:20px;border:2px solid white;background:white;color:#1d4ed8;font-weight:800;font-size:0.78rem;cursor:pointer;font-family:inherit">
+              分類は？
+            </button>
+            <button onclick="ab2SetMode(&#39;example&#39;)" id="ab2ModeExample" style="padding:5px 12px;border-radius:20px;border:2px solid white;background:transparent;color:white;font-weight:800;font-size:0.78rem;cursor:pointer;font-family:inherit">
+              例を挙げろ
+            </button>
+            <button onclick="ab2SetMode(&#39;both&#39;)" id="ab2ModeBoth" style="padding:5px 12px;border-radius:20px;border:2px solid white;background:transparent;color:white;font-weight:800;font-size:0.78rem;cursor:pointer;font-family:inherit">
+              ランダム
+            </button>
+          </div>
+        </div>
+
+        <!-- カード本体 -->
+        <div style="background:#eff6ff;padding:16px">
+
+          <!-- 進捗バー -->
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="flex:1;background:#bfdbfe;border-radius:99px;height:8px;overflow:hidden">
+              <div id="ab2ProgressBar" style="height:100%;background:#2563eb;border-radius:99px;transition:width 0.3s;width:0%"></div>
+            </div>
+            <div id="ab2ProgressLabel" style="font-size:0.82rem;font-weight:800;color:#1e40af;white-space:nowrap">1 / 10</div>
+          </div>
+
+          <!-- カード -->
+          <div id="ab2Card" onclick="ab2Reveal()" style="background:white;border:2px solid #bfdbfe;border-radius:12px;min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)">
+
+            <div id="ab2Question" style="display: block;">
+              <div id="ab2QLabel" style="font-size:0.72rem;font-weight:800;color:#1d4ed8;background:#eff6ff;border-radius:4px;padding:2px 10px;margin-bottom:10px;display:inline-block">物質名</div>
+              <div id="ab2QText" style="font-size:1.4rem;font-weight:800;font-family:&#39;Courier New&#39;,monospace;color:#1e293b">Ca(OH)₂（水酸化カルシウム）</div>
+              <div style="font-size:0.78rem;color:#94a3b8;margin-top:10px">タップして答えを見る</div>
+            </div>
+
+            <div id="ab2Answer" style="display:none;width:100%">
+              <div id="ab2QLabel2" style="font-size:0.72rem;font-weight:800;color:#1d4ed8;background:#eff6ff;border-radius:4px;padding:2px 10px;margin-bottom:6px;display:inline-block">物質名</div>
+              <div id="ab2QText2" style="font-size:1.1rem;font-weight:800;font-family:&#39;Courier New&#39;,monospace;color:#64748b;margin-bottom:10px">Ca(OH)₂（水酸化カルシウム）</div>
+              <div style="border-top:2px dashed #bfdbfe;margin:8px 0"></div>
+              <div id="ab2ALabel" style="font-size:0.72rem;font-weight:800;color:#059669;background:#ecfdf5;border-radius:4px;padding:2px 10px;margin-bottom:8px;display:inline-block">分類</div>
+              <div id="ab2AText" style="font-size: 1.4rem; font-weight: 800; color: rgb(37, 99, 235);" class="ab2-ans-text">強塩基</div>
+            </div>
+          </div>
+
+          <!-- 次へボタン -->
+          <div id="ab2NextArea" style="display:none;margin-top:12px;text-align:center">
+            <button onclick="ab2Next()" style="padding:10px 28px;background:#2563eb;color:white;border:none;border-radius:8px;font-weight:800;font-size:0.9rem;cursor:pointer;font-family:inherit">
+              次の問題 →
+            </button>
+          </div>
+
+          <!-- 完了 -->
+          <div id="ab2Done" style="display:none;text-align:center;padding:20px">
+            <div style="font-size:2rem;margin-bottom:8px">🎉</div>
+            <div style="font-weight:800;font-size:1rem;color:#1e40af;margin-bottom:4px">全問終了しました！</div>
+            <div style="font-size:0.85rem;color:#64748b;margin-bottom:14px">もう一度練習しますか？</div>
+            <button onclick="ab2Restart()" style="padding:8px 24px;background:#2563eb;color:white;border:none;border-radius:8px;font-weight:800;font-size:0.88rem;cursor:pointer;font-family:inherit">
+              もう一度
+            </button>
+          </div>
+
+        </div>
+      </div>
+      <!-- ===== /強酸弱酸 暗記プログラム ===== -->
+
+    </div>
+  </div>
+
+</div><!-- /tab-learn -->
+
+
+<!-- ========== FILL ========== -->
+<div id="tab-fill" class="tab-content">
+  <div class="section-card">
+    <div class="section-header sh-blue">✏️ 穴埋めチャレンジ</div>
+    <div class="section-body">
+      <div class="timer-row">
+        <span class="timer-display" id="timerDisp">00:00</span>
+        <div style="flex:1">
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+          <div class="progress-label" id="progressLabel">0 / 16 正解</div>
+        </div>
+      </div>
+      <div class="challenge-bar">
+        <button class="btn btn-primary" id="btnStart" onclick="startChallenge()">チャレンジ開始</button>
+        <button class="btn btn-amber" id="btnHint" onclick="showHint()" style="display:none">手本を見る</button>
+        <button class="btn btn-gray" id="btnReset" onclick="resetChallenge()" style="display:none">本文に戻る</button>
+      </div>
+      <div class="word-bank hidden" id="wordBank"></div>
+
+      <div class="fill-text" id="fillText">
+
+        <p style="margin:14px 0 6px;font-weight:800;color:#dc2626">▶ 酸と塩基の性質</p>
+        <p>
+          酸の性質を示す原因は <span class="blank" data-ans="H⁺（水素イオン）">H⁺（水素イオン）</span> です。
+          酸の水溶液はリトマス紙を <span class="blank" data-ans="青色から赤色">青色から赤色</span> に変えます。
+          塩基の性質を示す原因は <span class="blank" data-ans="OH⁻（水酸化物イオン）">OH⁻（水酸化物イオン）</span> です。
+          塩基の水溶液はリトマス紙を <span class="blank" data-ans="赤色から青色">赤色から青色</span> に変えます。
+        </p>
+
+        <p style="margin:14px 0 6px;font-weight:800;color:#1e40af">▶ アレニウスの定義</p>
+        <p>
+          アレニウスの定義では、酸とは水溶液中で <span class="blank" data-ans="H⁺">H⁺</span> を生じる物質、
+          塩基とは水溶液中で <span class="blank" data-ans="OH⁻">OH⁻</span> を生じる物質です。
+          この定義の限界は <span class="blank" data-ans="水溶液以外">水溶液以外</span> の反応が説明できないことです。
+          たとえば <span class="blank" data-ans="NH₃（アンモニア）">NH₃（アンモニア）</span> は OH⁻ を持たないのに塩基性を示します。
+        </p>
+
+        <p style="margin:14px 0 6px;font-weight:800;color:#4c1d95">▶ ブレンステッド・ローリーの定義</p>
+        <p>
+          ブレンステッド・ローリーの定義では、酸とは H⁺ を <span class="blank" data-ans="与える">与える</span> 物質、
+          塩基とは H⁺ を <span class="blank" data-ans="受け取る">受け取る</span> 物質です。
+          NH₃ ＋ H₂O ⇌ NH₄⁺ ＋ OH⁻ において、NH₃ は H⁺ を <span class="blank" data-ans="受け取る">受け取る</span> ので
+          <span class="blank" data-ans="塩基">塩基</span> であり、
+          H₂O は H⁺ を <span class="blank" data-ans="与える">与える</span> ので <span class="blank" data-ans="酸">酸</span> としてはたらきます。
+          H₂O のように酸にも塩基にもなれる物質を <span class="blank" data-ans="両性物質">両性物質</span> といいます。
+        </p>
+
+        <p style="margin:14px 0 6px;font-weight:800;color:#92400e">▶ 強酸・弱酸</p>
+        <p>
+          電離度 α ≒ 1 の酸を <span class="blank" data-ans="強酸">強酸</span>、α ≪ 1 を <span class="blank" data-ans="弱酸">弱酸</span> といいます。
+          HCl・H₂SO₄・HNO₃ は <span class="blank" data-ans="強酸">強酸</span>、
+          CH₃COOH・H₂CO₃ は <span class="blank" data-ans="弱酸">弱酸</span> です。
+        </p>
+
+      </div>
+
+      <div class="score-board" id="scoreBoard" style="display:none">
+        <div class="score-item"><div class="score-num" id="scoreCorrect">0</div><div class="score-sub">正解</div></div>
+        <div class="score-item"><div class="score-num" id="scoreMiss">0</div><div class="score-sub">ミス</div></div>
+        <div class="score-item"><div class="score-num" id="scoreTime">0:00</div><div class="score-sub">タイム</div></div>
+        <div class="grade-badge" id="gradeBadge">-</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========== QUIZ ========== -->
+<div id="tab-quiz" class="tab-content">
+  <div class="section-card">
+    <div class="section-header sh-green">🧪 確認テスト</div>
+    <div class="section-body">
+      <div id="quizContainer"><div class="quiz-card" id="qc0"><div class="quiz-q">Q1. アレニウスの定義によれば「塩基」とは何か？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(0,0)">H⁺を生じる物質</button><button class="quiz-opt" onclick="answerQuiz(0,1)">OH⁻を生じる物質</button><button class="quiz-opt" onclick="answerQuiz(0,2)">H⁺を受け取る物質</button><button class="quiz-opt" onclick="answerQuiz(0,3)">OH⁻を受け取る物質</button></div><div class="quiz-feedback" id="qf0"></div></div><div class="quiz-card" id="qc1"><div class="quiz-q">Q2. ブレンステッド・ローリーの定義で「酸」とは何か？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(1,0)">OH⁻を放出する物質</button><button class="quiz-opt" onclick="answerQuiz(1,1)">H⁺を受け取る物質</button><button class="quiz-opt" onclick="answerQuiz(1,2)">H⁺を与える物質</button><button class="quiz-opt" onclick="answerQuiz(1,3)">水に溶ける物質</button></div><div class="quiz-feedback" id="qf1"></div></div><div class="quiz-card" id="qc2"><div class="quiz-q">Q3. NH₃ ＋ H₂O ⇌ NH₄⁺ ＋ OH⁻ において、H₂O はどのようにはたらいているか？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(2,0)">酸（H⁺を渡している）</button><button class="quiz-opt" onclick="answerQuiz(2,1)">塩基（H⁺を受け取っている）</button><button class="quiz-opt" onclick="answerQuiz(2,2)">中性（反応していない）</button><button class="quiz-opt" onclick="answerQuiz(2,3)">酸化剤</button></div><div class="quiz-feedback" id="qf2"></div></div><div class="quiz-card" id="qc3"><div class="quiz-q">Q4. なぜブレンステッド・ローリーの定義が必要になったのか？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(3,0)">アレニウスの定義が難しすぎたから</button><button class="quiz-opt" onclick="answerQuiz(3,1)">アレニウスの定義ではNH₃のような物質の塩基性を説明できなかったから</button><button class="quiz-opt" onclick="answerQuiz(3,2)">ブレンステッドが有名だったから</button><button class="quiz-opt" onclick="answerQuiz(3,3)">水溶液の方が不便だったから</button></div><div class="quiz-feedback" id="qf3"></div></div><div class="quiz-card" id="qc4"><div class="quiz-q">Q5. 強酸はどれか？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(4,0)">CH₃COOH（酢酸）</button><button class="quiz-opt" onclick="answerQuiz(4,1)">H₂CO₃（炭酸）</button><button class="quiz-opt" onclick="answerQuiz(4,2)">H₂SO₄（硫酸）</button><button class="quiz-opt" onclick="answerQuiz(4,3)">H₃PO₄（リン酸）</button></div><div class="quiz-feedback" id="qf4"></div></div><div class="quiz-card" id="qc5"><div class="quiz-q">Q6. CH₃COOH ＋ H₂O ⇌ CH₃COO⁻ ＋ H₃O⁺ において、H₂O のはたらきは？</div><div class="quiz-opts"><button class="quiz-opt" onclick="answerQuiz(5,0)">酸（H⁺を渡している）</button><button class="quiz-opt" onclick="answerQuiz(5,1)">塩基（H⁺を受け取っている）</button><button class="quiz-opt" onclick="answerQuiz(5,2)">溶媒（反応していない）</button><button class="quiz-opt" onclick="answerQuiz(5,3)">触媒</button></div><div class="quiz-feedback" id="qf5"></div></div></div>
+      <div style="margin-top:16px">
+        <button class="btn btn-primary" onclick="resetQuiz()">もう一度</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ===== TABS =====
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(function(el){ el.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(el){ el.classList.remove('active'); });
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ===== FILL =====
+var WORDS = ['H⁺（水素イオン）','青色から赤色','OH⁻（水酸化物イオン）','赤色から青色','H⁺','OH⁻','水溶液以外','NH₃（アンモニア）','与える','受け取る','塩基','酸','両性物質','強酸','弱酸'];
+var timerInterval = null;
+var timerSeconds = 0;
+var timerRunning = false;
+var totalBlanks = 0;
+var correctCount = 0;
+var missCount = 0;
+var activeBlank = null;
+
+function updateTimer() {
+  timerSeconds++;
+  var m = Math.floor(timerSeconds/60).toString().padStart(2,'0');
+  var s = (timerSeconds%60).toString().padStart(2,'0');
+  document.getElementById('timerDisp').textContent = m+':'+s;
+}
+
+function startChallenge() {
+  timerSeconds = 0; correctCount = 0; missCount = 0; activeBlank = null;
+  document.getElementById('scoreBoard').style.display = 'none';
+  document.getElementById('btnStart').style.display = 'none';
+  document.getElementById('btnHint').style.display = '';
+  document.getElementById('btnReset').style.display = '';
+  var blanks = document.querySelectorAll('#fillText .blank');
+  totalBlanks = blanks.length;
+  blanks.forEach(function(b){
+    b.classList.remove('revealed'); b.classList.add('hidden');
+    b.dataset.done = 'false'; b.style.boxShadow = ''; b.style.cursor = 'pointer';
+    b.onclick = function(){ selectBlank(b); };
+  });
+  var allW = WORDS.slice().sort(function(){ return Math.random()-0.5; });
+  var wb = document.getElementById('wordBank');
+  wb.innerHTML = ''; wb.classList.remove('hidden');
+  allW.forEach(function(w){
+    var chip = document.createElement('span');
+    chip.className = 'word-chip'; chip.textContent = w; chip.dataset.word = w;
+    chip.onclick = function(){ fillWithWord(w, chip); };
+    wb.appendChild(chip);
+  });
+  updateProgress();
+  if(timerInterval) clearInterval(timerInterval);
+  timerRunning = true;
+  timerInterval = setInterval(function(){ if(timerRunning) updateTimer(); }, 1000);
+}
+
+function selectBlank(b) {
+  if(b.dataset.done==='true') return;
+  document.querySelectorAll('#fillText .blank').forEach(function(el){ if(el.dataset.done!=='true') el.style.boxShadow=''; });
+  activeBlank = b; b.style.boxShadow = '0 0 0 3px #2563eb';
+}
+
+function fillWithWord(word, chip) {
+  if(!activeBlank){
+    var blanks = document.querySelectorAll('#fillText .blank');
+    for(var i=0;i<blanks.length;i++){ if(blanks[i].dataset.done!=='true'){ activeBlank=blanks[i]; break; } }
+  }
+  if(!activeBlank) return;
+  var ans = activeBlank.dataset.ans;
+  if(word===ans){
+    activeBlank.textContent = word;
+    activeBlank.classList.remove('hidden'); activeBlank.classList.add('revealed');
+    activeBlank.dataset.done = 'true'; activeBlank.style.boxShadow = '';
+    activeBlank.onclick = null; activeBlank.style.cursor = 'default';
+    correctCount++; chip.style.opacity = '0.35'; chip.style.pointerEvents = 'none';
+    launchConfetti(3); activeBlank = null;
+  } else {
+    missCount++;
+    var prev = activeBlank;
+    prev.style.boxShadow = '0 0 0 3px #dc2626';
+    setTimeout(function(){ if(prev.dataset.done!=='true') prev.style.boxShadow='0 0 0 3px #2563eb'; }, 600);
+  }
+  updateProgress();
+  if(correctCount===totalBlanks) finishChallenge();
+}
+
+function updateProgress() {
+  var pct = totalBlanks>0 ? Math.round(correctCount/totalBlanks*100) : 0;
+  document.getElementById('progressBar').style.width = pct+'%';
+  document.getElementById('progressLabel').textContent = correctCount+' / '+totalBlanks+' 正解';
+}
+
+function showHint() {
+  timerRunning = false;
+  document.querySelectorAll('#fillText .blank').forEach(function(b){
+    b.textContent = b.dataset.ans; b.classList.remove('hidden'); b.classList.add('revealed');
+  });
+}
+
+function resetChallenge() {
+  clearInterval(timerInterval); timerRunning = false; timerSeconds = 0; activeBlank = null;
+  document.getElementById('timerDisp').textContent = '00:00';
+  document.getElementById('progressBar').style.width = '0%';
+  document.getElementById('progressLabel').textContent = '0 / 16 正解';
+  document.getElementById('btnStart').style.display = '';
+  document.getElementById('btnHint').style.display = 'none';
+  document.getElementById('btnReset').style.display = 'none';
+  document.getElementById('wordBank').classList.add('hidden');
+  document.getElementById('scoreBoard').style.display = 'none';
+  document.querySelectorAll('#fillText .blank').forEach(function(b){
+    b.textContent = b.dataset.ans; b.classList.remove('hidden','revealed');
+    b.style.boxShadow = ''; b.style.cursor = 'default'; b.onclick = null; b.dataset.done = 'false';
+  });
+}
+
+function finishChallenge() {
+  timerRunning = false; clearInterval(timerInterval);
+  document.getElementById('wordBank').classList.add('hidden');
+  var m = Math.floor(timerSeconds/60); var s = timerSeconds%60;
+  document.getElementById('scoreCorrect').textContent = correctCount;
+  document.getElementById('scoreMiss').textContent = missCount;
+  document.getElementById('scoreTime').textContent = m+':'+s.toString().padStart(2,'0');
+  var acc = correctCount/Math.max(1,correctCount+missCount);
+  var grade, gc;
+  if(acc>=0.9 && timerSeconds<150){ grade='A'; gc='grade-A'; launchConfetti(30); }
+  else if(acc>=0.7){ grade='B'; gc='grade-B'; }
+  else { grade='C'; gc='grade-C'; }
+  var gb = document.getElementById('gradeBadge');
+  gb.textContent = grade; gb.className = 'grade-badge '+gc;
+  document.getElementById('scoreBoard').style.display = 'flex';
+}
+
+function launchConfetti(n) {
+  var colors = ['#fbbf24','#60a5fa','#34d399','#f87171','#a78bfa'];
+  for(var i=0;i<n;i++){
+    var el = document.createElement('div'); el.className = 'confetti-piece';
+    el.style.cssText = 'left:'+(30+Math.random()*40)+'vw;top:20vh;background:'+colors[Math.floor(Math.random()*colors.length)]+';animation-delay:'+(Math.random()*0.5)+'s';
+    document.body.appendChild(el);
+    setTimeout(function(e){ return function(){ e.remove(); }; }(el), 2000);
+  }
+}
+
+// ===== DEEP DIVE TOGGLE =====
+function toggleDeep(btn) {
+  var content = btn.nextElementSibling;
+  var arrow = btn.querySelector('.deep-arrow');
+  if (content.style.display === 'none') {
+    content.style.display = 'block';
+    btn.classList.add('open');
+  } else {
+    content.style.display = 'none';
+    btn.classList.remove('open');
+  }
+}
+
+// ===== 暗記プログラム（フラッシュカード式）=====
+var fcData = [
+  { formula: 'OH⁻',     name: '水酸化物イオン' },
+  { formula: 'Cl⁻',     name: '塩化物イオン' },
+  { formula: 'F⁻',      name: 'フッ化物イオン' },
+  { formula: 'Br⁻',     name: '臭化物イオン' },
+  { formula: 'I⁻',      name: 'ヨウ化物イオン' },
+  { formula: 'CH₃COO⁻', name: '酢酸イオン' },
+  { formula: 'NO₃⁻',    name: '硝酸イオン' },
+  { formula: 'SO₄²⁻',   name: '硫酸イオン' },
+  { formula: 'CO₃²⁻',   name: '炭酸イオン' },
+  { formula: 'PO₄³⁻',   name: 'リン酸イオン' },
+  { formula: 'NH₄⁺',    name: 'アンモニウムイオン' },
+  { formula: 'H₃O⁺',    name: 'オキソニウムイオン' },
+];
+
+var fcMode = 'formula';
+var fcOrder = [];
+var fcIndex = 0;
+var fcRevealed = false;
+
+function fcBuildOrder() {
+  fcOrder = [];
+  for (var i = 0; i < fcData.length; i++) { fcOrder.push(i); }
+  if (fcMode === 'both') {
+    // ランダムシャッフル
+    for (var j = fcOrder.length - 1; j > 0; j--) {
+      var k = Math.floor(Math.random() * (j + 1));
+      var t = fcOrder[j]; fcOrder[j] = fcOrder[k]; fcOrder[k] = t;
+    }
+  }
+}
+
+function fcSetMode(mode) {
+  fcMode = mode;
+  var ids = ['modeFormula','modeName','modeBoth'];
+  var keys = ['formula','name','both'];
+  ids.forEach(function(id, i) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (keys[i] === mode) {
+      el.style.background = 'white'; el.style.color = '#d97706';
+    } else {
+      el.style.background = 'transparent'; el.style.color = 'white';
+    }
+  });
+  fcBuildOrder();
+  fcIndex = 0;
+  fcRevealed = false;
+  fcRender();
+}
+
+function fcGetShowFormula(orderIdx) {
+  if (fcMode === 'formula') return true;
+  if (fcMode === 'name') return false;
+  // both: ランダムなので順番で交互
+  return (orderIdx % 2 === 0);
+}
+
+function fcRender() {
+  var card = document.getElementById('fcCard');
+  var qDiv = document.getElementById('fcQuestion');
+  var aDiv = document.getElementById('fcAnswer');
+  var nextArea = document.getElementById('fcNextArea');
+  var doneDiv = document.getElementById('fcDone');
+  if (!card) return;
+
+  if (fcIndex >= fcOrder.length) {
+    // 全問終了
+    card.style.display = 'none';
+    nextArea.style.display = 'none';
+    doneDiv.style.display = 'block';
+    fcUpdateProgress();
+    return;
+  }
+
+  card.style.display = 'flex';
+  doneDiv.style.display = 'none';
+
+  var dataIdx = fcOrder[fcIndex];
+  var item = fcData[dataIdx];
+  var showFormula = fcGetShowFormula(fcIndex);
+  var question = showFormula ? item.formula : item.name;
+  var answer   = showFormula ? item.name   : item.formula;
+  var qLabel   = showFormula ? 'イオン式' : '名称';
+  var aLabel   = showFormula ? '名称'     : 'イオン式';
+
+  // 問題面
+  document.getElementById('fcQLabel').textContent  = qLabel;
+  document.getElementById('fcQText').textContent   = question;
+  document.getElementById('fcQLabel2').textContent = qLabel;
+  document.getElementById('fcQText2').textContent  = question;
+  document.getElementById('fcALabel').textContent  = aLabel;
+  document.getElementById('fcAText').textContent   = answer;
+
+  if (fcRevealed) {
+    qDiv.style.display = 'none';
+    aDiv.style.display = 'block';
+    nextArea.style.display = 'block';
+    card.style.cursor = 'default';
+    card.style.borderColor = '#6ee7b7';
+    card.style.background = 'linear-gradient(135deg,#f0fdf4,#ecfdf5)';
+  } else {
+    qDiv.style.display = 'block';
+    aDiv.style.display = 'none';
+    nextArea.style.display = 'none';
+    card.style.cursor = 'pointer';
+    card.style.borderColor = '#fde68a';
+    card.style.background = 'white';
+  }
+  fcUpdateProgress();
+}
+
+function fcReveal() {
+  if (fcRevealed) return;
+  if (fcIndex >= fcOrder.length) return;
+  fcRevealed = true;
+  fcRender();
+}
+
+function fcNext() {
+  fcIndex++;
+  fcRevealed = false;
+  fcRender();
+}
+
+function fcRestart() {
+  var doneDiv = document.getElementById('fcDone');
+  var card = document.getElementById('fcCard');
+  if (doneDiv) doneDiv.style.display = 'none';
+  if (card) card.style.display = 'flex';
+  fcBuildOrder();
+  fcIndex = 0;
+  fcRevealed = false;
+  fcRender();
+}
+
+function fcUpdateProgress() {
+  var total = fcOrder.length;
+  var current = Math.min(fcIndex + 1, total);
+  var pct = total > 0 ? Math.round((fcIndex / total) * 100) : 0;
+  var bar = document.getElementById('fcProgressBar');
+  var label = document.getElementById('fcProgressLabel');
+  if (bar) bar.style.width = pct + '%';
+  if (label) {
+    if (fcIndex >= total) {
+      label.textContent = '完了！';
+    } else {
+      label.textContent = current + ' / ' + total;
+    }
+  }
+}
+
+// ===== ミニテスト =====
+var mtAnswered = { 1: false, 2: false };
+
+var mtConfig = {
+  1: {
+    correct: 'acid',
+    correctExp: [
+      '✅ 正解です！',
+      'HCl は H₂O に <strong>H⁺ を渡している</strong>ので、ブレンステッド・ローリーの定義では「酸」です。',
+      'HCl → H⁺ ＋ Cl⁻ として H⁺ を放出し、H₂O がそれを受け取って H₃O⁺（オキソニウムイオン）になっています。',
+      '「H⁺ を渡す ＝ 酸」という定義をしっかり確認しておきましょう。'
+    ],
+    wrongExp: [
+      '❌ 不正解です。',
+      'HCl は H₂O に <strong>H⁺ を渡している</strong>ので「酸」です。',
+      '塩基は H⁺ を「受け取る」側です。HCl は H⁺ を出していくので塩基ではありません。',
+      'H₂O が H⁺ を受け取って H₃O⁺ になっているところに注目してみましょう。'
+    ]
+  },
+  2: {
+    correct: 'base',
+    correctExp: [
+      '✅ 正解です！',
+      'H₃O⁺（オキソニウムイオン）は、H₂O が NH₄⁺ から <strong>H⁺ を受け取って</strong> できた物質です。',
+      'つまり H₂O は「H⁺ を受け取る側」＝ <strong>塩基</strong> としてはたらいています。',
+      '問1 では H₂O は「酸」でしたね。このように H₂O は相手によって酸にも塩基にもなれます。これが<strong>両性物質</strong>のポイントです。'
+    ],
+    wrongExp: [
+      '❌ 不正解です。',
+      'H₃O⁺ は H₂O が NH₄⁺ から <strong>H⁺ を受け取って</strong> できています。',
+      'H⁺ を「受け取る」のは塩基の役割です。ここでは H₂O が塩基としてはたらいています。',
+      '問1 の HCl ＋ H₂O の反応では H₂O は「酸」でした。同じ H₂O が相手によって変わります——これが両性物質です。'
+    ]
+  }
+};
+
+function mtAnswer(qNum, chosen) {
+  if (mtAnswered[qNum]) return;
+  mtAnswered[qNum] = true;
+
+  var cfg = mtConfig[qNum];
+  var isCorrect = (chosen === cfg.correct);
+  var lines = isCorrect ? cfg.correctExp : cfg.wrongExp;
+
+  // ボタンの色を更新
+  var acidBtn = document.getElementById('mt' + qNum + '-acid');
+  var baseBtn = document.getElementById('mt' + qNum + '-base');
+  if (acidBtn) acidBtn.disabled = true;
+  if (baseBtn) baseBtn.disabled = true;
+
+  if (cfg.correct === 'acid') {
+    if (acidBtn) { acidBtn.style.background = '#dcfce7'; acidBtn.style.borderColor = '#059669'; acidBtn.style.color = '#065f46'; }
+    if (baseBtn && chosen === 'base') { baseBtn.style.background = '#fef2f2'; baseBtn.style.borderColor = '#dc2626'; baseBtn.style.color = '#dc2626'; }
+  } else {
+    if (baseBtn) { baseBtn.style.background = '#dcfce7'; baseBtn.style.borderColor = '#059669'; baseBtn.style.color = '#065f46'; }
+    if (acidBtn && chosen === 'acid') { acidBtn.style.background = '#fef2f2'; acidBtn.style.borderColor = '#dc2626'; acidBtn.style.color = '#dc2626'; }
+  }
+
+  // 解説表示
+  var fb = document.getElementById('mt' + qNum + 'feedback');
+  if (fb) {
+    fb.style.display = 'block';
+    fb.style.background = isCorrect ? '#f0fdf4' : '#fef2f2';
+    fb.style.borderLeft = '4px solid ' + (isCorrect ? '#059669' : '#dc2626');
+    fb.innerHTML = lines.map(function(l, i) {
+      return '<div style="' + (i === 0 ? 'font-weight:800;font-size:0.92rem;margin-bottom:6px;color:' + (isCorrect ? '#065f46' : '#dc2626') : 'margin-top:4px') + '">' + l + '</div>';
+    }).join('');
+    // 正解時は紙吹雪
+    if (isCorrect) launchConfetti(6);
+  }
+}
+
+// ===== 強酸弱酸 暗記プログラム =====
+var ab2Data = [
+  // classify モード：物質名 → 分類
+  // example モード：分類 → 例（複数）
+  { question: 'HCl（塩酸）',          answer: '強酸',   category: 'classify', color: '#dc2626', bg: '#fff0f0' },
+  { question: 'H₂SO₄（硫酸）',        answer: '強酸',   category: 'classify', color: '#dc2626', bg: '#fff0f0' },
+  { question: 'HNO₃（硝酸）',         answer: '強酸',   category: 'classify', color: '#dc2626', bg: '#fff0f0' },
+  { question: 'CH₃COOH（酢酸）',      answer: '弱酸',   category: 'classify', color: '#059669', bg: '#f0fdf4' },
+  { question: 'H₂CO₃（炭酸）',        answer: '弱酸',   category: 'classify', color: '#059669', bg: '#f0fdf4' },
+  { question: 'H₃PO₄（リン酸）',      answer: '弱酸',   category: 'classify', color: '#059669', bg: '#f0fdf4' },
+  { question: 'NaOH（水酸化ナトリウム）', answer: '強塩基', category: 'classify', color: '#2563eb', bg: '#eff6ff' },
+  { question: 'KOH（水酸化カリウム）', answer: '強塩基', category: 'classify', color: '#2563eb', bg: '#eff6ff' },
+  { question: 'Ca(OH)₂（水酸化カルシウム）', answer: '強塩基', category: 'classify', color: '#2563eb', bg: '#eff6ff' },
+  { question: 'NH₃（アンモニア）',     answer: '弱塩基', category: 'classify', color: '#7c3aed', bg: '#f5f3ff' },
+  // example モード用（分類 → 例を答える）
+  { question: '強酸を3つ挙げてください',   answer: 'HCl・H₂SO₄・HNO₃',                   category: 'example', color: '#dc2626', bg: '#fff0f0' },
+  { question: '弱酸を3つ挙げてください',   answer: 'CH₃COOH・H₂CO₃・H₃PO₄',             category: 'example', color: '#059669', bg: '#f0fdf4' },
+  { question: '強塩基を3つ挙げてください', answer: 'NaOH・KOH・Ca(OH)₂',                  category: 'example', color: '#2563eb', bg: '#eff6ff' },
+  { question: '弱塩基を2つ挙げてください', answer: 'NH₃（アンモニア）・Cu(OH)₂・Al(OH)₃', category: 'example', color: '#7c3aed', bg: '#f5f3ff' },
+];
+
+var ab2Mode = 'classify';
+var ab2Order = [];
+var ab2Index = 0;
+var ab2Revealed = false;
+
+function ab2BuildOrder() {
+  ab2Order = [];
+  for (var i = 0; i < ab2Data.length; i++) {
+    var item = ab2Data[i];
+    if (ab2Mode === 'classify' && item.category === 'classify') ab2Order.push(i);
+    else if (ab2Mode === 'example' && item.category === 'example') ab2Order.push(i);
+    else if (ab2Mode === 'both') ab2Order.push(i);
+  }
+  // シャッフル
+  for (var j = ab2Order.length - 1; j > 0; j--) {
+    var k = Math.floor(Math.random() * (j + 1));
+    var t = ab2Order[j]; ab2Order[j] = ab2Order[k]; ab2Order[k] = t;
+  }
+}
+
+function ab2SetMode(mode) {
+  ab2Mode = mode;
+  var ids   = ['ab2ModeClassify', 'ab2ModeExample', 'ab2ModeBoth'];
+  var modes = ['classify', 'example', 'both'];
+  ids.forEach(function(id, i) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (modes[i] === mode) { el.style.background = 'white'; el.style.color = '#1d4ed8'; }
+    else { el.style.background = 'transparent'; el.style.color = 'white'; }
+  });
+  ab2BuildOrder();
+  ab2Index = 0;
+  ab2Revealed = false;
+  ab2Render();
+}
+
+function ab2Render() {
+  var card      = document.getElementById('ab2Card');
+  var qDiv      = document.getElementById('ab2Question');
+  var aDiv      = document.getElementById('ab2Answer');
+  var nextArea  = document.getElementById('ab2NextArea');
+  var doneDiv   = document.getElementById('ab2Done');
+  if (!card) return;
+
+  if (ab2Index >= ab2Order.length) {
+    card.style.display = 'none';
+    nextArea.style.display = 'none';
+    doneDiv.style.display = 'block';
+    ab2UpdateProgress();
+    return;
+  }
+
+  card.style.display = 'flex';
+  doneDiv.style.display = 'none';
+
+  var item = ab2Data[ab2Order[ab2Index]];
+  var qLabel = item.category === 'example' ? '分類' : '物質名';
+  var aLabel = item.category === 'example' ? '代表例' : '分類';
+
+  document.getElementById('ab2QLabel').textContent  = qLabel;
+  document.getElementById('ab2QText').textContent   = item.question;
+  document.getElementById('ab2QLabel2').textContent = qLabel;
+  document.getElementById('ab2QText2').textContent  = item.question;
+  document.getElementById('ab2ALabel').textContent  = aLabel;
+  document.getElementById('ab2AText').textContent   = item.answer;
+  document.getElementById('ab2AText').style.color   = item.color;
+
+  if (ab2Revealed) {
+    qDiv.style.display = 'none';
+    aDiv.style.display = 'block';
+    nextArea.style.display = 'block';
+    card.style.cursor = 'default';
+    card.style.background = item.bg;
+    card.style.borderColor = item.color;
+  } else {
+    qDiv.style.display = 'block';
+    aDiv.style.display = 'none';
+    nextArea.style.display = 'none';
+    card.style.cursor = 'pointer';
+    card.style.background = 'white';
+    card.style.borderColor = '#bfdbfe';
+  }
+  ab2UpdateProgress();
+}
+
+function ab2Reveal() {
+  if (ab2Revealed || ab2Index >= ab2Order.length) return;
+  ab2Revealed = true;
+  ab2Render();
+}
+
+function ab2Next() {
+  ab2Index++;
+  ab2Revealed = false;
+  ab2Render();
+}
+
+function ab2Restart() {
+  document.getElementById('ab2Done').style.display = 'none';
+  document.getElementById('ab2Card').style.display = 'flex';
+  ab2BuildOrder();
+  ab2Index = 0;
+  ab2Revealed = false;
+  ab2Render();
+}
+
+function ab2UpdateProgress() {
+  var total = ab2Order.length;
+  var pct = total > 0 ? Math.round((ab2Index / total) * 100) : 0;
+  var bar = document.getElementById('ab2ProgressBar');
+  var label = document.getElementById('ab2ProgressLabel');
+  if (bar) bar.style.width = pct + '%';
+  if (label) label.textContent = ab2Index >= total ? '完了！' : (Math.min(ab2Index + 1, total) + ' / ' + total);
+}
+
+// ===== 粒子ドット描画 =====
+function drawDots() {
+  // 強酸：20個の分子 → 20個すべてイオン（表示は20個で代表）
+  var saMol = document.getElementById('strongAcidDots');
+  var saIon = document.getElementById('strongIonDots');
+  var waMol = document.getElementById('weakAcidDots');
+  var waIon = document.getElementById('weakIonDots');
+  if (!saMol) return;
+
+  // 強酸 - 分子（すべてイオン化するので薄く）
+  var saHtml = '';
+  for (var i = 0; i < 20; i++) {
+    saHtml += '<span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#fca5a5;border:1.5px solid #ef4444;align-items:center;justify-content:center;font-size:0.55rem;font-weight:700;color:#7f1d1d;opacity:0.4">HCl</span>';
+  }
+  saMol.innerHTML = saHtml;
+
+  // 強酸 - イオン（20個 ≒ 全部）
+  var saIonHtml = '';
+  for (var j = 0; j < 20; j++) {
+    saIonHtml += '<span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span>';
+  }
+  saIon.innerHTML = saIonHtml;
+
+  // 弱酸 - 分子（ほとんどそのまま・濃い色）
+  var waMolHtml = '';
+  for (var k = 0; k < 20; k++) {
+    waMolHtml += '<span style="display:inline-flex;width:28px;height:22px;border-radius:6px;background:#d1fae5;border:1.5px solid #6ee7b7;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700;color:#065f46">CH₃COOH</span>';
+  }
+  waMol.innerHTML = waMolHtml;
+
+  // 弱酸 - イオン（1個だけ）
+  waIon.innerHTML = '<span style="display:inline-flex;width:22px;height:22px;border-radius:50%;background:#dc2626;border:1.5px solid #b91c1c;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:white">H⁺</span>' +
+    '<span style="font-size:0.8rem;color:#94a3b8;margin-left:6px;align-self:center">← 20個中 たったこれだけ！</span>';
+}
+
+document.addEventListener('DOMContentLoaded', function() { drawDots(); fcSetMode('formula'); ab2SetMode('classify'); });
+setTimeout(function() { drawDots(); fcSetMode('formula'); ab2SetMode('classify'); }, 150);
+
+// ===== COLUMN TOGGLE =====
+function toggleColumn() {
+  var body = document.getElementById('colBody');
+  var arrow = document.getElementById('colArrow');
+  if (body.style.display === 'none') {
+    body.style.display = 'block';
+    arrow.style.transform = 'rotate(180deg)';
+  } else {
+    body.style.display = 'none';
+    arrow.style.transform = 'rotate(0deg)';
+  }
+}
+
+// ===== QUIZ =====
+var quizData = [
+  {
+    q: 'アレニウスの定義によれば「塩基」とは何か？',
+    opts: ['H⁺を生じる物質','OH⁻を生じる物質','H⁺を受け取る物質','OH⁻を受け取る物質'],
+    ans: 1,
+    exp: 'アレニウスの定義：塩基 ＝ 水溶液中で電離してOH⁻を生じる物質。酸はH⁺を生じる物質です。'
+  },
+  {
+    q: 'ブレンステッド・ローリーの定義で「酸」とは何か？',
+    opts: ['OH⁻を放出する物質','H⁺を受け取る物質','H⁺を与える物質','水に溶ける物質'],
+    ans: 2,
+    exp: 'ブレンステッド・ローリー：酸 ＝ H⁺を与える物質、塩基 ＝ H⁺を受け取る物質。'
+  },
+  {
+    q: 'NH₃ ＋ H₂O ⇌ NH₄⁺ ＋ OH⁻ において、H₂O はどのようにはたらいているか？',
+    opts: ['酸（H⁺を渡している）','塩基（H⁺を受け取っている）','中性（反応していない）','酸化剤'],
+    ans: 0,
+    exp: 'H₂O はNH₃にH⁺を渡してOH⁻になっています → ブレンステッド・ローリーの「酸」。'
+  },
+  {
+    q: 'なぜブレンステッド・ローリーの定義が必要になったのか？',
+    opts: [
+      'アレニウスの定義が難しすぎたから',
+      'アレニウスの定義ではNH₃のような物質の塩基性を説明できなかったから',
+      'ブレンステッドが有名だったから',
+      '水溶液の方が不便だったから'
+    ],
+    ans: 1,
+    exp: 'NH₃はOH⁻を持たないのに塩基性を示す。アレニウスの定義（塩基＝OH⁻を出す物質）では説明できないため、H⁺のやりとりという視点が必要になりました。'
+  },
+  {
+    q: '強酸はどれか？',
+    opts: ['CH₃COOH（酢酸）','H₂CO₃（炭酸）','H₂SO₄（硫酸）','H₃PO₄（リン酸）'],
+    ans: 2,
+    exp: 'H₂SO₄（硫酸）は電離度α≒1の強酸。酢酸・炭酸・リン酸は弱酸です。'
+  },
+  {
+    q: 'CH₃COOH ＋ H₂O ⇌ CH₃COO⁻ ＋ H₃O⁺ において、H₂O のはたらきは？',
+    opts: ['酸（H⁺を渡している）','塩基（H⁺を受け取っている）','溶媒（反応していない）','触媒'],
+    ans: 1,
+    exp: 'H₂O はCH₃COOHからH⁺をもらってH₃O⁺になっています → H⁺を受け取っているので「塩基」。同じ水でも相手によって酸にも塩基にもなります（両性物質）！'
+  },
+];
+
+var quizState = [];
+function buildQuiz() {
+  quizState = quizData.map(function(){ return { answered: false }; });
+  var container = document.getElementById('quizContainer');
+  container.innerHTML = quizData.map(function(q, qi){
+    return '<div class="quiz-card" id="qc'+qi+'"><div class="quiz-q">Q'+(qi+1)+'. '+q.q+'</div><div class="quiz-opts">'
+      + q.opts.map(function(opt,oi){ return '<button class="quiz-opt" onclick="answerQuiz('+qi+','+oi+')">'+opt+'</button>'; }).join('')
+      + '</div><div class="quiz-feedback" id="qf'+qi+'"></div></div>';
+  }).join('');
+}
+
+function answerQuiz(qi, oi) {
+  if(quizState[qi].answered) return;
+  quizState[qi].answered = true;
+  var q = quizData[qi];
+  var opts = document.querySelectorAll('#qc'+qi+' .quiz-opt');
+  var fb = document.getElementById('qf'+qi);
+  opts.forEach(function(o){ o.disabled = true; });
+  if(oi===q.ans){
+    opts[oi].classList.add('correct');
+    fb.className = 'quiz-feedback show ok';
+    fb.textContent = '✅ 正解！ '+q.exp;
+    launchConfetti(5);
+  } else {
+    opts[oi].classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    fb.className = 'quiz-feedback show ng';
+    fb.textContent = '❌ 不正解。正解は「'+q.opts[q.ans]+'」。'+q.exp;
+  }
+}
+
+function resetQuiz(){ buildQuiz(); }
+buildQuiz();
+</script>
+
+
+</body></html>
