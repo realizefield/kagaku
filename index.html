@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0045)file:///C:/Users/tinbu/Downloads/index_1.html -->
+<!-- saved from url=(0045)file:///C:/Users/kogen/Downloads/index_8.html -->
 <html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -836,7 +836,7 @@
         </div>
       </div>
     </div>
-  <div style="margin-bottom:12px;"><div style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:.08em;margin-bottom:6px;">📚 化学基礎 ─ 単元を選ぶ</div><div style="display:flex;flex-wrap:wrap;gap:6px;"><button id="tab-busshitsu" style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:#F59E0B;color:#fff;box-shadow:0 2px 8px #F59E0B55;">⚛ 物質の構成</button><button id="tab-oxred" style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:#F3F4F6;color:#6B7280;">⚡ 酸化還元</button><button style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;background:#F3F4F6;color:#9CA3AF;opacity:.6;cursor:default;">🔋 イオンと電離 <span style="font-size:9px;background:rgba(0,0,0,.12);padding:1px 5px;border-radius:10px;">準備中</span></button><button id="tab-acid_base" style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:#F3F4F6;color:#6B7280;">🧫 酸と塩基</button><button id="tab-redox_app" style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:#F3F4F6;color:#6B7280;">🏭 酸化還元応用</button></div></div>
+  <div style="margin-bottom:12px;"><div style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:.08em;margin-bottom:6px;">📚 化学基礎 ─ 単元を選ぶ</div><div style="display:flex;flex-wrap:wrap;gap:6px;"><button id="tab-busshitsu" style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:#F59E0B;color:#fff;box-shadow:0 2px 8px #F59E0B55;">⚛ 物質の構成</button><button id="tab-oxred" style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:#F3F4F6;color:#6B7280;">⚡ 酸化還元</button><button style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;background:#F3F4F6;color:#9CA3AF;opacity:.6;cursor:default;">🔋 イオンと電離 <span style="font-size:9px;background:rgba(0,0,0,.12);padding:1px 5px;border-radius:10px;">準備中</span></button><button id="tab-acid_base" style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:#F3F4F6;color:#6B7280;">🧫 酸と塩基</button><button id="tab-redox_app" style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:#F3F4F6;color:#6B7280;">🏭 酸化還元応用</button><button id="tab-denkikagaku" style="padding:8px 14px;border:none;border-radius:8px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;background:#F3F4F6;color:#6B7280;">🔋 電気化学</button></div></div>
     <div class="settings">
       <span class="settings-label">⚙ ステップごとのミニテスト</span>
       <div class="toggle-wrap">
@@ -2093,6 +2093,57 @@ function render() {
 }
 
 function renderDashboard() {
+
+  // ── 電気化学チャプターは専用ファイルリンクダッシュボード ──
+  if (state.chapter === 'denkikagaku') {
+    var dkFiles = [
+      { file:'ch11_ion_tendency.html',  badge:'Ch.11', icon:'⚡', color:'#dc2626', colorD:'#991b1b', bg:'#fef2f2',
+        name:'金属のイオン化傾向', desc:'イオン化列・語呂合わせ・金属樹・水や酸との反応' },
+      { file:'ch12_metal_reactivity.html', badge:'Ch.12', icon:'🔩', color:'#d97706', colorD:'#92400e', bg:'#fef9c3',
+        name:'金属の反応性・不動態・王水', desc:'不動態（Fe・Ni・Al）・王水・両性金属「ああすんなり」' },
+      { file:'ch13_totan_buriki.html',  badge:'Ch.13', icon:'🏠', color:'#059669', colorD:'#065f46', bg:'#d1fae5',
+        name:'トタンとブリキ（防食）', desc:'犠牲防食・イオン化傾向による腐食挙動・断面図SVG付き' },
+      { file:'ch14_battery.html',       badge:'Ch.14', icon:'🔋', color:'#2563eb', colorD:'#1e40af', bg:'#dbeafe',
+        name:'ボルタ電池・ダニエル電池', desc:'酸化還元と電池の基本・なぜ酸化・なぜ還元か・分極・素焼き板' },
+    ];
+    var dkGrid = document.createElement('div');
+    dkGrid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;';
+    dkFiles.forEach(function(f) {
+      var card = document.createElement('div');
+      card.style.cssText = 'cursor:pointer;background:' + f.bg + ';border:2px solid ' + f.color + '33;'
+        + 'border-radius:16px;padding:18px 16px;position:relative;overflow:hidden;'
+        + 'box-shadow:0 2px 8px ' + f.color + '22;transition:transform 0.2s,box-shadow 0.2s;';
+      card.innerHTML = '<div style="position:absolute;top:0;right:0;background:' + f.color + ';color:white;'
+        + 'font-size:0.68rem;font-weight:800;padding:3px 10px;border-radius:0 14px 0 8px;">' + f.badge + '</div>'
+        + '<div style="font-size:1.6rem;margin-bottom:8px;">' + f.icon + '</div>'
+        + '<div style="font-weight:800;font-size:0.95rem;color:' + f.colorD + ';margin-bottom:6px;line-height:1.4;">' + f.name + '</div>'
+        + '<div style="font-size:0.78rem;color:#475569;line-height:1.7;margin-bottom:12px;">' + f.desc + '</div>'
+        + '<div style="display:flex;gap:6px;margin-bottom:12px;">'
+        + '<span style="font-size:0.7rem;padding:2px 10px;border-radius:20px;background:#d1fae5;color:#065f46;border:1px solid #6ee7b7;">✅ 公開中</span>'
+        + '<span style="font-size:0.7rem;padding:2px 10px;border-radius:20px;background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;">🆕 化学基礎</span>'
+        + '</div>'
+        + '<div style="background:' + f.color + ';color:white;font-size:0.8rem;font-weight:700;padding:8px 14px;border-radius:10px;text-align:center;">学習を開始 →</div>';
+      card.addEventListener('click', (function(fn){ return function(){ window.open(fn,'_blank'); }; })(f.file));
+      card.addEventListener('mouseover', (function(c){ return function(){
+        this.style.transform='translateY(-3px)';
+        this.style.boxShadow='0 8px 24px ' + c + '44';
+      }; })(f.color));
+      card.addEventListener('mouseout', (function(c){ return function(){
+        this.style.transform='';
+        this.style.boxShadow='0 2px 8px ' + c + '22';
+      }; })(f.color));
+      dkGrid.appendChild(card);
+    });
+    var dkWrap = '<div class="container"><div style="margin-bottom:18px;">'
+      + '<div style="font-size:1rem;font-weight:800;color:#1e40af;margin-bottom:4px;">🔋 電気化学（化学基礎）</div>'
+      + '<div style="font-size:0.82rem;color:#64748b;">新課程・Ch.11〜Ch.14。各ファイルをクリックして学習を開始してください。</div>'
+      + '</div></div>';
+    document.getElementById('app').innerHTML = dkWrap;
+    var appEl = document.getElementById('app').querySelector('.container');
+    appEl.appendChild(dkGrid);
+    return;
+  }
+
   // ── 酸と塩基チャプターは専用ファイルリンクダッシュボード ──
   if (state.chapter === 'acid_base') {
     var abFiles = [
@@ -2183,11 +2234,12 @@ function renderDashboard() {
 
   // ── 章タブ（化学基礎 全章） ──
   var CHAPTERS = [
-    { id:'busshitsu',  label:'物質の構成',   icon:'⚛', color:'#F59E0B', done:true  },
-    { id:'oxred',      label:'酸化還元',     icon:'⚡', color:'#8B5CF6', done:true  },
-    { id:'ionization', label:'イオンと電離', icon:'🔋', color:'#0EA5E9', done:false },
-    { id:'acid_base',  label:'酸と塩基',     icon:'🧫', color:'#10B981', done:true  },
-    { id:'redox_app',  label:'酸化還元応用', icon:'🏭', color:'#EC4899', done:true  }
+    { id:'busshitsu',    label:'物質の構成',   icon:'⚛', color:'#F59E0B', done:true  },
+    { id:'oxred',        label:'酸化還元',     icon:'⚡', color:'#8B5CF6', done:true  },
+    { id:'ionization',   label:'イオンと電離', icon:'🔋', color:'#0EA5E9', done:false },
+    { id:'acid_base',    label:'酸と塩基',     icon:'🧫', color:'#10B981', done:true  },
+    { id:'redox_app',    label:'酸化還元応用', icon:'🏭', color:'#EC4899', done:true  },
+    { id:'denkikagaku',  label:'電気化学',     icon:'🔋', color:'#2563eb', done:true  }
   ];
   var tabHtml = '<div style="margin-bottom:12px;">'
     + '<div style="font-size:10px;font-weight:700;color:#aaa;letter-spacing:.08em;margin-bottom:6px;">📚 化学基礎 ─ 単元を選ぶ</div>'
@@ -2291,7 +2343,7 @@ function renderDashboard() {
   document.getElementById('app').innerHTML = html;
   // 章タブのイベント設定
   // 章タブのイベント設定（準備中以外）
-  ['busshitsu','oxred','ionization','acid_base','redox_app'].forEach(function(cid){
+  ['busshitsu','oxred','ionization','acid_base','redox_app','denkikagaku'].forEach(function(cid){
     var btn = document.getElementById('tab-' + cid);
     if (btn) btn.onclick = function(){ state.chapter = cid; render(); window.scrollTo(0,0); };
   });

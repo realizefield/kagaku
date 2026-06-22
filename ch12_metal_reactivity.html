@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMBA | Ch.12 金属の反応性</title>
+<style>
+:root {
+  --primary:#2563eb; --primary-dark:#1d4ed8;
+  --accent:#059669; --accent2:#d97706; --accent3:#7c3aed;
+  --danger:#dc2626; --bg:#f0f4ff; --card:#ffffff;
+  --text:#1e293b; --muted:#64748b; --border:#e2e8f0;
+  --yellow-hint:#fef9c3; --blank-border:#fbbf24;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+header{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%);color:white;}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.15);}
+.logo{font-size:1.5rem;font-weight:900;letter-spacing:2px;color:#fbbf24;}
+.header-sub{font-size:0.75rem;opacity:0.8;}
+.chapter-title-bar{padding:14px 20px;display:flex;align-items:center;gap:12px;}
+.chapter-badge{background:#fbbf24;color:#1e3a8a;font-weight:900;font-size:0.75rem;padding:3px 10px;border-radius:20px;}
+.chapter-title-text{font-size:1.1rem;font-weight:700;}
+.tab-bar{display:flex;background:white;border-bottom:2px solid var(--border);overflow-x:auto;padding:0 16px;gap:4px;}
+.tab-btn{padding:10px 16px;border:none;background:none;font-size:0.82rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all 0.2s;font-family:inherit;}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
+.tab-content{display:none;padding:20px 16px;}
+.tab-content.active{display:block;}
+.section-card{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:20px;overflow:hidden;}
+.section-header{padding:14px 18px;font-weight:800;font-size:0.92rem;display:flex;align-items:center;gap:8px;}
+.sh-blue{background:linear-gradient(90deg,#1e40af,#3b82f6);color:white;}
+.sh-green{background:linear-gradient(90deg,#065f46,#059669);color:white;}
+.sh-orange{background:linear-gradient(90deg,#92400e,#d97706);color:white;}
+.sh-purple{background:linear-gradient(90deg,#4c1d95,#7c3aed);color:white;}
+.sh-red{background:linear-gradient(90deg,#991b1b,#dc2626);color:white;}
+.section-body{padding:16px 18px;}
+.text-block{font-size:0.9rem;line-height:1.8;margin-bottom:14px;}
+.key-box{background:#fef9c3;border:2px solid #f59e0b;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:0.88rem;line-height:1.7;}
+.warn-box{background:#fef2f2;border:2px solid #dc2626;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:0.88rem;line-height:1.7;}
+.tip-box{background:#ecfdf5;border:2px solid #059669;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:0.88rem;line-height:1.7;}
+.info-box{background:#eff6ff;border:2px solid #3b82f6;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:0.88rem;line-height:1.7;}
+.mini-test-wrap{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px;margin:14px 0;}
+.mini-test-title{font-size:0.8rem;font-weight:800;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.q-block{margin-bottom:16px;}
+.q-text{font-size:0.88rem;font-weight:600;margin-bottom:8px;line-height:1.6;}
+.choices{display:flex;flex-direction:column;gap:6px;}
+.choice-btn{background:white;border:2px solid var(--border);border-radius:8px;padding:9px 13px;text-align:left;cursor:pointer;font-size:0.84rem;font-family:inherit;transition:all 0.15s;line-height:1.5;}
+.choice-btn:hover{border-color:var(--primary);background:#eff6ff;}
+.choice-btn.correct{background:#d1fae5;border-color:#059669;color:#065f46;}
+.choice-btn.wrong{background:#fee2e2;border-color:#dc2626;color:#991b1b;}
+.feedback{margin-top:8px;font-size:0.84rem;padding:8px 12px;border-radius:7px;display:none;line-height:1.6;}
+.feedback.show{display:block;}
+.feedback.ok{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7;}
+.feedback.ng{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.collapsible-btn{background:none;border:none;width:100%;text-align:left;padding:10px 14px;cursor:pointer;font-size:0.84rem;font-weight:700;color:var(--accent3);font-family:inherit;display:flex;align-items:center;gap:6px;}
+.collapsible-btn::before{content:'▶';font-size:0.7rem;transition:transform 0.2s;}
+.collapsible-btn.open::before{transform:rotate(90deg);}
+.collapsible-body{display:none;padding:0 14px 14px;font-size:0.84rem;line-height:1.7;color:#374151;}
+.collapsible-body.open{display:block;}
+.svg-wrap{background:white;border-radius:10px;border:1px solid var(--border);padding:12px;margin:12px 0;overflow-x:auto;text-align:center;}
+.svg-wrap svg{max-width:100%;height:auto;}
+/* 反応性テーブル */
+.react-table{width:100%;border-collapse:collapse;font-size:0.8rem;margin:10px 0;}
+.react-table th{background:#1e40af;color:white;padding:8px 6px;font-size:0.78rem;text-align:center;}
+.react-table td{border:1px solid #e5e7eb;padding:7px 6px;text-align:center;vertical-align:middle;}
+.react-table tr:nth-child(even) td{background:#f8fafc;}
+.r-yes{color:#059669;font-weight:800;}
+.r-no{color:#dc2626;font-weight:800;}
+.r-group{background:#dbeafe;font-weight:700;font-size:0.78rem;}
+/* 語呂 */
+.mnemonic-box{background:linear-gradient(135deg,#1e3a8a,#3730a3);color:white;border-radius:10px;padding:14px 16px;margin:14px 0;text-align:center;}
+.mnemonic-reading{font-size:1rem;font-weight:800;letter-spacing:2px;color:#fbbf24;margin-bottom:8px;}
+.mnemonic-elements{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px;}
+.mnemonic-pair{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.mnemonic-kana{background:rgba(255,255,255,0.15);border-radius:4px;padding:3px 7px;font-size:0.8rem;font-weight:700;}
+.mnemonic-elem{background:#fbbf24;color:#1e3a8a;border-radius:4px;padding:3px 7px;font-size:0.82rem;font-weight:900;}
+/* 穴埋め */
+.blank-timer{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.timer-disp{font-size:0.9rem;font-weight:800;color:var(--primary);}
+.blank-start-btn{background:var(--accent);color:white;border:none;padding:7px 16px;border-radius:7px;cursor:pointer;font-size:0.82rem;font-family:inherit;font-weight:700;}
+.word-bank{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;padding:10px;background:#fef9c3;border-radius:8px;border:1px solid #f59e0b;}
+.word-chip{background:white;border:2px solid #d97706;border-radius:20px;padding:4px 12px;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.15s;}
+.word-chip:hover{background:#fef9c3;}
+.word-chip.used{opacity:0.4;pointer-events:none;}
+.blank-text{font-size:0.88rem;line-height:2.4;background:white;border-radius:8px;border:1px solid var(--border);padding:14px;}
+.blank-input{display:inline-block;min-width:80px;border-bottom:2px solid var(--blank-border);padding:1px 4px;font-size:0.88rem;font-weight:700;color:var(--primary);cursor:pointer;vertical-align:middle;}
+.blank-input.filled{border-color:var(--accent);color:var(--accent);}
+.blank-input.error{border-color:var(--danger);color:var(--danger);}
+.blank-result{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:0.86rem;display:none;}
+.blank-result.show{display:block;}
+/* クイズ */
+.quiz-q{margin-bottom:18px;background:white;border-radius:10px;padding:14px;border:1px solid var(--border);}
+.quiz-q-num{font-size:0.75rem;font-weight:800;color:var(--primary);margin-bottom:6px;}
+.quiz-q-text{font-size:0.88rem;font-weight:600;margin-bottom:10px;line-height:1.6;}
+.quiz-choices{display:flex;flex-direction:column;gap:6px;}
+.quiz-choice{background:#f8fafc;border:2px solid var(--border);border-radius:7px;padding:8px 12px;cursor:pointer;font-size:0.84rem;text-align:left;font-family:inherit;transition:all 0.15s;line-height:1.5;}
+.quiz-choice:hover{border-color:var(--primary);}
+.quiz-choice.correct{background:#d1fae5;border-color:#059669;}
+.quiz-choice.wrong{background:#fee2e2;border-color:#dc2626;}
+.quiz-fb{font-size:0.82rem;margin-top:8px;padding:8px 12px;border-radius:6px;display:none;line-height:1.6;}
+.quiz-fb.show{display:block;}
+.quiz-fb.ok{background:#d1fae5;color:#065f46;}
+.quiz-fb.ng{background:#fee2e2;color:#991b1b;}
+.quiz-score{font-size:1rem;font-weight:800;color:var(--primary);text-align:center;padding:14px;display:none;}
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:9999;animation:fall 1.5s ease-in forwards;}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+sub{font-size:0.7em;} sup{font-size:0.7em;}
+@media(max-width:480px){.tab-btn{padding:8px 11px;font-size:0.78rem;}.react-table{font-size:0.72rem;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo">GAMBA</div>
+    <div class="header-sub">江原予備校 化学eラーニング</div>
+  </div>
+  <div class="chapter-title-bar">
+    <span class="chapter-badge">Ch.12</span>
+    <span class="chapter-title-text">金属の反応性</span>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('learn',event)">📖 学習</button>
+  <button class="tab-btn" onclick="showTab('blank',event)">✏️ 穴埋めチャレンジ</button>
+  <button class="tab-btn" onclick="showTab('quiz',event)">✅ 確認クイズ</button>
+</div>
+
+<!-- ========== 学習タブ ========== -->
+<div id="tab-learn" class="tab-content active">
+
+  <!-- §1 水との反応 -->
+  <div class="section-card">
+    <div class="section-header sh-blue">💧 §1 金属と水の反応</div>
+    <div class="section-body">
+      <div class="text-block">
+        金属とイオン化傾向の関係で、<strong>水・酸・塩基</strong>との反応性が決まります。<br>
+        まず「水との反応」をイオン化傾向の大きい順に整理します。
+      </div>
+
+      <!-- 水との反応 SVG -->
+      <div class="svg-wrap">
+                        <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px">
+          <!-- 方向ラベル -->
+          <text x="10" y="16" fill="#1e40af" font-size="11" font-weight="bold">イオン化傾向：大 ←</text>
+          <text x="420" y="16" fill="#dc2626" font-size="11" font-weight="bold">→ 小</text>
+
+          <!-- 色帯（帯幅を広く取り直す） -->
+          <!-- K Ca Na：x=10, w=120 -->
+          <rect x="10"  y="24" width="120" height="52" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+          <!-- Mg：x=134, w=72（広げた） -->
+          <rect x="134" y="24" width="72"  height="52" rx="4" fill="#fef9c3" stroke="#d97706" stroke-width="2"/>
+          <!-- Al Zn Fe：x=210, w=110 -->
+          <rect x="210" y="24" width="110" height="52" rx="4" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+          <!-- Ni Sn Pb以降：x=324, w=226 -->
+          <rect x="324" y="24" width="226" height="52" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+
+          <!-- 元素記号（帯の中央上部） -->
+          <text x="18"  y="44" fill="#1e3a8a" font-size="12" font-weight="bold">K</text>
+          <text x="40"  y="44" fill="#1e3a8a" font-size="12" font-weight="bold">Ca</text>
+          <text x="72"  y="44" fill="#1e3a8a" font-size="12" font-weight="bold">Na</text>
+          <text x="155" y="44" text-anchor="middle" fill="#92400e" font-size="13" font-weight="bold">Mg</text>
+          <text x="218" y="44" fill="#065f46" font-size="12" font-weight="bold">Al</text>
+          <text x="244" y="44" fill="#065f46" font-size="12" font-weight="bold">Zn</text>
+          <text x="272" y="44" fill="#065f46" font-size="12" font-weight="bold">Fe</text>
+          <text x="332" y="44" fill="#991b1b" font-size="11">Ni</text>
+          <text x="356" y="44" fill="#991b1b" font-size="11">Sn</text>
+          <text x="380" y="44" fill="#991b1b" font-size="11">Pb</text>
+          <text x="406" y="44" fill="#991b1b" font-size="11">(H)</text>
+          <text x="434" y="44" fill="#991b1b" font-size="11">Cu</text>
+          <text x="460" y="44" fill="#991b1b" font-size="11">Ag</text>
+          <text x="486" y="44" fill="#991b1b" font-size="11">Au</text>
+
+          <!-- ラベル（帯内下部、各帯の中央に収める） -->
+          <text x="70"  y="62" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="bold">常温の水と反応</text>
+          <text x="70"  y="72" text-anchor="middle" fill="#1e3a8a" font-size="9">→ H₂ 発生</text>
+
+          <text x="170" y="62" text-anchor="middle" fill="#92400e" font-size="9" font-weight="bold">熱水のみ反応</text>
+          <text x="170" y="72" text-anchor="middle" fill="#92400e" font-size="9">→ H₂ 発生</text>
+
+          <text x="265" y="62" text-anchor="middle" fill="#065f46" font-size="9" font-weight="bold">高温の水蒸気</text>
+          <text x="265" y="72" text-anchor="middle" fill="#065f46" font-size="9">と反応</text>
+
+          <text x="437" y="62" text-anchor="middle" fill="#991b1b" font-size="9" font-weight="bold">水とは反応しない</text>
+
+          <!-- 補足説明ボックス -->
+          <rect x="10" y="86" width="540" height="106" rx="6" fill="#f8fafc" stroke="#e2e8f0"/>
+          <text x="20" y="104" fill="#374151" font-size="10" font-weight="bold">各グループの補足</text>
+          <text x="20" y="120" fill="#1e3a8a" font-size="10">● K・Ca・Na  ：常温の水でも激しく反応 → H₂ 発生</text>
+          <text x="20" y="136" fill="#92400e" font-size="10">● Mg のみ    ：沸騰した熱水なら反応、常温の水には反応しない</text>
+          <text x="20" y="152" fill="#065f46" font-size="10">● Al・Zn・Fe ：高温の水蒸気なら反応（液体の水とは反応しない）</text>
+          <text x="20" y="168" fill="#991b1b" font-size="10">● Ni・Sn・Pb以降：水・熱水・水蒸気のどれにも反応しない</text>
+          <text x="20" y="184" fill="#6b7280" font-size="9">※ Mg は「熱水」のみ。Ni・Sn・Pb の行で「熱水と反応」は誤り（反応しない）。</text>
+        </svg>
+      </div>
+
+      <div class="key-box">
+        🔑 <strong>水との反応まとめ</strong><br>
+        ・<strong>K・Ca・Na</strong>：常温の水と反応 → H₂ 発生<br>
+        　　例：2Na + 2H₂O → 2NaOH + H₂↑<br>
+        ・<strong>Mg</strong>：熱水（沸騰した水）と反応 → H₂ 発生<br>
+        　　例：Mg + 2H₂O → Mg(OH)₂ + H₂↑<br>
+        ・<strong>Al・Zn・Fe</strong>：高温の水蒸気と反応<br>
+        ・<strong>Ni・Sn・Pb・Cu 以下</strong>：水とは反応しない
+      </div>
+
+      <div class="tip-box">
+        💡 <strong>覚え方</strong>：K・Ca・Naは「<strong>常温でも水に反応するほど激しい</strong>」金属です。Naが水に触れると激しく反応するのを実験で見たことがある人もいますね。
+      </div>
+
+      <!-- ミニテスト -->
+      <div class="mini-test-wrap">
+        <div class="mini-test-title">🧪 ミニテスト §1</div>
+        <div class="q-block">
+          <div class="q-text">Q1. 常温の水と反応して水素を発生する金属を3つ選んでください。最も正しい組み合わせはどれ？</div>
+          <div class="choices">
+            <button class="choice-btn" id="mt1-a" onclick="checkMT('mt1','a','c')">① Fe・Zn・Al</button>
+            <button class="choice-btn" id="mt1-b" onclick="checkMT('mt1','b','c')">② Cu・Ag・Pt</button>
+            <button class="choice-btn" id="mt1-c" onclick="checkMT('mt1','c','c')">③ K・Ca・Na</button>
+            <button class="choice-btn" id="mt1-d" onclick="checkMT('mt1','d','c')">④ Mg・Al・Zn</button>
+          </div>
+          <div id="mt1-fb" class="feedback"></div>
+        </div>
+        <div class="q-block">
+          <div class="q-text">Q2. Mg（マグネシウム）が反応できる水の条件はどれですか？</div>
+          <div class="choices">
+            <button class="choice-btn" id="mt2-a" onclick="checkMT('mt2','a','b')">① 常温の水</button>
+            <button class="choice-btn" id="mt2-b" onclick="checkMT('mt2','b','b')">② 熱水（沸騰した水）</button>
+            <button class="choice-btn" id="mt2-c" onclick="checkMT('mt2','c','b')">③ 水とは一切反応しない</button>
+            <button class="choice-btn" id="mt2-d" onclick="checkMT('mt2','d','b')">④ 冷水のみ</button>
+          </div>
+          <div id="mt2-fb" class="feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §2 酸との反応 -->
+  <div class="section-card">
+    <div class="section-header sh-green">🧪 §2 金属と酸の反応</div>
+    <div class="section-body">
+      <div class="text-block">
+        希塩酸・希硫酸などの<strong>希酸</strong>、および酸化力のある<strong>硝酸・熱濃硫酸</strong>との反応を整理します。
+      </div>
+
+      <!-- 希酸との反応 SVG -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 500 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px">
+          <defs>
+            <marker id="arR2" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+              <polygon points="0 0,8 3.5,0 7" fill="#1e40af"/>
+            </marker>
+          </defs>
+          <line x1="20" y1="45" x2="480" y2="45" stroke="#1e40af" stroke-width="2.5" marker-end="url(#arR2)"/>
+          <text x="30" y="33" fill="#1e40af" font-size="11" font-weight="bold">イオン化傾向：大</text>
+          <text x="380" y="33" fill="#dc2626" font-size="11" font-weight="bold">小</text>
+          <!-- 区分線 -->
+          <line x1="305" y1="35" x2="305" y2="110" stroke="#dc2626" stroke-width="2" stroke-dasharray="5"/>
+          <!-- 元素 -->
+          <text x="25" y="65" fill="#1e40af" font-size="11" font-weight="bold">K Ca Na Mg Al Zn Fe Ni Sn</text>
+          <text x="180" y="80" fill="#374151" font-size="10">Pb ※</text>
+          <text x="318" y="65" fill="#dc2626" font-size="11" font-weight="bold">(H) Cu Hg Ag Pt Au</text>
+          <!-- ラベル -->
+          <rect x="18"  y="88" width="280" height="30" rx="5" fill="#dbeafe" stroke="#3b82f6"/>
+          <text x="158" y="107" text-anchor="middle" fill="#1e3a8a" font-size="10" font-weight="bold">希酸（希塩酸・希硫酸）に溶けて H₂ 発生</text>
+          <rect x="312" y="88" width="170" height="30" rx="5" fill="#fee2e2" stroke="#dc2626"/>
+          <text x="397" y="107" text-anchor="middle" fill="#991b1b" font-size="10" font-weight="bold">希酸に溶けない</text>
+        </svg>
+      </div>
+
+      <div class="warn-box">
+        ⚠️ <strong>Pb（鉛）に注意！</strong><br>
+        PbはHよりイオン化傾向が大きいので<strong>希酸に溶けるはず</strong>ですが…<br>
+        ・希塩酸 → 表面に <strong>PbCl₂（塩化鉛(II)）</strong> の白色被膜ができて反応停止<br>
+        ・希硫酸 → 表面に <strong>PbSO₄（硫酸鉛(II)）</strong> の白色被膜ができて反応停止<br>
+        → 実際には「<strong>溶けない</strong>」扱いになります！
+      </div>
+
+      <div class="text-block">
+        <strong>酸化力のある酸（硝酸・熱濃硫酸）</strong>との反応は別ルールです：
+      </div>
+
+      <div class="key-box">
+        🔑 <strong>Cu・Hg・Ag が溶ける酸</strong><br>
+        Cu・Hg・Agは希酸には溶けませんが、<strong>酸化力のある酸</strong>に溶けます：<br>
+        ・<strong>希硝酸</strong>：3Cu + 8HNO₃(希) → 3Cu(NO₃)₂ + 2NO↑ + 4H₂O<br>
+        ・<strong>濃硝酸</strong>：Cu + 4HNO₃(濃) → Cu(NO₃)₂ + 2NO₂↑ + 2H₂O<br>
+        ・<strong>熱濃硫酸</strong>：Cu + 2H₂SO₄(熱濃) → CuSO₄ + SO₂↑ + 2H₂O
+      </div>
+
+      <!-- 不動態 -->
+      <div class="section-card" style="box-shadow:none;border:2px solid #7c3aed;margin-top:14px;">
+        <div class="section-header sh-purple" style="font-size:0.85rem;">🛡️ 不動態とは</div>
+        <div class="section-body">
+          <div class="text-block">
+            <strong>Fe・Ni・Al</strong> は酸化力の強い酸（<strong>熱濃硫酸・濃硝酸</strong>）に浸すと、<br>
+            表面に緻密な<strong>酸化被膜（不動態）</strong>ができ、内部まで反応が進まなくなります。
+          </div>
+
+          <!-- 不動態の語呂 -->
+          <div class="mnemonic-box">
+            <div class="mnemonic-reading">フェ・ニ・アル</div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.75);margin-bottom:10px">不動態を作る金属</div>
+            <div class="mnemonic-elements">
+              <div class="mnemonic-pair"><div class="mnemonic-kana">フェ</div><div class="mnemonic-elem">Fe（鉄）</div></div>
+              <div class="mnemonic-pair"><div class="mnemonic-kana">ニ</div><div class="mnemonic-elem">Ni（ニッケル）</div></div>
+              <div class="mnemonic-pair"><div class="mnemonic-kana">アル</div><div class="mnemonic-elem">Al（アルミ）</div></div>
+            </div>
+          </div>
+
+          <!-- 不動態 SVG -->
+          <div class="svg-wrap">
+            <svg viewBox="0 0 360 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:360px">
+              <!-- 金属板 -->
+              <rect x="40" y="30" width="80" height="90" rx="4" fill="#9ca3af"/>
+              <text x="80" y="62" text-anchor="middle" fill="white" font-size="13" font-weight="bold">Fe</text>
+              <text x="80" y="80" text-anchor="middle" fill="white" font-size="10">（内部）</text>
+              <!-- 不動態被膜 -->
+              <rect x="36" y="26" width="88" height="98" rx="6" fill="none" stroke="#fbbf24" stroke-width="4"/>
+              <text x="80" y="138" text-anchor="middle" fill="#d97706" font-size="10" font-weight="bold">酸化被膜（不動態）</text>
+              <!-- 酸の攻撃矢印 -->
+              <text x="190" y="50" fill="#dc2626" font-size="11" font-weight="bold">濃HNO₃ または</text>
+              <text x="190" y="66" fill="#dc2626" font-size="11" font-weight="bold">熱濃H₂SO₄</text>
+              <path d="M 195 80 L 140 80" stroke="#dc2626" stroke-width="2" marker-end="url(#arBlock)"/>
+              <text x="165" y="72" text-anchor="middle" fill="#dc2626" font-size="10">攻撃！</text>
+              <!-- ブロック表示 -->
+              <text x="138" y="100" text-anchor="middle" fill="#7c3aed" font-size="20">🛡️</text>
+              <text x="210" y="110" fill="#7c3aed" font-size="11" font-weight="bold">被膜が守る！</text>
+              <text x="195" y="128" fill="#374151" font-size="10">内部まで反応しない</text>
+              <defs>
+                <marker id="arBlock" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+                  <polygon points="0 0,8 3.5,0 7" fill="#dc2626"/>
+                </marker>
+              </defs>
+            </svg>
+          </div>
+
+          <div class="warn-box" style="margin-top:8px;">
+            ⚠️ <strong>よくあるミス</strong>：「Fe は酸に溶けない」は<strong>誤り</strong>です！<br>
+            Fe は <strong>希塩酸・希硫酸</strong> などには溶けます（H₂ 発生）。<br>
+            不動態になるのは <strong>濃硝酸・熱濃硫酸</strong> のみです。
+          </div>
+        </div>
+      </div>
+
+      <!-- 王水 -->
+      <div class="key-box" style="margin-top:14px;">
+        🔑 <strong>王水（おうすい）</strong><br>
+        濃塩酸 : 濃硝酸 ＝ <strong>3 : 1</strong> の混合液を <strong>王水</strong> といいます。<br>
+        王水には <strong>Pt（白金）・Au（金）</strong> も溶けます（他の酸には溶けません）。<br>
+        → 「金も溶かす王様の水」という意味です。
+      </div>
+
+      <div class="warn-box">
+        ⚠️ <strong>テキストの修正</strong><br>
+        テキストには「濃硝酸：濃塩酸 ＝ 1：3」と記載されていますが、<br>
+        正しくは <strong>濃塩酸：濃硝酸 ＝ 3：1</strong> です（塩酸が多い）。混同しないように注意！
+      </div>
+
+      <!-- ミニテスト §2 -->
+      <div class="mini-test-wrap">
+        <div class="mini-test-title">🧪 ミニテスト §2</div>
+        <div class="q-block">
+          <div class="q-text">Q3. 不動態を形成する金属の組み合わせとして正しいものはどれですか？</div>
+          <div class="choices">
+            <button class="choice-btn" id="mt3-a" onclick="checkMT('mt3','a','b')">① Cu・Ag・Au</button>
+            <button class="choice-btn" id="mt3-b" onclick="checkMT('mt3','b','b')">② Fe・Ni・Al</button>
+            <button class="choice-btn" id="mt3-c" onclick="checkMT('mt3','c','b')">③ K・Ca・Na</button>
+            <button class="choice-btn" id="mt3-d" onclick="checkMT('mt3','d','b')">④ Zn・Sn・Pb</button>
+          </div>
+          <div id="mt3-fb" class="feedback"></div>
+        </div>
+        <div class="q-block">
+          <div class="q-text">Q4. 希塩酸（HCl）に溶けない金属はどれですか？</div>
+          <div class="choices">
+            <button class="choice-btn" id="mt4-a" onclick="checkMT('mt4','a','c')">① Zn</button>
+            <button class="choice-btn" id="mt4-b" onclick="checkMT('mt4','b','c')">② Mg</button>
+            <button class="choice-btn" id="mt4-c" onclick="checkMT('mt4','c','c')">③ Cu</button>
+            <button class="choice-btn" id="mt4-d" onclick="checkMT('mt4','d','c')">④ Fe</button>
+          </div>
+          <div id="mt4-fb" class="feedback"></div>
+        </div>
+        <div class="q-block">
+          <div class="q-text">Q5. 王水の配合比（濃塩酸：濃硝酸）として正しいものはどれですか？</div>
+          <div class="choices">
+            <button class="choice-btn" id="mt5-a" onclick="checkMT('mt5','a','b')">① 1 : 3</button>
+            <button class="choice-btn" id="mt5-b" onclick="checkMT('mt5','b','b')">② 3 : 1</button>
+            <button class="choice-btn" id="mt5-c" onclick="checkMT('mt5','c','b')">③ 1 : 1</button>
+            <button class="choice-btn" id="mt5-d" onclick="checkMT('mt5','d','b')">④ 2 : 1</button>
+          </div>
+          <div id="mt5-fb" class="feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §2.5 両性金属 -->
+  <div class="section-card">
+    <div class="section-header sh-purple">⚗️ §2.5 両性金属（Al・Zn・Sn・Pb）</div>
+    <div class="section-body">
+      <div class="text-block">
+        ほとんどの金属は<strong>酸に溶けて</strong>水素を発生しますが、塩基（NaOHなど）には溶けません。<br>
+        ところが <strong>Al・Zn・Sn・Pb</strong> の4つは、酸にも塩基にも溶けるという特別な性質をもっています。<br>
+        これらを <strong>両性金属</strong> といいます。
+      </div>
+
+      <!-- 語呂合わせ -->
+      <div class="mnemonic-box">
+        <div class="mnemonic-reading">ああすんなり（愛される）</div>
+        <div style="font-size:0.78rem;color:rgba(255,255,255,0.75);margin-bottom:10px">両性金属の語呂合わせ</div>
+        <div class="mnemonic-elements">
+          <div class="mnemonic-pair"><div class="mnemonic-kana">あ</div><div class="mnemonic-elem">Al（アルミ）</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">あ</div><div class="mnemonic-elem">Zn（亜鉛）</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">すん</div><div class="mnemonic-elem">Sn（スズ）</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">なり</div><div class="mnemonic-elem">Pb（鉛）</div></div>
+        </div>
+      </div>
+
+      <!-- 反応式まとめ -->
+      <div class="key-box">
+        🔑 <strong>Alを例にした反応式</strong><br>
+        <strong>酸（希塩酸）との反応：</strong><br>
+        　2Al + 6HCl → 2AlCl₃ + 3H₂↑<br><br>
+        <strong>塩基（NaOH水溶液）との反応：</strong><br>
+        　2Al + 2NaOH + 2H₂O → 2NaAlO₂ + 3H₂↑<br>
+        　（テトラヒドロキシドアルミン酸ナトリウムを生成しH₂発生）
+      </div>
+
+      <!-- 深く知りたいボタン -->
+      <button class="collapsible-btn" id="col-ampho-btn" onclick="toggleCol('col-ampho')"
+        style="background:linear-gradient(90deg,#4c1d95,#7c3aed);color:white;border-radius:10px;padding:12px 18px;font-size:0.9rem;margin:14px 0;width:100%;justify-content:center;gap:10px;">
+        🔬 深く知りたい！ なぜ酸にも塩基にも溶けるの？
+      </button>
+      <div class="collapsible-body" id="col-ampho-body" style="background:#f5f3ff;border:2px solid #7c3aed;border-radius:10px;padding:16px;margin-bottom:14px;">
+
+        <div style="font-weight:800;color:#4c1d95;font-size:0.92rem;margin-bottom:10px;">🧠 ポイント：Al³⁺ イオンの性質</div>
+
+        <p style="margin-bottom:12px;">
+          Alが酸にも塩基にも溶ける理由は、<strong>Al³⁺（アルミニウムイオン）の電荷が大きく、とても小さいイオン</strong>だからです。<br>
+          小さくて電荷が大きいイオンは、周りの水分子や OH⁻ を強く引き寄せ、複雑な反応をします。
+        </p>
+
+        <!-- SVG: 酸との反応メカニズム -->
+        <div class="svg-wrap" style="margin:10px 0;">
+          <svg viewBox="0 0 460 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:460px">
+            <text x="230" y="18" text-anchor="middle" fill="#1e40af" font-size="13" font-weight="bold">【酸との反応】Al が H⁺ に電子を渡して溶ける</text>
+            <!-- Al原子 -->
+            <circle cx="70" cy="90" r="35" fill="#1e40af"/>
+            <text x="70" y="86" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Al</text>
+            <text x="70" y="103" text-anchor="middle" fill="#fbbf24" font-size="11">金属</text>
+            <!-- 電子放出 -->
+            <circle cx="130" cy="75" r="9" fill="#fbbf24"/>
+            <text x="130" y="79" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="bold">e⁻</text>
+            <circle cx="150" cy="90" r="9" fill="#fbbf24"/>
+            <text x="150" y="94" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="bold">e⁻</text>
+            <circle cx="130" cy="108" r="9" fill="#fbbf24"/>
+            <text x="130" y="112" text-anchor="middle" fill="#1e3a8a" font-size="9" font-weight="bold">e⁻</text>
+            <!-- 矢印 -->
+            <path d="M 115 90 L 170 90" stroke="#374151" stroke-width="1.5" marker-end="url(#arD1)"/>
+            <!-- Al³⁺ -->
+            <circle cx="215" cy="90" r="28" fill="#3b82f6" opacity="0.8"/>
+            <text x="215" y="87" text-anchor="middle" fill="white" font-size="13" font-weight="bold">Al³⁺</text>
+            <text x="215" y="103" text-anchor="middle" fill="white" font-size="10">水溶液へ</text>
+            <!-- H⁺ + e⁻ → H₂ -->
+            <text x="310" y="70" fill="#dc2626" font-size="12" font-weight="bold">H⁺ が電子を受け取る</text>
+            <text x="310" y="88" fill="#374151" font-size="11">2H⁺ + 2e⁻ → H₂↑</text>
+            <text x="310" y="108" fill="#059669" font-size="11" font-weight="bold">水素ガスが発生！</text>
+            <defs>
+              <marker id="arD1" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto">
+                <polygon points="0 0,7 3,0 6" fill="#374151"/>
+              </marker>
+            </defs>
+          </svg>
+        </div>
+
+        <div style="background:#dbeafe;border-radius:8px;padding:10px 14px;margin:10px 0;font-size:0.86rem;line-height:1.7;">
+          <strong style="color:#1e40af;">酸との反応のしくみ（希塩酸の例）</strong><br>
+          Al は電子を3個放出して <strong>Al³⁺</strong> になります（酸化）。<br>
+          溶液中の H⁺ がその電子を受け取って <strong>H₂↑</strong> が発生します。<br>
+          → これはふつうの金属（Fe・Znなど）と同じしくみです。
+        </div>
+
+        <!-- SVG: 塩基との反応メカニズム -->
+        <div class="svg-wrap" style="margin:14px 0;">
+          <svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:460px">
+            <text x="230" y="18" text-anchor="middle" fill="#7c3aed" font-size="13" font-weight="bold">【塩基との反応】OH⁻ が Al(OH)₃ をさらに溶かす</text>
+            <!-- Step1 -->
+            <text x="230" y="42" text-anchor="middle" fill="#374151" font-size="11" font-weight="bold">Step 1：Alが溶けて Al(OH)₃（水酸化アルミニウム）が生成</text>
+            <rect x="30" y="52" width="400" height="34" rx="6" fill="#ede9fe" stroke="#7c3aed"/>
+            <text x="230" y="68" text-anchor="middle" fill="#4c1d95" font-size="11">Al + 3H₂O → Al(OH)₃ + 3/2 H₂↑　（表面で一瞬起こる）</text>
+            <text x="230" y="82" text-anchor="middle" fill="#6b7280" font-size="10">※ 実際は Al が OH⁻ と反応するため、直接は生じにくい</text>
+            <!-- Step2 -->
+            <text x="230" y="106" text-anchor="middle" fill="#374151" font-size="11" font-weight="bold">Step 2：OH⁻ が Al(OH)₃ と反応してさらに溶かす</text>
+            <rect x="30" y="115" width="400" height="34" rx="6" fill="#fce7f3" stroke="#db2777"/>
+            <text x="230" y="131" text-anchor="middle" fill="#831843" font-size="11">Al(OH)₃ + OH⁻ → [Al(OH)₄]⁻　（テトラヒドロキシドアルミン酸イオン）</text>
+            <text x="230" y="145" text-anchor="middle" fill="#6b7280" font-size="10">これが溶液に溶けて消える → Alが溶けたように見える！</text>
+            <!-- まとめ式 -->
+            <rect x="30" y="162" width="400" height="30" rx="6" fill="#d1fae5" stroke="#059669"/>
+            <text x="230" y="178" text-anchor="middle" fill="#065f46" font-size="11" font-weight="bold">全体：2Al + 2NaOH + 2H₂O → 2NaAlO₂ + 3H₂↑</text>
+          </svg>
+        </div>
+
+        <div style="background:#fce7f3;border-radius:8px;padding:10px 14px;margin:10px 0;font-size:0.86rem;line-height:1.7;">
+          <strong style="color:#831843;">塩基との反応のしくみ（NaOH水溶液の例）</strong><br>
+          Al(OH)₃（水酸化アルミニウム）は<strong>両性水酸化物</strong>です。<br>
+          通常の水酸化物（例：Fe(OH)₃）は NaOH に溶けませんが、<br>
+          Al(OH)₃ は OH⁻ をさらに受け取り <strong>[Al(OH)₄]⁻</strong>（錯イオン）になって溶けます。<br><br>
+          これを<strong>酸塩基両性</strong>といい、<strong>Al³⁺ のイオン半径が非常に小さく電荷が大きい</strong>ため、<br>
+          OH⁻ を強く引きつける力があることが理由です。
+        </div>
+
+        <div style="background:#fef9c3;border:2px solid #f59e0b;border-radius:8px;padding:10px 14px;margin:10px 0;font-size:0.86rem;line-height:1.7;">
+          🔑 <strong>Zn・Sn・Pb も同じしくみ</strong><br>
+          Zn：Zn + 2NaOH → Na₂ZnO₂ + H₂↑<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;Zn(OH)₂ + 2OH⁻ → [Zn(OH)₄]²⁻（錯イオン）として溶ける<br><br>
+          Sn・Pb も同様に両性を示しますが、高校入試では <strong>Al・Zn</strong> が特に重要です。
+        </div>
+
+        <div style="background:#eff6ff;border:2px solid #3b82f6;border-radius:8px;padding:10px 14px;margin:10px 0;font-size:0.86rem;line-height:1.7;">
+          💡 <strong>まとめ：なぜ両性なのか（一言で）</strong><br>
+          Al³⁺・Zn²⁺ などは<strong>イオン半径が小さく電荷が大きい</strong>ため、<br>
+          水溶液中で OH⁻ と複雑な錯イオンを作れます。<br>
+          → 酸の中では「金属として H⁺ に電子を渡す」<br>
+          → 塩基の中では「OH⁻ を引き寄せて錯イオンになって溶ける」<br>
+          この二重の能力が「両性」の正体です。
+        </div>
+      </div><!-- /col-ampho-body -->
+
+      <!-- 両性金属フラッシュカード -->
+      <div style="margin:14px 0;">
+        <div style="font-weight:800;font-size:0.88rem;color:#4c1d95;margin-bottom:10px;">🃏 フラッシュカード（両性金属・反応性）</div>
+        <div style="display:flex;gap:8px;margin-bottom:10px;align-items:center;flex-wrap:wrap;">
+          <select id="fc12-mode" style="font-size:0.8rem;padding:6px 10px;border-radius:6px;border:1px solid #e2e8f0;font-family:inherit;">
+            <option value="qa">問題→答え</option>
+            <option value="aq">答え→問題</option>
+          </select>
+          <button onclick="fc12Shuffle()" style="font-size:0.8rem;padding:6px 12px;border-radius:6px;border:none;background:#7c3aed;color:white;font-weight:700;cursor:pointer;font-family:inherit;">シャッフル</button>
+          <button onclick="fc12Reset()" style="font-size:0.8rem;padding:6px 12px;border-radius:6px;border:none;background:#6b7280;color:white;font-weight:700;cursor:pointer;font-family:inherit;">最初から</button>
+          <span id="fc12-counter" style="font-size:0.82rem;color:#64748b;margin-left:4px;">1 / 16</span>
+        </div>
+        <div id="fc12-card" onclick="fc12Flip()" style="background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:12px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 16px;cursor:pointer;user-select:none;">
+          <div id="fc12-front" style="color:#fbbf24;font-size:1rem;font-weight:800;text-align:center;line-height:1.6;"></div>
+          <div id="fc12-back" style="color:white;font-size:0.92rem;font-weight:700;text-align:center;line-height:1.7;display:none;white-space:pre-line;"></div>
+          <div id="fc12-hint" style="font-size:0.72rem;color:rgba(255,255,255,0.55);margin-top:10px;">タップで答えを表示</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+          <button onclick="fc12Prev()" style="background:#7c3aed;color:white;border:none;padding:7px 18px;border-radius:7px;cursor:pointer;font-size:0.82rem;font-family:inherit;font-weight:600;">◀ 前へ</button>
+          <button onclick="fc12Next()" style="background:#7c3aed;color:white;border:none;padding:7px 18px;border-radius:7px;cursor:pointer;font-size:0.82rem;font-family:inherit;font-weight:600;">次へ ▶</button>
+        </div>
+      </div>
+
+      <div class="mini-test-wrap">
+        <div class="mini-test-title">🧪 ミニテスト §2.5（両性金属）</div>
+        <div class="q-block">
+          <div class="q-text">Q8. 両性金属として正しい組み合わせはどれですか？</div>
+          <div class="choices">
+            <button class="choice-btn" id="mt8-a" onclick="checkMT('mt8','a','c')">① K・Ca・Na</button>
+            <button class="choice-btn" id="mt8-b" onclick="checkMT('mt8','b','c')">② Fe・Ni・Cu</button>
+            <button class="choice-btn" id="mt8-c" onclick="checkMT('mt8','c','c')">③ Al・Zn・Sn・Pb</button>
+            <button class="choice-btn" id="mt8-d" onclick="checkMT('mt8','d','c')">④ Ag・Pt・Au</button>
+          </div>
+          <div id="mt8-fb" class="feedback"></div>
+        </div>
+        <div class="q-block">
+          <div class="q-text">Q9. Al（アルミニウム）を NaOH 水溶液に入れたとき発生する気体はどれですか？</div>
+          <div class="choices">
+            <button class="choice-btn" id="mt9-a" onclick="checkMT('mt9','a','b')">① O₂（酸素）</button>
+            <button class="choice-btn" id="mt9-b" onclick="checkMT('mt9','b','b')">② H₂（水素）</button>
+            <button class="choice-btn" id="mt9-c" onclick="checkMT('mt9','c','b')">③ CO₂（二酸化炭素）</button>
+            <button class="choice-btn" id="mt9-d" onclick="checkMT('mt9','d','b')">④ 気体は発生しない</button>
+          </div>
+          <div id="mt9-fb" class="feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §3 総合反応性表 -->
+  <div class="section-card">
+    <div class="section-header sh-orange">📊 §3 金属の反応性まとめ表</div>
+    <div class="section-body">
+      <div class="text-block">
+        イオン化傾向ごとに、水・希酸・酸化力のある酸への反応性をまとめます。
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="react-table">
+          <thead>
+            <tr>
+              <th>金属グループ</th>
+              <th>代表例</th>
+              <th>常温の水</th>
+              <th>熱水</th>
+              <th>希塩酸・希硫酸</th>
+              <th>希硝酸・熱濃H₂SO₄</th>
+              <th>濃硝酸</th>
+              <th>王水</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="r-group">K・Ca・Na</td>
+              <td>Na</td>
+              <td class="r-yes">◎ 反応</td>
+              <td class="r-yes">◎</td>
+              <td class="r-yes">◎</td>
+              <td class="r-yes">◎</td>
+              <td class="r-yes">◎</td>
+              <td class="r-yes">◎</td>
+            </tr>
+            <tr>
+              <td class="r-group">Mg</td>
+              <td>Mg</td>
+              <td class="r-no">× なし</td>
+              <td class="r-yes">○ 反応</td>
+              <td class="r-yes">◎</td>
+              <td class="r-yes">◎</td>
+              <td class="r-yes">◎</td>
+              <td class="r-yes">◎</td>
+            </tr>
+            <tr>
+              <td class="r-group">Al・Zn・Fe</td>
+              <td>Fe</td>
+              <td class="r-no">× なし</td>
+              <td class="r-no">×（水蒸気）</td>
+              <td class="r-yes">○ 反応</td>
+              <td class="r-yes">○</td>
+              <td style="color:#7c3aed;font-weight:800;">不動態</td>
+              <td class="r-yes">○</td>
+            </tr>
+            <tr>
+              <td class="r-group">Ni・Sn・Pb</td>
+              <td>Pb※</td>
+              <td class="r-no">× なし</td>
+              <td class="r-no">×</td>
+              <td style="color:#d97706;font-weight:800;">△ Pb は被膜</td>
+              <td class="r-yes">○</td>
+              <td style="color:#7c3aed;font-weight:800;">Ni 不動態</td>
+              <td class="r-yes">○</td>
+            </tr>
+            <tr>
+              <td class="r-group">Cu・Hg・Ag</td>
+              <td>Cu</td>
+              <td class="r-no">× なし</td>
+              <td class="r-no">×</td>
+              <td class="r-no">× なし</td>
+              <td class="r-yes">○ 反応</td>
+              <td class="r-yes">○ 反応</td>
+              <td class="r-yes">○</td>
+            </tr>
+            <tr>
+              <td class="r-group">Pt・Au</td>
+              <td>Au</td>
+              <td class="r-no">× なし</td>
+              <td class="r-no">×</td>
+              <td class="r-no">× なし</td>
+              <td class="r-no">×</td>
+              <td class="r-no">×</td>
+              <td class="r-yes">○ 王水のみ</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="info-box" style="margin-top:10px;">
+        ℹ️ ※ Pb は希塩酸・希硫酸では表面に PbCl₂・PbSO₄ の被膜ができて実質溶けません。<br>
+        ℹ️ Al・Fe・Ni は濃硝酸や熱濃硫酸で<strong>不動態</strong>になります（テキスト記載どおり「フェ・ニ・アル」）。
+      </div>
+
+      <!-- ミニテスト §3 -->
+      <div class="mini-test-wrap">
+        <div class="mini-test-title">🧪 ミニテスト §3</div>
+        <div class="q-block">
+          <div class="q-text">Q6. Pt（白金）と Au（金）を溶かすことができる液体はどれですか？</div>
+          <div class="choices">
+            <button class="choice-btn" id="mt6-a" onclick="checkMT('mt6','a','d')">① 希塩酸</button>
+            <button class="choice-btn" id="mt6-b" onclick="checkMT('mt6','b','d')">② 濃硝酸</button>
+            <button class="choice-btn" id="mt6-c" onclick="checkMT('mt6','c','d')">③ 熱濃硫酸</button>
+            <button class="choice-btn" id="mt6-d" onclick="checkMT('mt6','d','d')">④ 王水（濃塩酸＋濃硝酸）</button>
+          </div>
+          <div id="mt6-fb" class="feedback"></div>
+        </div>
+        <div class="q-block">
+          <div class="q-text">Q7. 鉄（Fe）を濃硝酸に入れたとき起こることとして正しいのはどれですか？</div>
+          <div class="choices">
+            <button class="choice-btn" id="mt7-a" onclick="checkMT('mt7','a','c')">① 激しく溶けてH₂が発生する</button>
+            <button class="choice-btn" id="mt7-b" onclick="checkMT('mt7','b','c')">② 何も起こらない（Feは酸に一切溶けない）</button>
+            <button class="choice-btn" id="mt7-c" onclick="checkMT('mt7','c','c')">③ 表面に不動態が形成されて溶けなくなる</button>
+            <button class="choice-btn" id="mt7-d" onclick="checkMT('mt7','d','c')">④ Feが還元される</button>
+          </div>
+          <div id="mt7-fb" class="feedback"></div>
+        </div>
+      </div>
+
+      <!-- 発展コラム -->
+      <button class="collapsible-btn" id="col1-btn" onclick="toggleCol('col1')">📘 発展：なぜ不動態ができるのか？</button>
+      <div class="collapsible-body" id="col1-body">
+        Fe・Ni・Al を濃硝酸や熱濃硫酸に入れると、表面に <strong>Fe₂O₃・NiO・Al₂O₃</strong> などの<br>
+        緻密な酸化物被膜が生成します。この被膜は非常に薄いですが緻密で、<br>
+        酸や酸素が内部に到達するのを防ぎます。<br><br>
+        日常例：アルミニウムのアルマイト加工（Al₂O₃被膜を人工的に厚くする）や、<br>
+        ステンレス鋼（Fe + Cr）の錆びにくさも同じ原理です。
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-learn -->
+
+<!-- ========== 穴埋めタブ ========== -->
+<div id="tab-blank" class="tab-content">
+  <div class="section-card">
+    <div class="section-header sh-purple">✏️ 穴埋めチャレンジ</div>
+    <div class="section-body">
+      <div class="blank-timer">
+        <span class="timer-disp">⏱ <span id="blank-time">3:00</span></span>
+        <button class="blank-start-btn" id="blank-start-btn" onclick="startBlank()">スタート</button>
+      </div>
+      <div class="word-bank" id="word-bank">
+        <span class="word-chip" id="wc0" onclick="selectWord('K・Ca・Na','wc0')">K・Ca・Na</span>
+        <span class="word-chip" id="wc1" onclick="selectWord('Mg','wc1')">Mg</span>
+        <span class="word-chip" id="wc2" onclick="selectWord('熱水','wc2')">熱水</span>
+        <span class="word-chip" id="wc3" onclick="selectWord('H₂','wc3')">H₂</span>
+        <span class="word-chip" id="wc4" onclick="selectWord('Fe・Ni・Al','wc4')">Fe・Ni・Al</span>
+        <span class="word-chip" id="wc5" onclick="selectWord('不動態','wc5')">不動態</span>
+        <span class="word-chip" id="wc6" onclick="selectWord('濃硝酸','wc6')">濃硝酸</span>
+        <span class="word-chip" id="wc7" onclick="selectWord('熱濃硫酸','wc7')">熱濃硫酸</span>
+        <span class="word-chip" id="wc8" onclick="selectWord('王水','wc8')">王水</span>
+        <span class="word-chip" id="wc9" onclick="selectWord('Pt・Au','wc9')">Pt・Au</span>
+        <span class="word-chip" id="wc10" onclick="selectWord('3：1','wc10')">3：1</span>
+        <span class="word-chip" id="wc11" onclick="selectWord('PbCl₂','wc11')">PbCl₂</span>
+        <span class="word-chip" id="wc12" onclick="selectWord('PbSO₄','wc12')">PbSO₄</span>
+        <span class="word-chip" id="wc13" onclick="selectWord('Cu・Hg・Ag','wc13')">Cu・Hg・Ag</span>
+        <span class="word-chip" id="wc14" onclick="selectWord('希酸','wc14')">希酸</span>
+      </div>
+      <div class="blank-text" id="blank-text">
+        常温の水と反応して H₂ を発生する金属は
+        <span class="blank-input" id="bl-1" onclick="fillBlank('bl-1','K・Ca・Na')">　　　　</span>
+        である。<br><br>
+
+        <span class="blank-input" id="bl-2" onclick="fillBlank('bl-2','Mg')">　　</span>
+        は常温の水とは反応しないが、
+        <span class="blank-input" id="bl-3" onclick="fillBlank('bl-3','熱水')">　　　　</span>
+        と反応して
+        <span class="blank-input" id="bl-4" onclick="fillBlank('bl-4','H₂')">　　</span>
+        を発生する。<br><br>
+
+        希酸（希塩酸・希硫酸）に溶けない金属は H より
+        イオン化傾向が小さい
+        <span class="blank-input" id="bl-5" onclick="fillBlank('bl-5','Cu・Hg・Ag')">　　　　　　</span>
+        や Pt・Au などである。<br><br>
+
+        Pb は H よりイオン化傾向が大きいが、希塩酸では表面に白色の
+        <span class="blank-input" id="bl-6" onclick="fillBlank('bl-6','PbCl₂')">　　　　</span>
+        、希硫酸では
+        <span class="blank-input" id="bl-7" onclick="fillBlank('bl-7','PbSO₄')">　　　　</span>
+        の被膜ができて実際には溶けない。<br><br>
+
+        <span class="blank-input" id="bl-8" onclick="fillBlank('bl-8','Fe・Ni・Al')">　　　　　</span>
+        は
+        <span class="blank-input" id="bl-9" onclick="fillBlank('bl-9','濃硝酸')">　　　　</span>
+        や
+        <span class="blank-input" id="bl-10" onclick="fillBlank('bl-10','熱濃硫酸')">　　　　</span>
+        に浸すと表面に緻密な酸化被膜（
+        <span class="blank-input" id="bl-11" onclick="fillBlank('bl-11','不動態')">　　　　</span>
+        ）が生じ、溶けなくなる。<br><br>
+
+        <span class="blank-input" id="bl-12" onclick="fillBlank('bl-12','Pt・Au')">　　　　</span>
+        は
+        <span class="blank-input" id="bl-13" onclick="fillBlank('bl-13','王水')">　　　　</span>
+        にのみ溶ける。王水は濃塩酸と濃硝酸を
+        <span class="blank-input" id="bl-14" onclick="fillBlank('bl-14','3：1')">　　</span>
+        の割合で混合した液体である。
+      </div>
+      <div class="blank-result" id="blank-result"></div>
+      <button onclick="checkBlank()" style="margin-top:12px;background:var(--primary);color:white;border:none;padding:9px 20px;border-radius:8px;cursor:pointer;font-size:0.86rem;font-family:inherit;font-weight:700;">答え合わせ</button>
+      <button onclick="resetBlank()" style="margin-top:12px;margin-left:8px;background:var(--muted);color:white;border:none;padding:9px 20px;border-radius:8px;cursor:pointer;font-size:0.86rem;font-family:inherit;font-weight:700;">リセット</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== クイズタブ ========== -->
+<div id="tab-quiz" class="tab-content">
+  <div class="section-card">
+    <div class="section-header sh-red">✅ 確認クイズ（Ch.12）</div>
+    <div class="section-body">
+      <div id="quiz-wrap">
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 1</div>
+          <div class="quiz-q-text">常温の水と反応して水素を発生する金属の組み合わせはどれですか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(0,0,2,this)">① Al・Zn・Fe</button>
+            <button class="quiz-choice" onclick="checkQuiz(0,1,2,this)">② Cu・Hg・Ag</button>
+            <button class="quiz-choice" onclick="checkQuiz(0,2,2,this)">③ K・Ca・Na</button>
+            <button class="quiz-choice" onclick="checkQuiz(0,3,2,this)">④ Mg・Ni・Sn</button>
+          </div>
+          <div class="quiz-fb" id="qfb-0"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 2</div>
+          <div class="quiz-q-text">鉛（Pb）を希硫酸に入れたとき、実際に起こることとして正しいのはどれか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(1,0,1,this)">① 激しく反応してH₂が発生する</button>
+            <button class="quiz-choice" onclick="checkQuiz(1,1,1,this)">② 表面にPbSO₄の被膜ができて溶けない</button>
+            <button class="quiz-choice" onclick="checkQuiz(1,2,1,this)">③ 不動態が形成される</button>
+            <button class="quiz-choice" onclick="checkQuiz(1,3,1,this)">④ 完全に溶けてPb²⁺とH₂が生じる</button>
+          </div>
+          <div class="quiz-fb" id="qfb-1"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 3</div>
+          <div class="quiz-q-text">不動態を形成する金属の正しい組み合わせはどれですか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(2,0,1,this)">① K・Na・Ca</button>
+            <button class="quiz-choice" onclick="checkQuiz(2,1,1,this)">② Fe・Ni・Al</button>
+            <button class="quiz-choice" onclick="checkQuiz(2,2,1,this)">③ Cu・Ag・Au</button>
+            <button class="quiz-choice" onclick="checkQuiz(2,3,1,this)">④ Zn・Sn・Pb</button>
+          </div>
+          <div class="quiz-fb" id="qfb-2"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 4</div>
+          <div class="quiz-q-text">王水（濃塩酸＋濃硝酸）について正しいものはどれですか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(3,0,2,this)">① 濃塩酸：濃硝酸 ＝ 1：3 で混合する</button>
+            <button class="quiz-choice" onclick="checkQuiz(3,1,2,this)">② すべての金属を溶かすことができる</button>
+            <button class="quiz-choice" onclick="checkQuiz(3,2,2,this)">③ 濃塩酸：濃硝酸 ＝ 3：1 で混合し、Pt・Auも溶かせる</button>
+            <button class="quiz-choice" onclick="checkQuiz(3,3,2,this)">④ 水と酸を混ぜた液体である</button>
+          </div>
+          <div class="quiz-fb" id="qfb-3"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 5</div>
+          <div class="quiz-q-text">Cu（銅）が溶ける酸の組み合わせとして正しいものはどれですか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(4,0,2,this)">① 希塩酸・希硫酸</button>
+            <button class="quiz-choice" onclick="checkQuiz(4,1,2,this)">② 希塩酸・濃硝酸</button>
+            <button class="quiz-choice" onclick="checkQuiz(4,2,2,this)">③ 希硝酸・濃硝酸・熱濃硫酸</button>
+            <button class="quiz-choice" onclick="checkQuiz(4,3,2,this)">④ 王水のみ</button>
+          </div>
+          <div class="quiz-fb" id="qfb-4"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 6</div>
+          <div class="quiz-q-text">次の記述のうち正しいものはどれですか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(5,0,3,this)">① Feは酸に一切溶けない</button>
+            <button class="quiz-choice" onclick="checkQuiz(5,1,3,this)">② Mgは常温の水と激しく反応する</button>
+            <button class="quiz-choice" onclick="checkQuiz(5,2,3,this)">③ Auは濃硝酸に溶ける</button>
+            <button class="quiz-choice" onclick="checkQuiz(5,3,3,this)">④ Alは希塩酸に溶けてH₂を発生する</button>
+          </div>
+          <div class="quiz-fb" id="qfb-5"></div>
+        </div>
+
+      </div>
+      <div class="quiz-score" id="quiz-score"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// タブ
+function showTab(id, e){
+  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(e && e.target) e.target.classList.add('active');
+}
+
+// ミニテスト
+const MT_FB = {
+  mt1:{
+    c:['○ 正解！','K・Ca・Na は常温の水と反応し、水素 H₂ と水酸化物を生成します。\n例：2Na + 2H₂O → 2NaOH + H₂↑'],
+    a:['× 不正解','Fe・Zn・Al は常温の水とは反応しません。高温の水蒸気なら反応します。'],
+    b:['× 不正解','Cu・Ag・Pt はイオン化傾向が小さく、水とは反応しません。'],
+    d:['× 不正解','Mg は熱水（沸騰水）とは反応しますが、常温の水とは反応しません。']
+  },
+  mt2:{
+    b:['○ 正解！','Mg は熱水（沸騰した水）と反応します：Mg + 2H₂O → Mg(OH)₂ + H₂↑'],
+    a:['× 不正解','常温の水と反応するのは K・Ca・Na の３つです。Mgは常温では反応しません。'],
+    c:['× 不正解','Mg は熱水とは反応します。全く反応しないわけではありません。'],
+    d:['× 不正解','冷水のみに反応する金属はありません。']
+  },
+  mt3:{
+    b:['○ 正解！','不動態を作る金属は「フェ・ニ・アル」= Fe・Ni・Al です。語呂合わせで覚えましょう！'],
+    a:['× 不正解','Cu・Ag・Au は不動態を作りません。Cuは希硝酸などに溶けます。'],
+    c:['× 不正解','K・Ca・Na はイオン化傾向が非常に大きく、水とも反応します。'],
+    d:['× 不正解','Zn・Sn・Pb は不動態を作りません。']
+  },
+  mt4:{
+    c:['○ 正解！','Cu は H よりイオン化傾向が小さいため、希塩酸には溶けません。\n希硝酸・濃硝酸・熱濃硫酸なら溶けます。'],
+    a:['× 不正解','Zn は H よりイオン化傾向が大きいため、希塩酸に溶けてH₂が発生します。'],
+    b:['× 不正解','Mg は H よりイオン化傾向が大きいため、希塩酸に溶けます。'],
+    d:['× 不正解','Fe は H よりイオン化傾向が大きいため、希塩酸に溶けてH₂が発生します。']
+  },
+  mt5:{
+    b:['○ 正解！','王水は濃塩酸：濃硝酸 ＝ 3：1 です。テキストには「1：3」と記載がありましたが誤りです。塩酸が3、硝酸が1 です。'],
+    a:['× 不正解','1：3 はよく見られる誤りです。正しくは 3（塩酸）：1（硝酸）です。'],
+    c:['× 不正解','1：1 ではありません。濃塩酸が3倍多いです。'],
+    d:['× 不正解','2：1 ではありません。']
+  },
+  mt6:{
+    d:['○ 正解！','Pt・Au は王水（濃塩酸＋濃硝酸 ＝ 3：1）にのみ溶けます。「金も溶かす王様の水」という意味です。'],
+    a:['× 不正解','希塩酸には Pt・Au は溶けません。'],
+    b:['× 不正解','濃硝酸だけでは Pt・Au は溶けません。'],
+    c:['× 不正解','熱濃硫酸だけでは Pt・Au は溶けません。']
+  },
+  mt7:{
+    c:['○ 正解！','Fe は濃硝酸に浸すと表面に緻密な酸化被膜（不動態）が生じ、内部まで反応が進まなくなります。'],
+    a:['× 不正解','濃硝酸でFeが激しく溶けるわけではありません。不動態が形成されます。'],
+    b:['× 不正解','Feは希塩酸などには溶けます。「一切溶けない」は誤りです。'],
+    d:['× 不正解','Feが還元されるのではなく、表面が酸化されて被膜ができます。']
+  },
+  mt8:{
+    c:['○ 正解！','両性金属は「ああすんなり」→ Al・Zn・Sn・Pb の4つです。酸にも塩基にも溶けます。'],
+    a:['× 不正解','K・Ca・Na は常温の水とも激しく反応する金属です。塩基には溶けません。'],
+    b:['× 不正解','Fe・Ni・Cu は両性金属ではありません。NaOH水溶液には溶けません。'],
+    d:['× 不正解','Ag・Pt・Au はイオン化傾向が小さく、希酸にも塩基にも溶けません。']
+  },
+  mt9:{
+    b:['○ 正解！','Al を NaOH 水溶液に入れると H₂ が発生します。<br>反応式：2Al + 2NaOH + 2H₂O → 2NaAlO₂ + 3H₂↑<br>Al(OH)₃ が OH⁻ と反応して錯イオン [Al(OH)₄]⁻ になり溶けます。'],
+    a:['× 不正解','O₂（酸素）は発生しません。金属が溶けるときは通常 H₂ が発生します。'],
+    c:['× 不正解','CO₂ は炭素を含む反応で発生します。この反応には炭素は含まれません。'],
+    d:['× 不正解','H₂ が発生します。Al は両性金属なので NaOH にも溶けて H₂↑ が生じます。']
+  }
+};
+
+function checkMT(id, chose, correct){
+  const fb = document.getElementById(id+'-fb');
+  const isOk = (chose === correct);
+  const info = MT_FB[id]?.[chose] || ['',''];
+  fb.innerHTML = '<strong>'+info[0]+'</strong><br>'+info[1].replace(/\n/g,'<br>');
+  fb.className = 'feedback show '+(isOk?'ok':'ng');
+  fb.previousElementSibling.querySelectorAll('.choice-btn').forEach(b=>b.disabled=true);
+  if(isOk) launchConfetti(20);
+}
+
+// コラプシブル
+function toggleCol(id){
+  document.getElementById(id+'-body').classList.toggle('open');
+  document.getElementById(id+'-btn').classList.toggle('open');
+}
+
+// 穴埋め
+const BLANK_ANS = {
+  'bl-1':'K・Ca・Na','bl-2':'Mg','bl-3':'熱水','bl-4':'H₂',
+  'bl-5':'Cu・Hg・Ag','bl-6':'PbCl₂','bl-7':'PbSO₄',
+  'bl-8':'Fe・Ni・Al','bl-9':'濃硝酸','bl-10':'熱濃硫酸','bl-11':'不動態',
+  'bl-12':'Pt・Au','bl-13':'王水','bl-14':'3：1'
+};
+const blankFilled={};
+let blankSelected=null, blankTimer=null, blankTime=180;
+
+function startBlank(){
+  if(blankTimer) return;
+  blankTimer=setInterval(()=>{
+    blankTime--;
+    const m=Math.floor(blankTime/60),s=blankTime%60;
+    document.getElementById('blank-time').textContent=m+':'+(s<10?'0':'')+s;
+    if(blankTime<=0){clearInterval(blankTimer);checkBlank();}
+  },1000);
+  document.getElementById('blank-start-btn').textContent='進行中…';
+  document.getElementById('blank-start-btn').disabled=true;
+}
+
+function selectWord(word,chipId){
+  blankSelected=word;
+  document.querySelectorAll('.word-chip').forEach(el=>el.style.outline='');
+  document.getElementById(chipId).style.outline='2px solid #2563eb';
+}
+
+function fillBlank(id){
+  if(!blankSelected){alert('先にワードを選んでください');return;}
+  const el=document.getElementById(id);
+  blankFilled[id]=blankSelected;
+  el.textContent=blankSelected;
+  el.classList.add('filled');
+  const chip=[...document.querySelectorAll('.word-chip')].find(c=>
+    c.getAttribute('onclick')&&c.getAttribute('onclick').includes("'"+blankSelected+"'")&&!c.classList.contains('used'));
+  if(chip) chip.classList.add('used');
+  blankSelected=null;
+  document.querySelectorAll('.word-chip').forEach(el=>el.style.outline='');
+}
+
+function checkBlank(){
+  let ok=0,total=Object.keys(BLANK_ANS).length;
+  Object.entries(BLANK_ANS).forEach(([id,ans])=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    if(blankFilled[id]===ans){el.classList.add('filled');el.classList.remove('error');ok++;}
+    else{el.classList.add('error');el.classList.remove('filled');el.textContent=blankFilled[id]||'＿';}
+  });
+  const res=document.getElementById('blank-result');
+  res.textContent=ok+'／'+total+' 正解！'+(ok===total?' 🎉 全問正解！':'　もう一度確認しましょう。');
+  res.className='blank-result show';
+  res.style.background=ok===total?'#d1fae5':'#fee2e2';
+  res.style.color=ok===total?'#065f46':'#991b1b';
+  if(ok===total) launchConfetti(30);
+}
+
+function resetBlank(){
+  Object.keys(BLANK_ANS).forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.textContent='\u3000\u3000';
+    el.className='blank-input';
+    delete blankFilled[id];
+  });
+  document.querySelectorAll('.word-chip').forEach(el=>{el.classList.remove('used');el.style.outline='';});
+  document.getElementById('blank-result').className='blank-result';
+  blankSelected=null;
+  clearInterval(blankTimer);blankTimer=null;blankTime=180;
+  document.getElementById('blank-time').textContent='3:00';
+  document.getElementById('blank-start-btn').textContent='スタート';
+  document.getElementById('blank-start-btn').disabled=false;
+}
+
+// クイズ
+const QFBS=[
+  ['③ K・Ca・Naが常温の水と反応してH₂を発生します。Na + H₂O → NaOH + ½H₂ のイメージで覚えましょう。',
+   '①はAl・Zn・Feで水蒸気と反応、②はCuなど貴金属で水と反応しない、④はMgが熱水。'],
+  ['② PbはH₂SO₄と反応するとPbSO₄（不溶性）の被膜が生じ、内部まで反応しません。',
+   '①③④はいずれも誤り。不動態（③）はFe・Ni・Alに関するものです。Pbは被膜（PbSO₄・PbCl₂）で止まります。'],
+  ['② 「フェ・ニ・アル」＝ Fe・Ni・Al が濃硝酸・熱濃硫酸で不動態を形成します。',
+   '①は常温で水と反応する金属、③は貴金属（希酸に溶けない）、④は希酸に溶けるがPbは被膜問題あり。'],
+  ['③ 王水は濃塩酸：濃硝酸＝3：1 で、Pt・Auも溶かせます。①は比率が逆、②はすべての金属は溶かせません（例：Naなど激しく反応する金属は別の危険）。',
+   '①比率が逆。②全金属は溶かせない。④水と酸を混ぜたわけではなく、2種類の酸の混合です。'],
+  ['③ CuはHよりイオン化傾向が小さく希酸には溶けませんが、酸化力のある希硝酸・濃硝酸・熱濃硫酸には溶けます。',
+   '①②は希塩酸を含んでいるので誤り。④王水のみは誤り（希硝酸でも溶ける）。'],
+  ['④ Alは希塩酸に溶けてH₂を発生します（Al + 3HCl → AlCl₃ + 3/2 H₂）。①Feは希塩酸に溶ける、②Mgは熱水に反応（常温では不可）、③AuはPt同様王水にのみ溶ける。',
+   '①Feは希塩酸などには溶けます。②Mgの常温水への反応は×。③Auは濃硝酸には溶けません。']
+];
+const qAns=[false,false,false,false,false,false];
+let qScore=0;
+
+function checkQuiz(qi,chose,correct,btn){
+  if(qAns[qi]) return;
+  qAns[qi]=true;
+  const isOk=chose===correct;
+  if(isOk){qScore++;btn.classList.add('correct');launchConfetti(15);}
+  else btn.classList.add('wrong');
+  const fb=document.getElementById('qfb-'+qi);
+  fb.innerHTML=(isOk?'<strong>✅ 正解！</strong>　':'<strong>❌ 不正解。</strong>　')+QFBS[qi][isOk?0:1];
+  fb.className='quiz-fb show '+(isOk?'ok':'ng');
+  btn.parentElement.querySelectorAll('.quiz-choice').forEach(b=>b.disabled=true);
+  if(qAns.every(v=>v)){
+    const sc=document.getElementById('quiz-score');
+    sc.textContent='最終スコア：'+qScore+' / 6　'+(qScore===6?'🎉 満点！':'お疲れ様でした！');
+    sc.style.display='block';
+    if(qScore===6) launchConfetti(40);
+  }
+}
+
+
+// ===== Ch.12 フラッシュカード（両性金属・反応性） =====
+const FC12_DATA = [
+  {q:'両性金属とは何ですか？', a:'酸にも塩基（アルカリ）にも\n溶けて H₂ を発生する金属'},
+  {q:'両性金属を4つ答えてください。', a:'Al（アルミニウム）\nZn（亜鉛）\nSn（スズ）\nPb（鉛）'},
+  {q:'両性金属の語呂合わせは？', a:'「ああ すんなり（愛される）」\nAl・Zn・Sn・Pb'},
+  {q:'Al（アルミ）を希塩酸に入れると？', a:'溶けて H₂ が発生する\n2Al + 6HCl → 2AlCl₃ + 3H₂↑'},
+  {q:'Al（アルミ）を NaOH 水溶液に入れると？', a:'溶けて H₂ が発生する\n2Al + 2NaOH + 2H₂O → 2NaAlO₂ + 3H₂↑'},
+  {q:'Zn（亜鉛）を NaOH 水溶液に入れると？', a:'溶けて H₂ が発生する\nZn + 2NaOH → Na₂ZnO₂ + H₂↑'},
+  {q:'なぜ両性金属は塩基にも溶けるの？', a:'Al³⁺・Zn²⁺ はイオン半径が小さく\n電荷が大きいため OH⁻ を引きつけて\n錯イオン（[Al(OH)₄]⁻ など）を作り溶ける'},
+  {q:'不動態を形成する金属3つは？（語呂で）', a:'「フェ・ニ・アル」\nFe（鉄）・Ni（ニッケル）・Al（アルミ）'},
+  {q:'不動態とは何ですか？', a:'濃硝酸・熱濃硫酸に浸すと\n表面に緻密な酸化被膜が生じ\n内部まで反応が進まなくなる状態'},
+  {q:'常温の水と反応する金属3つは？', a:'K（カリウム）\nCa（カルシウム）\nNa（ナトリウム）'},
+  {q:'Mg（マグネシウム）が反応できる水は？', a:'熱水（沸騰した水）のみ\n常温の水とは反応しない'},
+  {q:'王水とは何ですか？', a:'濃塩酸：濃硝酸 ＝ 3：1 の混合液\nPt・Au も溶かせる'},
+  {q:'Pb（鉛）を希塩酸に入れると実際どうなる？', a:'表面に PbCl₂（白色）の被膜ができ\n内部まで反応しない（実質溶けない）'},
+  {q:'Pb（鉛）を希硫酸に入れると実際どうなる？', a:'表面に PbSO₄（白色）の被膜ができ\n内部まで反応しない（実質溶けない）'},
+  {q:'Cu（銅）が溶ける酸を3つ答えてください。', a:'・希硝酸\n・濃硝酸\n・熱濃硫酸\n（希塩酸・希硫酸には溶けない）'},
+  {q:'Pt・Au が溶ける液体は？', a:'王水のみ\n（濃塩酸：濃硝酸 ＝ 3：1）'}
+];
+let fc12Cards = [...FC12_DATA], fc12Idx = 0, fc12Flipped = false;
+
+function fc12Render() {
+  const mode = document.getElementById('fc12-mode').value;
+  const c = fc12Cards[fc12Idx];
+  const front = mode === 'qa' ? c.q : c.a;
+  const back  = mode === 'qa' ? c.a : c.q;
+  document.getElementById('fc12-front').textContent = front;
+  document.getElementById('fc12-back').textContent  = back;
+  document.getElementById('fc12-back').style.display  = 'none';
+  document.getElementById('fc12-front').style.display = 'block';
+  document.getElementById('fc12-hint').textContent = 'タップで答えを表示';
+  document.getElementById('fc12-counter').textContent = (fc12Idx+1) + ' / ' + fc12Cards.length;
+  fc12Flipped = false;
+}
+function fc12Flip() {
+  fc12Flipped = !fc12Flipped;
+  document.getElementById('fc12-front').style.display = fc12Flipped ? 'none'  : 'block';
+  document.getElementById('fc12-back').style.display  = fc12Flipped ? 'block' : 'none';
+  document.getElementById('fc12-hint').textContent = fc12Flipped ? 'タップで問題に戻る' : 'タップで答えを表示';
+}
+function fc12Next() { fc12Idx = (fc12Idx + 1) % fc12Cards.length; fc12Render(); }
+function fc12Prev() { fc12Idx = (fc12Idx - 1 + fc12Cards.length) % fc12Cards.length; fc12Render(); }
+function fc12Shuffle() {
+  for (let i = fc12Cards.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [fc12Cards[i], fc12Cards[j]] = [fc12Cards[j], fc12Cards[i]];
+  }
+  fc12Idx = 0; fc12Render();
+}
+function fc12Reset() { fc12Cards = [...FC12_DATA]; fc12Idx = 0; fc12Render(); }
+fc12Render();
+
+// 花吹雪
+function launchConfetti(n){
+  const cols=['#fbbf24','#2563eb','#059669','#dc2626','#7c3aed','#f97316'];
+  for(let i=0;i<n;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.cssText='left:'+Math.random()*100+'vw;top:-10px;background:'+cols[~~(Math.random()*cols.length)]+';animation-duration:'+(1+Math.random())+'s;animation-delay:'+Math.random()*0.5+'s';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),2500);
+  }
+}
+</script>
+</body>
+</html>

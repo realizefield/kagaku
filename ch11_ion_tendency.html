@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMBA | Ch.11 イオン化傾向</title>
+<style>
+:root {
+  --primary:#2563eb; --primary-dark:#1d4ed8;
+  --accent:#059669; --accent2:#d97706; --accent3:#7c3aed;
+  --danger:#dc2626; --bg:#f0f4ff; --card:#ffffff;
+  --text:#1e293b; --muted:#64748b; --border:#e2e8f0;
+  --yellow-hint:#fef9c3; --blank-border:#fbbf24;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* ===== HEADER ===== */
+header{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%);color:white;}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.15);}
+.logo{font-size:1.5rem;font-weight:900;letter-spacing:2px;color:#fbbf24;}
+.header-sub{font-size:0.75rem;opacity:0.8;}
+.chapter-title-bar{padding:14px 20px;display:flex;align-items:center;gap:12px;}
+.chapter-badge{background:#fbbf24;color:#1e3a8a;font-weight:900;font-size:0.75rem;padding:3px 10px;border-radius:20px;}
+.chapter-title-text{font-size:1.1rem;font-weight:700;}
+
+/* ===== TABS ===== */
+.tab-bar{display:flex;background:white;border-bottom:2px solid var(--border);overflow-x:auto;padding:0 16px;gap:4px;}
+.tab-btn{padding:10px 16px;border:none;background:none;font-size:0.82rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all 0.2s;font-family:inherit;}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
+.tab-content{display:none;padding:20px 16px;}
+.tab-content.active{display:block;}
+
+/* ===== CARDS / SECTIONS ===== */
+.section-card{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:20px;overflow:hidden;}
+.section-header{padding:14px 18px;font-weight:800;font-size:0.92rem;display:flex;align-items:center;gap:8px;}
+.sh-blue{background:linear-gradient(90deg,#1e40af,#3b82f6);color:white;}
+.sh-green{background:linear-gradient(90deg,#065f46,#059669);color:white;}
+.sh-orange{background:linear-gradient(90deg,#92400e,#d97706);color:white;}
+.sh-purple{background:linear-gradient(90deg,#4c1d95,#7c3aed);color:white;}
+.sh-red{background:linear-gradient(90deg,#991b1b,#dc2626);color:white;}
+.section-body{padding:16px 18px;}
+
+/* ===== TEXT BLOCKS ===== */
+.text-block{font-size:0.9rem;line-height:1.8;margin-bottom:14px;}
+.key-box{background:#fef9c3;border:2px solid #f59e0b;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:0.88rem;line-height:1.7;}
+.warn-box{background:#fef2f2;border:2px solid #dc2626;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:0.88rem;line-height:1.7;}
+.tip-box{background:#ecfdf5;border:2px solid #059669;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:0.88rem;line-height:1.7;}
+.info-box{background:#eff6ff;border:2px solid #3b82f6;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:0.88rem;line-height:1.7;}
+
+/* ===== MNEMONIC ===== */
+.mnemonic-box{background:linear-gradient(135deg,#1e3a8a,#3730a3);color:white;border-radius:10px;padding:14px 16px;margin:14px 0;text-align:center;}
+.mnemonic-reading{font-size:1.05rem;font-weight:800;letter-spacing:2px;color:#fbbf24;margin-bottom:8px;}
+.mnemonic-elements{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px;}
+.mnemonic-pair{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.mnemonic-kana{background:rgba(255,255,255,0.15);border-radius:4px;padding:3px 7px;font-size:0.8rem;font-weight:700;}
+.mnemonic-elem{background:#fbbf24;color:#1e3a8a;border-radius:4px;padding:3px 7px;font-size:0.82rem;font-weight:900;}
+
+/* ===== ION TENDENCY TABLE ===== */
+.ionization-table{width:100%;border-collapse:collapse;font-size:0.8rem;margin:10px 0;overflow-x:auto;display:block;}
+.ionization-table th,.ionization-table td{border:1px solid #d1d5db;padding:6px 8px;text-align:center;}
+.ionization-table thead tr th{background:#1e40af;color:white;font-weight:700;}
+.ionization-table .row-ion{background:#dbeafe;}
+.ionization-table .row-elem{background:#fef9c3;font-weight:800;}
+
+/* ===== REACTION TABLE ===== */
+.react-table{width:100%;border-collapse:collapse;font-size:0.82rem;margin:10px 0;}
+.react-table th{background:#374151;color:white;padding:8px 10px;font-size:0.8rem;}
+.react-table td{border:1px solid #e5e7eb;padding:7px 10px;vertical-align:top;}
+.react-table tr:nth-child(even) td{background:#f8fafc;}
+.react-yes{color:#059669;font-weight:800;}
+.react-no{color:#dc2626;font-weight:800;}
+
+/* ===== MINI TEST ===== */
+.mini-test-wrap{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px;margin:14px 0;}
+.mini-test-title{font-size:0.8rem;font-weight:800;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.q-block{margin-bottom:16px;}
+.q-text{font-size:0.88rem;font-weight:600;margin-bottom:8px;line-height:1.6;}
+.choices{display:flex;flex-direction:column;gap:6px;}
+.choice-btn{background:white;border:2px solid var(--border);border-radius:8px;padding:9px 13px;text-align:left;cursor:pointer;font-size:0.84rem;font-family:inherit;transition:all 0.15s;line-height:1.5;}
+.choice-btn:hover{border-color:var(--primary);background:#eff6ff;}
+.choice-btn.correct{background:#d1fae5;border-color:#059669;color:#065f46;}
+.choice-btn.wrong{background:#fee2e2;border-color:#dc2626;color:#991b1b;}
+.feedback{margin-top:8px;font-size:0.84rem;padding:8px 12px;border-radius:7px;display:none;line-height:1.6;}
+.feedback.show{display:block;}
+.feedback.ok{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7;}
+.feedback.ng{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+
+/* ===== FLASHCARD ===== */
+.fc-wrap{margin:14px 0;}
+.fc-controls{display:flex;gap:8px;margin-bottom:10px;align-items:center;}
+.fc-controls select,.fc-controls button{font-size:0.8rem;padding:6px 10px;border-radius:6px;border:1px solid var(--border);cursor:pointer;font-family:inherit;}
+.fc-controls button{background:var(--primary);color:white;border-color:var(--primary);font-weight:700;}
+.fc-card{background:linear-gradient(135deg,#1e3a8a,#2563eb);border-radius:12px;min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;cursor:pointer;position:relative;overflow:hidden;}
+.fc-front,.fc-back{text-align:center;width:100%;}
+.fc-front{color:#fbbf24;font-size:1.05rem;font-weight:800;}
+.fc-back{color:white;font-size:0.95rem;font-weight:700;display:none;}
+.fc-hint{font-size:0.72rem;color:rgba(255,255,255,0.6);margin-top:6px;}
+.fc-nav{display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+.fc-nav button{background:var(--primary);color:white;border:none;padding:7px 16px;border-radius:7px;cursor:pointer;font-size:0.82rem;font-family:inherit;font-weight:600;}
+.fc-counter{font-size:0.82rem;color:var(--muted);}
+
+/* ===== FILL BLANK ===== */
+.blank-section{margin:14px 0;}
+.blank-timer{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.timer-disp{font-size:0.9rem;font-weight:800;color:var(--primary);}
+.blank-start-btn{background:var(--accent);color:white;border:none;padding:7px 16px;border-radius:7px;cursor:pointer;font-size:0.82rem;font-family:inherit;font-weight:700;}
+.word-bank{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;padding:10px;background:#fef9c3;border-radius:8px;border:1px solid #f59e0b;}
+.word-chip{background:white;border:2px solid #d97706;border-radius:20px;padding:4px 12px;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.15s;}
+.word-chip:hover{background:#fef9c3;}
+.word-chip.used{opacity:0.4;pointer-events:none;}
+.blank-text{font-size:0.88rem;line-height:2.2;background:white;border-radius:8px;border:1px solid var(--border);padding:14px;}
+.blank-input{display:inline-block;min-width:80px;border-bottom:2px solid var(--blank-border);padding:1px 4px;font-size:0.88rem;font-weight:700;color:var(--primary);cursor:pointer;vertical-align:middle;}
+.blank-input.filled{border-color:var(--accent);color:var(--accent);}
+.blank-input.error{border-color:var(--danger);color:var(--danger);}
+.blank-result{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:0.86rem;display:none;}
+.blank-result.show{display:block;}
+
+/* ===== QUIZ ===== */
+.quiz-wrap{margin:14px 0;}
+.quiz-q{margin-bottom:18px;background:white;border-radius:10px;padding:14px;border:1px solid var(--border);}
+.quiz-q-num{font-size:0.75rem;font-weight:800;color:var(--primary);margin-bottom:6px;}
+.quiz-q-text{font-size:0.88rem;font-weight:600;margin-bottom:10px;line-height:1.6;}
+.quiz-choices{display:flex;flex-direction:column;gap:6px;}
+.quiz-choice{background:#f8fafc;border:2px solid var(--border);border-radius:7px;padding:8px 12px;cursor:pointer;font-size:0.84rem;text-align:left;font-family:inherit;transition:all 0.15s;line-height:1.5;}
+.quiz-choice:hover{border-color:var(--primary);}
+.quiz-choice.correct{background:#d1fae5;border-color:#059669;}
+.quiz-choice.wrong{background:#fee2e2;border-color:#dc2626;}
+.quiz-fb{font-size:0.82rem;margin-top:8px;padding:8px 12px;border-radius:6px;display:none;line-height:1.6;}
+.quiz-fb.show{display:block;}
+.quiz-fb.ok{background:#d1fae5;color:#065f46;}
+.quiz-fb.ng{background:#fee2e2;color:#991b1b;}
+.quiz-submit{background:var(--primary);color:white;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:0.88rem;font-family:inherit;font-weight:700;margin-top:10px;}
+.quiz-score{font-size:1rem;font-weight:800;color:var(--primary);text-align:center;padding:14px;display:none;}
+
+/* ===== COLLAPSIBLE ===== */
+.collapsible-btn{background:none;border:none;width:100%;text-align:left;padding:10px 14px;cursor:pointer;font-size:0.84rem;font-weight:700;color:var(--accent3);font-family:inherit;display:flex;align-items:center;gap:6px;}
+.collapsible-btn::before{content:'▶';font-size:0.7rem;transition:transform 0.2s;}
+.collapsible-btn.open::before{transform:rotate(90deg);}
+.collapsible-body{display:none;padding:0 14px 14px;font-size:0.84rem;line-height:1.7;color:#374151;}
+.collapsible-body.open{display:block;}
+
+/* ===== CONFETTI ===== */
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:9999;animation:fall 1.5s ease-in forwards;}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+
+/* ===== SVG DIAGRAMS ===== */
+.svg-wrap{background:white;border-radius:10px;border:1px solid var(--border);padding:12px;margin:12px 0;overflow-x:auto;text-align:center;}
+.svg-wrap svg{max-width:100%;height:auto;}
+
+/* ===== CHEM FORMULA ===== */
+sub{font-size:0.7em;} sup{font-size:0.7em;}
+.ce{font-family:monospace;font-weight:700;}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:480px){
+  .tab-btn{padding:8px 11px;font-size:0.78rem;}
+  .mnemonic-reading{font-size:0.95rem;letter-spacing:1px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo">GAMBA</div>
+    <div class="header-sub">江原予備校 化学eラーニング</div>
+  </div>
+  <div class="chapter-title-bar">
+    <span class="chapter-badge">Ch.11</span>
+    <span class="chapter-title-text">金属のイオン化傾向</span>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('learn')">📖 学習</button>
+  <button class="tab-btn" onclick="showTab('blank')">✏️ 穴埋めチャレンジ</button>
+  <button class="tab-btn" onclick="showTab('quiz')">✅ 確認クイズ</button>
+</div>
+
+<!-- ============================================================
+     学習タブ
+     ============================================================ -->
+<div id="tab-learn" class="tab-content active">
+
+  <!-- §1 イオン化傾向とは -->
+  <div class="section-card">
+    <div class="section-header sh-blue">⚡ §1 イオン化傾向とは</div>
+    <div class="section-body">
+      <div class="text-block">
+        金属を水や水溶液に入れると、金属原子が<strong>電子を放出して陽イオンになる</strong>ものがあります。<br>
+        この「陽イオンになりやすさ」の度合いを <strong>イオン化傾向</strong> といいます。
+      </div>
+      <div class="key-box">
+        🔑 <strong>ポイント</strong><br>
+        イオン化傾向が<strong>大きい</strong>金属ほど → 陽イオンに<strong>なりやすい</strong>（反応しやすい）<br>
+        イオン化傾向が<strong>小さい</strong>金属ほど → 陽イオンに<strong>なりにくい</strong>（反応しにくい）
+      </div>
+
+      <!-- SVG: 電子放出のイメージ -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 420 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px">
+          <!-- 金属原子 -->
+          <circle cx="80" cy="65" r="38" fill="#1e40af" opacity="0.9"/>
+          <text x="80" y="60" text-anchor="middle" fill="white" font-size="15" font-weight="bold">金属</text>
+          <text x="80" y="78" text-anchor="middle" fill="#fbbf24" font-size="12">Zn など</text>
+          <!-- 矢印 -->
+          <path d="M 128 55 L 200 55" stroke="#374151" stroke-width="2" marker-end="url(#arr)"/>
+          <text x="164" y="48" text-anchor="middle" fill="#374151" font-size="11">e⁻ を放出</text>
+          <!-- 電子 -->
+          <circle cx="150" cy="55" r="8" fill="#fbbf24"/>
+          <text x="150" y="59" text-anchor="middle" fill="#1e3a8a" font-size="10" font-weight="bold">e⁻</text>
+          <circle cx="175" cy="55" r="8" fill="#fbbf24"/>
+          <text x="175" y="59" text-anchor="middle" fill="#1e3a8a" font-size="10" font-weight="bold">e⁻</text>
+          <!-- 陽イオン -->
+          <circle cx="300" cy="65" r="38" fill="#059669" opacity="0.9"/>
+          <text x="300" y="60" text-anchor="middle" fill="white" font-size="13" font-weight="bold">陽イオン</text>
+          <text x="300" y="78" text-anchor="middle" fill="#fbbf24" font-size="12">Zn²⁺ など</text>
+          <!-- ラベル -->
+          <text x="80" y="115" text-anchor="middle" fill="#1e40af" font-size="11" font-weight="bold">酸化される</text>
+          <text x="300" y="115" text-anchor="middle" fill="#059669" font-size="11" font-weight="bold">水溶液中へ溶出</text>
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L9,3 z" fill="#374151"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+
+      <div class="text-block">
+        イオン化傾向の順に金属を並べたものを <strong>イオン化列</strong> といいます。<br>
+        高校化学では <strong>K（カリウム）から Au（金）</strong> の18元素を覚えます。
+      </div>
+
+      <!-- ミニテスト §1 -->
+      <div class="mini-test-wrap">
+        <div class="mini-test-title">🧪 ミニテスト §1</div>
+        <div class="q-block">
+          <div class="q-text">Q1. イオン化傾向が大きい金属の特徴として正しいものはどれですか？</div>
+          <div class="choices">
+            <button class="choice-btn" onclick="checkMT('mt1','a','b')">① 陽イオンになりにくく、反応しにくい</button>
+            <button class="choice-btn" onclick="checkMT('mt1','b','b')">② 陽イオンになりやすく、反応しやすい</button>
+            <button class="choice-btn" onclick="checkMT('mt1','c','b')">③ 電子を受け取りやすい</button>
+            <button class="choice-btn" onclick="checkMT('mt1','d','b')">④ 水溶液中でイオンになれない</button>
+          </div>
+          <div id="mt1-fb" class="feedback"></div>
+        </div>
+        <div class="q-block">
+          <div class="q-text">Q2. 金属のイオン化傾向の順に並べたものを何といいますか？</div>
+          <div class="choices">
+            <button class="choice-btn" onclick="checkMT('mt2','a','c')">① 酸化列</button>
+            <button class="choice-btn" onclick="checkMT('mt2','b','c')">② 電気陰性度の順</button>
+            <button class="choice-btn" onclick="checkMT('mt2','c','c')">③ イオン化列</button>
+            <button class="choice-btn" onclick="checkMT('mt2','d','c')">④ 還元列</button>
+          </div>
+          <div id="mt2-fb" class="feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §2 イオン化列の暗記 -->
+  <div class="section-card">
+    <div class="section-header sh-green">🎵 §2 イオン化列の暗記（K〜Au）</div>
+    <div class="section-body">
+      <div class="text-block">
+        イオン化列は入試頻出です。語呂合わせで確実に覚えましょう！
+      </div>
+
+      <!-- 語呂合わせ -->
+      <div class="mnemonic-box">
+        <div class="mnemonic-reading">理科バカなまあ、あてにすなひどすぎる借金</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.7);margin-top:4px;margin-bottom:10px">
+          ※「Li（リ）」が先頭のため「理」から始まります
+        </div>
+        <div class="mnemonic-elements">
+          <div class="mnemonic-pair"><div class="mnemonic-kana">り</div><div class="mnemonic-elem">Li</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">か</div><div class="mnemonic-elem">K</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">ば</div><div class="mnemonic-elem">Ba</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">か</div><div class="mnemonic-elem">Ca</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">な</div><div class="mnemonic-elem">Na</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">ま</div><div class="mnemonic-elem">Mg</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">あ</div><div class="mnemonic-elem">Al</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">あ</div><div class="mnemonic-elem">Zn</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">て</div><div class="mnemonic-elem">Fe</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">に</div><div class="mnemonic-elem">Ni</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">す</div><div class="mnemonic-elem">Sn</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">な</div><div class="mnemonic-elem">Pb</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">ひ</div><div class="mnemonic-elem">H</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">ど</div><div class="mnemonic-elem">Cu</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">す</div><div class="mnemonic-elem">Hg</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">ぎ</div><div class="mnemonic-elem">Ag</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">る</div><div class="mnemonic-elem">Pt</div></div>
+          <div class="mnemonic-pair"><div class="mnemonic-kana">借金</div><div class="mnemonic-elem">Au</div></div>
+        </div>
+        <div style="margin-top:10px;font-size:0.8rem;color:rgba(255,255,255,0.8);">
+          イオン化傾向：大 ← K側　　　　　　Au側 → 小
+        </div>
+      </div>
+
+      <div class="warn-box">
+        ⚠️ <strong>テキストの注意点</strong><br>
+        テキストの語呂合わせは「理科バカ<strong>な</strong>まあ…」ですが、実際の先頭は <strong>Li（リチウム）</strong> です。<br>
+        入試では <strong>Li, K, Ba, Ca, Na, Mg, Al, Zn, Fe, Ni, Sn, Pb, (H), Cu, Hg, Ag, Pt, Au</strong> の順を問われます。<br>
+        なお、テキストでは「K から」の語呂合わせ（「理科バカ…」のLiを省略）として扱っていますが、<strong>Li は K よりもイオン化傾向が大きい</strong>点をおさえておきましょう。
+      </div>
+
+      <!-- イオン化列 大きさ SVG -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 560 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px">
+          <!-- 矢印（大→小） -->
+          <defs>
+            <marker id="arrowL" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+              <polygon points="0 0, 10 3.5, 0 7" fill="#1e40af"/>
+            </marker>
+          </defs>
+          <line x1="20" y1="40" x2="540" y2="40" stroke="#1e40af" stroke-width="3" marker-end="url(#arrowL)"/>
+          <text x="30" y="25" fill="#1e40af" font-size="12" font-weight="bold">イオン化傾向：大</text>
+          <text x="430" y="25" fill="#dc2626" font-size="12" font-weight="bold">イオン化傾向：小</text>
+          <!-- 元素ラベル -->
+          <text x="28"  y="60" fill="#1e40af" font-size="11" font-weight="bold">K</text>
+          <text x="56"  y="60" fill="#1e40af" font-size="11">Ba</text>
+          <text x="84"  y="60" fill="#1e40af" font-size="11">Ca</text>
+          <text x="111" y="60" fill="#1e40af" font-size="11">Na</text>
+          <text x="139" y="60" fill="#374151" font-size="11">Mg</text>
+          <text x="165" y="60" fill="#374151" font-size="11">Al</text>
+          <text x="190" y="60" fill="#374151" font-size="11">Zn</text>
+          <text x="215" y="60" fill="#374151" font-size="11">Fe</text>
+          <text x="240" y="60" fill="#374151" font-size="11">Ni</text>
+          <text x="265" y="60" fill="#374151" font-size="11">Sn</text>
+          <text x="290" y="60" fill="#374151" font-size="11">Pb</text>
+          <text x="315" y="60" fill="#6b7280" font-size="11">(H)</text>
+          <text x="342" y="60" fill="#dc2626" font-size="11">Cu</text>
+          <text x="368" y="60" fill="#dc2626" font-size="11">Hg</text>
+          <text x="393" y="60" fill="#dc2626" font-size="11">Ag</text>
+          <text x="419" y="60" fill="#dc2626" font-size="11">Pt</text>
+          <text x="444" y="60" fill="#dc2626" font-size="11">Au</text>
+        </svg>
+      </div>
+
+      <div class="tip-box">
+        💡 <strong>覚え方のコツ</strong><br>
+        K〜Na は「<strong>常温の水と激しく反応する</strong>」グループ。<br>
+        Cu〜Au は「<strong>希酸に溶けない貴金属</strong>」グループ。<br>
+        このグループ感を意識すると記憶に定着しやすくなります。
+      </div>
+
+      <!-- フラッシュカード -->
+      <div class="fc-wrap">
+        <div style="font-weight:800;font-size:0.85rem;color:var(--primary);margin-bottom:8px;">🃏 フラッシュカード（イオン化列）</div>
+        <div class="fc-controls">
+          <select id="fc-mode">
+            <option value="order">元素→順位</option>
+            <option value="symbol">位置→元素記号</option>
+          </select>
+          <button onclick="fcShuffle()">シャッフル</button>
+          <button onclick="fcReset()">最初から</button>
+        </div>
+        <div class="fc-card" id="fc-card" onclick="fcFlip()">
+          <div class="fc-front" id="fc-front">カードをタップ</div>
+          <div class="fc-back" id="fc-back"></div>
+          <div class="fc-hint" id="fc-hint">タップで答えを表示</div>
+        </div>
+        <div class="fc-nav">
+          <button onclick="fcPrev()">◀ 前へ</button>
+          <span class="fc-counter" id="fc-counter">1 / 18</span>
+          <button onclick="fcNext()">次へ ▶</button>
+        </div>
+      </div>
+
+      <!-- ミニテスト §2 -->
+      <div class="mini-test-wrap">
+        <div class="mini-test-title">🧪 ミニテスト §2</div>
+        <div class="q-block">
+          <div class="q-text">Q3. イオン化傾向が最も大きい金属（K〜Au の範囲で左端）はどれですか？</div>
+          <div class="choices">
+            <button class="choice-btn" onclick="checkMT('mt3','a','a')">① K（カリウム）</button>
+            <button class="choice-btn" onclick="checkMT('mt3','b','a')">② Au（金）</button>
+            <button class="choice-btn" onclick="checkMT('mt3','c','a')">③ Cu（銅）</button>
+            <button class="choice-btn" onclick="checkMT('mt3','d','a')">④ Na（ナトリウム）</button>
+          </div>
+          <div id="mt3-fb" class="feedback"></div>
+        </div>
+        <div class="q-block">
+          <div class="q-text">Q4. イオン化傾向が最も小さい金属はどれですか？</div>
+          <div class="choices">
+            <button class="choice-btn" onclick="checkMT('mt4','a','d')">① Fe</button>
+            <button class="choice-btn" onclick="checkMT('mt4','b','d')">② Ag</button>
+            <button class="choice-btn" onclick="checkMT('mt4','c','d')">③ Cu</button>
+            <button class="choice-btn" onclick="checkMT('mt4','d','d')">④ Au</button>
+          </div>
+          <div id="mt4-fb" class="feedback"></div>
+        </div>
+        <div class="q-block">
+          <div class="q-text">Q5. 語呂合わせ「理科バカなまあ、あてにすなひどすぎる借金」で<br>「て」に対応する元素記号はどれですか？</div>
+          <div class="choices">
+            <button class="choice-btn" onclick="checkMT('mt5','a','c')">① Ni</button>
+            <button class="choice-btn" onclick="checkMT('mt5','b','c')">② Sn</button>
+            <button class="choice-btn" onclick="checkMT('mt5','c','c')">③ Fe</button>
+            <button class="choice-btn" onclick="checkMT('mt5','d','c')">④ Zn</button>
+          </div>
+          <div id="mt5-fb" class="feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §3 イオン化傾向と反応性 -->
+  <div class="section-card">
+    <div class="section-header sh-orange">⚗️ §3 金属樹（金属の析出）</div>
+    <div class="section-body">
+      <div class="text-block">
+        イオン化傾向の<strong>大きい</strong>金属を、イオン化傾向の<strong>小さい</strong>金属イオンの水溶液に入れると、
+        大きい方が溶けだし、小さい方が析出します。
+      </div>
+
+      <div class="key-box">
+        🔑 <strong>反応が起こる条件</strong><br>
+        入れた金属のイオン化傾向 ＞ 水溶液中の金属イオンのイオン化傾向 → <strong>反応あり</strong><br>
+        入れた金属のイオン化傾向 ＜ 水溶液中の金属イオンのイオン化傾向 → <strong>反応なし</strong>
+      </div>
+
+      <!-- SVG: 銀樹のイメージ -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 380 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px">
+          <!-- ビーカー -->
+          <rect x="40" y="40" width="120" height="120" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+          <text x="100" y="30" text-anchor="middle" fill="#1e40af" font-size="12" font-weight="bold">硝酸銀水溶液 AgNO₃</text>
+          <!-- 銅板 -->
+          <rect x="80" y="45" width="12" height="90" fill="#d97706" rx="2"/>
+          <text x="86" y="150" text-anchor="middle" fill="#92400e" font-size="10" font-weight="bold">Cu板</text>
+          <!-- 銀樹（樹状の銀） -->
+          <line x1="92" y1="80" x2="115" y2="65" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="115" y1="65" x2="125" y2="50" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="115" y1="65" x2="130" y2="70" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="92" y1="100" x2="118" y2="90" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="118" y1="90" x2="135" y2="80" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="118" y1="90" x2="132" y2="100" stroke="#94a3b8" stroke-width="2"/>
+          <text x="135" y="60" fill="#64748b" font-size="10">銀樹</text>
+          <!-- 右側：反応式 -->
+          <text x="220" y="60" fill="#1e40af" font-size="12" font-weight="bold">反応式</text>
+          <text x="200" y="82" fill="#374151" font-size="11">Cu → Cu²⁺ + 2e⁻</text>
+          <text x="200" y="102" fill="#374151" font-size="11">（銅が溶けだす）</text>
+          <text x="200" y="125" fill="#374151" font-size="11">2Ag⁺ + 2e⁻ → 2Ag</text>
+          <text x="200" y="145" fill="#374151" font-size="11">（銀が析出）</text>
+          <text x="200" y="168" fill="#059669" font-size="11" font-weight="bold">Cu &gt; Ag ∴ 反応する</text>
+        </svg>
+      </div>
+
+      <div class="text-block">
+        析出した金属が木の枝のように見えることから、それぞれ以下の名前がついています：<br>
+        ・硝酸銀水溶液 + Cu → <strong>銀樹</strong>（白銀色）<br>
+        ・硫酸銅(II)水溶液 + Zn → <strong>銅樹</strong>（赤褐色）<br>
+        ・酢酸鉛(II)水溶液 + Zn → <strong>鉛樹</strong>（灰色）
+      </div>
+
+      <div class="warn-box">
+        ⚠️ <strong>よくあるミス</strong><br>
+        「銀板を硫酸銅水溶液に入れる」場合、Ag &lt; Cu なので<strong>反応しません</strong>。<br>
+        イオン化傾向の大小をしっかり確認してから判断しましょう。
+      </div>
+
+      <!-- ミニテスト §3 -->
+      <div class="mini-test-wrap">
+        <div class="mini-test-title">🧪 ミニテスト §3</div>
+        <div class="q-block">
+          <div class="q-text">Q6. 硝酸銀水溶液（AgNO₃水溶液）に銅板（Cu）を入れたとき、正しい記述はどれですか？</div>
+          <div class="choices">
+            <button class="choice-btn" onclick="checkMT('mt6','a','b')">① 変化なし（Cuは溶けない）</button>
+            <button class="choice-btn" onclick="checkMT('mt6','b','b')">② Cuが溶けだし、銀（Ag）が析出する</button>
+            <button class="choice-btn" onclick="checkMT('mt6','c','b')">③ AgがCuと置き換わってCuが析出する</button>
+            <button class="choice-btn" onclick="checkMT('mt6','d','b')">④ 両方とも溶けない</button>
+          </div>
+          <div id="mt6-fb" class="feedback"></div>
+        </div>
+        <div class="q-block">
+          <div class="q-text">Q7. 硫酸銅(II)水溶液（CuSO₄水溶液）に銀板（Ag）を入れたとき、どうなりますか？</div>
+          <div class="choices">
+            <button class="choice-btn" onclick="checkMT('mt7','a','a')">① 変化なし（AgはCuよりイオン化傾向が小さいから）</button>
+            <button class="choice-btn" onclick="checkMT('mt7','b','a')">② Agが溶けて銅が析出する</button>
+            <button class="choice-btn" onclick="checkMT('mt7','c','a')">③ Cuが析出してAgが溶ける</button>
+            <button class="choice-btn" onclick="checkMT('mt7','d','a')">④ 銀樹ができる</button>
+          </div>
+          <div id="mt7-fb" class="feedback"></div>
+        </div>
+      </div>
+
+      <!-- 発展コラム -->
+      <button class="collapsible-btn" id="col1-btn" onclick="toggleCol('col1')">📘 発展：イオン化傾向と酸化還元の関係</button>
+      <div class="collapsible-body" id="col1-body">
+        イオン化傾向が大きい金属ほど<strong>酸化されやすい</strong>（＝電子を失いやすい）ため、<strong>強い還元剤</strong>として働きます。<br><br>
+        例：Na → Na⁺ + e⁻　（Naは強い還元剤）<br><br>
+        一方、イオン化傾向が小さい金属イオンほど<strong>還元されやすい</strong>（＝電子を受け取りやすい）ため、<strong>強い酸化剤</strong>になります。<br><br>
+        例：Ag⁺ + e⁻ → Ag　（Ag⁺は酸化剤として働く）
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-learn -->
+
+<!-- ============================================================
+     穴埋めチャレンジタブ
+     ============================================================ -->
+<div id="tab-blank" class="tab-content">
+  <div class="section-card">
+    <div class="section-header sh-purple">✏️ 穴埋めチャレンジ</div>
+    <div class="section-body">
+      <div class="blank-timer">
+        <span class="timer-disp">⏱ <span id="blank-time">3:00</span></span>
+        <button class="blank-start-btn" id="blank-start-btn" onclick="startBlank()">スタート</button>
+      </div>
+
+      <div class="word-bank" id="word-bank">
+        <div class="word-chip" id="wc-ion" onclick="selectWord('イオン化傾向','wc-ion')">イオン化傾向</div>
+        <div class="word-chip" id="wc-ionlist" onclick="selectWord('イオン化列','wc-ionlist')">イオン化列</div>
+        <div class="word-chip" id="wc-big" onclick="selectWord('大きい','wc-big')">大きい</div>
+        <div class="word-chip" id="wc-small" onclick="selectWord('小さい','wc-small')">小さい</div>
+        <div class="word-chip" id="wc-positive" onclick="selectWord('陽イオン','wc-positive')">陽イオン</div>
+        <div class="word-chip" id="wc-e" onclick="selectWord('電子','wc-e')">電子</div>
+        <div class="word-chip" id="wc-ginki" onclick="selectWord('銀樹','wc-ginki')">銀樹</div>
+        <div class="word-chip" id="wc-doki" onclick="selectWord('銅樹','wc-doki')">銅樹</div>
+        <div class="word-chip" id="wc-react" onclick="selectWord('反応する','wc-react')">反応する</div>
+        <div class="word-chip" id="wc-noreact" onclick="selectWord('反応しない','wc-noreact')">反応しない</div>
+        <div class="word-chip" id="wc-K" onclick="selectWord('K（カリウム）','wc-K')">K（カリウム）</div>
+        <div class="word-chip" id="wc-Au" onclick="selectWord('Au（金）','wc-Au')">Au（金）</div>
+      </div>
+
+      <div class="blank-text" id="blank-text">
+        金属が水や水溶液中で陽イオンになりやすさを
+        <span class="blank-input" id="bl-1" onclick="fillBlank('bl-1','イオン化傾向')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        という。<br><br>
+        イオン化傾向の順に金属を並べたものを
+        <span class="blank-input" id="bl-2" onclick="fillBlank('bl-2','イオン化列')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        という。<br><br>
+        イオン化傾向が
+        <span class="blank-input" id="bl-3" onclick="fillBlank('bl-3','大きい')">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        金属ほど
+        <span class="blank-input" id="bl-4" onclick="fillBlank('bl-4','陽イオン')">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        になりやすく、
+        <span class="blank-input" id="bl-5" onclick="fillBlank('bl-5','電子')">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        を放出しやすい。<br><br>
+        イオン化傾向が最も大きい金属は
+        <span class="blank-input" id="bl-6" onclick="fillBlank('bl-6','K（カリウム）')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        で、最も
+        <span class="blank-input" id="bl-7" onclick="fillBlank('bl-7','小さい')">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        のは
+        <span class="blank-input" id="bl-8" onclick="fillBlank('bl-8','Au（金）')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        である。<br><br>
+        硝酸銀水溶液に銅板を入れると Cu &gt; Ag なので
+        <span class="blank-input" id="bl-9" onclick="fillBlank('bl-9','反応する')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        。銅板に木の枝状の
+        <span class="blank-input" id="bl-10" onclick="fillBlank('bl-10','銀樹')">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        が生じる。<br><br>
+        硫酸銅水溶液に亜鉛板を入れると Zn &gt; Cu なので
+        <span class="blank-input" id="bl-11" onclick="fillBlank('bl-11','反応する')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        。亜鉛板に
+        <span class="blank-input" id="bl-12" onclick="fillBlank('bl-12','銅樹')">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        が生じる。<br><br>
+        硝酸銀水溶液に白金線を入れると Ag &gt; Pt なので
+        <span class="blank-input" id="bl-13" onclick="fillBlank('bl-13','反応しない')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        。
+      </div>
+
+      <div class="blank-result" id="blank-result"></div>
+      <button onclick="checkBlank()" style="margin-top:12px;background:var(--primary);color:white;border:none;padding:9px 20px;border-radius:8px;cursor:pointer;font-size:0.86rem;font-family:inherit;font-weight:700;">答え合わせ</button>
+      <button onclick="resetBlank()" style="margin-top:12px;margin-left:8px;background:var(--muted);color:white;border:none;padding:9px 20px;border-radius:8px;cursor:pointer;font-size:0.86rem;font-family:inherit;font-weight:700;">リセット</button>
+    </div>
+  </div>
+</div><!-- /tab-blank -->
+
+<!-- ============================================================
+     確認クイズタブ
+     ============================================================ -->
+<div id="tab-quiz" class="tab-content">
+  <div class="section-card">
+    <div class="section-header sh-red">✅ 確認クイズ（Ch.11）</div>
+    <div class="section-body">
+      <div class="quiz-wrap" id="quiz-wrap">
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 1</div>
+          <div class="quiz-q-text">イオン化傾向の順に並べたとき、正しいものはどれですか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(0,0,2,this)">① Au &gt; Cu &gt; Fe &gt; K</button>
+            <button class="quiz-choice" onclick="checkQuiz(0,1,2,this)">② Fe &gt; Zn &gt; Ni &gt; Ag</button>
+            <button class="quiz-choice" onclick="checkQuiz(0,2,2,this)">③ K &gt; Na &gt; Mg &gt; Al</button>
+            <button class="quiz-choice" onclick="checkQuiz(0,3,2,this)">④ Cu &gt; Sn &gt; Pb &gt; Ag</button>
+          </div>
+          <div class="quiz-fb" id="qfb-0"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 2</div>
+          <div class="quiz-q-text">硝酸銀水溶液（AgNO₃ aq）に銅片（Cu）を入れた。正しい記述を選べ。</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(1,0,1,this)">① 変化なし</button>
+            <button class="quiz-choice" onclick="checkQuiz(1,1,1,this)">② 銅が溶けだし、銀（銀樹）が析出する</button>
+            <button class="quiz-choice" onclick="checkQuiz(1,2,1,this)">③ 銀が溶けだし、銅が析出する</button>
+            <button class="quiz-choice" onclick="checkQuiz(1,3,1,this)">④ 白金が析出する</button>
+          </div>
+          <div class="quiz-fb" id="qfb-1"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 3</div>
+          <div class="quiz-q-text">次のうち、イオン化傾向が水素（H）より大きい金属はどれですか？（すべて選んでください → 1つ選択形式では最も適切なものを）</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(2,0,0,this)">① Cu</button>
+            <button class="quiz-choice" onclick="checkQuiz(2,1,0,this)">② Ag</button>
+            <button class="quiz-choice" onclick="checkQuiz(2,2,0,this)">③ Fe</button>
+            <button class="quiz-choice" onclick="checkQuiz(2,3,0,this)">④ Au</button>
+          </div>
+          <div class="quiz-fb" id="qfb-2"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 4</div>
+          <div class="quiz-q-text">語呂合わせ「理科バカなまあ、あてにすなひどすぎる借金」で<br>「な（2番目の"な"）」に対応する元素記号はどれですか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(3,0,1,this)">① Na</button>
+            <button class="quiz-choice" onclick="checkQuiz(3,1,1,this)">② Pb</button>
+            <button class="quiz-choice" onclick="checkQuiz(3,2,1,this)">③ Ni</button>
+            <button class="quiz-choice" onclick="checkQuiz(3,3,1,this)">④ Mg</button>
+          </div>
+          <div class="quiz-fb" id="qfb-3"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 5</div>
+          <div class="quiz-q-text">亜鉛板（Zn）を酢酸鉛(II)水溶液 Pb(CH₃COO)₂ に入れた。何が起こりますか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(4,0,2,this)">① 変化なし</button>
+            <button class="quiz-choice" onclick="checkQuiz(4,1,2,this)">② 鉛が溶けだし、亜鉛が析出する</button>
+            <button class="quiz-choice" onclick="checkQuiz(4,2,2,this)">③ 亜鉛が溶けだし、鉛（鉛樹）が析出する</button>
+            <button class="quiz-choice" onclick="checkQuiz(4,3,2,this)">④ 酢酸が揮発する</button>
+          </div>
+          <div class="quiz-fb" id="qfb-4"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 6</div>
+          <div class="quiz-q-text">イオン化傾向が大きい金属ほど、酸化還元の観点から何と言えますか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(5,0,1,this)">① 強い酸化剤として働く</button>
+            <button class="quiz-choice" onclick="checkQuiz(5,1,1,this)">② 強い還元剤として働く</button>
+            <button class="quiz-choice" onclick="checkQuiz(5,2,1,this)">③ 電子を受け取りやすい</button>
+            <button class="quiz-choice" onclick="checkQuiz(5,3,1,this)">④ 化学反応を起こさない</button>
+          </div>
+          <div class="quiz-fb" id="qfb-5"></div>
+        </div>
+
+      </div><!-- /quiz-wrap -->
+      <div class="quiz-score" id="quiz-score"></div>
+    </div>
+  </div>
+</div><!-- /tab-quiz -->
+
+<script>
+// ===== タブ切替 =====
+function showTab(id){
+  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ===== ミニテスト =====
+const MT_FEEDBACK = {
+  mt1:{
+    b:['○ 正解！','イオン化傾向が大きい＝陽イオンになりやすい＝反応しやすい、です。'],
+    a:['× 不正解','それはイオン化傾向が<strong>小さい</strong>金属の特徴です。'],
+    c:['× 不正解','電子を受け取りやすいのは、イオン化傾向が<strong>小さい</strong>金属イオンの特徴です。'],
+    d:['× 不正解','すべての金属がイオンになれないわけではありません。']
+  },
+  mt2:{
+    c:['○ 正解！','イオン化傾向の順に並べた列を<strong>イオン化列</strong>といいます。'],
+    a:['× 不正解','酸化列という用語は使いません。'],
+    b:['× 不正解','電気陰性度は非金属の性質を表します。'],
+    d:['× 不正解','還元列という用語はありません。']
+  },
+  mt3:{
+    a:['○ 正解！','K（カリウム）はイオン化列の左端（K側）で最もイオン化傾向が大きいです。'],
+    b:['× 不正解','Au（金）はイオン化傾向が<strong>最も小さい</strong>です。'],
+    c:['× 不正解','CuはH（水素）よりイオン化傾向が小さく、希酸にも溶けません。'],
+    d:['× 不正解','NaはKよりイオン化傾向が<strong>小さい</strong>です。']
+  },
+  mt4:{
+    d:['○ 正解！','Au（金）はイオン化傾向が最も小さく、王水にしか溶けません。'],
+    a:['× 不正解','Feは水素より大きく、希酸に溶けます。'],
+    b:['× 不正解','AgはPtやAuよりイオン化傾向が大きいです。'],
+    c:['× 不正解','CuはAgよりイオン化傾向が大きいです。']
+  },
+  mt5:{
+    c:['○ 正解！','「て」→ Fe（鉄）です。「あ・あ・て」の部分は Al・Zn・Fe に対応します。'],
+    a:['× 不正解','Niは「に」です。'],
+    b:['× 不正解','Snは「す」です。'],
+    d:['× 不正解','Znは「あ（2番目）」です。']
+  },
+  mt6:{
+    b:['○ 正解！','Cu ＞ Ag なのでCuが溶けだし、銀が析出します（銀樹）。反応式：Cu → Cu²⁺ + 2e⁻ / 2Ag⁺ + 2e⁻ → 2Ag'],
+    a:['× 不正解','Cu ＞ Ag なので反応が起こります。イオン化傾向の大小を確認しましょう。'],
+    c:['× 不正解','溶けるのはCuで、析出するのはAgです。逆です。'],
+    d:['× 不正解','Cu ＞ Ag なので反応が起こります。']
+  },
+  mt7:{
+    a:['○ 正解！','Ag ＜ Cu なので、AgはCuより陽イオンになりにくく、反応しません。'],
+    b:['× 不正解','Ag ＜ Cu のため、Agは溶けません。'],
+    c:['× 不正解','Ag ＜ Cu のため、この反応は起こりません。'],
+    d:['× 不正解','反応が起きないので銀樹もできません。']
+  }
+};
+
+function checkMT(id, chose, correct){
+  const fb = document.getElementById(id+'-fb');
+  const isOk = (chose === correct);
+  const info = MT_FEEDBACK[id]?.[chose] || ['',''];
+  fb.innerHTML = '<strong>'+info[0]+'</strong>　'+info[1];
+  fb.className = 'feedback show '+(isOk?'ok':'ng');
+  const btns = fb.parentElement.querySelectorAll('.choice-btn');
+  btns.forEach(b=>b.disabled=true);
+  if(isOk) launchConfetti(20);
+}
+
+// ===== フラッシュカード =====
+const FC_DATA = [
+  {front:'K', back:'カリウム\nイオン化傾向：最大級（左端に近い）'},
+  {front:'Ba', back:'バリウム\nK, Ba, Ca, Na の順'},
+  {front:'Ca', back:'カルシウム\n常温の水と反応する'},
+  {front:'Na', back:'ナトリウム\n常温の水と激しく反応'},
+  {front:'Mg', back:'マグネシウム\n熱水・酸と反応'},
+  {front:'Al', back:'アルミニウム\n酸にも塩基にも溶ける（両性）'},
+  {front:'Zn', back:'亜鉛\n希酸・NaOH水溶液に溶ける（両性）'},
+  {front:'Fe', back:'鉄\n希酸に溶ける / 濃HNO₃では不動態'},
+  {front:'Ni', back:'ニッケル\n希酸に溶ける / 濃HNO₃では不動態'},
+  {front:'Sn', back:'スズ\n希酸に溶ける'},
+  {front:'Pb', back:'鉛\n希塩酸・希硫酸は表面被膜で反応停止'},
+  {front:'(H)', back:'水素\n金属ではないが基準として掲載'},
+  {front:'Cu', back:'銅\n希硝酸・熱濃硫酸・濃硝酸に溶ける'},
+  {front:'Hg', back:'水銀\n希硝酸・熱濃硫酸・濃硝酸に溶ける'},
+  {front:'Ag', back:'銀\n希硝酸・熱濃硫酸・濃硝酸に溶ける'},
+  {front:'Pt', back:'白金\n王水にのみ溶ける'},
+  {front:'Au', back:'金\n王水にのみ溶ける（最も貴）'},
+  {front:'イオン化傾向が大きい順に3つ答えよ（K〜Au）', back:'K > Ba > Ca\n（「り・か・ば」）'}
+];
+let fcCards = [...FC_DATA], fcIdx = 0, fcFlipped = false;
+
+function fcRender(){
+  const c = fcCards[fcIdx];
+  document.getElementById('fc-front').textContent = c.front;
+  document.getElementById('fc-back').textContent = c.back;
+  document.getElementById('fc-back').style.display = 'none';
+  document.getElementById('fc-front').style.display = 'block';
+  document.getElementById('fc-hint').textContent = 'タップで答えを表示';
+  document.getElementById('fc-counter').textContent = (fcIdx+1)+' / '+fcCards.length;
+  fcFlipped = false;
+}
+function fcFlip(){
+  fcFlipped = !fcFlipped;
+  document.getElementById('fc-front').style.display = fcFlipped?'none':'block';
+  document.getElementById('fc-back').style.display = fcFlipped?'block':'none';
+  document.getElementById('fc-hint').textContent = fcFlipped?'タップで問題に戻る':'タップで答えを表示';
+}
+function fcNext(){ fcIdx=(fcIdx+1)%fcCards.length; fcRender(); }
+function fcPrev(){ fcIdx=(fcIdx-1+fcCards.length)%fcCards.length; fcRender(); }
+function fcShuffle(){
+  for(let i=fcCards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[fcCards[i],fcCards[j]]=[fcCards[j],fcCards[i]];}
+  fcIdx=0; fcRender();
+}
+function fcReset(){ fcCards=[...FC_DATA]; fcIdx=0; fcRender(); }
+fcRender();
+
+// ===== コラプシブル =====
+function toggleCol(id){
+  const body = document.getElementById(id+'-body');
+  const btn = document.getElementById(id+'-btn');
+  body.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+
+// ===== 穴埋め =====
+let blankSelected = null;
+let blankTimer = null;
+let blankTime = 180;
+const BLANK_ANSWERS = {
+  'bl-1':'イオン化傾向','bl-2':'イオン化列','bl-3':'大きい','bl-4':'陽イオン',
+  'bl-5':'電子','bl-6':'K（カリウム）','bl-7':'小さい','bl-8':'Au（金）',
+  'bl-9':'反応する','bl-10':'銀樹','bl-11':'反応する','bl-12':'銅樹','bl-13':'反応しない'
+};
+const blankFilled = {};
+
+function startBlank(){
+  if(blankTimer) return;
+  blankTimer = setInterval(()=>{
+    blankTime--;
+    const m=Math.floor(blankTime/60), s=blankTime%60;
+    document.getElementById('blank-time').textContent = m+':'+(s<10?'0'+s:s);
+    if(blankTime<=0){ clearInterval(blankTimer); checkBlank(); }
+  },1000);
+  document.getElementById('blank-start-btn').textContent='進行中…';
+  document.getElementById('blank-start-btn').disabled=true;
+}
+
+function selectWord(word, chipId){
+  blankSelected = word;
+  document.querySelectorAll('.word-chip').forEach(el=>el.style.outline='');
+  document.getElementById(chipId).style.outline='2px solid #2563eb';
+}
+
+function fillBlank(blankId, expectedWord){
+  if(!blankSelected){ alert('先にワードを選択してください'); return; }
+  const el = document.getElementById(blankId);
+  blankFilled[blankId] = blankSelected;
+  el.textContent = blankSelected;
+  el.classList.add('filled');
+  // ワードチップをused化（同じ単語が複数ある場合は最初の1つ）
+  const chip = [...document.querySelectorAll('.word-chip')].find(c=>c.getAttribute('onclick')&&c.getAttribute('onclick').includes("'"+blankSelected+"'")&&!c.classList.contains('used'));
+  if(chip) chip.classList.add('used');
+  blankSelected = null;
+  document.querySelectorAll('.word-chip').forEach(el=>el.style.outline='');
+}
+
+function checkBlank(){
+  let ok=0, total=Object.keys(BLANK_ANSWERS).length;
+  Object.entries(BLANK_ANSWERS).forEach(([id,ans])=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    if(blankFilled[id]===ans){ el.classList.add('filled'); el.classList.remove('error'); ok++; }
+    else{ el.classList.add('error'); el.classList.remove('filled'); el.textContent=blankFilled[id]||'＿'; }
+  });
+  const res = document.getElementById('blank-result');
+  res.textContent = ok+'／'+total+' 正解！'+(ok===total?' 🎉 全問正解！':' もう一度確認しましょう。');
+  res.className = 'blank-result show';
+  res.style.background = ok===total?'#d1fae5':'#fee2e2';
+  res.style.color = ok===total?'#065f46':'#991b1b';
+  if(ok===total) launchConfetti(30);
+}
+
+function resetBlank(){
+  Object.keys(BLANK_ANSWERS).forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.textContent='\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0';
+    el.className='blank-input';
+    delete blankFilled[id];
+  });
+  document.querySelectorAll('.word-chip').forEach(el=>{el.classList.remove('used');el.style.outline='';});
+  document.getElementById('blank-result').className='blank-result';
+  blankSelected=null;
+  clearInterval(blankTimer); blankTimer=null; blankTime=180;
+  document.getElementById('blank-time').textContent='3:00';
+  document.getElementById('blank-start-btn').textContent='スタート';
+  document.getElementById('blank-start-btn').disabled=false;
+}
+
+// ===== クイズ =====
+const QUIZ_FB = [
+  ['③ K &gt; Na &gt; Mg &gt; Al が正しいイオン化傾向の大きい順です。①はAuが最大となり逆、②はZn&gt;Ni&gt;Feが正しい、④はCu&lt;Sn&lt;Pbのため逆です。',
+   '② は Fe &gt; Ni の順が怪しいですが、実際は Fe &gt; Ni が正しく、全体でも Fe &gt; Zn は誤りです。Fe &lt; Zn が正しいため不正解です。'],
+  ['② Cu &gt; Ag なので Cuが溶けだし、Agが析出（銀樹）します。Cu → Cu²⁺ + 2e⁻ / 2Ag⁺ + 2e⁻ → 2Ag',
+   '① Cu &gt; Ag なので反応は起こります。③ 溶けるのはCu、析出はAg（逆）。④ 白金は関係しません。'],
+  ['③ Feはイオン化傾向が水素(H)より大きいため、希酸に溶けて水素を発生します。Cu・Ag・Auは水素より小さいため希酸に溶けません。',
+   '①②④ Cu・Ag・AuはすべてHよりイオン化傾向が小さく、希酸には溶けません。'],
+  ['② 「す・な（2番目）」→ Sn・Pb の「な」は Pb（鉛）です。1番目の「な」はNa、2番目の「な」はPbです。',
+   '① Naは1番目の「な」です。③ Niは「に」です。④ Mgは「ま」です。'],
+  ['③ Zn &gt; Pb なので Znが溶けだし、Pb（鉛樹）が析出します。Zn → Zn²⁺ + 2e⁻ / Pb²⁺ + 2e⁻ → Pb',
+   '① Zn &gt; Pbなので反応します。② 溶けるのはZn、析出はPb（逆）。④ 酢酸は揮発しません。'],
+  ['② イオン化傾向が大きい＝電子を放出しやすい＝酸化されやすい＝<strong>強い還元剤</strong>として働きます。（例：Na → Na⁺ + e⁻）',
+   '① 強い酸化剤はイオン化傾向の<strong>小さい</strong>金属イオンの特徴。③ 電子を受け取りやすいのも小さい方。④ 化学反応しないのは貴金属（Pt・Au）のみ。']
+];
+const quizAnswered = new Array(6).fill(false);
+let quizScore = 0;
+
+function checkQuiz(qIdx, chose, correct, btn){
+  if(quizAnswered[qIdx]) return;
+  quizAnswered[qIdx] = true;
+  const isOk = (chose === correct);
+  if(isOk){ quizScore++; btn.classList.add('correct'); launchConfetti(15); }
+  else{ btn.classList.add('wrong'); }
+  const fb = document.getElementById('qfb-'+qIdx);
+  fb.innerHTML = isOk
+    ? '<strong>✅ 正解！</strong>　'+QUIZ_FB[qIdx][0]
+    : '<strong>❌ 不正解。</strong>　'+QUIZ_FB[qIdx][1];
+  fb.className = 'quiz-fb show '+(isOk?'ok':'ng');
+  btn.parentElement.querySelectorAll('.quiz-choice').forEach(b=>b.disabled=true);
+  if(quizAnswered.every(v=>v)){
+    const sc = document.getElementById('quiz-score');
+    sc.textContent = '最終スコア：'+quizScore+' / 6　'+(quizScore===6?'🎉 満点！':'お疲れ様でした！');
+    sc.style.display='block';
+    if(quizScore===6) launchConfetti(40);
+  }
+}
+
+// ===== 花吹雪 =====
+function launchConfetti(n){
+  const colors=['#fbbf24','#2563eb','#059669','#dc2626','#7c3aed','#f97316'];
+  for(let i=0;i<n;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=Math.random()*100+'vw';
+    el.style.top='-10px';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration=(1+Math.random())+'s';
+    el.style.animationDelay=Math.random()*0.5+'s';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),2500);
+  }
+}
+</script>
+</body>
+</html>

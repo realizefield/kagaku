@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMBA | Ch.13 トタンとブリキ</title>
+<style>
+:root {
+  --primary:#2563eb; --accent:#059669; --accent2:#d97706; --accent3:#7c3aed;
+  --danger:#dc2626; --bg:#f0f4ff; --card:#ffffff;
+  --text:#1e293b; --muted:#64748b; --border:#e2e8f0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+header{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%);color:white;}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.15);}
+.logo{font-size:1.5rem;font-weight:900;letter-spacing:2px;color:#fbbf24;}
+.header-sub{font-size:0.75rem;opacity:0.8;}
+.chapter-title-bar{padding:14px 20px;display:flex;align-items:center;gap:12px;}
+.chapter-badge{background:#fbbf24;color:#1e3a8a;font-weight:900;font-size:0.75rem;padding:3px 10px;border-radius:20px;}
+.chapter-title-text{font-size:1.1rem;font-weight:700;}
+.tab-bar{display:flex;background:white;border-bottom:2px solid var(--border);overflow-x:auto;padding:0 16px;gap:4px;}
+.tab-btn{padding:10px 16px;border:none;background:none;font-size:0.82rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all 0.2s;font-family:inherit;}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
+.tab-content{display:none;padding:20px 16px;}
+.tab-content.active{display:block;}
+.section-card{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:20px;overflow:hidden;}
+.section-header{padding:14px 18px;font-weight:800;font-size:0.92rem;display:flex;align-items:center;gap:8px;}
+.sh-blue{background:linear-gradient(90deg,#1e40af,#3b82f6);color:white;}
+.sh-green{background:linear-gradient(90deg,#065f46,#059669);color:white;}
+.sh-orange{background:linear-gradient(90deg,#92400e,#d97706);color:white;}
+.sh-purple{background:linear-gradient(90deg,#4c1d95,#7c3aed);color:white;}
+.sh-red{background:linear-gradient(90deg,#991b1b,#dc2626);color:white;}
+.section-body{padding:16px 18px;}
+.text-block{font-size:0.9rem;line-height:1.8;margin-bottom:14px;}
+.key-box{background:#fef9c3;border:2px solid #f59e0b;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:0.88rem;line-height:1.7;}
+.warn-box{background:#fef2f2;border:2px solid #dc2626;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:0.88rem;line-height:1.7;}
+.tip-box{background:#ecfdf5;border:2px solid #059669;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:0.88rem;line-height:1.7;}
+.mini-test-wrap{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px;margin:14px 0;}
+.mini-test-title{font-size:0.8rem;font-weight:800;color:var(--primary);margin-bottom:10px;}
+.q-block{margin-bottom:16px;}
+.q-text{font-size:0.88rem;font-weight:600;margin-bottom:8px;line-height:1.6;}
+.choices{display:flex;flex-direction:column;gap:6px;}
+.choice-btn{background:white;border:2px solid var(--border);border-radius:8px;padding:9px 13px;text-align:left;cursor:pointer;font-size:0.84rem;font-family:inherit;transition:all 0.15s;line-height:1.5;}
+.choice-btn:hover{border-color:var(--primary);background:#eff6ff;}
+.choice-btn.correct{background:#d1fae5;border-color:#059669;color:#065f46;}
+.choice-btn.wrong{background:#fee2e2;border-color:#dc2626;color:#991b1b;}
+.feedback{margin-top:8px;font-size:0.84rem;padding:8px 12px;border-radius:7px;display:none;line-height:1.6;}
+.feedback.show{display:block;}
+.feedback.ok{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7;}
+.feedback.ng{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.collapsible-btn{background:none;border:none;width:100%;text-align:left;padding:10px 14px;cursor:pointer;font-size:0.84rem;font-weight:700;color:var(--accent3);font-family:inherit;display:flex;align-items:center;gap:6px;}
+.collapsible-btn::before{content:'▶';font-size:0.7rem;transition:transform 0.2s;}
+.collapsible-btn.open::before{transform:rotate(90deg);}
+.collapsible-body{display:none;padding:0 14px 14px;font-size:0.84rem;line-height:1.7;color:#374151;}
+.collapsible-body.open{display:block;}
+.svg-wrap{background:white;border-radius:10px;border:1px solid var(--border);padding:12px;margin:12px 0;overflow-x:auto;text-align:center;}
+/* 比較カード */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+.compare-card{border-radius:10px;padding:14px;font-size:0.86rem;line-height:1.7;}
+.compare-card.totan{background:#dbeafe;border:2px solid #3b82f6;}
+.compare-card.buriki{background:#fce7f3;border:2px solid #db2777;}
+.compare-card h3{font-size:0.92rem;font-weight:800;margin-bottom:8px;}
+.compare-card.totan h3{color:#1e40af;}
+.compare-card.buriki h3{color:#9d174d;}
+/* フラッシュカード */
+.fc-wrap{margin:14px 0;}
+.fc-controls{display:flex;gap:8px;margin-bottom:10px;align-items:center;flex-wrap:wrap;}
+.fc-controls select,.fc-controls button{font-size:0.8rem;padding:6px 10px;border-radius:6px;border:1px solid var(--border);cursor:pointer;font-family:inherit;}
+.fc-controls button{background:var(--primary);color:white;border-color:var(--primary);font-weight:700;}
+.fc-card{background:linear-gradient(135deg,#1e3a8a,#2563eb);border-radius:12px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 16px;cursor:pointer;user-select:none;}
+.fc-front{color:#fbbf24;font-size:1rem;font-weight:800;text-align:center;line-height:1.6;}
+.fc-back{color:white;font-size:0.92rem;font-weight:700;text-align:center;line-height:1.7;display:none;white-space:pre-line;}
+.fc-hint{font-size:0.72rem;color:rgba(255,255,255,0.55);margin-top:10px;}
+.fc-nav{display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+.fc-nav button{background:var(--primary);color:white;border:none;padding:7px 18px;border-radius:7px;cursor:pointer;font-size:0.82rem;font-family:inherit;font-weight:600;}
+.fc-counter{font-size:0.82rem;color:var(--muted);}
+/* 穴埋め */
+.blank-timer{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.timer-disp{font-size:0.9rem;font-weight:800;color:var(--primary);}
+.blank-start-btn{background:var(--accent);color:white;border:none;padding:7px 16px;border-radius:7px;cursor:pointer;font-size:0.82rem;font-family:inherit;font-weight:700;}
+.word-bank{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;padding:10px;background:#fef9c3;border-radius:8px;border:1px solid #f59e0b;}
+.word-chip{background:white;border:2px solid #d97706;border-radius:20px;padding:4px 12px;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.15s;}
+.word-chip:hover{background:#fef9c3;}
+.word-chip.used{opacity:0.4;pointer-events:none;}
+.blank-text{font-size:0.88rem;line-height:2.5;background:white;border-radius:8px;border:1px solid var(--border);padding:14px;}
+.blank-input{display:inline-block;min-width:76px;border-bottom:2px solid #fbbf24;padding:1px 4px;font-size:0.88rem;font-weight:700;color:var(--primary);cursor:pointer;vertical-align:middle;}
+.blank-input.filled{border-color:var(--accent);color:var(--accent);}
+.blank-input.error{border-color:var(--danger);color:var(--danger);}
+.blank-result{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:0.86rem;display:none;}
+.blank-result.show{display:block;}
+/* クイズ */
+.quiz-q{margin-bottom:18px;background:white;border-radius:10px;padding:14px;border:1px solid var(--border);}
+.quiz-q-num{font-size:0.75rem;font-weight:800;color:var(--primary);margin-bottom:6px;}
+.quiz-q-text{font-size:0.88rem;font-weight:600;margin-bottom:10px;line-height:1.6;}
+.quiz-choices{display:flex;flex-direction:column;gap:6px;}
+.quiz-choice{background:#f8fafc;border:2px solid var(--border);border-radius:7px;padding:8px 12px;cursor:pointer;font-size:0.84rem;text-align:left;font-family:inherit;transition:all 0.15s;line-height:1.5;}
+.quiz-choice:hover{border-color:var(--primary);}
+.quiz-choice.correct{background:#d1fae5;border-color:#059669;}
+.quiz-choice.wrong{background:#fee2e2;border-color:#dc2626;}
+.quiz-fb{font-size:0.82rem;margin-top:8px;padding:8px 12px;border-radius:6px;display:none;line-height:1.6;}
+.quiz-fb.show{display:block;}
+.quiz-fb.ok{background:#d1fae5;color:#065f46;}
+.quiz-fb.ng{background:#fee2e2;color:#991b1b;}
+.quiz-score{font-size:1rem;font-weight:800;color:var(--primary);text-align:center;padding:14px;display:none;}
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:9999;animation:fall 1.5s ease-in forwards;}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+@media(max-width:480px){.compare-grid{grid-template-columns:1fr;}.tab-btn{padding:8px 11px;font-size:0.78rem;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo">GAMBA</div>
+    <div class="header-sub">江原予備校 化学eラーニング</div>
+  </div>
+  <div class="chapter-title-bar">
+    <span class="chapter-badge">Ch.13</span>
+    <span class="chapter-title-text">トタンとブリキ（防食）</span>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('learn',event)">📖 学習</button>
+  <button class="tab-btn" onclick="showTab('blank',event)">✏️ 穴埋めチャレンジ</button>
+  <button class="tab-btn" onclick="showTab('quiz',event)">✅ 確認クイズ</button>
+</div>
+
+<!-- ========== 学習タブ ========== -->
+<div id="tab-learn" class="tab-content active">
+
+  <!-- §1 防食とは -->
+  <div class="section-card">
+    <div class="section-header sh-blue">🛡️ §1 防食とは</div>
+    <div class="section-body">
+      <div class="text-block">
+        金属は水や空気にさらされると<strong>さびる（腐食する）</strong>ことがあります。<br>
+        特に鉄（Fe）は放置するとさびやすいため、表面を別の金属で覆って守る工夫がされています。<br>
+        これを <strong>防食（ぼうしょく）</strong> といいます。
+      </div>
+      <div class="key-box">
+        🔑 <strong>防食のポイント</strong><br>
+        鉄の表面を別の金属で覆う方法には2種類あります：<br>
+        ・<strong>トタン</strong>：鉄 + 亜鉛（Zn）コーティング<br>
+        ・<strong>ブリキ</strong>：鉄 + スズ（Sn）コーティング<br>
+        どちらを使うかで、傷がついたときの挙動が<strong>まったく逆</strong>になります！
+      </div>
+    </div>
+  </div>
+
+  <!-- §2 トタン -->
+  <div class="section-card">
+    <div class="section-header sh-blue">🏠 §2 トタン（鉄 + Zn）</div>
+    <div class="section-body">
+      <div class="text-block">
+        <strong>トタン</strong>は、鉄板の表面を <strong>亜鉛（Zn）</strong> でめっきしたものです。<br>
+        代表例：<strong>トタン屋根</strong>、外壁など屋外用途
+      </div>
+
+      <div class="key-box">
+        🔑 <strong>イオン化傾向：Zn ＞ Fe</strong><br>
+        ZnはFeよりイオン化傾向が<strong>大きい</strong>ので、水が触れると<strong>Znが先に溶けだす</strong>。<br>
+        → Feは溶けずに守られる（<strong>犠牲防食</strong>）
+      </div>
+
+      <!-- トタンSVG（縦型・2段構成） -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px">
+          <defs>
+            <!-- ハッチングパターン（Zn用：青斜線） -->
+            <pattern id="hatchZn" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="8" stroke="#60a5fa" stroke-width="3"/>
+            </pattern>
+            <!-- 水滴グラデ -->
+            <radialGradient id="waterT" cx="40%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="white" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#93c5fd" stop-opacity="0.7"/>
+            </radialGradient>
+          </defs>
+
+          <!-- ===== 上段：正常時 ===== -->
+          <text x="210" y="20" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold">【正常時】Zn 被膜が完全に覆っている</text>
+          <!-- Fe板（本体） -->
+          <rect x="30" y="60" width="360" height="60" fill="#9ca3af"/>
+          <text x="210" y="97" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Fe（鉄板）</text>
+          <!-- Zn被膜上（ハッチング） -->
+          <rect x="30" y="34" width="360" height="28" fill="url(#hatchZn)" stroke="#3b82f6" stroke-width="1.5"/>
+          <!-- Zn被膜下 -->
+          <rect x="30" y="118" width="360" height="14" fill="url(#hatchZn)" stroke="#3b82f6" stroke-width="1.5"/>
+          <!-- ラベル引き出し線 -->
+          <line x1="30" y1="48" x2="10" y2="48" stroke="#374151" stroke-width="1"/>
+          <text x="8" y="44" text-anchor="end" fill="#1e40af" font-size="11" font-weight="bold">Zn</text>
+          <line x1="390" y1="48" x2="410" y2="48" stroke="#374151" stroke-width="1"/>
+          <text x="412" y="52" fill="#1e40af" font-size="11" font-weight="bold">Zn</text>
+          <line x1="390" y1="125" x2="410" y2="125" stroke="#374151" stroke-width="1"/>
+          <text x="412" y="129" fill="#9ca3af" font-size="11" font-weight="bold">Fe</text>
+          <!-- 水滴（上に乗っている） -->
+          <ellipse cx="210" cy="28" rx="28" ry="14" fill="url(#waterT)" stroke="#93c5fd" stroke-width="1"/>
+          <text x="210" y="17" text-anchor="middle" fill="#1e40af" font-size="11" font-weight="bold">水滴</text>
+          <!-- 結果 -->
+          <rect x="80" y="142" width="260" height="26" rx="5" fill="#d1fae5" stroke="#059669"/>
+          <text x="210" y="160" text-anchor="middle" fill="#065f46" font-size="11" font-weight="bold">✅ Zn 被膜が守る → Fe に影響なし</text>
+
+          <!-- 矢印（下向き） -->
+          <text x="210" y="192" text-anchor="middle" fill="#374151" font-size="20">↓</text>
+          <text x="210" y="206" text-anchor="middle" fill="#dc2626" font-size="11" font-weight="bold">傷がついたら…</text>
+
+          <!-- ===== 下段：傷あり ===== -->
+          <text x="210" y="226" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold">【傷あり】Zn が先に溶けだす</text>
+          <!-- Fe板（本体） -->
+          <rect x="30" y="240" width="360" height="60" fill="#9ca3af"/>
+          <text x="210" y="277" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Fe（鉄板）</text>
+          <!-- Zn被膜上（傷あり・左右） -->
+          <rect x="30"  y="214" width="160" height="28" fill="url(#hatchZn)" stroke="#3b82f6" stroke-width="1.5"/>
+          <rect x="230" y="214" width="160" height="28" fill="url(#hatchZn)" stroke="#3b82f6" stroke-width="1.5"/>
+          <!-- Zn被膜下 -->
+          <rect x="30" y="298" width="360" height="14" fill="url(#hatchZn)" stroke="#3b82f6" stroke-width="1.5"/>
+          <!-- 傷の切れ目（V字） -->
+          <polyline points="190,212 210,242 230,212" fill="none" stroke="#dc2626" stroke-width="3" stroke-linejoin="round"/>
+          <!-- 水滴（傷に入り込む） -->
+          <ellipse cx="210" cy="228" rx="22" ry="26" fill="url(#waterT)" stroke="#93c5fd" stroke-width="1"/>
+          <text x="210" y="215" text-anchor="middle" fill="#1e40af" font-size="11" font-weight="bold">水滴</text>
+          <!-- ラベル -->
+          <line x1="30" y1="228" x2="10" y2="228" stroke="#374151" stroke-width="1"/>
+          <text x="8" y="224" text-anchor="end" fill="#1e40af" font-size="11" font-weight="bold">Zn</text>
+          <line x1="390" y1="228" x2="410" y2="228" stroke="#374151" stroke-width="1"/>
+          <text x="412" y="232" fill="#1e40af" font-size="11" font-weight="bold">Zn</text>
+          <line x1="390" y1="305" x2="410" y2="305" stroke="#374151" stroke-width="1"/>
+          <text x="412" y="309" fill="#9ca3af" font-size="11" font-weight="bold">Fe</text>
+          <!-- 結果ボックス -->
+          <rect x="50" y="320" width="320" height="14" rx="4" fill="#dbeafe" stroke="#3b82f6"/>
+          <text x="210" y="331" text-anchor="middle" fill="#1e3a8a" font-size="10" font-weight="bold">Zn＞Fe → Zn が溶けだし Fe を守る（犠牲防食）</text>
+        </svg>
+      </div>
+
+      <div class="tip-box">
+        💡 <strong>犠牲防食（ぎせいぼうしょく）</strong>とは？<br>
+        イオン化傾向の大きい金属が「自ら犠牲になって溶けることで」、守りたい金属（Fe）を守る方法です。<br>
+        船の底にZnやMgの板を取り付けて腐食を防ぐ「流電陽極法」も同じ原理です。
+      </div>
+
+      <!-- ミニテスト §2 -->
+      <div class="mini-test-wrap">
+        <div class="mini-test-title">🧪 ミニテスト §2（トタン）</div>
+        <div class="q-block">
+          <div class="q-text">Q1. トタンとはどのような金属ですか？</div>
+          <div class="choices">
+            <button class="choice-btn" id="mt1-a" onclick="checkMT('mt1','a','b')">① 鉄板の表面をスズ（Sn）でめっきしたもの</button>
+            <button class="choice-btn" id="mt1-b" onclick="checkMT('mt1','b','b')">② 鉄板の表面を亜鉛（Zn）でめっきしたもの</button>
+            <button class="choice-btn" id="mt1-c" onclick="checkMT('mt1','c','b')">③ 亜鉛板の表面を鉄（Fe）でめっきしたもの</button>
+            <button class="choice-btn" id="mt1-d" onclick="checkMT('mt1','d','b')">④ 鉄板の表面をニッケル（Ni）でめっきしたもの</button>
+          </div>
+          <div id="mt1-fb" class="feedback"></div>
+        </div>
+        <div class="q-block">
+          <div class="q-text">Q2. トタンに傷がついて水が触れた場合、何が溶けだしますか？</div>
+          <div class="choices">
+            <button class="choice-btn" id="mt2-a" onclick="checkMT('mt2','a','b')">① Fe が溶けて Zn が守られる</button>
+            <button class="choice-btn" id="mt2-b" onclick="checkMT('mt2','b','b')">② Zn が溶けて Fe が守られる（犠牲防食）</button>
+            <button class="choice-btn" id="mt2-c" onclick="checkMT('mt2','c','b')">③ Zn と Fe が同時に溶けだす</button>
+            <button class="choice-btn" id="mt2-d" onclick="checkMT('mt2','d','b')">④ どちらも溶けない</button>
+          </div>
+          <div id="mt2-fb" class="feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §3 ブリキ -->
+  <div class="section-card">
+    <div class="section-header sh-orange">🥫 §3 ブリキ（鉄 + Sn）</div>
+    <div class="section-body">
+      <div class="text-block">
+        <strong>ブリキ</strong>は、鉄板の表面を <strong>スズ（Sn）</strong> でめっきしたものです。<br>
+        代表例：<strong>缶詰の内側</strong>（食品が直接触れる面）
+      </div>
+
+      <div class="key-box">
+        🔑 <strong>イオン化傾向：Fe ＞ Sn</strong><br>
+        FeはSnよりイオン化傾向が<strong>大きい</strong>ので、傷がついて水が触れると<strong>Feが先に溶けだす</strong>。<br>
+        → Snの被膜が無傷のうちは鉄を守れるが、<strong>傷がつくと逆にFeが腐食しやすくなる</strong>
+      </div>
+
+      <!-- ブリキSVG（縦型・2段構成） -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px">
+          <defs>
+            <!-- ハッチングパターン（Sn用：ピンク斜線） -->
+            <pattern id="hatchSn" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="8" stroke="#f9a8d4" stroke-width="3"/>
+            </pattern>
+            <radialGradient id="waterB" cx="40%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="white" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#93c5fd" stop-opacity="0.7"/>
+            </radialGradient>
+          </defs>
+
+          <!-- ===== 上段：正常時 ===== -->
+          <text x="210" y="20" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold">【正常時】Sn 被膜が完全に覆っている</text>
+          <!-- Fe板（本体） -->
+          <rect x="30" y="60" width="360" height="60" fill="#9ca3af"/>
+          <text x="210" y="97" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Fe（鉄板）</text>
+          <!-- Sn被膜上 -->
+          <rect x="30" y="34" width="360" height="28" fill="url(#hatchSn)" stroke="#db2777" stroke-width="1.5"/>
+          <!-- Sn被膜下 -->
+          <rect x="30" y="118" width="360" height="14" fill="url(#hatchSn)" stroke="#db2777" stroke-width="1.5"/>
+          <!-- ラベル -->
+          <line x1="30" y1="48" x2="10" y2="48" stroke="#374151" stroke-width="1"/>
+          <text x="8" y="44" text-anchor="end" fill="#9d174d" font-size="11" font-weight="bold">Sn</text>
+          <line x1="390" y1="48" x2="410" y2="48" stroke="#374151" stroke-width="1"/>
+          <text x="412" y="52" fill="#9d174d" font-size="11" font-weight="bold">Sn</text>
+          <line x1="390" y1="125" x2="410" y2="125" stroke="#374151" stroke-width="1"/>
+          <text x="412" y="129" fill="#9ca3af" font-size="11" font-weight="bold">Fe</text>
+          <!-- 水滴（上に乗っている） -->
+          <ellipse cx="210" cy="28" rx="28" ry="14" fill="url(#waterB)" stroke="#93c5fd" stroke-width="1"/>
+          <text x="210" y="17" text-anchor="middle" fill="#1e40af" font-size="11" font-weight="bold">水滴</text>
+          <!-- 結果 -->
+          <rect x="80" y="142" width="260" height="26" rx="5" fill="#d1fae5" stroke="#059669"/>
+          <text x="210" y="160" text-anchor="middle" fill="#065f46" font-size="11" font-weight="bold">✅ Sn 被膜が守る → Fe に影響なし</text>
+
+          <!-- 矢印（下向き） -->
+          <text x="210" y="192" text-anchor="middle" fill="#374151" font-size="20">↓</text>
+          <text x="210" y="206" text-anchor="middle" fill="#dc2626" font-size="11" font-weight="bold">傷がついたら…</text>
+
+          <!-- ===== 下段：傷あり ===== -->
+          <text x="210" y="226" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold">【傷あり】Fe が先に溶けだす ⚠️</text>
+          <!-- Fe板（本体） -->
+          <rect x="30" y="240" width="360" height="60" fill="#9ca3af"/>
+          <text x="210" y="277" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Fe（鉄板）</text>
+          <!-- Sn被膜上（傷あり） -->
+          <rect x="30"  y="214" width="160" height="28" fill="url(#hatchSn)" stroke="#db2777" stroke-width="1.5"/>
+          <rect x="230" y="214" width="160" height="28" fill="url(#hatchSn)" stroke="#db2777" stroke-width="1.5"/>
+          <!-- Sn被膜下 -->
+          <rect x="30" y="298" width="360" height="14" fill="url(#hatchSn)" stroke="#db2777" stroke-width="1.5"/>
+          <!-- 傷の切れ目（V字・深くFeまで） -->
+          <polyline points="190,212 210,252 230,212" fill="none" stroke="#dc2626" stroke-width="3" stroke-linejoin="round"/>
+          <!-- Fe露出部分を赤く -->
+          <polygon points="190,242 210,252 230,242 210,238" fill="#fca5a5" opacity="0.8"/>
+          <!-- 水滴（傷の中に入り込む） -->
+          <ellipse cx="210" cy="228" rx="22" ry="28" fill="url(#waterB)" stroke="#93c5fd" stroke-width="1"/>
+          <text x="210" y="214" text-anchor="middle" fill="#1e40af" font-size="11" font-weight="bold">水滴</text>
+          <!-- ラベル -->
+          <line x1="30" y1="228" x2="10" y2="228" stroke="#374151" stroke-width="1"/>
+          <text x="8" y="224" text-anchor="end" fill="#9d174d" font-size="11" font-weight="bold">Sn</text>
+          <line x1="390" y1="228" x2="410" y2="228" stroke="#374151" stroke-width="1"/>
+          <text x="412" y="232" fill="#9d174d" font-size="11" font-weight="bold">Sn</text>
+          <line x1="390" y1="305" x2="410" y2="305" stroke="#374151" stroke-width="1"/>
+          <text x="412" y="309" fill="#9ca3af" font-size="11" font-weight="bold">Fe</text>
+          <!-- 結果ボックス -->
+          <rect x="50" y="320" width="320" height="14" rx="4" fill="#fce7f3" stroke="#db2777"/>
+          <text x="210" y="331" text-anchor="middle" fill="#9d174d" font-size="10" font-weight="bold">Fe＞Sn → Fe が溶けだし腐食が進む！</text>
+        </svg>
+      </div>
+
+      <div class="warn-box">
+        ⚠️ <strong>よくある疑問</strong>：ブリキは缶詰に使われるのに、なぜ危険じゃないの？<br>
+        Snの被膜が<strong>完全に無傷であれば</strong>鉄との間に水が入らず問題ありません。<br>
+        缶詰は密閉・非腐食環境で使われるため実用上は安全ですが、<br>
+        <strong>傷がつくと急速に腐食が進む</strong>という弱点があります。
+      </div>
+
+      <!-- ミニテスト §3 -->
+      <div class="mini-test-wrap">
+        <div class="mini-test-title">🧪 ミニテスト §3（ブリキ）</div>
+        <div class="q-block">
+          <div class="q-text">Q3. ブリキの用途として代表的なものはどれですか？</div>
+          <div class="choices">
+            <button class="choice-btn" id="mt3-a" onclick="checkMT('mt3','a','c')">① トタン屋根</button>
+            <button class="choice-btn" id="mt3-b" onclick="checkMT('mt3','b','c')">② 船の底板</button>
+            <button class="choice-btn" id="mt3-c" onclick="checkMT('mt3','c','c')">③ 缶詰の内側</button>
+            <button class="choice-btn" id="mt3-d" onclick="checkMT('mt3','d','c')">④ 送電線</button>
+          </div>
+          <div id="mt3-fb" class="feedback"></div>
+        </div>
+        <div class="q-block">
+          <div class="q-text">Q4. ブリキに傷がついて水が触れた場合、何が起こりますか？</div>
+          <div class="choices">
+            <button class="choice-btn" id="mt4-a" onclick="checkMT('mt4','a','b')">① Sn が溶けて Fe が守られる</button>
+            <button class="choice-btn" id="mt4-b" onclick="checkMT('mt4','b','b')">② Fe が溶けて腐食が進む</button>
+            <button class="choice-btn" id="mt4-c" onclick="checkMT('mt4','c','b')">③ Sn と Fe が同時に溶けだす</button>
+            <button class="choice-btn" id="mt4-d" onclick="checkMT('mt4','d','b')">④ どちらも溶けない</button>
+          </div>
+          <div id="mt4-fb" class="feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §4 トタン vs ブリキ 比較 -->
+  <div class="section-card">
+    <div class="section-header sh-green">⚖️ §4 トタン vs ブリキ まとめ比較</div>
+    <div class="section-body">
+
+      <div class="compare-grid">
+        <div class="compare-card totan">
+          <h3>🏠 トタン</h3>
+          コーティング：<strong>Zn（亜鉛）</strong><br>
+          イオン化傾向：<strong>Zn ＞ Fe</strong><br>
+          傷ついたとき：<strong>Znが溶ける</strong><br>
+          → Fe は守られる<br>
+          用途：屋根・外壁（屋外）
+        </div>
+        <div class="compare-card buriki">
+          <h3>🥫 ブリキ</h3>
+          コーティング：<strong>Sn（スズ）</strong><br>
+          イオン化傾向：<strong>Fe ＞ Sn</strong><br>
+          傷ついたとき：<strong>Feが溶ける</strong><br>
+          → 腐食が進む<br>
+          用途：缶詰（密閉・屋内）
+        </div>
+      </div>
+
+      <!-- まとめSVG（イオン化列での位置） -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 480 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:480px">
+          <defs>
+            <marker id="arC" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+              <polygon points="0 0,8 3.5,0 7" fill="#1e40af"/>
+            </marker>
+          </defs>
+          <text x="240" y="16" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold">イオン化列での位置関係</text>
+          <line x1="20" y1="36" x2="460" y2="36" stroke="#1e40af" stroke-width="2" marker-end="url(#arC)"/>
+          <text x="28"  y="26" fill="#1e40af" font-size="10">大←</text>
+          <text x="420" y="26" fill="#dc2626" font-size="10">→小</text>
+
+          <!-- 元素位置 -->
+          <text x="100" y="54" text-anchor="middle" fill="#1e40af" font-size="14" font-weight="bold">Zn</text>
+          <text x="220" y="54" text-anchor="middle" fill="#374151" font-size="14" font-weight="bold">Fe</text>
+          <text x="320" y="54" text-anchor="middle" fill="#9d174d" font-size="14" font-weight="bold">Sn</text>
+
+          <!-- トタンのブラケット -->
+          <line x1="80"  y1="64" x2="80"  y2="74" stroke="#3b82f6" stroke-width="2"/>
+          <line x1="80"  y1="74" x2="240" y2="74" stroke="#3b82f6" stroke-width="2"/>
+          <line x1="240" y1="74" x2="240" y2="64" stroke="#3b82f6" stroke-width="2"/>
+          <text x="160" y="88" text-anchor="middle" fill="#1e40af" font-size="11" font-weight="bold">トタン：Zn＞Fe</text>
+          <text x="160" y="100" text-anchor="middle" fill="#1e40af" font-size="10">Znが犠牲になり Feを守る</text>
+
+          <!-- ブリキのブラケット -->
+          <line x1="200" y1="64" x2="200" y2="110" stroke="#db2777" stroke-width="2"/>
+          <line x1="200" y1="110" x2="340" y2="110" stroke="#db2777" stroke-width="2"/>
+          <line x1="340" y1="110" x2="340" y2="64" stroke="#db2777" stroke-width="2"/>
+          <text x="270" y="122" text-anchor="middle" fill="#9d174d" font-size="11" font-weight="bold">ブリキ：Fe＞Sn</text>
+        </svg>
+      </div>
+
+      <div class="key-box">
+        🔑 <strong>入試で問われるポイント</strong><br>
+        ①「トタンに傷がついたとき何が溶けるか？」→ <strong>Zn（鉄は守られる）</strong><br>
+        ②「ブリキに傷がついたとき何が溶けるか？」→ <strong>Fe（腐食が進む）</strong><br>
+        ③「なぜその金属が溶けるのか？」→ <strong>イオン化傾向が大きい方が溶けるから</strong>
+      </div>
+
+      <!-- フラッシュカード -->
+      <div class="fc-wrap">
+        <div style="font-weight:800;font-size:0.88rem;color:var(--primary);margin-bottom:8px;">🃏 フラッシュカード（トタン・ブリキ）</div>
+        <div class="fc-controls">
+          <button onclick="fcShuffle()">シャッフル</button>
+          <button onclick="fcReset()" style="background:var(--muted);border-color:var(--muted);">最初から</button>
+          <span class="fc-counter" id="fc-counter">1 / 12</span>
+        </div>
+        <div class="fc-card" id="fc-card" onclick="fcFlip()">
+          <div class="fc-front" id="fc-front">カードをタップ</div>
+          <div class="fc-back"  id="fc-back"></div>
+          <div class="fc-hint"  id="fc-hint">タップで答えを表示</div>
+        </div>
+        <div class="fc-nav">
+          <button onclick="fcPrev()">◀ 前へ</button>
+          <button onclick="fcNext()">次へ ▶</button>
+        </div>
+      </div>
+
+      <!-- 発展コラム -->
+      <button class="collapsible-btn" id="col1-btn" onclick="toggleCol('col1')">📘 発展：犠牲防食の他の例</button>
+      <div class="collapsible-body" id="col1-body">
+        <strong>流電陽極法（galvanic anode）</strong><br>
+        船の底・海底パイプラインなどには、<strong>Zn や Mg の板</strong>を取り付けます。<br>
+        これらはFeよりイオン化傾向が大きいため自ら溶けだし、構造物の腐食を防ぎます。<br>
+        定期的にZn/Mg板を交換することで長期間保護できます。<br><br>
+        <strong>電気防食法</strong><br>
+        外部電源を使い、守りたい金属を強制的に陰極にする方法もあります（電気化学的な方法）。
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-learn -->
+
+<!-- ========== 穴埋めタブ ========== -->
+<div id="tab-blank" class="tab-content">
+  <div class="section-card">
+    <div class="section-header sh-purple">✏️ 穴埋めチャレンジ</div>
+    <div class="section-body">
+      <div class="blank-timer">
+        <span class="timer-disp">⏱ <span id="blank-time">3:00</span></span>
+        <button class="blank-start-btn" id="blank-start-btn" onclick="startBlank()">スタート</button>
+      </div>
+      <div class="word-bank">
+        <span class="word-chip" id="wc0" onclick="selectWord('亜鉛（Zn）','wc0')">亜鉛（Zn）</span>
+        <span class="word-chip" id="wc1" onclick="selectWord('スズ（Sn）','wc1')">スズ（Sn）</span>
+        <span class="word-chip" id="wc2" onclick="selectWord('Zn＞Fe','wc2')">Zn＞Fe</span>
+        <span class="word-chip" id="wc3" onclick="selectWord('Fe＞Sn','wc3')">Fe＞Sn</span>
+        <span class="word-chip" id="wc4" onclick="selectWord('Zn','wc4')">Zn</span>
+        <span class="word-chip" id="wc5" onclick="selectWord('Fe','wc5')">Fe</span>
+        <span class="word-chip" id="wc6" onclick="selectWord('犠牲防食','wc6')">犠牲防食</span>
+        <span class="word-chip" id="wc7" onclick="selectWord('腐食が進む','wc7')">腐食が進む</span>
+        <span class="word-chip" id="wc8" onclick="selectWord('トタン屋根','wc8')">トタン屋根</span>
+        <span class="word-chip" id="wc9" onclick="selectWord('缶詰の内側','wc9')">缶詰の内側</span>
+        <span class="word-chip" id="wc10" onclick="selectWord('鉄板','wc10')">鉄板</span>
+        <span class="word-chip" id="wc11" onclick="selectWord('守られる','wc11')">守られる</span>
+      </div>
+      <div class="blank-text">
+        <strong>トタン</strong>は
+        <span class="blank-input" id="bl-1" onclick="fillBlank('bl-1')">　　　　</span>
+        の表面を
+        <span class="blank-input" id="bl-2" onclick="fillBlank('bl-2')">　　　　</span>
+        でめっきしたものです。<br>
+        代表例は
+        <span class="blank-input" id="bl-3" onclick="fillBlank('bl-3')">　　　　</span>
+        などの屋外用途です。<br><br>
+
+        トタンのイオン化傾向の関係は
+        <span class="blank-input" id="bl-4" onclick="fillBlank('bl-4')">　　　　</span>
+        なので、<br>
+        傷がついて水が触れると
+        <span class="blank-input" id="bl-5" onclick="fillBlank('bl-5')">　　　</span>
+        が溶けだし、Fe は
+        <span class="blank-input" id="bl-6" onclick="fillBlank('bl-6')">　　　　</span>
+        。<br>
+        これを
+        <span class="blank-input" id="bl-7" onclick="fillBlank('bl-7')">　　　　</span>
+        という。<br><br>
+
+        <strong>ブリキ</strong>は鉄板の表面を
+        <span class="blank-input" id="bl-8" onclick="fillBlank('bl-8')">　　　　</span>
+        でめっきしたものです。<br>
+        代表例は
+        <span class="blank-input" id="bl-9" onclick="fillBlank('bl-9')">　　　　</span>
+        です。<br><br>
+
+        ブリキのイオン化傾向の関係は
+        <span class="blank-input" id="bl-10" onclick="fillBlank('bl-10')">　　　　</span>
+        なので、<br>
+        傷がついて水が触れると
+        <span class="blank-input" id="bl-11" onclick="fillBlank('bl-11')">　　　</span>
+        が溶けだし、
+        <span class="blank-input" id="bl-12" onclick="fillBlank('bl-12')">　　　　</span>
+        。
+      </div>
+      <div class="blank-result" id="blank-result"></div>
+      <button onclick="checkBlank()" style="margin-top:12px;background:var(--primary);color:white;border:none;padding:9px 20px;border-radius:8px;cursor:pointer;font-size:0.86rem;font-family:inherit;font-weight:700;">答え合わせ</button>
+      <button onclick="resetBlank()" style="margin-top:12px;margin-left:8px;background:var(--muted);color:white;border:none;padding:9px 20px;border-radius:8px;cursor:pointer;font-size:0.86rem;font-family:inherit;font-weight:700;">リセット</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== クイズタブ ========== -->
+<div id="tab-quiz" class="tab-content">
+  <div class="section-card">
+    <div class="section-header sh-red">✅ 確認クイズ（Ch.13）</div>
+    <div class="section-body">
+      <div id="quiz-wrap">
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 1</div>
+          <div class="quiz-q-text">トタンについて正しい説明はどれですか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(0,0,2,this)">① 鉄板にスズ（Sn）をめっきしたもの</button>
+            <button class="quiz-choice" onclick="checkQuiz(0,1,2,this)">② 鉄板にニッケル（Ni）をめっきしたもの</button>
+            <button class="quiz-choice" onclick="checkQuiz(0,2,2,this)">③ 鉄板に亜鉛（Zn）をめっきしたもの</button>
+            <button class="quiz-choice" onclick="checkQuiz(0,3,2,this)">④ 亜鉛板に鉄（Fe）をめっきしたもの</button>
+          </div>
+          <div class="quiz-fb" id="qfb-0"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 2</div>
+          <div class="quiz-q-text">トタンに傷がつき、水が Zn と Fe の両方に触れた。このとき何が起こりますか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(1,0,1,this)">① Fe が溶けだして Zn が守られる</button>
+            <button class="quiz-choice" onclick="checkQuiz(1,1,1,this)">② Zn が溶けだして Fe が守られる（犠牲防食）</button>
+            <button class="quiz-choice" onclick="checkQuiz(1,2,1,this)">③ Zn と Fe が同時に溶けだす</button>
+            <button class="quiz-choice" onclick="checkQuiz(1,3,1,this)">④ どちらも溶けない</button>
+          </div>
+          <div class="quiz-fb" id="qfb-1"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 3</div>
+          <div class="quiz-q-text">ブリキに傷がつき、水が Fe と Sn の両方に触れた。このとき何が起こりますか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(2,0,1,this)">① Sn が溶けだして Fe が守られる</button>
+            <button class="quiz-choice" onclick="checkQuiz(2,1,1,this)">② Fe が溶けだして腐食が進む</button>
+            <button class="quiz-choice" onclick="checkQuiz(2,2,1,this)">③ どちらも溶けない</button>
+            <button class="quiz-choice" onclick="checkQuiz(2,3,1,this)">④ Sn が還元される</button>
+          </div>
+          <div class="quiz-fb" id="qfb-2"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 4</div>
+          <div class="quiz-q-text">ブリキが缶詰の内側に使われる理由として最も適切なものはどれですか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(3,0,2,this)">① Sn は食品に溶けだして栄養になるから</button>
+            <button class="quiz-choice" onclick="checkQuiz(3,1,2,this)">② Fe より Sn の方が安くて加工しやすいから</button>
+            <button class="quiz-choice" onclick="checkQuiz(3,2,2,this)">③ 密閉環境で傷がつきにくく、Sn 被膜が鉄を守れるから</button>
+            <button class="quiz-choice" onclick="checkQuiz(3,3,2,this)">④ Sn は水と反応しないから</button>
+          </div>
+          <div class="quiz-fb" id="qfb-3"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 5</div>
+          <div class="quiz-q-text">「犠牲防食」の原理を使っているのはどちらですか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(4,0,0,this)">① トタン（Zn が犠牲になり Fe を守る）</button>
+            <button class="quiz-choice" onclick="checkQuiz(4,1,0,this)">② ブリキ（Sn が犠牲になり Fe を守る）</button>
+            <button class="quiz-choice" onclick="checkQuiz(4,2,0,this)">③ トタンもブリキも両方</button>
+            <button class="quiz-choice" onclick="checkQuiz(4,3,0,this)">④ どちらも犠牲防食ではない</button>
+          </div>
+          <div class="quiz-fb" id="qfb-4"></div>
+        </div>
+
+        <div class="quiz-q">
+          <div class="quiz-q-num">問 6</div>
+          <div class="quiz-q-text">トタンとブリキを使い分ける最大の理由はどれですか？</div>
+          <div class="quiz-choices">
+            <button class="quiz-choice" onclick="checkQuiz(5,0,2,this)">① コーティング金属の色が違うから</button>
+            <button class="quiz-choice" onclick="checkQuiz(5,1,2,this)">② 製造コストが違うから</button>
+            <button class="quiz-choice" onclick="checkQuiz(5,2,2,this)">③ 傷がついたときのイオン化傾向の大小関係が違い、腐食挙動が逆になるから</button>
+            <button class="quiz-choice" onclick="checkQuiz(5,3,2,this)">④ どちらも同じ働きをするが用途が違うだけ</button>
+          </div>
+          <div class="quiz-fb" id="qfb-5"></div>
+        </div>
+
+      </div>
+      <div class="quiz-score" id="quiz-score"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// タブ
+function showTab(id, e){
+  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(e && e.target) e.target.classList.add('active');
+}
+
+// ミニテスト
+const MT_FB = {
+  mt1:{
+    b:['○ 正解！','トタンは<strong>鉄板の表面を亜鉛（Zn）でめっき</strong>したものです。「ト（鉄）タン（亜鉛）」と覚えましょう。'],
+    a:['× 不正解','スズ（Sn）でめっきしたのは<strong>ブリキ</strong>です。'],
+    c:['× 不正解','コーティングは逆です。鉄板にZnをめっきするのがトタンです。'],
+    d:['× 不正解','ニッケルを使うのはトタンでもブリキでもありません。']
+  },
+  mt2:{
+    b:['○ 正解！','Zn＞Fe なので Zn が先に溶けだし、Fe は守られます。これを<strong>犠牲防食</strong>といいます。'],
+    a:['× 不正解','逆です。Zn＞Fe なので溶けるのは Zn です。'],
+    c:['× 不正解','イオン化傾向の大きい方（Zn）が優先して溶けます。'],
+    d:['× 不正解','水が触れると Zn が溶けます。']
+  },
+  mt3:{
+    c:['○ 正解！','ブリキは<strong>缶詰の内側</strong>（食品が触れる面）に使われます。密閉環境で傷がつきにくいためです。'],
+    a:['× 不正解','トタン屋根はトタンです。'],
+    b:['× 不正解','船の底はトタンやZn・Mg板による犠牲防食が使われます。'],
+    d:['× 不正解','送電線は主にアルミニウムや銅が使われます。']
+  },
+  mt4:{
+    b:['○ 正解！','Fe＞Sn なので傷がつくと Fe が先に溶けだし、腐食が進みます。'],
+    a:['× 不正解','逆です。Fe＞Sn なので溶けるのは Fe です（Snは守られない）。'],
+    c:['× 不正解','Fe＞Sn なので Fe が優先して溶けます。'],
+    d:['× 不正解','水が触れると Fe が溶けます。']
+  }
+};
+
+function checkMT(id, chose, correct){
+  const fb = document.getElementById(id+'-fb');
+  const isOk = chose === correct;
+  const info = MT_FB[id]?.[chose] || ['',''];
+  fb.innerHTML = '<strong>'+info[0]+'</strong><br>'+info[1];
+  fb.className = 'feedback show '+(isOk?'ok':'ng');
+  fb.previousElementSibling.querySelectorAll('.choice-btn').forEach(b=>b.disabled=true);
+  if(isOk) launchConfetti(20);
+}
+
+// コラプシブル
+function toggleCol(id){
+  document.getElementById(id+'-body').classList.toggle('open');
+  document.getElementById(id+'-btn').classList.toggle('open');
+}
+
+// フラッシュカード
+const FC_DATA = [
+  {q:'トタンのコーティング金属は？', a:'亜鉛（Zn）'},
+  {q:'ブリキのコーティング金属は？', a:'スズ（Sn）'},
+  {q:'トタンのイオン化傾向の関係は？', a:'Zn ＞ Fe\n（亜鉛の方が大きい）'},
+  {q:'ブリキのイオン化傾向の関係は？', a:'Fe ＞ Sn\n（鉄の方が大きい）'},
+  {q:'トタンに傷がついたとき何が溶けるか？', a:'Zn（亜鉛）が溶けだす\n→ Fe（鉄）は守られる'},
+  {q:'ブリキに傷がついたとき何が溶けるか？', a:'Fe（鉄）が溶けだす\n→ 腐食が進む'},
+  {q:'犠牲防食とは？', a:'イオン化傾向の大きい金属が自ら溶けることで\n守りたい金属を腐食から守る方法'},
+  {q:'トタンの代表的な用途は？', a:'トタン屋根・外壁など屋外用途'},
+  {q:'ブリキの代表的な用途は？', a:'缶詰の内側\n（密閉・食品用）'},
+  {q:'なぜトタンは「犠牲防食」になるのか？', a:'Zn＞Fe のイオン化傾向なので\nZnが優先して溶けだし\nFeを守るから'},
+  {q:'なぜブリキは傷がつくと腐食しやすいのか？', a:'Fe＞Sn のイオン化傾向なので\n傷がつくと Fe が先に溶けだすから'},
+  {q:'トタンとブリキ、屋外に向くのはどちら？なぜ？', a:'トタン（Zn めっき）\n傷がついても Zn が犠牲になり\nFe が守られるため屋外に強い'}
+];
+let fcCards=[...FC_DATA], fcIdx=0, fcFlipped=false;
+
+function fcRender(){
+  document.getElementById('fc-front').textContent = fcCards[fcIdx].q;
+  document.getElementById('fc-back').textContent  = fcCards[fcIdx].a;
+  document.getElementById('fc-back').style.display  = 'none';
+  document.getElementById('fc-front').style.display = 'block';
+  document.getElementById('fc-hint').textContent = 'タップで答えを表示';
+  document.getElementById('fc-counter').textContent = (fcIdx+1)+' / '+fcCards.length;
+  fcFlipped = false;
+}
+function fcFlip(){
+  fcFlipped = !fcFlipped;
+  document.getElementById('fc-front').style.display = fcFlipped?'none':'block';
+  document.getElementById('fc-back').style.display  = fcFlipped?'block':'none';
+  document.getElementById('fc-hint').textContent = fcFlipped?'タップで問題に戻る':'タップで答えを表示';
+}
+function fcNext(){ fcIdx=(fcIdx+1)%fcCards.length; fcRender(); }
+function fcPrev(){ fcIdx=(fcIdx-1+fcCards.length)%fcCards.length; fcRender(); }
+function fcShuffle(){
+  for(let i=fcCards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[fcCards[i],fcCards[j]]=[fcCards[j],fcCards[i]];}
+  fcIdx=0; fcRender();
+}
+function fcReset(){ fcCards=[...FC_DATA]; fcIdx=0; fcRender(); }
+fcRender();
+
+// 穴埋め
+const BLANK_ANS = {
+  'bl-1':'鉄板','bl-2':'亜鉛（Zn）','bl-3':'トタン屋根',
+  'bl-4':'Zn＞Fe','bl-5':'Zn','bl-6':'守られる','bl-7':'犠牲防食',
+  'bl-8':'スズ（Sn）','bl-9':'缶詰の内側',
+  'bl-10':'Fe＞Sn','bl-11':'Fe','bl-12':'腐食が進む'
+};
+const blankFilled={};
+let blankSelected=null, blankTimer=null, blankTime=180;
+
+function startBlank(){
+  if(blankTimer) return;
+  blankTimer=setInterval(()=>{
+    blankTime--;
+    const m=Math.floor(blankTime/60),s=blankTime%60;
+    document.getElementById('blank-time').textContent=m+':'+(s<10?'0':'')+s;
+    if(blankTime<=0){clearInterval(blankTimer);checkBlank();}
+  },1000);
+  document.getElementById('blank-start-btn').textContent='進行中…';
+  document.getElementById('blank-start-btn').disabled=true;
+}
+
+function selectWord(word, chipId){
+  blankSelected=word;
+  document.querySelectorAll('.word-chip').forEach(el=>el.style.outline='');
+  document.getElementById(chipId).style.outline='2px solid #2563eb';
+}
+
+function fillBlank(id){
+  if(!blankSelected){alert('先にワードを選んでください');return;}
+  const el=document.getElementById(id);
+  blankFilled[id]=blankSelected;
+  el.textContent=blankSelected;
+  el.classList.add('filled');
+  const chip=[...document.querySelectorAll('.word-chip')].find(
+    c=>c.getAttribute('onclick')&&c.getAttribute('onclick').includes("'"+blankSelected+"'")&&!c.classList.contains('used'));
+  if(chip) chip.classList.add('used');
+  blankSelected=null;
+  document.querySelectorAll('.word-chip').forEach(el=>el.style.outline='');
+}
+
+function checkBlank(){
+  let ok=0,total=Object.keys(BLANK_ANS).length;
+  Object.entries(BLANK_ANS).forEach(([id,ans])=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    if(blankFilled[id]===ans){el.classList.add('filled');el.classList.remove('error');ok++;}
+    else{el.classList.add('error');el.classList.remove('filled');el.textContent=blankFilled[id]||'＿';}
+  });
+  const res=document.getElementById('blank-result');
+  res.textContent=ok+'／'+total+' 正解！'+(ok===total?' 🎉 全問正解！':'　もう一度確認しましょう。');
+  res.className='blank-result show';
+  res.style.background=ok===total?'#d1fae5':'#fee2e2';
+  res.style.color=ok===total?'#065f46':'#991b1b';
+  if(ok===total) launchConfetti(30);
+}
+
+function resetBlank(){
+  Object.keys(BLANK_ANS).forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.textContent='\u3000\u3000';
+    el.className='blank-input';
+    delete blankFilled[id];
+  });
+  document.querySelectorAll('.word-chip').forEach(el=>{el.classList.remove('used');el.style.outline='';});
+  document.getElementById('blank-result').className='blank-result';
+  blankSelected=null;
+  clearInterval(blankTimer);blankTimer=null;blankTime=180;
+  document.getElementById('blank-time').textContent='3:00';
+  document.getElementById('blank-start-btn').textContent='スタート';
+  document.getElementById('blank-start-btn').disabled=false;
+}
+
+// クイズ
+const QFBS=[
+  ['③ トタンは鉄板に<strong>亜鉛（Zn）</strong>をめっきしたものです。「ト（鉄）タン（亜鉛→Zinc）」と覚えましょう。',
+   '①はブリキの説明です。②④は存在しない金属の組み合わせです。'],
+  ['② Zn＞Fe なので Zn が優先して溶けだし、Fe が守られます。これを<strong>犠牲防食</strong>といいます。',
+   '①逆です。Zn＞Feなので溶けるのはZn。③同時には溶けない。④水が触れるとZnが溶けます。'],
+  ['② Fe＞Sn なので傷がつくと Fe が先に溶けだし腐食が進みます。トタンと逆の挙動です。',
+   '①逆です。Fe＞SnなのでFeが溶けます。③水が触れるとFeが溶けます。④Snが還元されるわけではありません。'],
+  ['③ 缶詰は密閉環境で傷がつきにくく、Sn被膜が鉄を守ります。傷がつかない限り安全に使えます。',
+   '①Snが食品に溶けることはありません（少量ならOKですが理由はそこではない）。②コスト・加工性が主理由ではありません。④Snも酸には溶けます。'],
+  ['① トタンはZn＞Feなので、Znが犠牲になりFeを守る<strong>犠牲防食</strong>です。ブリキはFe＞Snなので、Feが溶けてしまい犠牲防食にはなりません。',
+   '②ブリキはFeが溶けるので犠牲防食ではありません。③ブリキは犠牲防食でない。④トタンは犠牲防食です。'],
+  ['③ イオン化傾向の大小関係がトタン（Zn＞Fe）とブリキ（Fe＞Sn）で逆になるため、傷ついたときの腐食挙動がまったく逆になります。',
+   '①色の違いは判断基準ではありません。②コストは理由ではありません。④働きが全然違います。']
+];
+const qAns=new Array(6).fill(false);
+let qScore=0;
+
+function checkQuiz(qi,chose,correct,btn){
+  if(qAns[qi]) return;
+  qAns[qi]=true;
+  const isOk=chose===correct;
+  if(isOk){qScore++;btn.classList.add('correct');launchConfetti(15);}
+  else btn.classList.add('wrong');
+  const fb=document.getElementById('qfb-'+qi);
+  fb.innerHTML=(isOk?'<strong>✅ 正解！</strong>　':'<strong>❌ 不正解。</strong>　')+QFBS[qi][isOk?0:1];
+  fb.className='quiz-fb show '+(isOk?'ok':'ng');
+  btn.parentElement.querySelectorAll('.quiz-choice').forEach(b=>b.disabled=true);
+  if(qAns.every(v=>v)){
+    const sc=document.getElementById('quiz-score');
+    sc.textContent='最終スコア：'+qScore+' / 6　'+(qScore===6?'🎉 満点！':'お疲れ様でした！');
+    sc.style.display='block';
+    if(qScore===6) launchConfetti(40);
+  }
+}
+
+// 花吹雪
+function launchConfetti(n){
+  const cols=['#fbbf24','#2563eb','#059669','#dc2626','#7c3aed','#f97316'];
+  for(let i=0;i<n;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.cssText='left:'+Math.random()*100+'vw;top:-10px;background:'+cols[~~(Math.random()*cols.length)]+';animation-duration:'+(1+Math.random())+'s;animation-delay:'+Math.random()*0.5+'s';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),2500);
+  }
+}
+</script>
+</body>
+</html>
